@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Routes, Route, Link, Outlet } from 'react-router-dom'
 import { Settings } from './Settings'
 import { Sidebar } from '../../components/Sidebar'
@@ -79,9 +79,50 @@ function HamburgerIcon() {
 
 function ForgeLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const touchStartX = useRef<number | null>(null)
+  const touchStartY = useRef<number | null>(null)
+  const sidebarOpenRef = useRef(sidebarOpen)
+
+  useEffect(() => { sidebarOpenRef.current = sidebarOpen }, [sidebarOpen])
+
   useEffect(() => {
     document.title = 'Forge Tools'
     return () => { document.title = 'FORGEHAVEN' }
+  }, [])
+
+  useEffect(() => {
+    function onTouchStart(e: TouchEvent) {
+      const t = e.touches[0]
+      touchStartX.current = t.clientX
+      touchStartY.current = t.clientY
+    }
+
+    function onTouchEnd(e: TouchEvent) {
+      if (touchStartX.current === null || touchStartY.current === null) return
+      const startX = touchStartX.current
+      const startY = touchStartY.current
+      touchStartX.current = null
+      touchStartY.current = null
+
+      const t = e.changedTouches[0]
+      const dx = t.clientX - startX
+      const dy = Math.abs(t.clientY - startY)
+
+      if (dy > 80) return  // primarily vertical scroll — ignore
+
+      if (!sidebarOpenRef.current && startX <= 24 && dx > 48) {
+        setSidebarOpen(true)
+      } else if (sidebarOpenRef.current && dx < -48) {
+        setSidebarOpen(false)
+      }
+    }
+
+    document.addEventListener('touchstart', onTouchStart, { passive: true })
+    document.addEventListener('touchend', onTouchEnd, { passive: true })
+    return () => {
+      document.removeEventListener('touchstart', onTouchStart)
+      document.removeEventListener('touchend', onTouchEnd)
+    }
   }, [])
 
   return (
@@ -96,7 +137,7 @@ function ForgeLayout() {
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <div className="relative flex flex-col flex-1 overflow-hidden min-w-0">
-        <header className="flex md:hidden items-center gap-3 px-4 h-12 bg-[#1a1d27] border-b border-[#2a2d3a] shrink-0">
+        <header className="flex md:hidden items-center px-4 h-12 bg-[#1a1d27] border-b border-[#2a2d3a] shrink-0">
           <button
             onClick={() => setSidebarOpen(true)}
             className="text-[#9ca3af] hover:text-[#e2e4ed] transition-colors cursor-pointer"
@@ -104,8 +145,8 @@ function ForgeLayout() {
           >
             <HamburgerIcon />
           </button>
-          <Link to="/tools" className="text-[#e2e4ed] font-semibold text-base tracking-wide hover:opacity-75 transition-opacity">
-            Forge <span className="text-[#c4af64]">Tools</span>
+          <Link to="/tools" className="absolute left-1/2 -translate-x-1/2 text-[#e2e4ed] font-semibold text-base tracking-wide hover:opacity-75 transition-opacity">
+            Forge<span className="text-[#c4af64]">Tools</span>
           </Link>
         </header>
         <a
