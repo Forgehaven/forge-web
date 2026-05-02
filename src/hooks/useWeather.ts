@@ -1,5 +1,6 @@
 import useSWR from 'swr'
 import { weatherIcon, weatherDescription, windDir } from '../lib/weather'
+import { useTempUnit, formatTemp, formatWind } from './useTempUnit'
 
 interface WeatherResponse {
   current: {
@@ -26,6 +27,7 @@ const fetcher = (url: string) => fetch(url).then(r => r.json())
 const FIELDS = 'temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,relative_humidity_2m,uv_index,cloud_cover'
 
 export function useWeather(lat: number | null, lon: number | null) {
+  const [unit] = useTempUnit()
   const url = lat != null && lon != null
     ? `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=${FIELDS}&temperature_unit=celsius`
     : null
@@ -41,8 +43,8 @@ export function useWeather(lat: number | null, lon: number | null) {
   const { temperature_2m, weather_code, wind_speed_10m, wind_direction_10m, relative_humidity_2m, uv_index, cloud_cover } = data.current
 
   const weather: WeatherData = {
-    summary: `${weatherIcon(weather_code)} ${weatherDescription(weather_code)} ${Math.round(temperature_2m)}°C`,
-    wind: `${Math.round(wind_speed_10m)} km/h ${windDir(wind_direction_10m)}`,
+    summary: `${weatherIcon(weather_code)} ${weatherDescription(weather_code)} ${formatTemp(temperature_2m, unit)}`,
+    wind: formatWind(wind_speed_10m, windDir(wind_direction_10m), unit),
     humidity: `${relative_humidity_2m}%`,
     uv: `${Math.round(uv_index ?? 0)}`,
     cloud: `${cloud_cover}%`,

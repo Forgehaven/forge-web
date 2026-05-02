@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, Link, Outlet } from 'react-router-dom'
+import { Settings } from './Settings'
 import { Sidebar } from '../../components/Sidebar'
 import { BottomBar } from '../../components/BottomBar'
 import { Home } from './Home'
@@ -94,7 +95,7 @@ function ForgeLayout() {
 
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      <div className="flex flex-col flex-1 overflow-hidden min-w-0">
+      <div className="relative flex flex-col flex-1 overflow-hidden min-w-0">
         <header className="flex md:hidden items-center gap-3 px-4 h-12 bg-[#1a1d27] border-b border-[#2a2d3a] shrink-0">
           <button
             onClick={() => setSidebarOpen(true)}
@@ -107,6 +108,14 @@ function ForgeLayout() {
             Forge <span className="text-[#c4af64]">Tools</span>
           </Link>
         </header>
+        <a
+          href="https://github.com/forgehaven"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden md:block absolute top-3 right-4 text-xs tracking-widest uppercase text-[#3a3d4a] hover:text-[#6b7280] transition-colors z-10"
+        >
+          FORGEHAVEN Inc.
+        </a>
 
         <main className="flex-1 overflow-y-auto bg-[#0f1117]">
           <div className="px-5 py-6 md:pl-12 md:pr-8 md:py-8">
@@ -186,6 +195,7 @@ export default function ToolsLayout() {
         <Route path="image-converter" element={<ImageConverter />} />
         <Route path="media-compressor" element={<MediaCompressor />} />
 
+        <Route path="settings" element={<Settings />} />
         <Route path="*" element={<NotFound inTools />} />
       </Route>
     </Routes>

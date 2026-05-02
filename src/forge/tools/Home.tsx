@@ -4,6 +4,7 @@ import { useCityFavourites } from '../../hooks/useCityFavourites'
 import { useIPInfo } from '../../hooks/useIPInfo'
 import { useNow } from '../../hooks/useNow'
 import { weatherIcon, windDir, WMO, fetchCurrentWeather, type CurrentWeather } from '../../lib/weather'
+import { useTempUnit, formatTemp, formatWind, formatPressure, formatPrecip } from '../../hooks/useTempUnit'
 import { flag, haversineKm, bearingDeg, formatDist } from '../../lib/geo'
 
 function formatTime(tz: string, date: Date): string {
@@ -34,6 +35,7 @@ function StatPill({ label, value }: { label: string; value: string }) {
 
 export function Home() {
   const now = useNow()
+  const [unit] = useTempUnit()
   const { cities, toggle } = useCityFavourites()
   const [pendingRemove, setPendingRemove] = useState<number | null>(null)
   const [expandedId, setExpandedId] = useState<number | null>(null)
@@ -94,7 +96,7 @@ export function Home() {
                       >
                         {w != null && (
                           <span className="text-xs text-[#6b7280] tabular-nums group-hover:text-[#9ca3af] transition-colors">
-                            {weatherIcon(w.weather_code)} {Math.round(w.temperature_2m)}°C
+                            {weatherIcon(w.weather_code)} {formatTemp(w.temperature_2m, unit)}
                             <span
                               className="ml-1 inline-block transition-transform duration-200 text-[#3a3d4a]"
                               style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
@@ -151,15 +153,15 @@ export function Home() {
                   {isExpanded && w != null && (
                     <div className="px-4 pb-3 pt-1 border-t border-[#2a2d3a] bg-[#0f1117] text-left">
                       <p className="text-xs text-[#9ca3af] mb-2">
-                        {weatherIcon(w.weather_code)} {WMO[w.weather_code] ?? 'Unknown'} · feels like {Math.round(w.apparent_temperature)}°C
+                        {weatherIcon(w.weather_code)} {WMO[w.weather_code] ?? 'Unknown'} · feels like {formatTemp(w.apparent_temperature, unit)}
                       </p>
                       <div className="grid grid-cols-3 gap-x-2 gap-y-1">
-                        <StatPill label="Wind" value={`${Math.round(w.wind_speed_10m)} km/h ${windDir(w.wind_direction_10m)}`} />
+                        <StatPill label="Wind" value={formatWind(w.wind_speed_10m, windDir(w.wind_direction_10m), unit)} />
                         <StatPill label="Humidity" value={`${w.relative_humidity_2m}%`} />
                         <StatPill label="UV" value={String(Math.round(w.uv_index ?? 0))} />
                         <StatPill label="Cloud" value={`${w.cloud_cover}%`} />
-                        <StatPill label="Pressure" value={`${Math.round(w.surface_pressure)} hPa`} />
-                        <StatPill label="Precip" value={`${w.precipitation} mm/h`} />
+                        <StatPill label="Pressure" value={formatPressure(w.surface_pressure, unit)} />
+                        <StatPill label="Precip" value={formatPrecip(w.precipitation, unit)} />
                       </div>
                     </div>
                   )}

@@ -2,6 +2,7 @@
 import { useCityFavourites } from '../../../hooks/useCityFavourites'
 import { weatherIcon, windDir, WMO, fetchCurrentWeather, type CurrentWeather } from '../../../lib/weather'
 import { flag, type GeoResult } from '../../../lib/geo'
+import { useTempUnit, formatTemp, formatWind, formatPressure, formatPrecip } from '../../../hooks/useTempUnit'
 
 function StatBox({ label, value }: { label: string; value: string }) {
   return (
@@ -20,6 +21,7 @@ export function WeatherLookup() {
   const [weather, setWeather] = useState<CurrentWeather | null>(null)
   const [weatherLoading, setWeatherLoading] = useState(false)
   const { toggle, isFavourite } = useCityFavourites()
+  const [unit] = useTempUnit()
 
   useEffect(() => {
     const trimmed = query.trim()
@@ -150,23 +152,23 @@ export function WeatherLookup() {
             {weather && (
               <>
                 <div className="flex items-center gap-4 pt-1 border-t border-[#2a2d3a]">
-                  <p className="text-5xl font-mono text-[#c4af64]">{Math.round(weather.temperature_2m)}°C</p>
+                  <p className="text-5xl font-mono text-[#c4af64]">{formatTemp(weather.temperature_2m, unit)}</p>
                   <div>
                     <p className="text-sm text-[#e2e4ed]">
                       {weatherIcon(weather.weather_code)} {WMO[weather.weather_code] ?? 'Unknown'}
                     </p>
                     <p className="text-xs text-[#6b7280] mt-0.5">
-                      Feels like {Math.round(weather.apparent_temperature)}°C
+                      Feels like {formatTemp(weather.apparent_temperature, unit)}
                     </p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-3 gap-2">
                   <StatBox label="Humidity"     value={`${weather.relative_humidity_2m}%`} />
-                  <StatBox label="Wind"          value={`${Math.round(weather.wind_speed_10m)} km/h ${windDir(weather.wind_direction_10m)}`} />
+                  <StatBox label="Wind"          value={formatWind(weather.wind_speed_10m, windDir(weather.wind_direction_10m), unit)} />
                   <StatBox label="UV Index"      value={String(Math.round(weather.uv_index ?? 0))} />
-                  <StatBox label="Pressure"      value={`${Math.round(weather.surface_pressure)} hPa`} />
-                  <StatBox label="Precipitation" value={`${weather.precipitation} mm/h`} />
+                  <StatBox label="Pressure"      value={formatPressure(weather.surface_pressure, unit)} />
+                  <StatBox label="Precipitation" value={formatPrecip(weather.precipitation, unit)} />
                   <StatBox label="Cloud Cover"   value={`${weather.cloud_cover}%`} />
                 </div>
               </>
