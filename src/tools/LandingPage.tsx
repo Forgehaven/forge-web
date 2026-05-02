@@ -51,7 +51,8 @@ export function LandingPage() {
       window.removeEventListener('resize', applyFontSize)
       document.documentElement.style.fontSize = prevFontSize
       document.body.classList.remove('fh-page', 'is-preload', 'is-article-visible')
-      document.getElementById('forgehaven-css')?.remove()
+      // Keep the CSS link in the DOM — NotFoundLanding reuses it and the fh-page
+      // class removal above is enough to prevent it affecting the tools section.
     }
   }, [])
 

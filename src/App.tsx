@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Outlet, Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Provider } from 'react-redux'
 import { store } from './store'
 import { Sidebar } from './components/Sidebar'
@@ -86,6 +86,10 @@ function HamburgerIcon() {
 
 function ForgeLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  useEffect(() => {
+    document.title = 'Forge Tools'
+    return () => { document.title = 'FORGEHAVEN' }
+  }, [])
 
   return (
     <div className="flex w-full h-full">
@@ -108,7 +112,7 @@ function ForgeLayout() {
             <HamburgerIcon />
           </button>
           <Link to="/tools" className="text-[#e2e4ed] font-semibold text-base tracking-wide hover:opacity-75 transition-opacity">
-            Forge<span className="text-[#c4af64]">Tools</span>
+            Forge <span className="text-[#c4af64]">Tools</span>
           </Link>
         </header>
 

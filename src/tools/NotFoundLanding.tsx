@@ -1,22 +1,37 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 export function NotFoundLanding() {
+  // Lazy init: if CSS is already in the DOM (navigating from LandingPage), start ready
+  const [cssReady, setCssReady] = useState(() => !!document.getElementById('forgehaven-css'))
+
   useEffect(() => {
+    document.body.classList.add('fh-page', 'is-preload')
+
+    if (document.getElementById('forgehaven-css')) {
+      setTimeout(() => document.body.classList.remove('is-preload'), 100)
+      return () => {
+        document.body.classList.remove('fh-page', 'is-preload', 'is-article-visible')
+      }
+    }
+
     const link = document.createElement('link')
     link.rel = 'stylesheet'
     link.href = '/forgehaven.css'
-    link.id = 'forgehaven-css-404'
+    link.id = 'forgehaven-css'
+    link.onload = () => {
+      setCssReady(true)
+      setTimeout(() => document.body.classList.remove('is-preload'), 100)
+    }
     document.head.appendChild(link)
-
-    document.body.classList.add('fh-page', 'is-preload')
-    link.onload = () => setTimeout(() => document.body.classList.remove('is-preload'), 100)
 
     return () => {
       document.body.classList.remove('fh-page', 'is-preload', 'is-article-visible')
-      document.getElementById('forgehaven-css-404')?.remove()
+      document.getElementById('forgehaven-css')?.remove()
     }
   }, [])
+
+  if (!cssReady) return null
 
   return (
     <>
