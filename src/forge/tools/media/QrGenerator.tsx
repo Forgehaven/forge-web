@@ -1,4 +1,4 @@
-﻿import { useState, useRef, useEffect } from 'react'
+﻿import { useState, useRef, useEffect, useCallback } from 'react'
 import QRCode from 'qrcode'
 import { Select } from '../../../components/Select'
 import type { SelectOption } from '../../../components/Select'
@@ -15,8 +15,10 @@ export function QrGenerator() {
   const [bg, setBg] = useState('#ffffff')
   const [size, setSize] = useState(256)
   const [error, setError] = useState('')
+  const [copied, setCopied] = useState(false)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const copyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current)
@@ -52,6 +54,21 @@ export function QrGenerator() {
     a.download = 'qr-code.png'
     a.click()
   }
+
+  const copyImage = useCallback(() => {
+    const canvas = canvasRef.current
+    if (!canvas || !text.trim()) return
+    canvas.toBlob(blob => {
+      if (!blob) return
+      navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
+        .then(() => {
+          setCopied(true)
+          if (copyTimerRef.current) clearTimeout(copyTimerRef.current)
+          copyTimerRef.current = setTimeout(() => setCopied(false), 1500)
+        })
+        .catch(() => {})
+    }, 'image/png')
+  }, [text])
 
   const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full"
   const btnClass = "px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
@@ -108,6 +125,9 @@ export function QrGenerator() {
             <canvas ref={canvasRef} className="rounded border border-[#2a2d3a]" />
             <button onClick={download} className={btnClass}>
               Download PNG
+            </button>
+            <button onClick={copyImage} className={btnClass}>
+              {copied ? 'Copied!' : 'Copy to Clipboard'}
             </button>
           </div>
         )}
