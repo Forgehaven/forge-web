@@ -48,7 +48,7 @@ Defined in `src/index.css` via `@theme`. **Prefer these over raw hex values:**
 
 ## Adding a new tool
 1. Create component in `src/tools/<section>/ToolName.tsx`
-2. Add `<Route path="slug" element={<ToolName />} />` inside the `/tools` route in `App.tsx`
+2. Add `<Route path="slug" element={<ToolName />} />` inside `src/ToolsLayout.tsx` (NOT `App.tsx` — the tools subtree is lazy-loaded from there)
 3. Add `{ path: '/tools/slug', label: 'Tool Name' }` to the correct section in the `sections` array in `src/components/Sidebar.tsx`
 
 ### Sidebar sections (in order)

@@ -2,11 +2,43 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="preload" as="image" href="/images/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="dark light" />
+
+    <!-- Prevent white flash before JS runs -->
+    <style>body{background:#0f1117}</style>
+
+    <!-- Preload landing page font so it's ready before the CSS is injected -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300italic,600italic,300,600&display=swap">
+
     <title>FORGEHAVEN</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Forge Tools" />
+    <link rel="apple-touch-icon" href="/images/logo-192.png" />
+    <link rel="preload" as="image" href="/images/logo.png" />
+
+    <!-- Primary -->
+    <meta name="description" content="Software design, engineering, and fabrication." />
+    <meta name="theme-color" content="#0f1117" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://forgehaven.io" />
+    <meta property="og:site_name" content="FORGEHAVEN" />
+    <meta property="og:title" content="FORGEHAVEN" />
+    <meta property="og:description" content="Software design, engineering, and fabrication." />
+    <meta property="og:image" content="https://forgehaven.io/images/logo.png" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="FORGEHAVEN" />
+    <meta name="twitter:description" content="Software design, engineering, and fabrication." />
+    <meta name="twitter:image" content="https://forgehaven.io/images/logo.png" />
   </head>
   <body>
     <div id="root"></div>

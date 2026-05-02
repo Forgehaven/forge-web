@@ -8,6 +8,24 @@ function Divider({ className = '' }: { className?: string }) {
   return <span className={`text-[#2a2d3a] select-none ${className}`}>|</span>
 }
 
+function WindIcon() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline-block align-middle">
+      <path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2" />
+      <path d="M9.6 4.6A2 2 0 1 1 11 8H2" />
+      <path d="M12.6 19.4A2 2 0 1 0 14 16H2" />
+    </svg>
+  )
+}
+
+function DropletIcon() {
+  return (
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline-block align-middle">
+      <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z" />
+    </svg>
+  )
+}
+
 export function BottomBar() {
   const dispatch = useAppDispatch()
   const ipStatus = useAppSelector(s => s.ip.status)
@@ -37,7 +55,27 @@ export function BottomBar() {
 
       <Divider />
       <span className={weather ? val : placeholder}>
-        {weatherLoading ? '···' : (weather ?? '—')}
+        {weatherLoading ? '···' : (weather?.summary ?? '—')}
+      </span>
+
+      <Divider className="hidden sm:inline" />
+      <span className={`hidden sm:inline ${weather ? dim : placeholder}`}>
+        {weatherLoading ? '···' : weather ? <><WindIcon /> {weather.wind}</> : '—'}
+      </span>
+
+      <Divider className="hidden md:inline" />
+      <span className={`hidden md:inline ${weather ? dim : placeholder}`}>
+        {weatherLoading ? '···' : weather ? <><DropletIcon /> {weather.humidity}</> : '—'}
+      </span>
+
+      <Divider className="hidden lg:inline" />
+      <span className={`hidden lg:inline ${dim}`}>
+        {weatherLoading ? '···' : weather ? `UV ${weather.uv}` : '—'}
+      </span>
+
+      <Divider className="hidden lg:inline" />
+      <span className={`hidden lg:inline ${dim}`}>
+        {weatherLoading ? '···' : weather ? `☁ ${weather.cloud}` : '—'}
       </span>
 
       <div className="ml-auto flex items-center gap-3">

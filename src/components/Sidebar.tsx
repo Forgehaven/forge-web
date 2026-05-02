@@ -139,7 +139,7 @@ function ToolRow({
         className={`absolute right-2 top-1/2 -translate-y-1/2 text-xs cursor-pointer transition-opacity ${
           isFav
             ? 'opacity-100 text-[#c4af64]'
-            : 'opacity-0 group-hover:opacity-100 text-[#3a3d4a] hover:text-[#6b7280]'
+            : 'opacity-40 text-[#c4af64] md:opacity-0 md:text-[#3a3d4a] md:group-hover:opacity-100 md:hover:text-[#6b7280]'
         }`}
         aria-label={isFav ? 'Remove from favourites' : 'Add to favourites'}
       >
