@@ -1,7 +1,7 @@
 ﻿import { useState, useEffect } from 'react'
 import { useCityFavourites } from '../../../hooks/useCityFavourites'
 import { weatherIcon, windDir, WMO, fetchCurrentWeather, type CurrentWeather } from '../../../lib/weather'
-import { flag, type GeoResult } from '../../../lib/geo'
+import { flagUrl, type GeoResult } from '../../../lib/geo'
 import { useTempUnit, formatTemp, formatWind, formatPressure, formatPrecip } from '../../../hooks/useTempUnit'
 
 function StatBox({ label, value }: { label: string; value: string }) {
@@ -99,7 +99,7 @@ export function WeatherLookup() {
                 className="py-3 flex items-center gap-3 cursor-pointer hover:bg-[#0f1117] -mx-6 px-6 transition-colors"
                 onClick={() => selectCity(r)}
               >
-                <span className="text-2xl leading-none shrink-0">{flag(r.country_code)}</span>
+                <img src={flagUrl(r.country_code)} alt={r.country_code} className="w-5 shrink-0 mt-0.5" />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-[#e2e4ed]">
                     {r.name}
@@ -129,10 +129,10 @@ export function WeatherLookup() {
                   onClick={() => { setSelected(null); setWeather(null) }}
                   className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer"
                 >
-                  â† Back
+                  ← Back
                 </button>
                 <div>
-                  <span className="text-sm font-medium text-[#e2e4ed]">{flag(selected.country_code)} {selected.name}</span>
+                  <span className="text-sm font-medium text-[#e2e4ed]"><img src={flagUrl(selected.country_code)} alt={selected.country_code} className="w-4 inline-block mr-1 align-middle" />{selected.name}</span>
                   <span className="text-xs text-[#6b7280] ml-1.5">
                     {[selected.admin1, selected.country].filter(Boolean).join(', ')}
                   </span>

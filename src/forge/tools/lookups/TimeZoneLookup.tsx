@@ -1,7 +1,7 @@
 ﻿import { useState, useEffect } from 'react'
 import { useCityFavourites } from '../../../hooks/useCityFavourites'
 import { useNow } from '../../../hooks/useNow'
-import { flag, type GeoResult } from '../../../lib/geo'
+import { flagUrl, type GeoResult } from '../../../lib/geo'
 
 function getOffset(tz: string, date: Date): string {
   return (
@@ -100,7 +100,7 @@ export function TimeZoneLookup() {
               const isFav = isFavourite(r.id)
               return (
                 <div key={r.id} className="py-3 flex items-start gap-3">
-                  <span className="text-2xl leading-none mt-0.5 shrink-0">{flag(r.country_code)}</span>
+                  <img src={flagUrl(r.country_code)} alt={r.country_code} className="w-5 shrink-0 mt-1" />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-[#e2e4ed]">
                       {r.name}
@@ -110,7 +110,7 @@ export function TimeZoneLookup() {
                     </p>
                     <p className="font-mono text-xs text-[#c4af64] mt-0.5">{r.timezone}</p>
                     <p className="text-xs text-[#6b7280] mt-0.5">
-                      {getOffset(r.timezone, now)} Â· {formatDate(r.timezone, now)}
+                      {getOffset(r.timezone, now)} · {formatDate(r.timezone, now)}
                     </p>
                   </div>
                   <div className="flex items-center gap-3 shrink-0">

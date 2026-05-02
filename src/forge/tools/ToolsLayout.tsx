@@ -3,6 +3,7 @@ import { Routes, Route, Link, Outlet } from 'react-router-dom'
 import { Settings } from './Settings'
 import { Sidebar } from '../../components/Sidebar'
 import { BottomBar } from '../../components/BottomBar'
+import { Modal } from '../../components/Modal'
 import { Home } from './Home'
 import { NotFound } from './NotFound'
 
@@ -79,6 +80,7 @@ function HamburgerIcon() {
 
 function ForgeLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
   const touchStartX = useRef<number | null>(null)
   const touchStartY = useRef<number | null>(null)
   const sidebarOpenRef = useRef(sidebarOpen)
@@ -89,6 +91,7 @@ function ForgeLayout() {
     document.title = 'Forge Tools'
     return () => { document.title = 'FORGEHAVEN' }
   }, [])
+
 
   useEffect(() => {
     function onTouchStart(e: TouchEvent) {
@@ -134,7 +137,7 @@ function ForgeLayout() {
         />
       )}
 
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onOpenSettings={() => { setSettingsOpen(true); setSidebarOpen(false) }} />
 
       <div className="relative flex flex-col flex-1 overflow-hidden min-w-0">
         <header className="flex md:hidden items-center px-4 h-12 bg-[#1a1d27] border-b border-[#2a2d3a] shrink-0">
@@ -165,6 +168,10 @@ function ForgeLayout() {
         </main>
         <BottomBar />
       </div>
+
+      <Modal open={settingsOpen} onClose={() => setSettingsOpen(false)} title="Settings">
+        <Settings />
+      </Modal>
     </div>
   )
 }
@@ -236,7 +243,6 @@ export default function ToolsLayout() {
         <Route path="image-converter" element={<ImageConverter />} />
         <Route path="media-compressor" element={<MediaCompressor />} />
 
-        <Route path="settings" element={<Settings />} />
         <Route path="*" element={<NotFound inTools />} />
       </Route>
     </Routes>

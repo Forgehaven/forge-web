@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { Logo } from './Logo'
 import { useFavourites } from '../hooks/useFavourites'
 
@@ -161,9 +161,10 @@ function ToolRow({
 interface SidebarProps {
   isOpen: boolean
   onClose: () => void
+  onOpenSettings: () => void
 }
 
-export function Sidebar({ isOpen, onClose }: SidebarProps) {
+export function Sidebar({ isOpen, onClose, onOpenSettings }: SidebarProps) {
   const [query, setQuery] = useState('')
   const [mounted] = useState(true)
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>(loadCollapsed)
@@ -281,13 +282,13 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       </nav>
 
       <div className="flex border-t border-[#2a2d3a] h-10 items-center px-4">
-        <Link
-          to="/tools/settings"
-          className="flex items-center gap-1.5 text-[#3a3d4a] hover:text-[#6b7280] transition-colors"
+        <button
+          onClick={onOpenSettings}
+          className="flex items-center gap-1.5 text-[#3a3d4a] hover:text-[#6b7280] transition-colors cursor-pointer"
         >
           <CogIcon />
           <span className="text-xs tracking-widest uppercase">Settings</span>
-        </Link>
+        </button>
       </div>
     </>
   )

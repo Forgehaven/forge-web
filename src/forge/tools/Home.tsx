@@ -5,7 +5,7 @@ import { useIPInfo } from '../../hooks/useIPInfo'
 import { useNow } from '../../hooks/useNow'
 import { weatherIcon, windDir, WMO, fetchCurrentWeather, type CurrentWeather } from '../../lib/weather'
 import { useTempUnit, formatTemp, formatWind, formatPressure, formatPrecip, formatDist } from '../../hooks/useTempUnit'
-import { flag, haversineKm, bearingDeg } from '../../lib/geo'
+import { flagUrl, haversineKm, bearingDeg } from '../../lib/geo'
 
 function formatTime(tz: string, date: Date): string {
   return date.toLocaleTimeString('en-US', {
@@ -147,7 +147,7 @@ export function Home() {
                     {rearranging ? (
                       <span className="shrink-0 cursor-grab active:cursor-grabbing"><GripIcon /></span>
                     ) : (
-                      <span className="text-lg leading-none shrink-0">{flag(c.country_code)}</span>
+                      <img src={flagUrl(c.country_code)} alt={c.country_code} className="w-5 shrink-0" />
                     )}
 
                     <div className="flex-1 min-w-0 text-left">

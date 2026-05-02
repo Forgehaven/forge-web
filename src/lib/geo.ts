@@ -9,8 +9,8 @@ export interface GeoResult {
   longitude: number
 }
 
-export function flag(cc: string): string {
-  return [...cc.toUpperCase()].map(c => String.fromCodePoint(0x1F1E6 + c.charCodeAt(0) - 65)).join('')
+export function flagUrl(cc: string): string {
+  return `https://flagcdn.com/w20/${cc.toLowerCase()}.png`
 }
 
 export function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
