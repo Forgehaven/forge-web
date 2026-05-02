@@ -81,7 +81,7 @@ export function WeatherLookup() {
         {!query && !selected && (
           <p className="text-xs text-[#6b7280]">
             Search for a city to see current weather conditions.{' '}
-            <span className="text-[#c4af64]">★</span> Star a result to pin it to your home page.
+            <span className="text-[#c4af64]">★</span> Star a result to pin it to the home page.
           </p>
         )}
 

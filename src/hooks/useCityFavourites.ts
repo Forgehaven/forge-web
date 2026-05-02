@@ -38,5 +38,15 @@ export function useCityFavourites() {
     return cities.some(c => c.id === id)
   }
 
-  return { cities, toggle, isFavourite }
+  function move(from: number, to: number) {
+    setCities(prev => {
+      const next = [...prev]
+      const [item] = next.splice(from, 1)
+      next.splice(to, 0, item)
+      localStorage.setItem(KEY, JSON.stringify(next))
+      return next
+    })
+  }
+
+  return { cities, toggle, isFavourite, move }
 }

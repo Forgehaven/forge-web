@@ -4,8 +4,8 @@ import { useCityFavourites } from '../../hooks/useCityFavourites'
 import { useIPInfo } from '../../hooks/useIPInfo'
 import { useNow } from '../../hooks/useNow'
 import { weatherIcon, windDir, WMO, fetchCurrentWeather, type CurrentWeather } from '../../lib/weather'
-import { useTempUnit, formatTemp, formatWind, formatPressure, formatPrecip } from '../../hooks/useTempUnit'
-import { flag, haversineKm, bearingDeg, formatDist } from '../../lib/geo'
+import { useTempUnit, formatTemp, formatWind, formatPressure, formatPrecip, formatDist } from '../../hooks/useTempUnit'
+import { flag, haversineKm, bearingDeg } from '../../lib/geo'
 
 function formatTime(tz: string, date: Date): string {
   return date.toLocaleTimeString('en-US', {
@@ -33,15 +33,41 @@ function StatPill({ label, value }: { label: string; value: string }) {
   )
 }
 
+function GripIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" className="text-[#3a3d4a]">
+      <circle cx="4" cy="3" r="1.2" />
+      <circle cx="10" cy="3" r="1.2" />
+      <circle cx="4" cy="7" r="1.2" />
+      <circle cx="10" cy="7" r="1.2" />
+      <circle cx="4" cy="11" r="1.2" />
+      <circle cx="10" cy="11" r="1.2" />
+    </svg>
+  )
+}
+
+function SortIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline-block align-middle">
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="3" y1="18" x2="21" y2="18" />
+    </svg>
+  )
+}
+
 export function Home() {
   const now = useNow()
   const [unit] = useTempUnit()
-  const { cities, toggle } = useCityFavourites()
+  const { cities, toggle, move } = useCityFavourites()
   const [pendingRemove, setPendingRemove] = useState<number | null>(null)
   const [expandedId, setExpandedId] = useState<number | null>(null)
   const [weather, setWeather] = useState<Record<number, CurrentWeather>>({})
   const fetchedIds = useRef<string>('')
   const { data: ipData } = useIPInfo()
+  const [rearranging, setRearranging] = useState(false)
+  const [dragIndex, setDragIndex] = useState<number | null>(null)
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
 
   useEffect(() => {
     const eligible = cities.filter(c => c.latitude != null && c.longitude != null)
@@ -67,90 +93,166 @@ export function Home() {
     })
   }, [cities])
 
+  function enterRearrange() {
+    setExpandedId(null)
+    setPendingRemove(null)
+    setRearranging(true)
+  }
+
+  function handleDragStart(index: number) {
+    setDragIndex(index)
+  }
+
+  function handleDragOver(e: React.DragEvent, index: number) {
+    e.preventDefault()
+    setDragOverIndex(index)
+  }
+
+  function handleDrop(index: number) {
+    if (dragIndex !== null && dragIndex !== index) {
+      move(dragIndex, index)
+    }
+    setDragIndex(null)
+    setDragOverIndex(null)
+  }
+
+  function handleDragEnd() {
+    setDragIndex(null)
+    setDragOverIndex(null)
+  }
+
   return (
-    <div className="flex flex-col items-center justify-center h-full min-h-[60vh] text-center select-none">
+    <div className="relative flex flex-col items-center justify-center h-full min-h-[60vh] text-center select-none">
 
       {cities.length > 0 && (
         <div className="w-full max-w-md mb-10">
           <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg divide-y divide-[#2a2d3a]">
-            {cities.map(c => {
+            {cities.map((c, index) => {
               const w = weather[c.id]
               const isExpanded = expandedId === c.id
+              const isDragging = dragIndex === index
+              const isDragOver = dragOverIndex === index && dragIndex !== index
 
               return (
-                <div key={c.id}>
+                <div
+                  key={c.id}
+                  draggable={rearranging}
+                  onDragStart={rearranging ? () => handleDragStart(index) : undefined}
+                  onDragOver={rearranging ? e => handleDragOver(e, index) : undefined}
+                  onDrop={rearranging ? () => handleDrop(index) : undefined}
+                  onDragEnd={rearranging ? handleDragEnd : undefined}
+                  className={`transition-opacity ${isDragging ? 'opacity-30' : 'opacity-100'} ${isDragOver ? 'border-t-2 border-t-[#c4af64]/50' : ''}`}
+                >
                   <div className="flex items-center gap-3 px-4 py-2.5">
-                    <span className="text-lg leading-none shrink-0">{flag(c.country_code)}</span>
-                    <div className="flex-1 min-w-0 text-left">
-                      <p className="text-sm text-[#e2e4ed]">{c.name}</p>
-                      <p className="text-xs text-[#6b7280]">
-                        {[c.admin1, c.country].filter(Boolean).join(', ')} · {getOffset(c.timezone, now)}
-                      </p>
-                    </div>
-
-                    {(w != null || (ipData && c.latitude != null)) && (
-                      <button
-                        onClick={() => setExpandedId(isExpanded ? null : c.id)}
-                        className="flex flex-col items-end shrink-0 gap-0.5 cursor-pointer group"
-                        aria-label={isExpanded ? 'Collapse weather' : 'Expand weather'}
-                      >
-                        {w != null && (
-                          <span className="text-xs text-[#6b7280] tabular-nums group-hover:text-[#9ca3af] transition-colors">
-                            {weatherIcon(w.weather_code)} {formatTemp(w.temperature_2m, unit)}
-                            <span
-                              className="ml-1 inline-block transition-transform duration-200 text-[#3a3d4a]"
-                              style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
-                            >
-                              ▾
-                            </span>
-                          </span>
-                        )}
-                        {ipData && c.latitude != null && c.longitude != null && (() => {
-                          const deg = bearingDeg(ipData.latitude, ipData.longitude, c.latitude!, c.longitude!)
-                          const dist = haversineKm(ipData.latitude, ipData.longitude, c.latitude!, c.longitude!)
-                          return (
-                            <span className="text-xs text-[#3a3d4a] tabular-nums group-hover:text-[#6b7280] transition-colors">
-                              <span className="inline-block" style={{ transform: `rotate(${deg}deg)` }}>↑</span>
-                              {' '}{formatDist(dist)}
-                            </span>
-                          )
-                        })()}
-                      </button>
+                    {rearranging ? (
+                      <span className="shrink-0 cursor-grab active:cursor-grabbing"><GripIcon /></span>
+                    ) : (
+                      <span className="text-lg leading-none shrink-0">{flag(c.country_code)}</span>
                     )}
 
-                    <p className="font-mono text-sm text-[#c4af64] tabular-nums shrink-0">
-                      {formatTime(c.timezone, now)}
-                    </p>
-                    {pendingRemove === c.id ? (
-                      <div className="flex items-center gap-1.5 shrink-0">
-                        <span className="text-xs text-[#6b7280]">Remove?</span>
+                    <div className="flex-1 min-w-0 text-left">
+                      <p className="text-sm text-[#e2e4ed]">{c.name}</p>
+                      {!rearranging && (
+                        <p className="text-xs text-[#6b7280]">
+                          {[c.admin1, c.country].filter(Boolean).join(', ')} · {getOffset(c.timezone, now)}
+                        </p>
+                      )}
+                      {rearranging && (
+                        <p className="text-xs text-[#3a3d4a]">
+                          {[c.admin1, c.country].filter(Boolean).join(', ')}
+                        </p>
+                      )}
+                    </div>
+
+                    {rearranging ? (
+                      <div className="flex items-center gap-1 shrink-0">
                         <button
-                          onClick={() => { toggle(c); setPendingRemove(null) }}
-                          className="text-xs text-red-400 hover:text-red-300 transition-colors cursor-pointer"
-                          aria-label="Confirm remove"
+                          onClick={() => index > 0 && move(index, index - 1)}
+                          disabled={index === 0}
+                          className="text-[#3a3d4a] hover:text-[#c4af64] disabled:opacity-20 disabled:cursor-not-allowed transition-colors cursor-pointer text-base leading-none px-1"
+                          aria-label="Move up"
                         >
-                          ✓
+                          ↑
                         </button>
                         <button
-                          onClick={() => setPendingRemove(null)}
-                          className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer"
-                          aria-label="Cancel"
+                          onClick={() => index < cities.length - 1 && move(index, index + 1)}
+                          disabled={index === cities.length - 1}
+                          className="text-[#3a3d4a] hover:text-[#c4af64] disabled:opacity-20 disabled:cursor-not-allowed transition-colors cursor-pointer text-base leading-none px-1"
+                          aria-label="Move down"
                         >
-                          ✗
+                          ↓
                         </button>
                       </div>
                     ) : (
-                      <button
-                        onClick={() => setPendingRemove(c.id)}
-                        className="text-[#3a3d4a] hover:text-[#6b7280] transition-colors cursor-pointer text-sm shrink-0"
-                        aria-label="Remove"
-                      >
-                        ×
-                      </button>
+                      <>
+                        {(w != null || (ipData && c.latitude != null)) && (
+                          <button
+                            onClick={() => setExpandedId(isExpanded ? null : c.id)}
+                            className="flex flex-col items-end shrink-0 gap-0.5 cursor-pointer group"
+                            aria-label={isExpanded ? 'Collapse weather' : 'Expand weather'}
+                          >
+                            {w != null && (
+                              <span className="text-xs text-[#6b7280] tabular-nums group-hover:text-[#9ca3af] transition-colors">
+                                {weatherIcon(w.weather_code)} {formatTemp(w.temperature_2m, unit)}
+                                <span
+                                  className="ml-1 inline-block transition-transform duration-200 text-[#3a3d4a]"
+                                  style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                                >
+                                  ▾
+                                </span>
+                              </span>
+                            )}
+                            {ipData && c.latitude != null && c.longitude != null && (() => {
+                              const dist = haversineKm(ipData.latitude, ipData.longitude, c.latitude!, c.longitude!)
+                              if (dist < 50) return (
+                                <span className="text-xs text-[#c4af64]/50 italic">you're here</span>
+                              )
+                              const deg = bearingDeg(ipData.latitude, ipData.longitude, c.latitude!, c.longitude!)
+                              return (
+                                <span className="text-xs text-[#3a3d4a] tabular-nums group-hover:text-[#6b7280] transition-colors">
+                                  <span className="inline-block" style={{ transform: `rotate(${deg}deg)` }}>↑</span>
+                                  {' '}{formatDist(dist, unit)}
+                                </span>
+                              )
+                            })()}
+                          </button>
+                        )}
+
+                        <p className="font-mono text-sm text-[#c4af64] tabular-nums shrink-0">
+                          {formatTime(c.timezone, now)}
+                        </p>
+                        {pendingRemove === c.id ? (
+                          <div className="flex items-center gap-1.5 shrink-0">
+                            <span className="text-xs text-[#6b7280]">Remove?</span>
+                            <button
+                              onClick={() => { toggle(c); setPendingRemove(null) }}
+                              className="text-xs text-red-400 hover:text-red-300 transition-colors cursor-pointer"
+                              aria-label="Confirm remove"
+                            >
+                              ✓
+                            </button>
+                            <button
+                              onClick={() => setPendingRemove(null)}
+                              className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer"
+                              aria-label="Cancel"
+                            >
+                              ✗
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => setPendingRemove(c.id)}
+                            className="text-[#3a3d4a] hover:text-[#6b7280] transition-colors cursor-pointer text-sm shrink-0"
+                            aria-label="Remove"
+                          >
+                            ×
+                          </button>
+                        )}
+                      </>
                     )}
                   </div>
 
-                  {isExpanded && w != null && (
+                  {isExpanded && w != null && !rearranging && (
                     <div className="px-4 pb-3 pt-1 border-t border-[#2a2d3a] bg-[#0f1117] text-left">
                       <p className="text-xs text-[#9ca3af] mb-2">
                         {weatherIcon(w.weather_code)} {WMO[w.weather_code] ?? 'Unknown'} · feels like {formatTemp(w.apparent_temperature, unit)}
@@ -169,6 +271,25 @@ export function Home() {
               )
             })}
           </div>
+
+          {cities.length > 1 && (
+            <div className="flex justify-end mt-2">
+              <button
+                onClick={() => rearranging ? setRearranging(false) : enterRearrange()}
+                className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded transition-colors cursor-pointer ${
+                  rearranging
+                    ? 'text-[#c4af64] hover:text-[#c4af64]/80'
+                    : 'text-[#3a3d4a] hover:text-[#6b7280]'
+                }`}
+              >
+                {rearranging ? (
+                  <>✓ done</>
+                ) : (
+                  <><SortIcon /> reorder</>
+                )}
+              </button>
+            </div>
+          )}
         </div>
       )}
 
@@ -194,7 +315,7 @@ export function Home() {
           <Link to="/tools/weather" className="hover:text-[#6b7280] transition-colors underline underline-offset-2">
             Weather Lookup
           </Link>
-          {' '}to show a world clock here.
+          {' '}to show a clock and weather here.
         </p>
       )}
     </div>

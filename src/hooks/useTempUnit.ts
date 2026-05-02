@@ -25,6 +25,14 @@ export function formatPrecip(mm: number, unit: TempUnit): string {
   return `${mm} mm/h`
 }
 
+export function formatDist(km: number, unit: TempUnit): string {
+  if (unit === 'F') {
+    const mi = km * 0.621371
+    return mi < 1 ? '< 1 mi' : `${Math.round(mi).toLocaleString()} mi`
+  }
+  return km < 1 ? '< 1 km' : `${Math.round(km).toLocaleString()} km`
+}
+
 export function useTempUnit(): [TempUnit, (u: TempUnit) => void] {
   const [unit, setUnitState] = useState<TempUnit>(
     () => (localStorage.getItem(KEY) as TempUnit) ?? 'C'

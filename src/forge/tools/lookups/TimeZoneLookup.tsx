@@ -81,7 +81,7 @@ export function TimeZoneLookup() {
           <div className="flex flex-col gap-1">
             <p className="text-xs text-[#6b7280]">Start typing to look up any city's time zone.</p>
             <p className="text-xs text-[#6b7280]">
-              <span className="text-[#c4af64]">★</span> Star a result to pin it to the World Clock on your home page.
+              <span className="text-[#c4af64]">★</span> Star a result to pin it to the home page.
             </p>
           </div>
         )}
