@@ -9,6 +9,7 @@ import { NotFound } from './NotFound'
 
 // Converters
 import { UnitConverter } from './converters/UnitConverter'
+import { XmlJsonConverter } from './converters/XmlJsonConverter'
 import { DiscordTimestamp } from './converters/DiscordTimestamp'
 import { BaseConverter } from './converters/BaseConverter'
 import { ColorConverter } from './converters/ColorConverter'
@@ -183,6 +184,7 @@ export default function ToolsLayout() {
         <Route index element={<Home />} />
 
         {/* Converters */}
+        <Route path="xml-json" element={<XmlJsonConverter />} />
         <Route path="unit-converter" element={<UnitConverter />} />
         <Route path="timestamp-converter" element={<DiscordTimestamp />} />
         <Route path="base-converter" element={<BaseConverter />} />

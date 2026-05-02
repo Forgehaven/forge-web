@@ -31,6 +31,7 @@ const sections: Section[] = [
   {
     section: 'Text',
     tools: [
+      { path: `${T}/xml-json`, label: 'XML ↔ JSON' },
       { path: `${T}/text-formatter`, label: 'Text Formatter' },
       { path: `${T}/text-diff`, label: 'Text Diff' },
       { path: `${T}/text-translate`, label: 'Text Translate' },
