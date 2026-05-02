@@ -1,0 +1,610 @@
+
+> forge-tools@0.0.0 lint
+> eslint .
+
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\components\Sidebar.tsx
+  162:21  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\components\Sidebar.tsx:162:21
+  160 |   const [collapsed, setCollapsed] = useState<Record<string, boolean>>(loadCollapsed)
+  161 |   const { toggle, isFavourite } = useFavourites()
+> 162 |   useEffect(() => { setMounted(true) }, [])
+      |                     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  163 |
+  164 |   function toggleSection(section: string) {
+  165 |     setCollapsed(prev => {  react-hooks/set-state-in-effect
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\LandingPage.tsx
+  125:6  warning  React Hook useEffect has a missing dependency: 'hideArticle'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\converters\ColorConverter.tsx
+  135:21  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\converters\ColorConverter.tsx:135:21
+  133 |
+  134 |   // Init from default HSV
+> 135 |   useEffect(() => { updateFromHsv(47, 0.7, 0.75) }, []) // eslint-disable-line react-hooks/exhaustive-deps
+      |                     ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  136 |
+  137 |   // ── gradient picker drag ──────────────────────────────────────────────────
+  138 |                                                                                                                                                                                                                        react-hooks/set-state-in-effect
+  383:10  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\converters\ColorConverter.tsx:383:10
+  381 |
+  382 |         {/* text inputs */}
+> 383 |         {[
+      |          ^
+> 384 |           { label: 'HEX', value: hex, onChange: fromHex, display: hex },
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 385 |           { label: 'RGB', value: rgbStr, onChange: fromRgb, display: `rgb(${rgbStr})` },
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 386 |           { label: 'HSL', value: hslStr, onChange: fromHsl, display: `hsl(${hslStr})` },
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 387 |         ].map(({ label, value, onChange, display }) => (
+      | ^^^^^^^^^^ Cannot access ref value during render
+  388 |           <div key={label}>
+  389 |             <div className="flex items-center justify-between mb-1">
+  390 |               <label className="text-xs text-[#6b7280]">{label}</label>      react-hooks/refs
+  383:10  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\converters\ColorConverter.tsx:383:10
+  381 |
+  382 |         {/* text inputs */}
+> 383 |         {[
+      |          ^
+> 384 |           { label: 'HEX', value: hex, onChange: fromHex, display: hex },
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 385 |           { label: 'RGB', value: rgbStr, onChange: fromRgb, display: `rgb(${rgbStr})` },
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 386 |           { label: 'HSL', value: hslStr, onChange: fromHsl, display: `hsl(${hslStr})` },
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 387 |         ].map(({ label, value, onChange, display }) => (
+      | ^^^^^^^^^^^^^^ Cannot access ref value during render
+  388 |           <div key={label}>
+  389 |             <div className="flex items-center justify-between mb-1">
+  390 |               <label className="text-xs text-[#6b7280]">{label}</label>  react-hooks/refs
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\converters\CurrencyConverter.tsx
+  42:7  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\converters\CurrencyConverter.tsx:42:7
+  40 |     const code = (geoData.currency as string).toUpperCase()
+  41 |     if (code !== 'CAD' && currencyList.some(([c]) => c === code)) {
+> 42 |       setFrom(code)
+     |       ^^^^^^^ Avoid calling setState() directly within an effect
+  43 |     }
+  44 |   }, [geoData, currencyList.length])
+  45 |  react-hooks/set-state-in-effect
+  44:6  warning  React Hook useEffect has a missing dependency: 'currencyList'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            react-hooks/exhaustive-deps
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\lookups\TimeZoneLookup.tsx
+  43:21  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\lookups\TimeZoneLookup.tsx:43:21
+  41 |   useEffect(() => {
+  42 |     const trimmed = query.trim()
+> 43 |     if (!trimmed) { setResults([]); return }
+     |                     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  44 |
+  45 |     setLoading(true)
+  46 |     const id = setTimeout(async () => {  react-hooks/set-state-in-effect
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\lookups\WeatherLookup.tsx
+  26:21  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\lookups\WeatherLookup.tsx:26:21
+  24 |   useEffect(() => {
+  25 |     const trimmed = query.trim()
+> 26 |     if (!trimmed) { setResults([]); return }
+     |                     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  27 |
+  28 |     setSearchLoading(true)
+  29 |     const id = setTimeout(async () => {  react-hooks/set-state-in-effect
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\media\ImgEditor.tsx
+  43:5   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\media\ImgEditor.tsx:43:5
+  41 |     ctx.rotate(rotRad)
+  42 |     ctx.drawImage(srcImg, -srcImg.naturalWidth / 2, -srcImg.naturalHeight / 2)
+> 43 |     setWorkingW(w); setWorkingH(h)
+     |     ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  44 |     setCrop(undefined); setCompletedCrop(undefined)
+  45 |     canvas.toBlob(blob => {
+  46 |       if (!blob) return  react-hooks/set-state-in-effect
+  59:18  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\media\ImgEditor.tsx:59:18
+  57 |
+  58 |   // Scale from display pixels → natural pixels
+> 59 |   const scaleX = imgRef.current ? workingW / imgRef.current.width : 1
+     |                  ^^^^^^^^^^^^^^ Cannot access ref value during render
+  60 |   const scaleY = imgRef.current ? workingH / imgRef.current.height : 1
+  61 |   const outputW = completedCrop ? Math.round(completedCrop.width * scaleX) : workingW
+  62 |   const outputH = completedCrop ? Math.round(completedCrop.height * scaleY) : workingH                                                                                                                                                                                                                                   react-hooks/refs
+  59:46  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\media\ImgEditor.tsx:59:46
+  57 |
+  58 |   // Scale from display pixels → natural pixels
+> 59 |   const scaleX = imgRef.current ? workingW / imgRef.current.width : 1
+     |                                              ^^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  60 |   const scaleY = imgRef.current ? workingH / imgRef.current.height : 1
+  61 |   const outputW = completedCrop ? Math.round(completedCrop.width * scaleX) : workingW
+  62 |   const outputH = completedCrop ? Math.round(completedCrop.height * scaleY) : workingH                                                                                                                                                                                                 react-hooks/refs
+  60:18  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\media\ImgEditor.tsx:60:18
+  58 |   // Scale from display pixels → natural pixels
+  59 |   const scaleX = imgRef.current ? workingW / imgRef.current.width : 1
+> 60 |   const scaleY = imgRef.current ? workingH / imgRef.current.height : 1
+     |                  ^^^^^^^^^^^^^^ Cannot access ref value during render
+  61 |   const outputW = completedCrop ? Math.round(completedCrop.width * scaleX) : workingW
+  62 |   const outputH = completedCrop ? Math.round(completedCrop.height * scaleY) : workingH
+  63 |                                                                                                                                                                                                                                   react-hooks/refs
+  60:46  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\media\ImgEditor.tsx:60:46
+  58 |   // Scale from display pixels → natural pixels
+  59 |   const scaleX = imgRef.current ? workingW / imgRef.current.width : 1
+> 60 |   const scaleY = imgRef.current ? workingH / imgRef.current.height : 1
+     |                                              ^^^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  61 |   const outputW = completedCrop ? Math.round(completedCrop.width * scaleX) : workingW
+  62 |   const outputH = completedCrop ? Math.round(completedCrop.height * scaleY) : workingH
+  63 |                                                                                                                                                                                                react-hooks/refs
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\media\VideoToMp3.tsx
+  137:32  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\media\VideoToMp3.tsx:137:32
+  135 |             </div>
+  136 |
+> 137 |             {ffmpegLoading && <ProgressBar label="Loading FFmpeg (~24 MB, cached after first use)…" pct={ffmpegProgress} />}
+      |                                ^^^^^^^^^^^ This component is created during render
+  138 |             {converting && <ProgressBar label="Extracting audio…" pct={convProgress} />}
+  139 |
+  140 |             {outputUrl && (
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\media\VideoToMp3.tsx:77:3
+  75 |   const isBusy =ffmpegLoading || converting
+  76 |
+> 77 |   function ProgressBar({ label, pct }: { label: string; pct: number }) {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 78 |     return (
+     | ^^^^^^^^^^^^
+> 79 |       <div>
+     …
+     | ^^^^^^^^^^^^
+> 87 |     )
+     | ^^^^^^^^^^^^
+> 88 |   }
+     | ^^^^ The component is created during render here
+  89 |
+  90 |   return (
+  91 |     <div className="pb-6 max-w-2xl">                                                                   react-hooks/static-components
+  138:29  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\media\VideoToMp3.tsx:138:29
+  136 |
+  137 |             {ffmpegLoading && <ProgressBar label="Loading FFmpeg (~24 MB, cached after first use)…" pct={ffmpegProgress} />}
+> 138 |             {converting && <ProgressBar label="Extracting audio…" pct={convProgress} />}
+      |                             ^^^^^^^^^^^ This component is created during render
+  139 |
+  140 |             {outputUrl && (
+  141 |               <div className="flex gap-3 items-center border-t border-[#2a2d3a] pt-4">
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\media\VideoToMp3.tsx:77:3
+  75 |   const isBusy =ffmpegLoading || converting
+  76 |
+> 77 |   function ProgressBar({ label, pct }: { label: string; pct: number }) {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 78 |     return (
+     | ^^^^^^^^^^^^
+> 79 |       <div>
+     …
+     | ^^^^^^^^^^^^
+> 87 |     )
+     | ^^^^^^^^^^^^
+> 88 |   }
+     | ^^^^ The component is created during render here
+  89 |
+  90 |   return (
+  91 |     <div className="pb-6 max-w-2xl">  react-hooks/static-components
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\JsonApiTester.tsx
+   19:97  error  Unnecessary escape character: \-  no-useless-escape
+  105:14  error  'e' is defined but never used     @typescript-eslint/no-unused-vars
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\UnixTimestamp.tsx
+   81:16  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\UnixTimestamp.tsx:81:16
+  79 |           {dateFromTs && (
+  80 |             <div className="bg-[#0f1117] rounded-lg px-4 pt-2 pb-1">
+> 81 |               <Row id="utc"      label="UTC"       value={dateFromTs.toUTCString()} />
+     |                ^^^ This component is created during render
+  82 |               <Row id="local"    label="Local"     value={dateFromTs.toLocaleString()} />
+  83 |               <Row id="iso"      label="ISO 8601"  value={dateFromTs.toISOString()} />
+  84 |               <Row id="relative" label="Relative"  value={relativeTime(dateFromTs)} />
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\UnixTimestamp.tsx:45:3
+  43 |   const btnClass = "px-3 py-1.5 text-xs rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer"
+  44 |
+> 45 |   function Row({ label, value, id }: { label: string; value: string; id: string }) {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 46 |     return (
+     | ^^^^^^^^^^^^
+> 47 |       <div className="flex items-start justify-between gap-4 py-2 border-b border-[#2a2d3a] last:border-0">
+     …
+     | ^^^^^^^^^^^^
+> 54 |     )
+     | ^^^^^^^^^^^^
+> 55 |   }
+     | ^^^^ The component is created during render here
+  56 |
+  57 |   return (
+  58 |     <div className="pb-6 max-w-2xl">                                                                                                                                                                                                           react-hooks/static-components
+   82:16  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\UnixTimestamp.tsx:82:16
+  80 |             <div className="bg-[#0f1117] rounded-lg px-4 pt-2 pb-1">
+  81 |               <Row id="utc"      label="UTC"       value={dateFromTs.toUTCString()} />
+> 82 |               <Row id="local"    label="Local"     value={dateFromTs.toLocaleString()} />
+     |                ^^^ This component is created during render
+  83 |               <Row id="iso"      label="ISO 8601"  value={dateFromTs.toISOString()} />
+  84 |               <Row id="relative" label="Relative"  value={relativeTime(dateFromTs)} />
+  85 |               <Row id="weekday"  label="Day"       value={dateFromTs.toLocaleDateString(undefined, { weekday: 'long' })} />
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\UnixTimestamp.tsx:45:3
+  43 |   const btnClass = "px-3 py-1.5 text-xs rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer"
+  44 |
+> 45 |   function Row({ label, value, id }: { label: string; value: string; id: string }) {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 46 |     return (
+     | ^^^^^^^^^^^^
+> 47 |       <div className="flex items-start justify-between gap-4 py-2 border-b border-[#2a2d3a] last:border-0">
+     …
+     | ^^^^^^^^^^^^
+> 54 |     )
+     | ^^^^^^^^^^^^
+> 55 |   }
+     | ^^^^ The component is created during render here
+  56 |
+  57 |   return (
+  58 |     <div className="pb-6 max-w-2xl">                                                                                                          react-hooks/static-components
+   83:16  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\UnixTimestamp.tsx:83:16
+  81 |               <Row id="utc"      label="UTC"       value={dateFromTs.toUTCString()} />
+  82 |               <Row id="local"    label="Local"     value={dateFromTs.toLocaleString()} />
+> 83 |               <Row id="iso"      label="ISO 8601"  value={dateFromTs.toISOString()} />
+     |                ^^^ This component is created during render
+  84 |               <Row id="relative" label="Relative"  value={relativeTime(dateFromTs)} />
+  85 |               <Row id="weekday"  label="Day"       value={dateFromTs.toLocaleDateString(undefined, { weekday: 'long' })} />
+  86 |               <Row id="week"     label="Week"      value={`Week ${weekNumber(dateFromTs)} of ${dateFromTs.getFullYear()}`} />
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\UnixTimestamp.tsx:45:3
+  43 |   const btnClass = "px-3 py-1.5 text-xs rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer"
+  44 |
+> 45 |   function Row({ label, value, id }: { label: string; value: string; id: string }) {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 46 |     return (
+     | ^^^^^^^^^^^^
+> 47 |       <div className="flex items-start justify-between gap-4 py-2 border-b border-[#2a2d3a] last:border-0">
+     …
+     | ^^^^^^^^^^^^
+> 54 |     )
+     | ^^^^^^^^^^^^
+> 55 |   }
+     | ^^^^ The component is created during render here
+  56 |
+  57 |   return (
+  58 |     <div className="pb-6 max-w-2xl">                                                 react-hooks/static-components
+   84:16  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\UnixTimestamp.tsx:84:16
+  82 |               <Row id="local"    label="Local"     value={dateFromTs.toLocaleString()} />
+  83 |               <Row id="iso"      label="ISO 8601"  value={dateFromTs.toISOString()} />
+> 84 |               <Row id="relative" label="Relative"  value={relativeTime(dateFromTs)} />
+     |                ^^^ This component is created during render
+  85 |               <Row id="weekday"  label="Day"       value={dateFromTs.toLocaleDateString(undefined, { weekday: 'long' })} />
+  86 |               <Row id="week"     label="Week"      value={`Week ${weekNumber(dateFromTs)} of ${dateFromTs.getFullYear()}`} />
+  87 |               {isMs && <p className="text-xs text-[#6b7280] pt-2 pb-1">Detected milliseconds — showing as seconds below</p>}
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\UnixTimestamp.tsx:45:3
+  43 |   const btnClass = "px-3 py-1.5 text-xs rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer"
+  44 |
+> 45 |   function Row({ label, value, id }: { label: string; value: string; id: string }) {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 46 |     return (
+     | ^^^^^^^^^^^^
+> 47 |       <div className="flex items-start justify-between gap-4 py-2 border-b border-[#2a2d3a] last:border-0">
+     …
+     | ^^^^^^^^^^^^
+> 54 |     )
+     | ^^^^^^^^^^^^
+> 55 |   }
+     | ^^^^ The component is created during render here
+  56 |
+  57 |   return (
+  58 |     <div className="pb-6 max-w-2xl">           react-hooks/static-components
+   85:16  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\UnixTimestamp.tsx:85:16
+  83 |               <Row id="iso"      label="ISO 8601"  value={dateFromTs.toISOString()} />
+  84 |               <Row id="relative" label="Relative"  value={relativeTime(dateFromTs)} />
+> 85 |               <Row id="weekday"  label="Day"       value={dateFromTs.toLocaleDateString(undefined, { weekday: 'long' })} />
+     |                ^^^ This component is created during render
+  86 |               <Row id="week"     label="Week"      value={`Week ${weekNumber(dateFromTs)} of ${dateFromTs.getFullYear()}`} />
+  87 |               {isMs && <p className="text-xs text-[#6b7280] pt-2 pb-1">Detected milliseconds — showing as seconds below</p>}
+  88 |               <Row id="secs"  label="Seconds"    value={String(Math.floor((tsMs ?? 0) / 1000))} />
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\UnixTimestamp.tsx:45:3
+  43 |   const btnClass = "px-3 py-1.5 text-xs rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer"
+  44 |
+> 45 |   function Row({ label, value, id }: { label: string; value: string; id: string }) {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 46 |     return (
+     | ^^^^^^^^^^^^
+> 47 |       <div className="flex items-start justify-between gap-4 py-2 border-b border-[#2a2d3a] last:border-0">
+     …
+     | ^^^^^^^^^^^^
+> 54 |     )
+     | ^^^^^^^^^^^^
+> 55 |   }
+     | ^^^^ The component is created during render here
+  56 |
+  57 |   return (
+  58 |     <div className="pb-6 max-w-2xl">  react-hooks/static-components
+   86:16  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\UnixTimestamp.tsx:86:16
+  84 |               <Row id="relative" label="Relative"  value={relativeTime(dateFromTs)} />
+  85 |               <Row id="weekday"  label="Day"       value={dateFromTs.toLocaleDateString(undefined, { weekday: 'long' })} />
+> 86 |               <Row id="week"     label="Week"      value={`Week ${weekNumber(dateFromTs)} of ${dateFromTs.getFullYear()}`} />
+     |                ^^^ This component is created during render
+  87 |               {isMs && <p className="text-xs text-[#6b7280] pt-2 pb-1">Detected milliseconds — showing as seconds below</p>}
+  88 |               <Row id="secs"  label="Seconds"    value={String(Math.floor((tsMs ?? 0) / 1000))} />
+  89 |               <Row id="ms"    label="Milliseconds" value={String(tsMs)} />
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\UnixTimestamp.tsx:45:3
+  43 |   const btnClass = "px-3 py-1.5 text-xs rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer"
+  44 |
+> 45 |   function Row({ label, value, id }: { label: string; value: string; id: string }) {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 46 |     return (
+     | ^^^^^^^^^^^^
+> 47 |       <div className="flex items-start justify-between gap-4 py-2 border-b border-[#2a2d3a] last:border-0">
+     …
+     | ^^^^^^^^^^^^
+> 54 |     )
+     | ^^^^^^^^^^^^
+> 55 |   }
+     | ^^^^ The component is created during render here
+  56 |
+  57 |   return (
+  58 |     <div className="pb-6 max-w-2xl">              react-hooks/static-components
+   88:16  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\UnixTimestamp.tsx:88:16
+  86 |               <Row id="week"     label="Week"      value={`Week ${weekNumber(dateFromTs)} of ${dateFromTs.getFullYear()}`} />
+  87 |               {isMs && <p className="text-xs text-[#6b7280] pt-2 pb-1">Detected milliseconds — showing as seconds below</p>}
+> 88 |               <Row id="secs"  label="Seconds"    value={String(Math.floor((tsMs ?? 0) / 1000))} />
+     |                ^^^ This component is created during render
+  89 |               <Row id="ms"    label="Milliseconds" value={String(tsMs)} />
+  90 |             </div>
+  91 |           )}
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\UnixTimestamp.tsx:45:3
+  43 |   const btnClass = "px-3 py-1.5 text-xs rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer"
+  44 |
+> 45 |   function Row({ label, value, id }: { label: string; value: string; id: string }) {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 46 |     return (
+     | ^^^^^^^^^^^^
+> 47 |       <div className="flex items-start justify-between gap-4 py-2 border-b border-[#2a2d3a] last:border-0">
+     …
+     | ^^^^^^^^^^^^
+> 54 |     )
+     | ^^^^^^^^^^^^
+> 55 |   }
+     | ^^^^ The component is created during render here
+  56 |
+  57 |   return (
+  58 |     <div className="pb-6 max-w-2xl">                                                                                                                                                                                                 react-hooks/static-components
+   89:16  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\UnixTimestamp.tsx:89:16
+  87 |               {isMs && <p className="text-xs text-[#6b7280] pt-2 pb-1">Detected milliseconds — showing as seconds below</p>}
+  88 |               <Row id="secs"  label="Seconds"    value={String(Math.floor((tsMs ?? 0) / 1000))} />
+> 89 |               <Row id="ms"    label="Milliseconds" value={String(tsMs)} />
+     |                ^^^ This component is created during render
+  90 |             </div>
+  91 |           )}
+  92 |         </div>
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\UnixTimestamp.tsx:45:3
+  43 |   const btnClass = "px-3 py-1.5 text-xs rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer"
+  44 |
+> 45 |   function Row({ label, value, id }: { label: string; value: string; id: string }) {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 46 |     return (
+     | ^^^^^^^^^^^^
+> 47 |       <div className="flex items-start justify-between gap-4 py-2 border-b border-[#2a2d3a] last:border-0">
+     …
+     | ^^^^^^^^^^^^
+> 54 |     )
+     | ^^^^^^^^^^^^
+> 55 |   }
+     | ^^^^ The component is created during render here
+  56 |
+  57 |   return (
+  58 |     <div className="pb-6 max-w-2xl">                                                                                                                                                                                                                                                                                                                react-hooks/static-components
+  113:16  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\UnixTimestamp.tsx:113:16
+  111 |           {validDate && (
+  112 |             <div className="bg-[#0f1117] rounded-lg px-4 pt-2 pb-1">
+> 113 |               <Row id="ts-s"  label="Seconds"      value={String(Math.floor(dateFromInput!.getTime() / 1000))} />
+      |                ^^^ This component is created during render
+  114 |               <Row id="ts-ms" label="Milliseconds" value={String(dateFromInput!.getTime())} />
+  115 |               <Row id="ts-utc" label="UTC"         value={dateFromInput!.toUTCString()} />
+  116 |             </div>
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\UnixTimestamp.tsx:45:3
+  43 |   const btnClass = "px-3 py-1.5 text-xs rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer"
+  44 |
+> 45 |   function Row({ label, value, id }: { label: string; value: string; id: string }) {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 46 |     return (
+     | ^^^^^^^^^^^^
+> 47 |       <div className="flex items-start justify-between gap-4 py-2 border-b border-[#2a2d3a] last:border-0">
+     …
+     | ^^^^^^^^^^^^
+> 54 |     )
+     | ^^^^^^^^^^^^
+> 55 |   }
+     | ^^^^ The component is created during render here
+  56 |
+  57 |   return (
+  58 |     <div className="pb-6 max-w-2xl">                                                                                                                                                                                                                                    react-hooks/static-components
+  114:16  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\UnixTimestamp.tsx:114:16
+  112 |             <div className="bg-[#0f1117] rounded-lg px-4 pt-2 pb-1">
+  113 |               <Row id="ts-s"  label="Seconds"      value={String(Math.floor(dateFromInput!.getTime() / 1000))} />
+> 114 |               <Row id="ts-ms" label="Milliseconds" value={String(dateFromInput!.getTime())} />
+      |                ^^^ This component is created during render
+  115 |               <Row id="ts-utc" label="UTC"         value={dateFromInput!.toUTCString()} />
+  116 |             </div>
+  117 |           )}
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\UnixTimestamp.tsx:45:3
+  43 |   const btnClass = "px-3 py-1.5 text-xs rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer"
+  44 |
+> 45 |   function Row({ label, value, id }: { label: string; value: string; id: string }) {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 46 |     return (
+     | ^^^^^^^^^^^^
+> 47 |       <div className="flex items-start justify-between gap-4 py-2 border-b border-[#2a2d3a] last:border-0">
+     …
+     | ^^^^^^^^^^^^
+> 54 |     )
+     | ^^^^^^^^^^^^
+> 55 |   }
+     | ^^^^ The component is created during render here
+  56 |
+  57 |   return (
+  58 |     <div className="pb-6 max-w-2xl">                                                                                                                                                                                                                                                 react-hooks/static-components
+  115:16  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\UnixTimestamp.tsx:115:16
+  113 |               <Row id="ts-s"  label="Seconds"      value={String(Math.floor(dateFromInput!.getTime() / 1000))} />
+  114 |               <Row id="ts-ms" label="Milliseconds" value={String(dateFromInput!.getTime())} />
+> 115 |               <Row id="ts-utc" label="UTC"         value={dateFromInput!.toUTCString()} />
+      |                ^^^ This component is created during render
+  116 |             </div>
+  117 |           )}
+  118 |         </div>
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\sysadmin\UnixTimestamp.tsx:45:3
+  43 |   const btnClass = "px-3 py-1.5 text-xs rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer"
+  44 |
+> 45 |   function Row({ label, value, id }: { label: string; value: string; id: string }) {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 46 |     return (
+     | ^^^^^^^^^^^^
+> 47 |       <div className="flex items-start justify-between gap-4 py-2 border-b border-[#2a2d3a] last:border-0">
+     …
+     | ^^^^^^^^^^^^
+> 54 |     )
+     | ^^^^^^^^^^^^
+> 55 |   }
+     | ^^^^ The component is created during render here
+  56 |
+  57 |   return (
+  58 |     <div className="pb-6 max-w-2xl">                                                                                                                                                                                                                                                                                                       react-hooks/static-components
+
+C:\Users\jakobmroberts\Github\react-learn\forge-tools\src\tools\text\MarkdownPreview.tsx
+  19:7   error  's' is never reassigned. Use 'const' instead                       prefer-const
+  39:35  error  Unexpected control character(s) in regular expression: \x00, \x00  no-control-regex
+
+✖ 31 problems (29 errors, 2 warnings)
+  1 error and 0 warnings potentially fixable with the `--fix` option.
+
