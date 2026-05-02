@@ -265,11 +265,11 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                     ▾
                   </span>
                 </button>
-                {!collapsed[section] && tools.map(tool => (
+                {!collapsed[section] && tools.filter(t => !isFavourite(t.path)).map(tool => (
                   <ToolRow
                     key={tool.path}
                     tool={tool}
-                    isFav={isFavourite(tool.path)}
+                    isFav={false}
                     onToggle={() => toggle(tool.path)}
                     onClick={handleSelect}
                   />
