@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { useForgehavenStyles } from '../hooks/useForgehavenStyles'
 
 type ArticleId = 'contact' | null
 
@@ -16,12 +17,10 @@ export function LandingPage() {
   const [articleActive, setArticleActive]   = useState(false)     // article.active
 
   const locked = useRef(false)
-  const [cssReady, setCssReady] = useState(false)
 
-  // Mount: inject forgehaven CSS, manage font-size, add body classes — all removed on unmount
-  useEffect(() => {
-    document.body.classList.add('fh-page', 'is-preload')
+  useForgehavenStyles()
 
+  useLayoutEffect(() => {
     const prevFontSize = document.documentElement.style.fontSize
 
     function applyFontSize() {
@@ -35,24 +34,9 @@ export function LandingPage() {
     applyFontSize()
     window.addEventListener('resize', applyFontSize)
 
-    // Inject stylesheet — only render page content once it's loaded so
-    // the is-preload CSS transition fires properly instead of raw HTML flashing
-    const link = document.createElement('link')
-    link.rel = 'stylesheet'
-    link.href = '/forgehaven.css'
-    link.id = 'forgehaven-css'
-    link.onload = () => {
-      setCssReady(true)
-      setTimeout(() => document.body.classList.remove('is-preload'), 100)
-    }
-    document.head.appendChild(link)
-
     return () => {
       window.removeEventListener('resize', applyFontSize)
       document.documentElement.style.fontSize = prevFontSize
-      document.body.classList.remove('fh-page', 'is-preload', 'is-article-visible')
-      // Keep the CSS link in the DOM — NotFoundLanding reuses it and the fh-page
-      // class removal above is enough to prevent it affecting the tools section.
     }
   }, [])
 
@@ -124,8 +108,6 @@ export function LandingPage() {
     window.addEventListener('keyup', onKey)
     return () => window.removeEventListener('keyup', onKey)
   }, [articleBodyClass]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  if (!cssReady) return null
 
   return (
     <>
