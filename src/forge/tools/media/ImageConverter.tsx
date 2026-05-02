@@ -79,12 +79,12 @@ export function ImageConverter() {
           {file ? (
             <div>
               <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name}</p>
-              <p className="text-xs text-[#6b7280] mt-1">{(file.size / 1024).toFixed(0)} KB Â· {img ? `${img.naturalWidth}Ã—${img.naturalHeight}` : '…'}</p>
+              <p className="text-xs text-[#6b7280] mt-1">{(file.size / 1024).toFixed(0)} KB · {img ? `${img.naturalWidth}×${img.naturalHeight}` : '…'}</p>
             </div>
           ) : (
             <div>
               <p className="text-sm text-[#6b7280]">Drop an image here or click to upload</p>
-              <p className="text-xs text-[#3a3d4a] mt-1">PNG, JPEG, WebP, GIF, AVIF Â· all processing is local</p>
+              <p className="text-xs text-[#3a3d4a] mt-1">PNG, JPEG, WebP, GIF, AVIF · all processing is local</p>
             </div>
           )}
         </div>
@@ -120,7 +120,7 @@ export function ImageConverter() {
           <div className="flex flex-col gap-3 border-t border-[#2a2d3a] pt-4">
             <div className="flex items-center gap-4 text-xs text-[#6b7280]">
               <span>Original: <span className="text-[#e2e4ed]">{(file.size / 1024).toFixed(0)} KB</span></span>
-              <span>â†’</span>
+              <span>→</span>
               <span>Output: <span className="text-[#e2e4ed]">{(outputSize / 1024).toFixed(0)} KB</span></span>
               {savings !== null && (
                 <span className={savings > 0 ? 'text-green-400' : 'text-yellow-400'}>

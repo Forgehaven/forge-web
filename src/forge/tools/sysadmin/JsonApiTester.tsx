@@ -104,7 +104,7 @@ export function JsonApiTester() {
       })
     } catch {
       setError(
-        `Request failed â€” the API likely blocks cross-origin requests (CORS). Try a local dev server or an API that allows browser requests.`
+        `Request failed — the API likely blocks cross-origin requests (CORS). Try a local dev server or an API that allows browser requests.`
       )
     } finally {
       setLoading(false)
@@ -175,7 +175,7 @@ export function JsonApiTester() {
                 <button
                   onClick={() => removeHeader(i)}
                   className="text-[#6b7280] hover:text-[#e2e4ed] transition-colors text-lg leading-none shrink-0 cursor-pointer"
-                >Ã—</button>
+                >×</button>
               </div>
             ))}
             <button onClick={addHeader} className="text-xs text-[#6b7280] hover:text-[#c4af64] transition-colors self-start cursor-pointer">

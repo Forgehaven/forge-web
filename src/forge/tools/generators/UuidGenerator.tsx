@@ -23,7 +23,7 @@ export function UuidGenerator() {
       <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">
         <div className="flex items-end gap-3">
           <div>
-            <label className="block text-xs text-[#6b7280] mb-1">Count (1â€“20)</label>
+            <label className="block text-xs text-[#6b7280] mb-1">Count (1–20)</label>
             <input
               className={inputClass}
               type="number"

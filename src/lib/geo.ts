@@ -10,7 +10,7 @@ export interface GeoResult {
 }
 
 export function flagUrl(cc: string): string {
-  return `https://flagcdn.com/w20/${cc.toLowerCase()}.png`
+  return `https://flagcdn.com/${cc.toLowerCase()}.svg`
 }
 
 export function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): number {

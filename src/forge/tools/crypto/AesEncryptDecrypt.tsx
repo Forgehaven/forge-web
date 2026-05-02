@@ -54,7 +54,7 @@ export function AesEncryptDecrypt() {
         : await aesDecrypt(password, input.trim())
       setOutput(result)
     } catch (e) {
-      setError(mode === 'decrypt' ? 'Decryption failed â€” wrong password or corrupted ciphertext' : (e as Error).message)
+      setError(mode === 'decrypt' ? 'Decryption failed — wrong password or corrupted ciphertext' : (e as Error).message)
     } finally {
       setLoading(false)
     }
@@ -120,7 +120,7 @@ export function AesEncryptDecrypt() {
           </div>
         )}
 
-        <p className="text-xs text-[#3a3d4a]">AES-256-GCM Â· PBKDF2 key derivation (100k iterations) Â· Random salt + IV per encryption</p>
+        <p className="text-xs text-[#3a3d4a]">AES-256-GCM · PBKDF2 key derivation (100k iterations) · Random salt + IV per encryption</p>
       </div>
     </div>
   )

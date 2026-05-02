@@ -80,7 +80,7 @@ export function WebhookTester() {
       const msg = e instanceof Error ? e.message : 'Request failed'
       const isCors = msg.toLowerCase().includes('fetch') || msg.toLowerCase().includes('network')
       setError(isCors
-        ? `Request blocked â€” likely a CORS error. The target server must allow cross-origin requests from the browser. For local dev servers this usually works fine.`
+        ? `Request blocked — likely a CORS error. The target server must allow cross-origin requests from the browser. For local dev servers this usually works fine.`
         : msg
       )
     } finally {
@@ -132,7 +132,7 @@ export function WebhookTester() {
             onClick={() => setShowHeaders(v => !v)}
             className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer"
           >
-            {showHeaders ? 'â–²' : 'â–¶'} Headers
+            {showHeaders ? '▲' : '▶'} Headers
           </button>
           {showHeaders && (
             <textarea

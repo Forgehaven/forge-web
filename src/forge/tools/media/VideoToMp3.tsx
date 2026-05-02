@@ -5,9 +5,9 @@ import { Select } from '../../../components/Select'
 import type { SelectOption } from '../../../components/Select'
 
 const bitrateOptions: SelectOption[] = [
-  { value: '128', label: '128 kbps â€” standard' },
-  { value: '192', label: '192 kbps â€” high quality' },
-  { value: '320', label: '320 kbps â€” maximum' },
+  { value: '128', label: '128 kbps — standard' },
+  { value: '192', label: '192 kbps — high quality' },
+  { value: '320', label: '320 kbps — maximum' },
 ]
 
 let _ffmpeg: FFmpeg | null = null
@@ -109,7 +109,7 @@ export function VideoToMp3() {
           ) : (
             <div>
               <p className="text-sm text-[#6b7280]">Drop a video file here or click to upload</p>
-              <p className="text-xs text-[#3a3d4a] mt-1">MP4, WebM, MOV, MKV Â· audio track extracted as MP3 Â· all processing is local</p>
+              <p className="text-xs text-[#3a3d4a] mt-1">MP4, WebM, MOV, MKV · audio track extracted as MP3 · all processing is local</p>
             </div>
           )}
         </div>
@@ -140,7 +140,7 @@ export function VideoToMp3() {
             {outputUrl && (
               <div className="flex gap-3 items-center border-t border-[#2a2d3a] pt-4">
                 <a href={outputUrl} download={outputName} className={btnClass}>Download {outputName}</a>
-                <span className="text-xs text-[#6b7280]">{(outputSize / 1024 / 1024).toFixed(2)} MB Â· all processing is local</span>
+                <span className="text-xs text-[#6b7280]">{(outputSize / 1024 / 1024).toFixed(2)} MB · all processing is local</span>
               </div>
             )}
           </>

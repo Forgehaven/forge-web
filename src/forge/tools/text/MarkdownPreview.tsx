@@ -1,95 +1,118 @@
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import { Marked } from 'marked'
+import { markedHighlight } from 'marked-highlight'
+import hljs from 'highlight.js/lib/core'
+import javascript from 'highlight.js/lib/languages/javascript'
+import typescript from 'highlight.js/lib/languages/typescript'
+import python from 'highlight.js/lib/languages/python'
+import bash from 'highlight.js/lib/languages/bash'
+import json from 'highlight.js/lib/languages/json'
+import css from 'highlight.js/lib/languages/css'
+import xml from 'highlight.js/lib/languages/xml'
+import sql from 'highlight.js/lib/languages/sql'
+import yaml from 'highlight.js/lib/languages/yaml'
+import go from 'highlight.js/lib/languages/go'
+import rust from 'highlight.js/lib/languages/rust'
+import java from 'highlight.js/lib/languages/java'
+import cpp from 'highlight.js/lib/languages/cpp'
+import ruby from 'highlight.js/lib/languages/ruby'
+import php from 'highlight.js/lib/languages/php'
+import swift from 'highlight.js/lib/languages/swift'
+import kotlin from 'highlight.js/lib/languages/kotlin'
+import csharp from 'highlight.js/lib/languages/csharp'
 
-function escHtml(s: string): string {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-}
+hljs.registerLanguage('javascript', javascript); hljs.registerLanguage('js', javascript)
+hljs.registerLanguage('typescript', typescript); hljs.registerLanguage('ts', typescript)
+hljs.registerLanguage('python', python);         hljs.registerLanguage('py', python)
+hljs.registerLanguage('bash', bash);             hljs.registerLanguage('shell', bash); hljs.registerLanguage('sh', bash)
+hljs.registerLanguage('json', json)
+hljs.registerLanguage('css', css)
+hljs.registerLanguage('html', xml);              hljs.registerLanguage('xml', xml)
+hljs.registerLanguage('sql', sql)
+hljs.registerLanguage('yaml', yaml);             hljs.registerLanguage('yml', yaml)
+hljs.registerLanguage('go', go)
+hljs.registerLanguage('rust', rust)
+hljs.registerLanguage('java', java)
+hljs.registerLanguage('cpp', cpp);               hljs.registerLanguage('c', cpp)
+hljs.registerLanguage('ruby', ruby);             hljs.registerLanguage('rb', ruby)
+hljs.registerLanguage('php', php)
+hljs.registerLanguage('swift', swift)
+hljs.registerLanguage('kotlin', kotlin);         hljs.registerLanguage('kt', kotlin)
+hljs.registerLanguage('csharp', csharp);         hljs.registerLanguage('cs', csharp)
 
-function inline(s: string): string {
-  return escHtml(s)
-    .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/`(.+?)`/g, '<code>$1</code>')
-    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
-}
-
-function renderMarkdown(md: string): string {
-  // Stash code blocks to avoid re-processing
-  const stash: string[] = []
-  const s = md.replace(/```([\w]*)\n([\s\S]*?)```/g, (_, _lang, code) => {
-    const idx = stash.length
-    stash.push(`<pre><code>${escHtml(code.trimEnd())}</code></pre>`)
-    return `⁠STASH${idx}⁠`
+const marked = new Marked(
+  markedHighlight({
+    emptyLangClass: 'hljs',
+    langPrefix: 'hljs language-',
+    highlight(code, lang) {
+      const language = hljs.getLanguage(lang) ? lang : undefined
+      return language
+        ? hljs.highlight(code, { language }).value
+        : hljs.highlightAuto(code).value
+    },
   })
+)
 
-  const blocks: string[] = []
-  const lines = s.split('\n')
-  let listItems: string[] = []
-  let listTag: 'ul' | 'ol' | null = null
+marked.setOptions({ gfm: true, breaks: false })
 
-  function flushList() {
-    if (listItems.length) {
-      blocks.push(`<${listTag}>${listItems.join('')}</${listTag}>`)
-      listItems = []
-      listTag = null
-    }
-  }
-
-  for (const line of lines) {
-    const stashMatch = line.match(/^⁠STASH(\d+)⁠$/)
-    if (stashMatch) { flushList(); blocks.push(stash[+stashMatch[1]]); continue }
-
-    if (/^\s*$/.test(line)) { flushList(); continue }
-
-    const h3 = line.match(/^### (.+)/)
-    const h2 = line.match(/^## (.+)/)
-    const h1 = line.match(/^# (.+)/)
-    const ulItem = line.match(/^- (.+)/)
-    const olItem = line.match(/^\d+\. (.+)/)
-    const bq = line.match(/^> (.+)/)
-    const hr = /^---+$/.test(line)
-
-    if (h3) { flushList(); blocks.push(`<h3>${inline(h3[1])}</h3>`) }
-    else if (h2) { flushList(); blocks.push(`<h2>${inline(h2[1])}</h2>`) }
-    else if (h1) { flushList(); blocks.push(`<h1>${inline(h1[1])}</h1>`) }
-    else if (ulItem) {
-      if (listTag !== 'ul') { flushList(); listTag = 'ul' }
-      listItems.push(`<li>${inline(ulItem[1])}</li>`)
-    }
-    else if (olItem) {
-      if (listTag !== 'ol') { flushList(); listTag = 'ol' }
-      listItems.push(`<li>${inline(olItem[1])}</li>`)
-    }
-    else if (bq) { flushList(); blocks.push(`<blockquote>${inline(bq[1])}</blockquote>`) }
-    else if (hr) { flushList(); blocks.push('<hr />') }
-    else { flushList(); blocks.push(`<p>${inline(line)}</p>`) }
-  }
-  flushList()
-
-  return blocks.join('\n')
-}
+const HLJS_CSS = `
+.hljs-keyword,.hljs-selector-tag,.hljs-built_in,.hljs-name,.hljs-tag { color: #c792ea }
+.hljs-string,.hljs-attr,.hljs-selector-attr,.hljs-selector-pseudo { color: #c3e88d }
+.hljs-comment,.hljs-quote { color: #546e7a; font-style: italic }
+.hljs-number,.hljs-literal,.hljs-variable,.hljs-template-variable { color: #f78c6c }
+.hljs-title,.hljs-section,.hljs-selector-id,.hljs-type,.hljs-class { color: #82aaff }
+.hljs-symbol,.hljs-bullet,.hljs-subst,.hljs-meta,.hljs-link { color: #89ddff }
+.hljs-deletion { color: #e06c75 }
+.hljs-addition { color: #98c379 }
+.hljs-emphasis { font-style: italic }
+.hljs-strong { font-weight: bold }
+`
 
 const SAMPLE = `# Hello, Markdown
 
-**Bold** and *italic* and \`inline code\`.
+**Bold**, *italic*, ~~strikethrough~~, and \`inline code\`.
+
+## Code blocks
+
+\`\`\`typescript
+interface User {
+  id: number
+  name: string
+}
+
+function greet(user: User): string {
+  return \`Hello, \${user.name}!\`
+}
+\`\`\`
+
+\`\`\`python
+def fibonacci(n: int) -> list[int]:
+    a, b = 0, 1
+    result = []
+    for _ in range(n):
+        result.append(a)
+        a, b = b, a + b
+    return result
+\`\`\`
+
+## Tables
+
+| Name    | Role      | Active |
+| ------- | --------- | ------ |
+| Alice   | Admin     | ✓      |
+| Bob     | Editor    | ✓      |
+| Charlie | Viewer    | ✗      |
 
 ## Lists
 
 - Item one
 - Item two
-- Item three
+  - Nested item
+  - Another nested
 
 1. First
 2. Second
 3. Third
-
-## Code
-
-\`\`\`
-function greet(name) {
-  return \`Hello, \${name}!\`
-}
-\`\`\`
 
 > Blockquote text here.
 
@@ -103,7 +126,14 @@ Done.
 export function MarkdownPreview() {
   const [source, setSource] = useState(SAMPLE)
 
-  const html = renderMarkdown(source)
+  useEffect(() => {
+    const style = document.createElement('style')
+    style.textContent = HLJS_CSS
+    document.head.appendChild(style)
+    return () => { document.head.removeChild(style) }
+  }, [])
+
+  const html = useMemo(() => marked.parse(source) as string, [source])
 
   return (
     <div className="pb-6">
@@ -130,12 +160,17 @@ export function MarkdownPreview() {
               [&_p]:mb-3 [&_p]:leading-relaxed
               [&_strong]:font-bold [&_strong]:text-[#e2e4ed]
               [&_em]:italic
+              [&_del]:line-through [&_del]:text-[#6b7280]
               [&_code]:bg-[#0f1117] [&_code]:text-[#c4af64] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-xs [&_code]:font-mono
               [&_pre]:bg-[#0f1117] [&_pre]:border [&_pre]:border-[#2a2d3a] [&_pre]:rounded [&_pre]:p-4 [&_pre]:mb-4 [&_pre]:overflow-x-auto
-              [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-[#e2e4ed]
+              [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-[#e2e4ed] [&_pre_code]:text-xs
               [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_ul]:space-y-1
               [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-3 [&_ol]:space-y-1
               [&_li]:leading-relaxed
+              [&_table]:w-full [&_table]:mb-4 [&_table]:border-collapse
+              [&_th]:text-left [&_th]:text-xs [&_th]:font-medium [&_th]:text-[#6b7280] [&_th]:uppercase [&_th]:tracking-wide [&_th]:px-3 [&_th]:py-2 [&_th]:border-b [&_th]:border-[#2a2d3a]
+              [&_td]:px-3 [&_td]:py-2 [&_td]:border-b [&_td]:border-[#2a2d3a] [&_td]:text-[#e2e4ed]
+              [&_tr:last-child_td]:border-0
               [&_blockquote]:border-l-4 [&_blockquote]:border-[#c4af64] [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-[#9ca3af] [&_blockquote]:mb-3
               [&_hr]:border-[#2a2d3a] [&_hr]:my-4
               [&_a]:text-[#c4af64] [&_a]:underline [&_a]:underline-offset-2 hover:[&_a]:no-underline"

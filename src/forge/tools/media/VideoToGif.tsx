@@ -5,17 +5,17 @@ import { Select } from '../../../components/Select'
 import type { SelectOption } from '../../../components/Select'
 
 const fpsOptions: SelectOption[] = [
-  { value: '8',  label: '8 fps â€” smaller file' },
-  { value: '10', label: '10 fps â€” balanced' },
-  { value: '15', label: '15 fps â€” smoother' },
-  { value: '20', label: '20 fps â€” largest file' },
+  { value: '8',  label: '8 fps — smaller file' },
+  { value: '10', label: '10 fps — balanced' },
+  { value: '15', label: '15 fps — smoother' },
+  { value: '20', label: '20 fps — largest file' },
 ]
 
 const widthOptions: SelectOption[] = [
-  { value: '240', label: '240px â€” tiny' },
-  { value: '320', label: '320px â€” small' },
-  { value: '480', label: '480px â€” medium' },
-  { value: '640', label: '640px â€” large' },
+  { value: '240', label: '240px — tiny' },
+  { value: '320', label: '320px — small' },
+  { value: '480', label: '480px — medium' },
+  { value: '640', label: '640px — large' },
 ]
 
 const MAX_GIF_DURATION = 20
@@ -60,8 +60,8 @@ export function VideoToGif() {
   const [outputSize, setOutputSize] = useState(0)
 
   const fileRef = useRef<HTMLInputElement>(null)
-  const videoRef = useRef<HTMLVideoElement>(null)      // hidden â€” fires onLoadedMetadata
-  const playerRef = useRef<HTMLVideoElement>(null)     // visible player â€” used for currentTime
+  const videoRef = useRef<HTMLVideoElement>(null)      // hidden — fires onLoadedMetadata
+  const playerRef = useRef<HTMLVideoElement>(null)     // visible player — used for currentTime
 
   function acceptFile(f: File) {
     if (!f.type.startsWith('video/')) { setError('Please select a video file.'); return }
@@ -161,13 +161,13 @@ export function VideoToGif() {
             <div>
               <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name}</p>
               <p className="text-xs text-[#6b7280] mt-1">
-                {(file.size / 1024 / 1024).toFixed(1)} MB{duration > 0 && ` Â· ${formatTime(duration)}`}
+                {(file.size / 1024 / 1024).toFixed(1)} MB{duration > 0 && ` · ${formatTime(duration)}`}
               </p>
             </div>
           ) : (
             <div>
               <p className="text-sm text-[#6b7280]">Drop a video file here or click to upload</p>
-              <p className="text-xs text-[#3a3d4a] mt-1">MP4, WebM, MOV Â· up to {MAX_GIF_DURATION}s Â· all processing is local</p>
+              <p className="text-xs text-[#3a3d4a] mt-1">MP4, WebM, MOV · up to {MAX_GIF_DURATION}s · all processing is local</p>
             </div>
           )}
         </div>
@@ -256,7 +256,7 @@ export function VideoToGif() {
               <button onClick={generateGif} disabled={isBusy} className={btnClass}>
                 {generating ? 'Generating…' : ffmpegLoading ? 'Loading FFmpeg…' : 'Generate GIF'}
               </button>
-              <span className="text-xs text-[#6b7280]">{gifDuration.toFixed(1)}s Â· {fps} fps Â· {width}px</span>
+              <span className="text-xs text-[#6b7280]">{gifDuration.toFixed(1)}s · {fps} fps · {width}px</span>
             </div>
 
             {ffmpegLoading && (
@@ -290,7 +290,7 @@ export function VideoToGif() {
                   <a href={outputUrl} download={outputName} className={btnClass}>
                     Download {outputName}
                   </a>
-                  <span className="text-xs text-[#6b7280]">{(outputSize / 1024 / 1024).toFixed(2)} MB Â· all processing is local</span>
+                  <span className="text-xs text-[#6b7280]">{(outputSize / 1024 / 1024).toFixed(2)} MB · all processing is local</span>
                 </div>
               </div>
             )}

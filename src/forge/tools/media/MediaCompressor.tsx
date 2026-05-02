@@ -5,21 +5,21 @@ import { Select } from '../../../components/Select'
 import type { SelectOption } from '../../../components/Select'
 
 const imgFormatOptions: SelectOption[] = [
-  { value: 'webp-lossless', label: 'WebP â€” lossless' },
-  { value: 'webp-q',        label: 'WebP â€” quality' },
-  { value: 'jpeg',          label: 'JPEG â€” quality' },
+  { value: 'webp-lossless', label: 'WebP — lossless' },
+  { value: 'webp-q',        label: 'WebP — quality' },
+  { value: 'jpeg',          label: 'JPEG — quality' },
 ]
 
 const audioModeOptions: SelectOption[] = [
-  { value: 'flac', label: 'FLAC â€” lossless (best for WAV source)' },
-  { value: 'mp3',  label: 'MP3 â€” bitrate reduction (lossy)' },
+  { value: 'flac', label: 'FLAC — lossless (best for WAV source)' },
+  { value: 'mp3',  label: 'MP3 — bitrate reduction (lossy)' },
 ]
 
 const audioBitrateOptions: SelectOption[] = [
-  { value: '64',  label: '64 kbps â€” smallest' },
+  { value: '64',  label: '64 kbps — smallest' },
   { value: '96',  label: '96 kbps' },
-  { value: '128', label: '128 kbps â€” standard' },
-  { value: '192', label: '192 kbps â€” high quality' },
+  { value: '128', label: '128 kbps — standard' },
+  { value: '192', label: '192 kbps — high quality' },
 ]
 
 const videoScaleOptions: SelectOption[] = [
@@ -30,7 +30,7 @@ const videoScaleOptions: SelectOption[] = [
   { value: '360',      label: '360p' },
 ]
 
-// â”€â”€ FFmpeg singleton â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── FFmpeg singleton ─────────────────────────────────────────────────────────
 let _ffmpeg: FFmpeg | null = null
 let _ffmpegReady: Promise<FFmpeg> | null = null
 function getFFmpeg(onProgress: (p: number) => void): Promise<FFmpeg> {
@@ -42,7 +42,7 @@ function getFFmpeg(onProgress: (p: number) => void): Promise<FFmpeg> {
   return _ffmpegReady
 }
 
-// â”€â”€ Image tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Image tab ────────────────────────────────────────────────────────────────
 function ImageTab() {
   const [file, setFile] = useState<File | null>(null)
   const [img, setImg] = useState<HTMLImageElement | null>(null)
@@ -106,12 +106,12 @@ function ImageTab() {
         {file ? (
           <div>
             <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name}</p>
-            <p className="text-xs text-[#6b7280] mt-1">{(file.size / 1024).toFixed(0)} KB Â· {img ? `${img.naturalWidth}Ã—${img.naturalHeight}` : '…'}</p>
+            <p className="text-xs text-[#6b7280] mt-1">{(file.size / 1024).toFixed(0)} KB · {img ? `${img.naturalWidth}×${img.naturalHeight}` : '…'}</p>
           </div>
         ) : (
           <div>
             <p className="text-sm text-[#6b7280]">Drop an image here or click to upload</p>
-            <p className="text-xs text-[#3a3d4a] mt-1">PNG, JPEG, WebP Â· all processing is local</p>
+            <p className="text-xs text-[#3a3d4a] mt-1">PNG, JPEG, WebP · all processing is local</p>
           </div>
         )}
       </div>
@@ -149,7 +149,7 @@ function ImageTab() {
             <div className="flex flex-col gap-3 border-t border-[#2a2d3a] pt-4">
               <div className="flex items-center gap-4 text-xs">
                 <span className="text-[#6b7280]">Original: <span className="text-[#e2e4ed]">{(file.size / 1024).toFixed(0)} KB</span></span>
-                <span className="text-[#3a3d4a]">â†’</span>
+                <span className="text-[#3a3d4a]">→</span>
                 <span className="text-[#6b7280]">Output: <span className="text-[#e2e4ed]">{(outputSize / 1024).toFixed(0)} KB</span></span>
                 {savings !== null && (
                   <span className={savings > 0 ? 'text-green-400' : 'text-yellow-400'}>
@@ -166,7 +166,7 @@ function ImageTab() {
   )
 }
 
-// â”€â”€ Audio tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Audio tab ────────────────────────────────────────────────────────────────
 function AudioTab() {
   const [file, setFile] = useState<File | null>(null)
   const [mode, setMode] = useState<'flac' | 'mp3'>('flac')
@@ -234,7 +234,7 @@ function AudioTab() {
           onChange={e => { const f = e.target.files?.[0]; if (f) { setError(''); setOutputUrl(null); setFile(f) } }} />
         {file
           ? <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name} <span className="text-[#6b7280]">({(file.size / 1024).toFixed(0)} KB)</span></p>
-          : <div><p className="text-sm text-[#6b7280]">Drop an audio file here or click to upload</p><p className="text-xs text-[#3a3d4a] mt-1">MP3, WAV, FLAC, OGG Â· all processing is local</p></div>
+          : <div><p className="text-sm text-[#6b7280]">Drop an audio file here or click to upload</p><p className="text-xs text-[#3a3d4a] mt-1">MP3, WAV, FLAC, OGG · all processing is local</p></div>
         }
       </div>
 
@@ -264,7 +264,7 @@ function AudioTab() {
               </div>
             )}
           </div>
-          {mode === 'mp3' && <p className="text-xs text-[#3a3d4a]">Re-encoding an already-compressed file (e.g. MP3â†’MP3) introduces generation loss. Use FLAC for uncompressed sources.</p>}
+          {mode === 'mp3' && <p className="text-xs text-[#3a3d4a]">Re-encoding an already-compressed file (e.g. MP3→MP3) introduces generation loss. Use FLAC for uncompressed sources.</p>}
 
           <div className="flex items-center gap-3">
             <button onClick={compress} disabled={isBusy} className={btnClass}>
@@ -277,7 +277,7 @@ function AudioTab() {
             <div className="flex flex-col gap-2 border-t border-[#2a2d3a] pt-4">
               <div className="flex gap-4 text-xs">
                 <span className="text-[#6b7280]">Original: <span className="text-[#e2e4ed]">{(file.size / 1024).toFixed(0)} KB</span></span>
-                <span className="text-[#3a3d4a]">â†’</span>
+                <span className="text-[#3a3d4a]">→</span>
                 <span className="text-[#6b7280]">Output: <span className="text-[#e2e4ed]">{(outputSize / 1024).toFixed(0)} KB</span></span>
                 {(() => { const s = Math.round((1 - outputSize / file.size) * 100); return <span className={s > 0 ? 'text-green-400' : 'text-yellow-400'}>{s > 0 ? `${s}% smaller` : `${Math.abs(s)}% larger`}</span> })()}
               </div>
@@ -290,7 +290,7 @@ function AudioTab() {
   )
 }
 
-// â”€â”€ Video tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Video tab ────────────────────────────────────────────────────────────────
 function VideoTab() {
   const [file, setFile] = useState<File | null>(null)
   const [crf, setCrf] = useState(28)
@@ -354,7 +354,7 @@ function VideoTab() {
           onChange={e => { const f = e.target.files?.[0]; if (f) { setError(''); setOutputUrl(null); setFile(f) } }} />
         {file
           ? <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name} <span className="text-[#6b7280]">({(file.size / 1024 / 1024).toFixed(1)} MB)</span></p>
-          : <div><p className="text-sm text-[#6b7280]">Drop a video file here or click to upload</p><p className="text-xs text-[#3a3d4a] mt-1">MP4, WebM, MOV Â· all processing is local Â· may be slow for large files</p></div>
+          : <div><p className="text-sm text-[#6b7280]">Drop a video file here or click to upload</p><p className="text-xs text-[#3a3d4a] mt-1">MP4, WebM, MOV · all processing is local · may be slow for large files</p></div>
         }
       </div>
 
@@ -396,7 +396,7 @@ function VideoTab() {
             <div className="flex flex-col gap-2 border-t border-[#2a2d3a] pt-4">
               <div className="flex gap-4 text-xs">
                 <span className="text-[#6b7280]">Original: <span className="text-[#e2e4ed]">{(file.size / 1024 / 1024).toFixed(1)} MB</span></span>
-                <span className="text-[#3a3d4a]">â†’</span>
+                <span className="text-[#3a3d4a]">→</span>
                 <span className="text-[#6b7280]">Output: <span className="text-[#e2e4ed]">{(outputSize / 1024 / 1024).toFixed(1)} MB</span></span>
                 {(() => { const s = Math.round((1 - outputSize / file.size) * 100); return <span className={s > 0 ? 'text-green-400' : 'text-yellow-400'}>{s > 0 ? `${s}% smaller` : `${Math.abs(s)}% larger`}</span> })()}
               </div>
@@ -409,7 +409,7 @@ function VideoTab() {
   )
 }
 
-// â”€â”€ Shared progress bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Shared progress bar ───────────────────────────────────────────────────────
 function ProgressBar({ label, pct }: { label: string; pct: number }) {
   return (
     <div>
@@ -423,7 +423,7 @@ function ProgressBar({ label, pct }: { label: string; pct: number }) {
   )
 }
 
-// â”€â”€ Main component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Main component ────────────────────────────────────────────────────────────
 type Tab = 'image' | 'audio' | 'video'
 
 export function MediaCompressor() {

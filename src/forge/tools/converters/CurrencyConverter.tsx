@@ -57,7 +57,7 @@ export function CurrencyConverter() {
 
   const currencyOptions = currencyList.map(([code, name]) => ({
     value: code,
-    label: `${code} â€” ${name}`,
+    label: `${code} — ${name}`,
   }))
 
   return (
@@ -81,8 +81,8 @@ export function CurrencyConverter() {
             onClick={swap}
             className="self-center md:self-auto px-3 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer"
           >
-            <span className="md:hidden">â†•</span>
-            <span className="hidden md:inline">â‡„</span>
+            <span className="md:hidden">↕</span>
+            <span className="hidden md:inline">⇄</span>
           </button>
           <div>
             <label className="block text-xs text-[#6b7280] mb-1">To</label>
@@ -120,7 +120,7 @@ export function CurrencyConverter() {
             {rate !== undefined && from !== to && (
               <p className="text-xs text-[#6b7280] mt-1">
                 1 {from} = {rate.toFixed(6)} {to}
-                {rateData?.date && ` Â· rates from ${rateData.date}`}
+                {rateData?.date && ` · rates from ${rateData.date}`}
               </p>
             )}
           </div>
