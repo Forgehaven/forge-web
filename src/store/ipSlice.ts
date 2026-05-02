@@ -20,15 +20,15 @@ interface IPState {
 }
 
 const CACHE_KEY = 'forge_ip_v1'
-export const IP_TTL = 5 * 60 * 1000
+export const IP_TTL = 60 * 60 * 1000
 
 function loadCache(): IPState {
   try {
     const raw = localStorage.getItem(CACHE_KEY)
     if (!raw) return { data: null, fetchedAt: null, status: 'idle' }
-    const s = JSON.parse(raw) as Pick<IPState, 'data' | 'fetchedAt'>
+    const s = JSON.parse(raw) as Pick<IPState, 'data' | 'fetchedAt'> & { error?: boolean }
     if (s.fetchedAt && Date.now() - s.fetchedAt < IP_TTL) {
-      return { data: s.data, fetchedAt: s.fetchedAt, status: 'success' }
+      return { data: s.data, fetchedAt: s.fetchedAt, status: s.error ? 'error' : 'success' }
     }
   } catch {
     /* ignore parse errors */
@@ -55,6 +55,10 @@ const ipSlice = createSlice({
     },
     ipFetchFailed(state) {
       state.status = 'error'
+      state.fetchedAt = Date.now()
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ data: state.data, fetchedAt: state.fetchedAt, error: true }))
+      } catch { /* storage unavailable */ }
     },
     clearIP(state) {
       state.data = null

@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useIPInfo } from '../../../hooks/useIPInfo'
 
 interface GeoData {
   ip: string
@@ -19,8 +20,47 @@ export function IpGeoLocation() {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<GeoData | null>(null)
   const [error, setError] = useState('')
+  const { data: cachedIP, loading: ipLoading } = useIPInfo()
+
+  // On mount, populate with cached IP data if available
+  useEffect(() => {
+    if (cachedIP && !data) {
+      setData({ // eslint-disable-line react-hooks/set-state-in-effect
+        ip: cachedIP.ip,
+        city: cachedIP.city,
+        region: '',
+        country_name: '',
+        country_code: cachedIP.country_code,
+        postal: '',
+        latitude: cachedIP.latitude,
+        longitude: cachedIP.longitude,
+        timezone: cachedIP.timezone,
+        org: cachedIP.org,
+        asn: '',
+      })
+    }
+  }, [cachedIP]) // eslint-disable-line react-hooks/exhaustive-deps
 
   async function lookup(ip?: string) {
+    // For own IP, use the Redux cache if fresh
+    if (!ip && cachedIP) {
+      setData({
+        ip: cachedIP.ip,
+        city: cachedIP.city,
+        region: '',
+        country_name: '',
+        country_code: cachedIP.country_code,
+        postal: '',
+        latitude: cachedIP.latitude,
+        longitude: cachedIP.longitude,
+        timezone: cachedIP.timezone,
+        org: cachedIP.org,
+        asn: '',
+      })
+      setError('')
+      return
+    }
+
     setLoading(true)
     setError('')
     setData(null)
@@ -75,7 +115,7 @@ export function IpGeoLocation() {
           <button onClick={() => lookup(input || undefined)} disabled={loading} className={btnClass}>
             {loading ? 'Looking up…' : 'Lookup'}
           </button>
-          <button onClick={() => { setInput(''); lookup(undefined) }} disabled={loading} className={btnClass}>
+          <button onClick={() => { setInput(''); lookup(undefined) }} disabled={loading || ipLoading} className={btnClass}>
             My IP
           </button>
         </div>
