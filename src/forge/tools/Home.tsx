@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 import { useCityFavourites } from '../../hooks/useCityFavourites'
 import { useIPInfo } from '../../hooks/useIPInfo'
 import { useNow } from '../../hooks/useNow'
-import { weatherIcon, windDir, WMO, fetchCurrentWeather, buildWeatherUrl, formatFetchedAt, type CurrentWeather } from '../../lib/weather'
+import { weatherIcon, windDir, WMO, fetchCurrentWeather, buildWeatherUrl, type CurrentWeather } from '../../lib/weather'
+import { FetchedAtLink } from '../../components/FetchedAtLink'
 import { useTempUnit, formatTemp, formatWind, formatPressure, formatPrecip, formatDist } from '../../hooks/useTempUnit'
 import { flagUrl, haversineKm, bearingDeg } from '../../lib/geo'
 
@@ -28,7 +29,7 @@ function getOffset(tz: string, date: Date): string {
 function StatPill({ label, value }: { label: string; value: string }) {
   return (
     <span className="text-xs text-[#6b7280]">
-      <span className="text-[#3a3d4a]">{label}</span> {value}
+      <span className="text-[#c4af64]/50">{label}</span> {value}
     </span>
   )
 }
@@ -133,7 +134,7 @@ export function Home() {
 
       {cities.length > 0 && (
         <div className="w-full max-w-md mb-10">
-          <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg divide-y divide-[#2a2d3a]">
+          <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg divide-y divide-[#2a2d3a] overflow-hidden">
             {cities.map((c, index) => {
               const w = weather[c.id]
               const isExpanded = expandedId === c.id
@@ -216,7 +217,7 @@ export function Home() {
                               )
                               const deg = bearingDeg(ipData.latitude, ipData.longitude, c.latitude!, c.longitude!)
                               return (
-                                <span className="text-xs text-[#3a3d4a] tabular-nums group-hover:text-[#6b7280] transition-colors">
+                                <span className="text-xs text-[#c4af64]/50 tabular-nums group-hover:text-[#c4af64]/80 transition-colors">
                                   <span className="inline-block" style={{ transform: `rotate(${deg}deg)` }}>↑</span>
                                   {' '}{formatDist(dist, unit)}
                                 </span>
@@ -266,14 +267,11 @@ export function Home() {
                           {weatherIcon(w.weather_code)} {WMO[w.weather_code] ?? 'Unknown'} · feels like {formatTemp(w.apparent_temperature, unit)}
                         </p>
                         {weatherFetchedAt[c.id] && c.latitude != null && c.longitude != null && (
-                          <a
-                            href={buildWeatherUrl(c.latitude, c.longitude)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-[10px] text-[#6b7280] font-mono shrink-0 ml-3 hover:text-[#c4af64] transition-colors"
-                          >
-                            {formatFetchedAt(weatherFetchedAt[c.id])}
-                          </a>
+                          <FetchedAtLink
+                            date={weatherFetchedAt[c.id]}
+                            url={buildWeatherUrl(c.latitude, c.longitude)}
+                            className="shrink-0 ml-3"
+                          />
                         )}
                       </div>
                       <div className="grid grid-cols-3 gap-x-2 gap-y-1">

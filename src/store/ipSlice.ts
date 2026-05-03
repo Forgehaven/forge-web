@@ -3,11 +3,26 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface IPInfo {
   ip: string
+  version: string
   city: string
+  region: string
+  region_code: string
+  country: string
   country_code: string
+  country_capital: string
+  country_tld: string
+  continent_code: string
+  in_eu: boolean
+  postal: string
   latitude: number
   longitude: number
   timezone: string
+  utc_offset: string
+  currency: string
+  currency_name: string
+  languages: string
+  country_population: number
+  asn: string
   org: string
 }
 
@@ -19,7 +34,7 @@ interface IPState {
   status: FetchStatus
 }
 
-const CACHE_KEY = 'forge_ip_v1'
+const CACHE_KEY = 'forge_ip_v2'
 export const IP_TTL = 60 * 60 * 1000
 
 function loadCache(): IPState {

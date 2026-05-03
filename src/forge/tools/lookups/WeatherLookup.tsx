@@ -1,6 +1,7 @@
 ﻿import { useState, useEffect } from 'react'
 import { useCityFavourites } from '../../../hooks/useCityFavourites'
-import { weatherIcon, windDir, WMO, fetchCurrentWeather, buildWeatherUrl, formatFetchedAt, type CurrentWeather } from '../../../lib/weather'
+import { weatherIcon, windDir, WMO, fetchCurrentWeather, buildWeatherUrl, type CurrentWeather } from '../../../lib/weather'
+import { FetchedAtLink } from '../../../components/FetchedAtLink'
 import { flagUrl, type GeoResult } from '../../../lib/geo'
 import { useTempUnit, formatTemp, formatWind, formatPressure, formatPrecip } from '../../../hooks/useTempUnit'
 
@@ -168,14 +169,7 @@ export function WeatherLookup() {
                     </div>
                   </div>
                   {fetchedAt && apiUrl && (
-                    <a
-                      href={apiUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[10px] text-[#6b7280] font-mono self-start pt-0.5 hover:text-[#c4af64] transition-colors"
-                    >
-                      {formatFetchedAt(fetchedAt)}
-                    </a>
+                    <FetchedAtLink date={fetchedAt} url={apiUrl} className="self-start pt-0.5" />
                   )}
                 </div>
 

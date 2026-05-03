@@ -26,11 +26,26 @@ export function useIPInfo() {
         if (!d.ip) throw new Error('API returned no IP')
         dispatch(ipFetchSucceeded({
           ip: d.ip ?? '',
+          version: d.version ?? '',
           city: d.city ?? '',
+          region: d.region ?? '',
+          region_code: d.region_code ?? '',
+          country: d.country_name ?? '',
           country_code: d.country_code ?? '',
+          country_capital: d.country_capital ?? '',
+          country_tld: d.country_tld ?? '',
+          continent_code: d.continent_code ?? '',
+          in_eu: d.in_eu ?? false,
+          postal: d.postal ?? '',
           latitude: d.latitude ?? 0,
           longitude: d.longitude ?? 0,
           timezone: d.timezone ?? '',
+          utc_offset: d.utc_offset ?? '',
+          currency: d.currency ?? '',
+          currency_name: d.currency_name ?? '',
+          languages: d.languages ?? '',
+          country_population: d.country_population ?? 0,
+          asn: d.asn ?? '',
           org: d.org ?? '',
         }))
       })
@@ -42,5 +57,6 @@ export function useIPInfo() {
     data,
     loading: status === 'idle' || status === 'loading',
     error: status === 'error',
+    fetchedAt: fetchedAt ? new Date(fetchedAt) : null,
   }
 }

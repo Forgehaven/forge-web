@@ -1,6 +1,7 @@
+import { useState } from 'react'
 import useSWR from 'swr'
 import { weatherIcon, weatherDescription, windDir } from '../lib/weather'
-import { useTempUnit, formatTemp, formatWind } from './useTempUnit'
+import { useTempUnit, formatTemp, formatWind, formatPressure, formatPrecip } from './useTempUnit'
 
 interface WeatherResponse {
   current: {
@@ -11,6 +12,8 @@ interface WeatherResponse {
     relative_humidity_2m: number
     uv_index: number
     cloud_cover: number
+    surface_pressure: number
+    precipitation: number
   }
 }
 
@@ -20,14 +23,18 @@ export interface WeatherData {
   humidity: string
   uv: string
   cloud: string
+  pressure: string
+  precipitation: string
 }
 
 const fetcher = (url: string) => fetch(url).then(r => r.json())
 
-const FIELDS = 'temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,relative_humidity_2m,uv_index,cloud_cover'
+const FIELDS = 'temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,relative_humidity_2m,uv_index,cloud_cover,surface_pressure,precipitation'
 
 export function useWeather(lat: number | null, lon: number | null) {
   const [unit] = useTempUnit()
+  const [fetchedAt, setFetchedAt] = useState<Date | null>(null)
+
   const url = lat != null && lon != null
     ? `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=${FIELDS}&temperature_unit=celsius`
     : null
@@ -35,12 +42,13 @@ export function useWeather(lat: number | null, lon: number | null) {
   const { data, error } = useSWR<WeatherResponse>(url, fetcher, {
     refreshInterval: 600_000,
     revalidateOnFocus: false,
+    onSuccess: () => setFetchedAt(new Date()),
   })
 
-  if (url === null) return { weather: null, loading: false, error: false }
-  if (!data) return { weather: null, loading: !error, error: !!error }
+  if (url === null) return { weather: null, loading: false, error: false, fetchedAt: null, apiUrl: null }
+  if (!data) return { weather: null, loading: !error, error: !!error, fetchedAt: null, apiUrl: url }
 
-  const { temperature_2m, weather_code, wind_speed_10m, wind_direction_10m, relative_humidity_2m, uv_index, cloud_cover } = data.current
+  const { temperature_2m, weather_code, wind_speed_10m, wind_direction_10m, relative_humidity_2m, uv_index, cloud_cover, surface_pressure, precipitation } = data.current
 
   const weather: WeatherData = {
     summary: `${weatherIcon(weather_code)} ${weatherDescription(weather_code)} ${formatTemp(temperature_2m, unit)}`,
@@ -48,7 +56,9 @@ export function useWeather(lat: number | null, lon: number | null) {
     humidity: `${relative_humidity_2m}%`,
     uv: `${Math.round(uv_index ?? 0)}`,
     cloud: `${cloud_cover}%`,
+    pressure: formatPressure(surface_pressure, unit),
+    precipitation: formatPrecip(precipitation, unit),
   }
 
-  return { weather, loading: false, error: false }
+  return { weather, loading: false, error: false, fetchedAt, apiUrl: url }
 }
