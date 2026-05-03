@@ -46,11 +46,23 @@ export function windDir(deg: number): string {
   return ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round(deg / 45) % 8]
 }
 
-export async function fetchCurrentWeather(lat: number, lon: number): Promise<CurrentWeather> {
-  const res = await fetch(
+export function formatFetchedAt(date: Date): string {
+  const timeStr = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })
+  if (Date.now() - date.getTime() >= 86_400_000) {
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' ' + timeStr
+  }
+  return timeStr
+}
+
+export function buildWeatherUrl(lat: number, lon: number): string {
+  return (
     `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
     `&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,surface_pressure,uv_index,precipitation,cloud_cover`
   )
+}
+
+export async function fetchCurrentWeather(lat: number, lon: number): Promise<CurrentWeather> {
+  const res = await fetch(buildWeatherUrl(lat, lon))
   const json = await res.json()
   return json.current as CurrentWeather
 }

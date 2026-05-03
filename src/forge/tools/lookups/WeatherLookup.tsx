@@ -1,6 +1,6 @@
 ﻿import { useState, useEffect } from 'react'
 import { useCityFavourites } from '../../../hooks/useCityFavourites'
-import { weatherIcon, windDir, WMO, fetchCurrentWeather, type CurrentWeather } from '../../../lib/weather'
+import { weatherIcon, windDir, WMO, fetchCurrentWeather, buildWeatherUrl, formatFetchedAt, type CurrentWeather } from '../../../lib/weather'
 import { flagUrl, type GeoResult } from '../../../lib/geo'
 import { useTempUnit, formatTemp, formatWind, formatPressure, formatPrecip } from '../../../hooks/useTempUnit'
 
@@ -20,6 +20,8 @@ export function WeatherLookup() {
   const [selected, setSelected] = useState<GeoResult | null>(null)
   const [weather, setWeather] = useState<CurrentWeather | null>(null)
   const [weatherLoading, setWeatherLoading] = useState(false)
+  const [fetchedAt, setFetchedAt] = useState<Date | null>(null)
+  const [apiUrl, setApiUrl] = useState<string | null>(null)
   const { toggle, isFavourite } = useCityFavourites()
   const [unit] = useTempUnit()
 
@@ -48,15 +50,17 @@ export function WeatherLookup() {
   function selectCity(city: GeoResult) {
     setSelected(city)
     setWeather(null)
+    setFetchedAt(null)
+    setApiUrl(buildWeatherUrl(city.latitude, city.longitude))
     setWeatherLoading(true)
     fetchCurrentWeather(city.latitude, city.longitude)
-      .then(w => { setWeather(w); setWeatherLoading(false) })
+      .then(w => { setWeather(w); setFetchedAt(new Date()); setWeatherLoading(false) })
       .catch(() => setWeatherLoading(false))
   }
 
   function handleQueryChange(val: string) {
     setQuery(val)
-    if (selected) { setSelected(null); setWeather(null) }
+    if (selected) { setSelected(null); setWeather(null); setFetchedAt(null); setApiUrl(null) }
   }
 
   const isFav = selected ? isFavourite(selected.id) : false
@@ -151,16 +155,28 @@ export function WeatherLookup() {
 
             {weather && (
               <>
-                <div className="flex items-center gap-4 pt-1 border-t border-[#2a2d3a]">
-                  <p className="text-5xl font-mono text-[#c4af64]">{formatTemp(weather.temperature_2m, unit)}</p>
-                  <div>
-                    <p className="text-sm text-[#e2e4ed]">
-                      {weatherIcon(weather.weather_code)} {WMO[weather.weather_code] ?? 'Unknown'}
-                    </p>
-                    <p className="text-xs text-[#6b7280] mt-0.5">
-                      Feels like {formatTemp(weather.apparent_temperature, unit)}
-                    </p>
+                <div className="flex items-center justify-between pt-1 border-t border-[#2a2d3a]">
+                  <div className="flex items-center gap-4">
+                    <p className="text-5xl font-mono text-[#c4af64]">{formatTemp(weather.temperature_2m, unit)}</p>
+                    <div>
+                      <p className="text-sm text-[#e2e4ed]">
+                        {weatherIcon(weather.weather_code)} {WMO[weather.weather_code] ?? 'Unknown'}
+                      </p>
+                      <p className="text-xs text-[#6b7280] mt-0.5">
+                        Feels like {formatTemp(weather.apparent_temperature, unit)}
+                      </p>
+                    </div>
                   </div>
+                  {fetchedAt && apiUrl && (
+                    <a
+                      href={apiUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[10px] text-[#6b7280] font-mono self-start pt-0.5 hover:text-[#c4af64] transition-colors"
+                    >
+                      {formatFetchedAt(fetchedAt)}
+                    </a>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-3 gap-2">

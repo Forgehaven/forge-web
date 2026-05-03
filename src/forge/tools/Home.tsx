@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useCityFavourites } from '../../hooks/useCityFavourites'
 import { useIPInfo } from '../../hooks/useIPInfo'
 import { useNow } from '../../hooks/useNow'
-import { weatherIcon, windDir, WMO, fetchCurrentWeather, type CurrentWeather } from '../../lib/weather'
+import { weatherIcon, windDir, WMO, fetchCurrentWeather, buildWeatherUrl, formatFetchedAt, type CurrentWeather } from '../../lib/weather'
 import { useTempUnit, formatTemp, formatWind, formatPressure, formatPrecip, formatDist } from '../../hooks/useTempUnit'
 import { flagUrl, haversineKm, bearingDeg } from '../../lib/geo'
 
@@ -63,6 +63,7 @@ export function Home() {
   const [pendingRemove, setPendingRemove] = useState<number | null>(null)
   const [expandedId, setExpandedId] = useState<number | null>(null)
   const [weather, setWeather] = useState<Record<number, CurrentWeather>>({})
+  const [weatherFetchedAt, setWeatherFetchedAt] = useState<Record<number, Date>>({})
   const fetchedIds = useRef<string>('')
   const { data: ipData } = useIPInfo()
   const [rearranging, setRearranging] = useState(false)
@@ -75,6 +76,7 @@ export function Home() {
     if (!eligible.length || key === fetchedIds.current) return
     fetchedIds.current = key
 
+    const fetchedAt = new Date()
     Promise.all(
       eligible.map(async c => {
         try {
@@ -88,6 +90,11 @@ export function Home() {
       setWeather(prev => {
         const next = { ...prev }
         results.forEach(r => { if (r) next[r.id] = r.w })
+        return next
+      })
+      setWeatherFetchedAt(prev => {
+        const next = { ...prev }
+        results.forEach(r => { if (r) next[r.id] = fetchedAt })
         return next
       })
     })
@@ -254,9 +261,21 @@ export function Home() {
 
                   {isExpanded && w != null && !rearranging && (
                     <div className="px-4 pb-3 pt-1 border-t border-[#2a2d3a] bg-[#0f1117] text-left">
-                      <p className="text-xs text-[#9ca3af] mb-2">
-                        {weatherIcon(w.weather_code)} {WMO[w.weather_code] ?? 'Unknown'} · feels like {formatTemp(w.apparent_temperature, unit)}
-                      </p>
+                      <div className="flex items-start justify-between mb-2">
+                        <p className="text-xs text-[#9ca3af]">
+                          {weatherIcon(w.weather_code)} {WMO[w.weather_code] ?? 'Unknown'} · feels like {formatTemp(w.apparent_temperature, unit)}
+                        </p>
+                        {weatherFetchedAt[c.id] && c.latitude != null && c.longitude != null && (
+                          <a
+                            href={buildWeatherUrl(c.latitude, c.longitude)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[10px] text-[#6b7280] font-mono shrink-0 ml-3 hover:text-[#c4af64] transition-colors"
+                          >
+                            {formatFetchedAt(weatherFetchedAt[c.id])}
+                          </a>
+                        )}
+                      </div>
                       <div className="grid grid-cols-3 gap-x-2 gap-y-1">
                         <StatPill label="Wind" value={formatWind(w.wind_speed_10m, windDir(w.wind_direction_10m), unit)} />
                         <StatPill label="Humidity" value={`${w.relative_humidity_2m}%`} />
