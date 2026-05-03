@@ -68,6 +68,7 @@ import { QrGenerator } from './media/QrGenerator'
 import { VideoToMp3 } from './media/VideoToMp3'
 import { ImageConverter } from './media/ImageConverter'
 import { MediaCompressor } from './media/MediaCompressor'
+import { ImgCollage } from './media/ImgCollage'
 
 function HamburgerIcon() {
   return (
@@ -240,6 +241,7 @@ export default function ToolsLayout() {
         <Route path="video-to-gif" element={<VideoToGif />} />
         <Route path="img-colour-palette" element={<ImgColourPalette />} />
         <Route path="img-editor" element={<ImgEditor />} />
+        <Route path="img-collage" element={<ImgCollage />} />
         <Route path="qr-generator" element={<QrGenerator />} />
         <Route path="video-to-mp3" element={<VideoToMp3 />} />
         <Route path="image-converter" element={<ImageConverter />} />

@@ -50,6 +50,7 @@ const sections: Section[] = [
       { path: `${T}/video-to-gif`, label: 'Video to GIF' },
       { path: `${T}/img-colour-palette`, label: 'Img Colour Palette' },
       { path: `${T}/img-editor`, label: 'Img Editor' },
+      { path: `${T}/img-collage`, label: 'Img Collage' },
       { path: `${T}/qr-generator`, label: 'QR Generator' },
       { path: `${T}/video-to-mp3`, label: 'Video to MP3' },
       { path: `${T}/image-converter`, label: 'Image Converter' },
