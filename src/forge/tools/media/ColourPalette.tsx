@@ -141,7 +141,7 @@ export function ColourPalette() {
         {imgEl && (
           <>
             <div className="flex items-center gap-4">
-              <label className="text-xs text-[#6b7280] shrink-0">Colors</label>
+              <label className="text-xs text-[#6b7280] shrink-0">Colours</label>
               <input type="range" min={3} max={12} value={count}
                 onChange={e => setCount(Number(e.target.value))}
                 className="flex-1 accent-[#c4af64]" />

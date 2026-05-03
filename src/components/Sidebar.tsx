@@ -24,7 +24,7 @@ const sections: Section[] = [
       { path: `${T}/unit-converter`, label: 'Unit Converter' },
       { path: `${T}/timestamp-converter`, label: 'Discord Timestamp' },
       { path: `${T}/base-converter`, label: 'Base Converter' },
-      { path: `${T}/color-converter`, label: 'Colour Converter' },
+      { path: `${T}/colour-converter`, label: 'Colour Converter' },
       { path: `${T}/currency-converter`, label: 'Currency Converter' },
     ],
   },

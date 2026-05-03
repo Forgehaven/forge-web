@@ -12,7 +12,7 @@ import { UnitConverter } from './converters/UnitConverter'
 import { XmlJsonConverter } from './converters/XmlJsonConverter'
 import { DiscordTimestamp } from './converters/DiscordTimestamp'
 import { BaseConverter } from './converters/BaseConverter'
-import { ColorConverter } from './converters/ColorConverter'
+import { ColourConverter } from './converters/ColourConverter'
 import { CurrencyConverter } from './converters/CurrencyConverter'
 
 // Text
@@ -188,7 +188,7 @@ export default function ToolsLayout() {
         <Route path="unit-converter" element={<UnitConverter />} />
         <Route path="timestamp-converter" element={<DiscordTimestamp />} />
         <Route path="base-converter" element={<BaseConverter />} />
-        <Route path="color-converter" element={<ColorConverter />} />
+        <Route path="colour-converter" element={<ColourConverter />} />
         <Route path="currency-converter" element={<CurrencyConverter />} />
 
         {/* Text */}
