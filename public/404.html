@@ -2,14 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>FORGEHAVEN - 404</title>
   <script>
-    // GitHub Pages SPA redirect: save the full path and bounce to the root.
-    // main.tsx reads this back and calls history.replaceState before React Router
-    // initialises, so the correct route is rendered without a visible redirect.
     sessionStorage.setItem('ghp-redirect', location.pathname + location.search + location.hash);
+    location.replace('/');
   </script>
-  <meta http-equiv="refresh" content="0;URL='/'">
+<style>html,body{margin:0;background:#0f1117}</style>
 </head>
 <body></body>
 </html>

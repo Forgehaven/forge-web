@@ -30,6 +30,11 @@ function lazyWithReload<T extends React.ComponentType<unknown>>(
 const ToolsLayout = lazyWithReload(() => import('./forge/tools/ToolsLayout'))
 const GamesLayout = lazyWithReload(() => import('./forge/games/GamesLayout'))
 
+const MANIFESTS: [string, string][] = [
+  ['/tools', '/manifests/tools/manifest.json'],
+  ['/games', '/manifests/games/manifest.json'],
+]
+
 function TitleSync() {
   const { pathname } = useLocation()
   useInsertionEffect(() => {
@@ -39,11 +44,31 @@ function TitleSync() {
   return null
 }
 
+function ManifestSync() {
+  const { pathname } = useLocation()
+  useInsertionEffect(() => {
+    const href = MANIFESTS.find(([prefix]) => pathname.startsWith(prefix))?.[1]
+    let link = document.querySelector<HTMLLinkElement>('link[rel="manifest"]')
+    if (href) {
+      if (!link) {
+        link = document.createElement('link')
+        link.rel = 'manifest'
+        document.head.appendChild(link)
+      }
+      link.href = href
+    } else {
+      link?.remove()
+    }
+  }, [pathname])
+  return null
+}
+
 export default function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
         <TitleSync />
+        <ManifestSync />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route

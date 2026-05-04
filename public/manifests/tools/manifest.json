@@ -1,0 +1,24 @@
+{
+  "name": "Forge Tools",
+  "short_name": "Forge Tools",
+  "description": "A suite of free developer tools by FORGEHAVEN.",
+  "start_url": "/tools",
+  "scope": "/tools",
+  "display": "standalone",
+  "background_color": "#0f1117",
+  "theme_color": "#0f1117",
+  "icons": [
+    {
+      "src": "/images/logo-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
