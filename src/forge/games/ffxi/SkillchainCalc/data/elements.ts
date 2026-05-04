@@ -53,6 +53,6 @@ export const SC_BURST_ELEMENTS: Record<string, Element[]> = {
   Gravitation:   ['Earth', 'Dark'],
   Distortion:    ['Ice', 'Water'],
   Fragmentation: ['Wind', 'Lightning'],
-  Light:         ['Fire', 'Ice', 'Wind', 'Earth', 'Lightning', 'Water', 'Light', 'Dark'],
-  Darkness:      ['Fire', 'Ice', 'Wind', 'Earth', 'Lightning', 'Water', 'Light', 'Dark'],
+  Light:         ['Fire', 'Light', 'Lightning', 'Wind'],
+  Darkness:      ['Water', 'Ice', 'Earth', 'Dark'],
 }
