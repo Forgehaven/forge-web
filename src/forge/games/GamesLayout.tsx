@@ -9,6 +9,7 @@ import { GamesSettings } from './GamesSettings'
 import { GamesHome } from './GamesHome'
 import { SkillchainCalc } from './ffxi/SkillchainCalc'
 import { ClammingTracker } from './ffxi/ClammingTracker'
+import { SpellTracker } from './ffxi/SpellTracker'
 
 
 function GamesShell() {
@@ -100,6 +101,7 @@ export default function GamesLayout() {
         <Route index element={<GamesHome />} />
         <Route path="skillchain-calc" element={<SkillchainCalc />} />
         <Route path="clamming-tracker" element={<ClammingTracker />} />
+        <Route path="spell-tracker" element={<SpellTracker />} />
         <Route path="*" element={<NotFound backTo="/games" backLabel="Back to games" />} />
       </Route>
     </Routes>
