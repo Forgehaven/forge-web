@@ -8,8 +8,27 @@ import { NotFoundLanding } from './forge/NotFoundLanding'
 import './index.css'
 import { SECTION_TITLES } from './config/sections'
 
-const ToolsLayout = lazy(() => import('./forge/tools/ToolsLayout'))
-const GamesLayout = lazy(() => import('./forge/games/GamesLayout'))
+// On stale deployments, lazy chunk hashes change and the old file returns HTML.
+// Reload once to pick up the new index.html and fresh chunk names.
+function lazyWithReload<T extends React.ComponentType<unknown>>(
+  factory: () => Promise<{ default: T }>
+) {
+  return lazy(() =>
+    factory().catch(() => {
+      const key = 'chunk-reload-attempted'
+      if (!sessionStorage.getItem(key)) {
+        sessionStorage.setItem(key, '1')
+        window.location.reload()
+        return new Promise<{ default: T }>(() => {})
+      }
+      sessionStorage.removeItem(key)
+      throw new Error('Chunk failed to load after reload.')
+    })
+  )
+}
+
+const ToolsLayout = lazyWithReload(() => import('./forge/tools/ToolsLayout'))
+const GamesLayout = lazyWithReload(() => import('./forge/games/GamesLayout'))
 
 function TitleSync() {
   const { pathname } = useLocation()
