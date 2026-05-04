@@ -1,6 +1,7 @@
 import { useState } from 'react'
+import { STORAGE_KEYS } from '../config/storageKeys'
 
-const KEY = 'forgetools_favourites'
+const KEY = STORAGE_KEYS.favourites
 
 function load(): string[] {
   try {

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useIPInfo } from '../../../hooks/useIPInfo'
+import { API_URLS } from '../../../config/apiUrls'
 
 interface GeoData {
   ip: string
@@ -65,7 +66,7 @@ export function IpGeoLocation() {
     setError('')
     setData(null)
     try {
-      const url = ip ? `https://ipapi.co/${ip.trim()}/json/` : 'https://ipapi.co/json/'
+      const url = ip ? `${API_URLS.ipGeo}/${ip.trim()}/json/` : `${API_URLS.ipGeo}/json/`
       const res = await fetch(url)
       const json = await res.json()
       if (json.error) throw new Error(json.reason ?? 'Lookup failed')

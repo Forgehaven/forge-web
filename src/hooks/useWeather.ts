@@ -2,6 +2,7 @@ import { useState } from 'react'
 import useSWR from 'swr'
 import { weatherIcon, weatherDescription, windDir } from '../lib/weather'
 import { useTempUnit, formatTemp, formatWind, formatPressure, formatPrecip } from './useTempUnit'
+import { API_URLS, POLL_INTERVALS } from '../config/apiUrls'
 
 interface WeatherResponse {
   current: {
@@ -36,11 +37,11 @@ export function useWeather(lat: number | null, lon: number | null) {
   const [fetchedAt, setFetchedAt] = useState<Date | null>(null)
 
   const url = lat != null && lon != null
-    ? `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=${FIELDS}&temperature_unit=celsius`
+    ? `${API_URLS.weather}?latitude=${lat}&longitude=${lon}&current=${FIELDS}&temperature_unit=celsius`
     : null
 
   const { data, error } = useSWR<WeatherResponse>(url, fetcher, {
-    refreshInterval: 600_000,
+    refreshInterval: POLL_INTERVALS.weather,
     revalidateOnFocus: false,
     onSuccess: () => setFetchedAt(new Date()),
   })

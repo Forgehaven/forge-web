@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../store'
 import { ipFetchStarted, ipFetchSucceeded, ipFetchFailed, IP_TTL } from '../store/ipSlice'
+import { API_URLS } from '../config/apiUrls'
 export type { IPInfo } from '../store/ipSlice'
 
 // Prevents duplicate in-flight fetches when multiple components call this hook
@@ -17,7 +18,7 @@ export function useIPInfo() {
     fetchInFlight = true
     dispatch(ipFetchStarted())
 
-    fetch('https://ipapi.co/json/')
+    fetch(`${API_URLS.ipGeo}/json/`)
       .then(r => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`)
         return r.json()

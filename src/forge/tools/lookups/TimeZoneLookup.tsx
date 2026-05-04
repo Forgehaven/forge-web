@@ -2,6 +2,7 @@
 import { useCityFavourites } from '../../../hooks/useCityFavourites'
 import { useNow } from '../../../hooks/useNow'
 import { flagUrl, type GeoResult } from '../../../lib/geo'
+import { API_URLS } from '../../../config/apiUrls'
 
 function getOffset(tz: string, date: Date): string {
   return (
@@ -46,7 +47,7 @@ export function TimeZoneLookup() {
     const id = setTimeout(async () => {
       try {
         const res = await fetch(
-          `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(trimmed)}&count=8&language=en&format=json`
+          `${API_URLS.geocoding}?name=${encodeURIComponent(trimmed)}&count=8&language=en&format=json`
         )
         const json = await res.json()
         setResults((json.results ?? []).filter((r: GeoResult) => r.timezone))

@@ -1,6 +1,6 @@
 import { useTempUnit } from '../../hooks/useTempUnit'
 
-export function Settings() {
+export function ToolsSettings() {
   const [unit, setUnit] = useTempUnit()
 
   const active = 'px-3 py-1 text-xs bg-[#c4af64]/10 text-[#c4af64] border-r border-[#2a2d3a] last:border-r-0'

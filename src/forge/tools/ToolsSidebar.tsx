@@ -1,16 +1,21 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Logo } from './Logo'
-import { useFavourites } from '../hooks/useFavourites'
+import { useFavourites } from '../../hooks/useFavourites'
+import { useSidebarCollapse } from '../../hooks/useSidebarCollapse'
+import { STORAGE_KEYS } from '../../config/storageKeys'
+import { SidebarShell } from '../../components/Sidebar/SidebarShell'
+import { SidebarHeader } from '../../components/Sidebar/SidebarHeader'
+import { SidebarSearch } from '../../components/Sidebar/SidebarSearch'
+import { SidebarSection } from '../../components/Sidebar/SidebarSection'
+import { SidebarDivider } from '../../components/Sidebar/SidebarDivider'
+import { SidebarFooter } from '../../components/Sidebar/SidebarFooter'
 
-function CogIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
-      <circle cx="12" cy="12" r="3" />
-    </svg>
-  )
-}
+const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+  `block pl-4 pr-8 py-2 md:py-0 text-sm leading-5 transition-colors ${
+    isActive
+      ? 'bg-[#c4af64]/10 text-[#c4af64] border-r-2 border-[#c4af64]'
+      : 'text-[#9ca3af] hover:text-[#e2e4ed] hover:bg-[#2a2d3a]'
+  }`
 
 type ToolEntry = { path: string; label: string }
 type Section = { section: string; tools: ToolEntry[] }
@@ -112,23 +117,6 @@ const sections: Section[] = [
 
 const allTools = sections.flatMap(s => s.tools)
 
-const COLLAPSED_KEY = 'forgetools_collapsed_sections'
-
-function loadCollapsed(): Record<string, boolean> {
-  try {
-    return JSON.parse(localStorage.getItem(COLLAPSED_KEY) ?? '{}')
-  } catch {
-    return {}
-  }
-}
-
-const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-  `block pl-4 pr-8 py-2 md:py-0 text-sm leading-5 transition-colors ${
-    isActive
-      ? 'bg-[#c4af64]/10 text-[#c4af64] border-r-2 border-[#c4af64]'
-      : 'text-[#9ca3af] hover:text-[#e2e4ed] hover:bg-[#2a2d3a]'
-  }`
-
 function ToolRow({
   tool,
   isFav,
@@ -160,31 +148,19 @@ function ToolRow({
   )
 }
 
-interface SidebarProps {
+export interface ToolsSidebarProps {
   isOpen: boolean
   onClose: () => void
   onOpenSettings: () => void
 }
 
-export function Sidebar({ isOpen, onClose, onOpenSettings }: SidebarProps) {
+export function ToolsSidebar({ isOpen, onClose, onOpenSettings }: ToolsSidebarProps) {
   const [query, setQuery] = useState('')
-  const [mounted] = useState(true)
-  const [collapsed, setCollapsed] = useState<Record<string, boolean>>(loadCollapsed)
+  const { collapsed, toggle: toggleSection } = useSidebarCollapse(STORAGE_KEYS.collapsedSections)
   const { toggle, isFavourite } = useFavourites()
 
-  function toggleSection(section: string) {
-    setCollapsed(prev => {
-      const next = { ...prev, [section]: !prev[section] }
-      localStorage.setItem(COLLAPSED_KEY, JSON.stringify(next))
-      return next
-    })
-  }
-
   const trimmed = query.trim().toLowerCase()
-  const filtered = trimmed
-    ? allTools.filter(t => t.label.toLowerCase().includes(trimmed))
-    : null
-
+  const filtered = trimmed ? allTools.filter(t => t.label.toLowerCase().includes(trimmed)) : null
   const favouriteTools = allTools.filter(t => isFavourite(t.path))
 
   function handleSelect() {
@@ -192,41 +168,17 @@ export function Sidebar({ isOpen, onClose, onOpenSettings }: SidebarProps) {
     onClose()
   }
 
-  const inner = (
-    <>
-      <Logo />
+  return (
+    <SidebarShell isOpen={isOpen}>
+      <SidebarHeader section="Tools" to="/tools" />
 
-      <div className="px-3 py-1.5 border-b border-[#2a2d3a]">
-        <div className="relative">
-          <input
-            type="text"
-            value={query}
-            onChange={e => setQuery(e.target.value)}
-            placeholder="Search tools..."
-            className="w-full bg-[#0f1117] border border-[#2a2d3a] rounded px-2.5 py-1.5 text-xs text-[#e2e4ed] placeholder-[#6b7280] focus:outline-none focus:border-[#c4af64] pr-6"
-          />
-          {query && (
-            <button
-              onClick={() => setQuery('')}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-[#6b7280] hover:text-[#e2e4ed] transition-colors leading-none cursor-pointer"
-            >
-              ×
-            </button>
-          )}
-        </div>
-      </div>
+      <SidebarSearch query={query} onChange={setQuery} placeholder="Search tools..." />
 
       <nav className="flex-1 overflow-y-auto py-1 min-w-0">
         {filtered ? (
           filtered.length > 0 ? (
             filtered.map(tool => (
-              <ToolRow
-                key={tool.path}
-                tool={tool}
-                isFav={isFavourite(tool.path)}
-                onToggle={() => toggle(tool.path)}
-                onClick={handleSelect}
-              />
+              <ToolRow key={tool.path} tool={tool} isFav={isFavourite(tool.path)} onToggle={() => toggle(tool.path)} onClick={handleSelect} />
             ))
           ) : (
             <p className="px-4 py-3 text-xs text-[#6b7280]">No tools found</p>
@@ -239,78 +191,31 @@ export function Sidebar({ isOpen, onClose, onOpenSettings }: SidebarProps) {
                   Favourites
                 </p>
                 {favouriteTools.map(tool => (
-                  <ToolRow
-                    key={tool.path}
-                    tool={tool}
-                    isFav={true}
-                    onToggle={() => toggle(tool.path)}
-                    onClick={handleSelect}
-                  />
+                  <ToolRow key={tool.path} tool={tool} isFav={true} onToggle={() => toggle(tool.path)} onClick={handleSelect} />
                 ))}
-                <div className="mx-4 my-px border-t border-[#2a2d3a]" />
+                <SidebarDivider />
               </div>
             )}
 
             {sections.map(({ section, tools }, i) => (
               <div key={section}>
-                {i > 0 && (
-                  <div className="mx-4 my-px border-t border-[#2a2d3a]" />
-                )}
-                <button
-                  onClick={() => toggleSection(section)}
-                  className="w-full flex items-center justify-between pl-[11px] pr-3 pt-1 pb-0 text-xs font-medium text-[#6b7280] uppercase tracking-wider hover:text-[#9ca3af] transition-colors cursor-pointer"
+                {i > 0 && <SidebarDivider />}
+                <SidebarSection
+                  label={section}
+                  isCollapsed={!!collapsed[section]}
+                  onToggle={() => toggleSection(section)}
                 >
-                  {section}
-                  <span
-                    className="transition-transform duration-200 leading-none"
-                    style={{ transform: collapsed[section] ? 'rotate(-90deg)' : 'rotate(0deg)' }}
-                  >
-                    ▾
-                  </span>
-                </button>
-                {!collapsed[section] && tools.filter(t => !isFavourite(t.path)).map(tool => (
-                  <ToolRow
-                    key={tool.path}
-                    tool={tool}
-                    isFav={false}
-                    onToggle={() => toggle(tool.path)}
-                    onClick={handleSelect}
-                  />
-                ))}
+                  {tools.filter(t => !isFavourite(t.path)).map(tool => (
+                    <ToolRow key={tool.path} tool={tool} isFav={false} onToggle={() => toggle(tool.path)} onClick={handleSelect} />
+                  ))}
+                </SidebarSection>
               </div>
             ))}
           </>
         )}
       </nav>
 
-      <div className="flex border-t border-[#2a2d3a] h-10 items-center px-4">
-        <button
-          onClick={onOpenSettings}
-          className="flex items-center gap-1.5 text-[#3a3d4a] hover:text-[#6b7280] transition-colors cursor-pointer"
-        >
-          <CogIcon />
-          <span className="text-xs tracking-widest uppercase">Settings</span>
-        </button>
-      </div>
-    </>
-  )
-
-  return (
-    <>
-      <aside
-        className={`
-          md:hidden fixed inset-y-0 left-0 z-50
-          w-max shrink-0 bg-[#1a1d27] border-r border-[#2a2d3a] flex flex-col
-          ${mounted ? 'transition-transform duration-300 ease-in-out' : ''}
-          ${isOpen ? 'translate-x-0' : '-translate-x-full'}
-        `}
-      >
-        {inner}
-      </aside>
-
-      <aside className="hidden md:flex flex-col w-max shrink-0 bg-[#1a1d27] border-r border-[#2a2d3a]">
-        {inner}
-      </aside>
-    </>
+      <SidebarFooter onOpenSettings={onOpenSettings} />
+    </SidebarShell>
   )
 }

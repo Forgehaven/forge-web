@@ -7,6 +7,8 @@ import { weatherIcon, windDir, WMO, fetchCurrentWeather, buildWeatherUrl, type C
 import { FetchedAtLink } from '../../components/FetchedAtLink'
 import { useTempUnit, formatTemp, formatWind, formatPressure, formatPrecip, formatDist } from '../../hooks/useTempUnit'
 import { flagUrl, haversineKm, bearingDeg } from '../../lib/geo'
+import { GripIcon, SortIcon } from '../../components/Icons'
+import { StatPill } from '../../components/UI'
 
 function formatTime(tz: string, date: Date): string {
   return date.toLocaleTimeString('en-US', {
@@ -26,38 +28,8 @@ function getOffset(tz: string, date: Date): string {
   )
 }
 
-function StatPill({ label, value }: { label: string; value: string }) {
-  return (
-    <span className="text-xs text-[#6b7280]">
-      <span className="text-[#c4af64]/50">{label}</span> {value}
-    </span>
-  )
-}
 
-function GripIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" className="text-[#3a3d4a]">
-      <circle cx="4" cy="3" r="1.2" />
-      <circle cx="10" cy="3" r="1.2" />
-      <circle cx="4" cy="7" r="1.2" />
-      <circle cx="10" cy="7" r="1.2" />
-      <circle cx="4" cy="11" r="1.2" />
-      <circle cx="10" cy="11" r="1.2" />
-    </svg>
-  )
-}
-
-function SortIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline-block align-middle">
-      <line x1="3" y1="6" x2="21" y2="6" />
-      <line x1="3" y1="12" x2="21" y2="12" />
-      <line x1="3" y1="18" x2="21" y2="18" />
-    </svg>
-  )
-}
-
-export function Home() {
+export function ToolsHome() {
   const now = useNow()
   const [unit] = useTempUnit()
   const { cities, toggle, move } = useCityFavourites()

@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
+import { STORAGE_KEYS } from '../config/storageKeys'
 
 export interface IPInfo {
   ip: string
@@ -34,7 +35,7 @@ interface IPState {
   status: FetchStatus
 }
 
-const CACHE_KEY = 'forge_ip_v2'
+const CACHE_KEY = STORAGE_KEYS.ipCache
 export const IP_TTL = 60 * 60 * 1000
 
 function loadCache(): IPState {

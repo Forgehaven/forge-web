@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import { Routes, Route, Link, Outlet } from 'react-router-dom'
-import { Settings } from './Settings'
-import { Sidebar } from '../../components/Sidebar'
-import { BottomBar } from '../../components/BottomBar'
+import { HamburgerIcon } from '../../components/Icons'
+import { ToolsSidebar } from './ToolsSidebar'
+import { ToolsSettings } from './ToolsSettings'
+import { NotFound } from '../../components/NotFound'
+import { ToolsBottomBar } from './ToolsBottomBar'
 import { Modal } from '../../components/Modal'
-import { Home } from './Home'
-import { NotFound } from './NotFound'
+import { ToolsHome } from './ToolsHome'
 
 // Converters
 import { UnitConverter } from './converters/UnitConverter'
@@ -70,17 +71,8 @@ import { ImageConverter } from './media/ImageConverter'
 import { MediaCompressor } from './media/MediaCompressor'
 import { ImgCollage } from './media/ImgCollage'
 
-function HamburgerIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-      <line x1="3" y1="6" x2="21" y2="6" />
-      <line x1="3" y1="12" x2="21" y2="12" />
-      <line x1="3" y1="18" x2="21" y2="18" />
-    </svg>
-  )
-}
 
-function ForgeLayout() {
+function ToolsShell() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const touchStartX = useRef<number | null>(null)
@@ -89,10 +81,6 @@ function ForgeLayout() {
 
   useEffect(() => { sidebarOpenRef.current = sidebarOpen }, [sidebarOpen])
 
-  useEffect(() => {
-    document.title = 'Forge Tools'
-    return () => { document.title = 'FORGEHAVEN' }
-  }, [])
 
 
   useEffect(() => {
@@ -139,7 +127,7 @@ function ForgeLayout() {
         />
       )}
 
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onOpenSettings={() => { setSettingsOpen(true); setSidebarOpen(false) }} />
+      <ToolsSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onOpenSettings={() => { setSettingsOpen(true); setSidebarOpen(false) }} />
 
       <div className="relative flex flex-col flex-1 overflow-hidden min-w-0">
         <header className="flex md:hidden items-center px-4 h-12 bg-[#1a1d27] border-b border-[#2a2d3a] shrink-0">
@@ -168,11 +156,11 @@ function ForgeLayout() {
             <Outlet />
           </div>
         </main>
-        <BottomBar />
+        <ToolsBottomBar />
       </div>
 
       <Modal open={settingsOpen} onClose={() => setSettingsOpen(false)} title="Settings">
-        <Settings />
+        <ToolsSettings />
       </Modal>
     </div>
   )
@@ -181,8 +169,8 @@ function ForgeLayout() {
 export default function ToolsLayout() {
   return (
     <Routes>
-      <Route element={<ForgeLayout />}>
-        <Route index element={<Home />} />
+      <Route element={<ToolsShell />}>
+        <Route index element={<ToolsHome />} />
 
         {/* Converters */}
         <Route path="xml-json" element={<XmlJsonConverter />} />
@@ -247,7 +235,7 @@ export default function ToolsLayout() {
         <Route path="image-converter" element={<ImageConverter />} />
         <Route path="media-compressor" element={<MediaCompressor />} />
 
-        <Route path="*" element={<NotFound inTools />} />
+        <Route path="*" element={<NotFound backTo="/tools" backLabel="Back to tools" />} />
       </Route>
     </Routes>
   )

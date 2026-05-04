@@ -1,5 +1,6 @@
 ﻿import { useState, useEffect } from 'react'
 import { useCityFavourites } from '../../../hooks/useCityFavourites'
+import { API_URLS } from '../../../config/apiUrls'
 import { weatherIcon, windDir, WMO, fetchCurrentWeather, buildWeatherUrl, type CurrentWeather } from '../../../lib/weather'
 import { FetchedAtLink } from '../../../components/FetchedAtLink'
 import { flagUrl, type GeoResult } from '../../../lib/geo'
@@ -34,7 +35,7 @@ export function WeatherLookup() {
     const id = setTimeout(async () => {
       try {
         const res = await fetch(
-          `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(trimmed)}&count=8&language=en&format=json`
+          `${API_URLS.geocoding}?name=${encodeURIComponent(trimmed)}&count=8&language=en&format=json`
         )
         const json = await res.json()
         setResults((json.results ?? []).filter((r: GeoResult) => r.timezone))

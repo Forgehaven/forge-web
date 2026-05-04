@@ -1,8 +1,9 @@
 ﻿import { useState, useEffect } from 'react'
 import useSWR from 'swr'
 import { Select } from '../../../components/Select'
+import { API_URLS, POLL_INTERVALS } from '../../../config/apiUrls'
 
-const CDN = 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1'
+const CDN = API_URLS.currencyCdn
 
 const fetcher = (url: string) => fetch(url).then(r => r.json())
 
@@ -17,7 +18,7 @@ export function CurrencyConverter() {
   )
 
   const { data: geoData } = useSWR(
-    'https://ipapi.co/json/',
+    `${API_URLS.ipGeo}/json/`,
     fetcher,
     { revalidateOnFocus: false, revalidateOnReconnect: false }
   )
@@ -25,7 +26,7 @@ export function CurrencyConverter() {
   const { data: rateData, isLoading, error } = useSWR(
     `${CDN}/currencies/${from.toLowerCase()}.json`,
     fetcher,
-    { refreshInterval: 60_000 }
+    { refreshInterval: POLL_INTERVALS.currency }
   )
 
   const currencyList: [string, string][] = currenciesRaw

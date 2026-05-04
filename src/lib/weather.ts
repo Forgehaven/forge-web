@@ -1,3 +1,5 @@
+import { API_URLS } from '../config/apiUrls'
+
 export interface CurrentWeather {
   temperature_2m: number
   apparent_temperature: number
@@ -56,7 +58,7 @@ export function formatFetchedAt(date: Date): string {
 
 export function buildWeatherUrl(lat: number, lon: number): string {
   return (
-    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
+    `${API_URLS.weather}?latitude=${lat}&longitude=${lon}` +
     `&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,surface_pressure,uv_index,precipitation,cloud_cover`
   )
 }

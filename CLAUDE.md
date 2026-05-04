@@ -170,3 +170,8 @@ const scale = ref.current ? ... : 1
 | `forgetools_city_favourites` | `CityFavourite[]` — pinned cities |
 | `forgetools_collapsed_sections` | `Record<string, boolean>` — collapsed sidebar sections |
 | `forge_ip_v1` | Cached IPInfo + timestamp (5-min TTL) |
+
+---
+
+## Component library goal
+Prefer extracting reusable UI into `src/components/`. Folder-per-concern (e.g. `Sidebar/`, `BottomBar/`) when there are 3+ related pieces. Hooks go in `src/hooks/`, not colocated with components.

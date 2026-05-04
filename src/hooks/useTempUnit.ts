@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
+import { STORAGE_KEYS } from '../config/storageKeys'
 
 export type TempUnit = 'C' | 'F'
 
-const KEY = 'forgetools_temp_unit'
+const KEY = STORAGE_KEYS.tempUnit
 const EVENT = 'forgetools_tempunit_change'
 
 export function formatTemp(celsius: number, unit: TempUnit): string {

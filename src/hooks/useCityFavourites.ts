@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { STORAGE_KEYS } from '../config/storageKeys'
 
 export type CityFavourite = {
   id: number
@@ -11,7 +12,7 @@ export type CityFavourite = {
   longitude?: number
 }
 
-const KEY = 'forgetools_city_favourites'
+const KEY = STORAGE_KEYS.cityFavourites
 
 function load(): CityFavourite[] {
   try {
