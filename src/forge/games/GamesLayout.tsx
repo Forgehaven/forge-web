@@ -8,6 +8,7 @@ import { GamesSidebar } from './GamesSidebar'
 import { GamesSettings } from './GamesSettings'
 import { GamesHome } from './GamesHome'
 import { SkillchainCalc } from './ffxi/SkillchainCalc'
+import { ClammingTracker } from './ffxi/ClammingTracker'
 
 
 function GamesShell() {
@@ -98,6 +99,7 @@ export default function GamesLayout() {
       <Route element={<GamesShell />}>
         <Route index element={<GamesHome />} />
         <Route path="skillchain-calc" element={<SkillchainCalc />} />
+        <Route path="clamming-tracker" element={<ClammingTracker />} />
         <Route path="*" element={<NotFound backTo="/games" backLabel="Back to games" />} />
       </Route>
     </Routes>

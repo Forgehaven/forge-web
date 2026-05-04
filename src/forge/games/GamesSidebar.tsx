@@ -24,6 +24,7 @@ const sections: GameSection[] = [
     section: 'FFXI - Horizon',
     games: [
       { path: `${G}/skillchain-calc`, label: 'Skillchain Calc' },
+      { path: `${G}/clamming-tracker`, label: 'Clamming Tracker' },
     ],
   },
 ]
