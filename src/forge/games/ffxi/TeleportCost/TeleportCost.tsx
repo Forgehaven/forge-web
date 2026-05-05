@@ -1,17 +1,21 @@
 import { useCallback, useLayoutEffect, useRef, useState } from 'react'
+import { STORAGE_KEYS } from '../../../../config/storageKeys'
+import { API_URLS } from '../../../../config/apiUrls'
+import { CharacterHeader } from '../components/CharacterHeader'
+import type { NationMeta } from '../components/CharacterHeader'
+import { ConfirmButton } from '../../../../components/ConfirmButton'
+import { ImportPanel } from '../../../../components/ImportPanel'
 
 const getNow = () => Date.now()
 
-const SK    = 'forge_ffxi_teleportcost_v1'
-const ST_SK = 'forge_ffxi_spelltracker_v1'
-const AVATAR_BASE = 'https://pub-8d18c77b6a6c43f2ae9fc4c782ef9b78.r2.dev/images/account/create-character/face'
+const SK    = STORAGE_KEYS.ffxiTeleportCost
+const ST_SK = STORAGE_KEYS.ffxiSpellTracker
 
 // ---------------------------------------------------------------------------
 // Nations
 // ---------------------------------------------------------------------------
 
 type NationId = 1 | 2 | 3 | 4
-type NationMeta = { name: string; symbol: string; color: string }
 const NATIONS: Record<NationId, NationMeta> = {
   1: { name: 'Bastok',     symbol: '⚙',  color: '#5b8db8' },
   2: { name: 'Windurst',   symbol: '✦',  color: '#8aab7e' },
@@ -190,10 +194,7 @@ export function TeleportCost() {
   const [saved, setSaved]           = useState<SavedState>(loadState)
   const [mode, setMode]             = useState<'home' | 'jeuno'>('jeuno')
   const [fetchStatus, setFetchStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
-  const [confirmReset, setConfirmReset] = useState(false)
   const [importOpen, setImportOpen] = useState(false)
-  const [importText, setImportText] = useState('')
-  const [importError, setImportError] = useState(false)
   const [copied, setCopied] = useState(false)
 
   const tableRef = useRef<HTMLDivElement>(null)
@@ -234,7 +235,7 @@ export function TeleportCost() {
     if (!name) return
     setFetchStatus('loading')
     try {
-      const res = await fetch(`https://api.horizonxi.com/api/v1/chars/${encodeURIComponent(name)}`)
+      const res = await fetch(`${API_URLS.horizonXiChars}/${encodeURIComponent(name)}`)
       if (!res.ok) throw new Error()
       const data = await res.json()
       persist({ ...saved, nation: data.nation ?? null, avatar: data.avatar ?? null })
@@ -250,7 +251,6 @@ export function TeleportCost() {
 
   function handleReset() {
     persist({ ...saved, owners: {} })
-    setConfirmReset(false)
   }
 
   function exportState() {
@@ -260,15 +260,13 @@ export function TeleportCost() {
     setTimeout(() => setCopied(false), 1500)
   }
 
-  function importState() {
+  function importState(code: string): boolean {
     try {
-      const parsed = JSON.parse(atob(importText.trim()))
+      const parsed = JSON.parse(atob(code))
       persist({ ...saved, owners: parsed.owners ?? {} })
-      setImportOpen(false)
-      setImportText('')
-      setImportError(false)
+      return true
     } catch {
-      setImportError(true)
+      return false
     }
   }
 
@@ -278,75 +276,33 @@ export function TeleportCost() {
     <div className="flex flex-col gap-5 max-w-3xl mx-auto w-full">
 
       {/* Character / nation section */}
-      <div className="flex items-start justify-between gap-4">
-        {saved.nation !== null ? (
-          <div className="flex items-center gap-4">
-            {saved.avatar && (
-              <img
-                src={`${AVATAR_BASE}/${saved.avatar}.webp`}
-                alt={saved.charName}
-                className="w-16 h-16 rounded-lg object-cover border border-[#2a2d3a]"
-                onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
-              />
-            )}
-            <div>
-              {saved.charName && (
-                <h2 className="text-2xl font-bold text-[#e2e4ed] tracking-wide">{saved.charName}</h2>
-              )}
-              {nation && (
-                <p className={`font-medium ${saved.charName ? 'text-sm mt-0.5' : 'text-lg'}`} style={{ color: nation.color }}>
-                  {nation.symbol} {nation.name}
-                </p>
-              )}
-              <button
-                onClick={() => persist({ ...saved, nation: null, avatar: null })}
-                className="text-xs text-[#374151] hover:text-[#6b7280] transition-colors cursor-pointer mt-1"
-              >
-                change
-              </button>
-            </div>
+      <CharacterHeader
+        charName={saved.charName}
+        avatar={saved.avatar}
+        nation={nation}
+        fetchStatus={fetchStatus}
+        onCharNameChange={setCharName}
+        onFetch={fetchCharacter}
+        onClear={() => persist({ ...saved, nation: null, avatar: null })}
+        extra={
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-[#374151]">or select nation:</span>
+            {NATION_IDS.map(nid => {
+              const meta = NATIONS[nid]
+              return (
+                <button
+                  key={nid}
+                  onClick={() => persist({ ...saved, nation: nid, avatar: null })}
+                  className="text-xs px-2.5 py-1 rounded border transition-colors cursor-pointer"
+                  style={{ color: meta.color, borderColor: `${meta.color}50`, background: `${meta.color}10` }}
+                >
+                  {meta.symbol} {meta.name}
+                </button>
+              )
+            })}
           </div>
-        ) : (
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-3 flex-wrap">
-              <span className="text-xs text-[#6b7280] shrink-0">Character</span>
-              <input
-                type="text"
-                value={saved.charName}
-                onChange={e => setCharName(e.target.value)}
-                onKeyDown={e => { if (e.key === 'Enter') fetchCharacter() }}
-                placeholder="Character name"
-                className="px-2 py-1 text-sm rounded border bg-[#0f1117] text-[#e2e4ed] border-[#2a2d3a] hover:border-[#3a4060] focus:border-[#4a5070] focus:outline-none w-44"
-              />
-              <button
-                onClick={fetchCharacter}
-                disabled={!saved.charName.trim() || fetchStatus === 'loading'}
-                className="text-xs px-3 py-1 rounded border border-[#2a2d3a] text-[#6b7280] hover:text-[#e2e4ed] hover:border-[#3a4060] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors"
-              >
-                {fetchStatus === 'loading' ? 'Loading…' : 'Fetch'}
-              </button>
-              {fetchStatus === 'success' && <span className="text-xs text-[#4ade80]">Loaded</span>}
-              {fetchStatus === 'error'   && <span className="text-xs text-red-400">Not found</span>}
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-[#374151]">or select nation:</span>
-              {NATION_IDS.map(nid => {
-                const meta = NATIONS[nid]
-                return (
-                  <button
-                    key={nid}
-                    onClick={() => persist({ ...saved, nation: nid, avatar: null })}
-                    className="text-xs px-2.5 py-1 rounded border transition-colors cursor-pointer"
-                    style={{ color: meta.color, borderColor: `${meta.color}50`, background: `${meta.color}10` }}
-                  >
-                    {meta.symbol} {meta.name}
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-        )}
-      </div>
+        }
+      />
 
       {/* Title + controls */}
       <div className="flex items-start justify-between gap-4">
@@ -369,59 +325,23 @@ export function TeleportCost() {
             {copied ? 'Copied!' : 'Export'}
           </button>
           <button
-            onClick={() => { setImportOpen(v => !v); setImportError(false) }}
+            onClick={() => setImportOpen(v => !v)}
             className="text-xs text-[#4b5563] hover:text-[#e2e4ed] transition-colors cursor-pointer"
           >
             Import
           </button>
           <span className="text-[#2a2d3a]">|</span>
-          <div className="flex items-center gap-2">
-            {confirmReset ? (
-              <>
-                <span className="text-xs text-[#6b7280]">Sure?</span>
-                <button onClick={handleReset} className="text-xs text-red-400 hover:text-red-300 cursor-pointer transition-colors">Yes</button>
-                <button onClick={() => setConfirmReset(false)} className="text-xs text-[#4b5563] hover:text-[#e2e4ed] cursor-pointer transition-colors">No</button>
-              </>
-            ) : (
-              <button
-                onClick={() => setConfirmReset(true)}
-                className="text-xs text-[#4b5563] hover:text-[#9ca3af] transition-colors cursor-pointer"
-              >
-                Reset Conquest
-              </button>
-            )}
-          </div>
+          <ConfirmButton label="Reset Conquest" onConfirm={handleReset} />
         </div>
       </div>
 
       {/* Import panel */}
       {importOpen && (
-        <div className="rounded-lg border border-[#2a2d3a] bg-[#1a1d27] p-4 flex flex-col gap-3">
-          <p className="text-xs text-[#6b7280]">Paste an export code to load conquest ownership from another source. Your character and nation are kept.</p>
-          <textarea
-            value={importText}
-            onChange={e => { setImportText(e.target.value); setImportError(false) }}
-            placeholder="Paste export code here…"
-            rows={3}
-            className="w-full px-3 py-2 text-xs font-mono rounded border bg-[#0f1117] text-[#9ca3af] border-[#2a2d3a] focus:outline-none focus:border-[#4a5070] resize-none"
-          />
-          {importError && <p className="text-xs text-red-400">Invalid code — could not import.</p>}
-          <div className="flex gap-2">
-            <button
-              onClick={importState}
-              disabled={!importText.trim()}
-              className="text-xs px-3 py-1 rounded border border-[#c4af64]/40 text-[#c4af64] hover:bg-[#c4af64]/10 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
-            >
-              Load
-            </button>
-            <button
-              onClick={() => { setImportOpen(false); setImportText(''); setImportError(false) }}
-              className="text-xs px-3 py-1 rounded border border-[#2a2d3a] text-[#6b7280] hover:text-[#e2e4ed] cursor-pointer transition-colors"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
+        <ImportPanel
+          description="Paste an export code to load conquest ownership from another source. Your character and nation are kept."
+          onImport={importState}
+          onClose={() => setImportOpen(false)}
+        />
       )}
 
       {/* Table panel */}

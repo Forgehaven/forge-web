@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ITEMS, type ClammingItemDef } from './data/items'
+import { STORAGE_KEYS } from '../../../../config/storageKeys'
+import { ConfirmButton } from '../../../../components/ConfirmButton'
+import { ImportPanel } from '../../../../components/ImportPanel'
 
-const SK = 'forge_ffxi_clamming_v1'
+const SK = STORAGE_KEYS.ffxiClamming
 
 type PriceOverride = { ah?: number; ahStack?: number }
 type ExcState = { on: true; manual?: 'ah' | 'vendor' }
@@ -361,11 +364,8 @@ export function ClammingTracker() {
   const [stableOverrides, setStableOverrides] = useState<Record<string, PriceOverride>>(() => loadState().overrides)
   const [draggingId, setDraggingId] = useState<string | null>(null)
   const [dragTarget, setDragTarget] = useState<'ah' | 'vendor' | null>(null)
-  const [confirmReset, setConfirmReset] = useState(false)
   const [copied, setCopied] = useState(false)
   const [importOpen, setImportOpen] = useState(false)
-  const [importText, setImportText] = useState('')
-  const [importError, setImportError] = useState(false)
 
   // Debounce category recalculation 2s after last price change.
   // Effect cleanup cancels the pending timer on each keystroke.
@@ -424,7 +424,6 @@ export function ClammingTracker() {
     setSaved(empty)
     setStableOverrides({})
     localStorage.setItem(SK, JSON.stringify(empty))
-    setConfirmReset(false)
   }
 
   function exportState() {
@@ -434,18 +433,16 @@ export function ClammingTracker() {
     setTimeout(() => setCopied(false), 1500)
   }
 
-  function importState() {
+  function importState(code: string): boolean {
     try {
-      const parsed = JSON.parse(atob(importText.trim()))
+      const parsed = JSON.parse(atob(code))
       const next: SavedState = { overrides: {}, exceptions: {}, disabledRec: {}, ...parsed }
       setSaved(next)
       setStableOverrides(next.overrides)
       localStorage.setItem(SK, JSON.stringify(next))
-      setImportOpen(false)
-      setImportText('')
-      setImportError(false)
+      return true
     } catch {
-      setImportError(true)
+      return false
     }
   }
 
@@ -500,56 +497,22 @@ export function ClammingTracker() {
             {copied ? 'Copied!' : 'Export'}
           </button>
           <button
-            onClick={() => { setImportOpen(v => !v); setImportError(false) }}
+            onClick={() => setImportOpen(v => !v)}
             className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer"
           >
             Import
           </button>
           <span className="text-[#2a2d3a]">|</span>
-          {confirmReset ? (
-            <span className="flex items-center gap-2 text-xs">
-              <span className="text-[#6b7280]">Reset all?</span>
-              <button onClick={resetAll} className="text-red-400 hover:text-red-300 cursor-pointer transition-colors">Yes</button>
-              <button onClick={() => setConfirmReset(false)} className="text-[#6b7280] hover:text-[#e2e4ed] cursor-pointer transition-colors">No</button>
-            </span>
-          ) : (
-            <button
-              onClick={() => setConfirmReset(true)}
-              className="text-xs text-[#374151] hover:text-[#6b7280] transition-colors cursor-pointer"
-            >
-              Reset all
-            </button>
-          )}
+          <ConfirmButton label="Reset all" confirmPrompt="Reset all?" onConfirm={resetAll} />
         </div>
       </div>
 
       {importOpen && (
-        <div className="rounded-lg border border-[#2a2d3a] bg-[#1a1d27] p-4 flex flex-col gap-3">
-          <p className="text-xs text-[#6b7280]">Paste an export code to load saved prices and settings from another source.</p>
-          <textarea
-            value={importText}
-            onChange={e => { setImportText(e.target.value); setImportError(false) }}
-            placeholder="Paste export code here…"
-            rows={3}
-            className="w-full px-3 py-2 text-xs font-mono rounded border bg-[#0f1117] text-[#9ca3af] border-[#2a2d3a] focus:outline-none focus:border-[#4a5070] resize-none"
-          />
-          {importError && <p className="text-xs text-red-400">Invalid code — could not import.</p>}
-          <div className="flex gap-2">
-            <button
-              onClick={importState}
-              disabled={!importText.trim()}
-              className="text-xs px-3 py-1 rounded border border-[#c4af64]/40 text-[#c4af64] hover:bg-[#c4af64]/10 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
-            >
-              Load
-            </button>
-            <button
-              onClick={() => { setImportOpen(false); setImportText(''); setImportError(false) }}
-              className="text-xs px-3 py-1 rounded border border-[#2a2d3a] text-[#6b7280] hover:text-[#e2e4ed] cursor-pointer transition-colors"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
+        <ImportPanel
+          description="Paste an export code to load saved prices and settings from another source."
+          onImport={importState}
+          onClose={() => setImportOpen(false)}
+        />
       )}
 
       {/* Exception Section — shown first so unsorted items are obvious */}

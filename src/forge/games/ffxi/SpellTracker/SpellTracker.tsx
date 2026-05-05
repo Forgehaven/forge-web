@@ -5,15 +5,17 @@ import {
   type JobAbbr, type Spell,
 } from './spellData'
 import { ELEMENT_COLORS, type Element } from '../SkillchainCalc/data/elements'
+import { STORAGE_KEYS } from '../../../../config/storageKeys'
+import { API_URLS } from '../../../../config/apiUrls'
+import { CharacterHeader } from '../components/CharacterHeader'
+import type { NationMeta } from '../components/CharacterHeader'
 
-const SK = 'forge_ffxi_spelltracker_v1'
+const SK = STORAGE_KEYS.ffxiSpellTracker
 
 const JOBS: JobAbbr[] = [
   'WHM', 'BLM', 'RDM', 'PLD', 'DRK', 'BRD', 'SMN', 'NIN',
   // 'BLU', // not yet implemented
 ]
-
-const AVATAR_BASE = 'https://pub-8d18c77b6a6c43f2ae9fc4c782ef9b78.r2.dev/images/account/create-character/face'
 
 type SavedState = {
   charName: string
@@ -43,7 +45,6 @@ const JOB_SPELLS: Record<JobAbbr, Spell[]> = Object.fromEntries(
   ])
 ) as Record<JobAbbr, Spell[]>
 
-type NationMeta = { name: string; symbol: string; color: string }
 const NATIONS: Record<number, NationMeta> = {
   1: { name: 'Bastok',     symbol: '⚙',  color: '#5b8db8' }, // steel blue — rivers of Bastok
   2: { name: 'Windurst',   symbol: '✦',  color: '#8aab7e' }, // sage green — Windurstians' fondness of nature
@@ -299,7 +300,7 @@ export function SpellTracker() {
     if (!name) return
     setFetchStatus('loading')
     try {
-      const res = await fetch(`https://api.horizonxi.com/api/v1/chars/${encodeURIComponent(name)}`)
+      const res = await fetch(`${API_URLS.horizonXiChars}/${encodeURIComponent(name)}`)
       if (!res.ok) throw new Error()
       const data = await res.json()
       const fetched = data.jobs as Record<string, number>
@@ -417,54 +418,15 @@ export function SpellTracker() {
 
       {/* Character section — top */}
       <div className="flex items-start justify-between gap-4">
-        {saved.nation !== null ? (
-          <div className="flex items-center gap-4">
-            {saved.avatar && (
-              <img
-                src={`${AVATAR_BASE}/${saved.avatar}.webp`}
-                alt={saved.charName}
-                className="w-16 h-16 rounded-lg object-cover border border-[#2a2d3a]"
-                onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
-              />
-            )}
-            <div>
-              <h2 className="text-2xl font-bold text-[#e2e4ed] tracking-wide">{saved.charName}</h2>
-              {nation && (
-                <p className="text-sm mt-0.5 font-medium" style={{ color: nation.color }}>
-                  {nation.symbol} {nation.name}
-                </p>
-              )}
-              <button
-                onClick={() => persist({ ...saved, nation: null, avatar: null })}
-                className="text-xs text-[#374151] hover:text-[#6b7280] transition-colors cursor-pointer mt-1"
-              >
-                change
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="flex items-center gap-3 flex-wrap">
-            <span className="text-xs text-[#6b7280] shrink-0">Character</span>
-            <input
-              type="text"
-              value={saved.charName}
-              onChange={e => setCharName(e.target.value)}
-              onKeyDown={e => { if (e.key === 'Enter') fetchCharacter() }}
-              placeholder="Character name"
-              className="px-2 py-1 text-sm rounded border bg-[#0f1117] text-[#e2e4ed] border-[#2a2d3a] hover:border-[#3a4060] focus:border-[#4a5070] focus:outline-none w-44"
-            />
-            <button
-              onClick={fetchCharacter}
-              disabled={!saved.charName.trim() || fetchStatus === 'loading'}
-              className="text-xs px-3 py-1 rounded border border-[#2a2d3a] text-[#6b7280] hover:text-[#e2e4ed] hover:border-[#3a4060] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors"
-            >
-              {fetchStatus === 'loading' ? 'Loading…' : 'Fetch'}
-            </button>
-            {fetchStatus === 'success' && <span className="text-xs text-[#4ade80]">Loaded</span>}
-            {fetchStatus === 'error' && <span className="text-xs text-red-400">Character not found</span>}
-          </div>
-        )}
-
+        <CharacterHeader
+          charName={saved.charName}
+          avatar={saved.avatar}
+          nation={nation}
+          fetchStatus={fetchStatus}
+          onCharNameChange={setCharName}
+          onFetch={fetchCharacter}
+          onClear={() => persist({ ...saved, nation: null, avatar: null })}
+        />
         <div className="flex items-center gap-3 shrink-0 mt-1">
           <button onClick={exportJSON} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">Export</button>
           <button onClick={() => fileInputRef.current?.click()} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">Import</button>

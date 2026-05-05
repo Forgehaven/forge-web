@@ -9,6 +9,7 @@ import { useTempUnit, formatTemp, formatWind, formatPressure, formatPrecip, form
 import { flagUrl, haversineKm, bearingDeg } from '../../lib/geo'
 import { GripIcon, SortIcon } from '../../components/Icons'
 import { StatPill } from '../../components/UI'
+import { ConfirmButton } from '../../components/ConfirmButton'
 
 function formatTime(tz: string, date: Date): string {
   return date.toLocaleTimeString('en-US', {
@@ -33,7 +34,6 @@ export function ToolsHome() {
   const now = useNow()
   const [unit] = useTempUnit()
   const { cities, toggle, move } = useCityFavourites()
-  const [pendingRemove, setPendingRemove] = useState<number | null>(null)
   const [expandedId, setExpandedId] = useState<number | null>(null)
   const [weather, setWeather] = useState<Record<number, CurrentWeather>>({})
   const [weatherFetchedAt, setWeatherFetchedAt] = useState<Record<number, Date>>({})
@@ -75,7 +75,6 @@ export function ToolsHome() {
 
   function enterRearrange() {
     setExpandedId(null)
-    setPendingRemove(null)
     setRearranging(true)
   }
 
@@ -201,33 +200,14 @@ export function ToolsHome() {
                         <p className="font-mono text-sm text-[#c4af64] tabular-nums shrink-0">
                           {formatTime(c.timezone, now)}
                         </p>
-                        {pendingRemove === c.id ? (
-                          <div className="flex items-center gap-1.5 shrink-0">
-                            <span className="text-xs text-[#6b7280]">Remove?</span>
-                            <button
-                              onClick={() => { toggle(c); setPendingRemove(null) }}
-                              className="text-xs text-red-400 hover:text-red-300 transition-colors cursor-pointer"
-                              aria-label="Confirm remove"
-                            >
-                              ✓
-                            </button>
-                            <button
-                              onClick={() => setPendingRemove(null)}
-                              className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer"
-                              aria-label="Cancel"
-                            >
-                              ✗
-                            </button>
-                          </div>
-                        ) : (
-                          <button
-                            onClick={() => setPendingRemove(c.id)}
-                            className="text-[#3a3d4a] hover:text-[#6b7280] transition-colors cursor-pointer text-sm shrink-0"
-                            aria-label="Remove"
-                          >
-                            ×
-                          </button>
-                        )}
+                        <ConfirmButton
+                          label="×"
+                          confirmPrompt="Remove?"
+                          confirmLabel="✓"
+                          cancelLabel="✗"
+                          onConfirm={() => toggle(c)}
+                          className="text-[#3a3d4a] hover:text-[#6b7280] transition-colors cursor-pointer text-sm shrink-0"
+                        />
                       </>
                     )}
                   </div>
