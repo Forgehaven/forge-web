@@ -34,9 +34,10 @@ export function Select(props: Props<SelectOption, false>) {
       unstyled
       isSearchable={false}
       maxMenuHeight={480}
-      menuPortalTarget={document.body}
-      menuPosition="fixed"
-      styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+      styles={{
+        menu: base => ({ ...base, zIndex: 9999 }),
+        menuList: () => ({ maxHeight: 480, overflowY: 'auto' }),
+      }}
       classNames={sharedClassNames}
       {...props}
     />
