@@ -118,8 +118,6 @@ export const whiteMagic: Spell[] = [
   { name: 'Barblizzard',  jobs: { RDM: 21                   } },
   { name: 'Barsilence',   jobs: { RDM: 23                   } },
   { name: 'Barthunder',   jobs: { RDM: 25                   } },
-  { name: 'Gravity',      jobs: { RDM: 21                   } },
-  { name: 'Dispel',       jobs: { RDM: 32                   } },
   { name: 'Phalanx',      jobs: { RDM: 33                   } },
   { name: 'Refresh',      jobs: { RDM: 41                   } },
   { name: 'Barvirus',     jobs: { RDM: 39                   } },
@@ -216,6 +214,9 @@ export const blackMagic: Spell[] = [
   { name: 'Thundaga III',jobs: { BLM: 73                   } },
   { name: 'Blizzard IV',jobs: { BLM: 74                    } },
   { name: 'Thunder IV', jobs: { BLM: 75                    } },
+  // RDM-only black magic
+  { name: 'Gravity',    jobs: { RDM: 21                   } },
+  { name: 'Dispel',     jobs: { RDM: 32                   } },
   // DRK-exclusive dark magic (Absorb line)
   { name: 'Absorb-MND', jobs: { DRK: 31                    } },
   { name: 'Absorb-CHR', jobs: { DRK: 33                    } },
