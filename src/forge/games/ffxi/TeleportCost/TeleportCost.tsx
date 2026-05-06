@@ -140,15 +140,15 @@ function OutpostRow({ outpost, mode, userNation, owner, onOwnerChange }: Outpost
             <button
               onClick={() => onOwnerChange(active ? null : nid)}
               title={`${meta.name} controls this region`}
-              className="w-6 h-6 rounded-full transition-all cursor-pointer flex items-center justify-center mx-auto"
+              className={`w-6 h-6 rounded-full transition-all cursor-pointer flex items-center justify-center mx-auto ${owner === null ? 'animate-pulse' : ''}`}
               style={active ? {
                 background: `${meta.color}25`,
                 border: `1px solid ${meta.color}`,
                 color: meta.color,
               } : {
                 background: 'transparent',
-                border: '1px solid #2a2d3a',
-                color: '#374151',
+                border: `1px solid ${owner === null ? '#4b5563' : '#2a2d3a'}`,
+                color: owner === null ? '#6b7280' : '#374151',
               }}
             >
               <span style={{ fontSize: '11px', lineHeight: 0 }}>{meta.symbol}</span>
