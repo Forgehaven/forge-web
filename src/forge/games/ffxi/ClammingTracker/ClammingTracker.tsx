@@ -457,6 +457,10 @@ export function ClammingTracker() {
       else if (cat === 'vendor') vendorItems.push(item)
       else exceptionItems.push(item)
     }
+    const alpha = (a: ClammingItemDef, b: ClammingItemDef) => a.name.localeCompare(b.name)
+    ahItems.sort(alpha)
+    vendorItems.sort(alpha)
+    exceptionItems.sort(alpha)
     return { ahItems, vendorItems, exceptionItems }
   }, [stableOverrides, saved.exceptions, saved.disabledRec])
 

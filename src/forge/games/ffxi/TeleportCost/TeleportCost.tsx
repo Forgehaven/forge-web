@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { OUTPOSTS, type Outpost } from '../data/zones'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import { API_URLS } from '../../../../config/apiUrls'
@@ -170,6 +170,8 @@ export function TeleportCost() {
   const [fetchStatus, setFetchStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [importOpen, setImportOpen] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [sortCol, setSortCol] = useState<'zone' | 'region' | null>(null)
+  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc')
 
   const tableRef = useRef<HTMLDivElement>(null)
   const [tableMaxH, setTableMaxH] = useState<number | null>(null)
@@ -243,6 +245,25 @@ export function TeleportCost() {
       return false
     }
   }
+
+  function handleSort(col: 'zone' | 'region') {
+    if (sortCol === col) {
+      if (sortDir === 'asc') setSortDir('desc')
+      else setSortCol(null)
+    } else {
+      setSortCol(col)
+      setSortDir('asc')
+    }
+  }
+
+  const sortedOutposts = useMemo(() => {
+    if (!sortCol) return OUTPOSTS
+    return [...OUTPOSTS].sort((a, b) => {
+      const av = sortCol === 'zone' ? a.zone : a.region
+      const bv = sortCol === 'zone' ? b.zone : b.region
+      return sortDir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av)
+    })
+  }, [sortCol, sortDir])
 
   const nation = saved.nation !== null ? NATIONS[saved.nation] : null
 
@@ -357,8 +378,24 @@ export function TeleportCost() {
           <table className="w-full min-w-[520px]">
             <thead className="sticky top-0 bg-[#0f1117] z-10">
               <tr className="border-b border-[#1e2130]">
-                <th className="pl-4 pr-3 py-1.5 text-left text-[10px] text-[#9ca3af] uppercase tracking-wider font-semibold">Zone</th>
-                <th className="pr-3 py-1.5 text-left text-[10px] text-[#9ca3af] uppercase tracking-wider font-semibold hidden md:table-cell">Region</th>
+                <th
+                  onClick={() => handleSort('zone')}
+                  className={`pl-4 pr-3 py-1.5 text-left text-[10px] uppercase tracking-wider font-semibold cursor-pointer select-none transition-colors ${sortCol === 'zone' ? 'text-[#c4af64]' : 'text-[#9ca3af] hover:text-[#e2e4ed]'}`}
+                >
+                  <span className="inline-flex items-center gap-0.5">
+                    Zone
+                    <span className={sortCol === 'zone' ? '' : 'opacity-0'}>{sortDir === 'asc' ? '↑' : '↓'}</span>
+                  </span>
+                </th>
+                <th
+                  onClick={() => handleSort('region')}
+                  className={`pr-3 py-1.5 text-left text-[10px] uppercase tracking-wider font-semibold cursor-pointer select-none transition-colors hidden md:table-cell ${sortCol === 'region' ? 'text-[#c4af64]' : 'text-[#9ca3af] hover:text-[#e2e4ed]'}`}
+                >
+                  <span className="inline-flex items-center gap-0.5">
+                    Region
+                    <span className={sortCol === 'region' ? '' : 'opacity-0'}>{sortDir === 'asc' ? '↑' : '↓'}</span>
+                  </span>
+                </th>
                 <th className="pr-3 py-1.5 text-center text-[10px] text-[#9ca3af] uppercase tracking-wider font-semibold">Lv.</th>
                 <th colSpan={2} className="py-1.5 text-center text-[10px] text-[#9ca3af] uppercase tracking-wider font-semibold">Cost</th>
                 {NATION_IDS.map(nid => (
@@ -370,7 +407,7 @@ export function TeleportCost() {
               </tr>
             </thead>
             <tbody>
-              {OUTPOSTS.map(outpost => (
+              {sortedOutposts.map(outpost => (
                 <OutpostRow
                   key={outpost.zone}
                   outpost={outpost}
