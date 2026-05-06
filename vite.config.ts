@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { SECTION_TITLES } from './src/config/sections'
-import { readFileSync, copyFileSync, mkdirSync } from 'fs'
+import { readFileSync, copyFileSync, writeFileSync, mkdirSync } from 'fs'
 import { resolve } from 'path'
 
 const FFMPEG_DIR = resolve(import.meta.dirname, 'node_modules/@ffmpeg/core/dist/umd')
@@ -37,9 +37,10 @@ function ffmpegCorePlugin(): import('vite').Plugin {
       })
     },
     writeBundle() {
-      const out = resolve(process.cwd(), 'dist/ffmpeg')
+      const out = resolve(import.meta.dirname, 'dist/ffmpeg')
       mkdirSync(out, { recursive: true })
-      copyFileSync(resolve(FFMPEG_DIR, 'ffmpeg-core.js'), resolve(out, 'ffmpeg-core.js'))
+      const js = readFileSync(resolve(FFMPEG_DIR, 'ffmpeg-core.js'), 'utf-8')
+      writeFileSync(resolve(out, 'ffmpeg-core.js'), js + '\nexport default createFFmpegCore\n')
       copyFileSync(resolve(FFMPEG_DIR, 'ffmpeg-core.wasm'), resolve(out, 'ffmpeg-core.wasm'))
     },
   }
