@@ -60,7 +60,7 @@ export function UnixTimestamp() {
   const rp = { copiedKey, onCopy: copy }
 
   return (
-    <div className="pb-6 max-w-2xl">
+    <div className="max-w-2xl">
       <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Unix Timestamp</h1>
 
       <div className="flex flex-col gap-5">

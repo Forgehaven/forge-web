@@ -260,6 +260,7 @@ export function SkillchainCalc() {
         <label className="forge-label text-xs uppercase tracking-widest shrink-0">Level Sync</label>
         <input
           type="number"
+          inputMode="numeric"
           min={1}
           max={75}
           value={levelSyncRaw}

@@ -28,7 +28,7 @@ export function UrlEncoder() {
   }, [input, mode, encType])
 
   return (
-    <div className="pb-6 max-w-2xl">
+    <div className="max-w-2xl">
       <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">URL Encoder / Decoder</h1>
 
       <div className="flex gap-2 mb-6">

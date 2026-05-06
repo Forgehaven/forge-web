@@ -117,7 +117,7 @@ export function HttpHeaderInspector() {
   }, [raw])
 
   return (
-    <div className="pb-6 max-w-2xl">
+    <div className="max-w-2xl">
       <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">HTTP Header Inspector</h1>
 
       <div className="mb-4">

@@ -53,7 +53,7 @@ export function BcryptTester() {
   const btnClass = "px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed"
 
   return (
-    <div className="pb-6 max-w-xl">
+    <div className="max-w-xl">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-semibold text-[#e2e4ed]">Bcrypt Tester</h1>
         <div className="flex bg-[#1a1d27] border border-[#2a2d3a] rounded overflow-hidden">

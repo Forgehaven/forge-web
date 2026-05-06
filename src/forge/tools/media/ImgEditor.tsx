@@ -293,7 +293,7 @@ export function ImgEditor() {
     cropAspect?.source === 'size' && parseInt(resizeW) === p.w && parseInt(resizeH) === p.h
 
   return (
-    <div className="pb-6 max-w-2xl">
+    <div className="max-w-2xl">
       <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Image Editor</h1>
 
       <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-5">
@@ -388,9 +388,9 @@ export function ImgEditor() {
 
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-xs text-[#6b7280]">Export:</span>
-                <input type="number" min={1} value={resizeW} onChange={e => onResizeW(e.target.value)} className={inputCls} />
+                <input type="number" inputMode="numeric" min={1} value={resizeW} onChange={e => onResizeW(e.target.value)} className={inputCls} />
                 <span className="text-[#6b7280] text-xs">×</span>
-                <input type="number" min={1} value={resizeH} onChange={e => onResizeH(e.target.value)} className={inputCls} />
+                <input type="number" inputMode="numeric" min={1} value={resizeH} onChange={e => onResizeH(e.target.value)} className={inputCls} />
                 <button
                   onClick={toggleLock}
                   title={lockAspect ? 'Aspect locked — click to free' : 'Aspect free — click to lock'}

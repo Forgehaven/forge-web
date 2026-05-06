@@ -174,7 +174,7 @@ export function XmlJsonConverter() {
   }
 
   return (
-    <div className="pb-6 h-full flex flex-col">
+    <div className="h-full flex flex-col">
       <h1 className="text-xl font-semibold text-[#e2e4ed] mb-4">XML ↔ JSON</h1>
 
       <div className="flex flex-col md:flex-row gap-4 md:h-[70vh]">

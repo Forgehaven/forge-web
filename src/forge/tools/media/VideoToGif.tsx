@@ -139,7 +139,7 @@ export function VideoToGif() {
   const isBusy = ffmpegLoading || generating
 
   return (
-    <div className="pb-6 max-w-2xl">
+    <div className="max-w-2xl">
       <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Video to GIF</h1>
 
       <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-5">
@@ -189,7 +189,7 @@ export function VideoToGif() {
               <div>
                 <label className="block text-xs text-[#6b7280] mb-1">Start (s)</label>
                 <input
-                  type="number" min={0} max={end - 0.5} step={0.1}
+                  type="number" inputMode="decimal" min={0} max={end - 0.5} step={0.1}
                   value={start.toFixed(1)}
                   onChange={e => setStart(Math.max(0, Math.min(parseFloat(e.target.value) || 0, end - 0.5)))}
                   className={inputClass}
@@ -210,7 +210,7 @@ export function VideoToGif() {
               <div>
                 <label className="block text-xs text-[#6b7280] mb-1">End (s)</label>
                 <input
-                  type="number" min={start + 0.5} max={duration} step={0.1}
+                  type="number" inputMode="decimal" min={start + 0.5} max={duration} step={0.1}
                   value={end.toFixed(1)}
                   onChange={e => setEnd(Math.min(duration, Math.max(parseFloat(e.target.value) || 0, start + 0.5)))}
                   className={inputClass}

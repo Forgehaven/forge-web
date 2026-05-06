@@ -161,6 +161,7 @@ function FieldRow({ meta, field, onChange }: {
   const numInput = (value: string, key: keyof FieldState) => (
     <input
       type="number"
+      inputMode="numeric"
       min={meta.min}
       max={meta.max}
       value={value}
@@ -317,7 +318,7 @@ export function CronParser() {
     : []
 
   return (
-    <div className="pb-6 max-w-xl">
+    <div className="max-w-xl">
       <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Cron Parser</h1>
 
       <div className="mb-3">

@@ -144,7 +144,7 @@ export function HashGenerator() {
   }
 
   return (
-    <div className="pb-6 max-w-2xl">
+    <div className="max-w-2xl">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-semibold text-[#e2e4ed]">Hash Generator</h1>
         <div className="flex bg-[#1a1d27] border border-[#2a2d3a] rounded overflow-hidden">

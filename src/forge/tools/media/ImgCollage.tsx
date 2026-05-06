@@ -79,6 +79,7 @@ export function ImgCollage() {
   const fileRef = useRef<HTMLInputElement>(null)
   const previewRef = useRef<HTMLCanvasElement>(null)
   const dragIdxRef = useRef<number | null>(null)
+  const touchDragRef = useRef<{ fromIdx: number; overIdx: number | null; startX: number; startY: number } | null>(null)
 
   const W = Math.max(1, parseInt(canvasW) || 1920)
   const H = Math.max(1, parseInt(canvasH) || 1080)
@@ -162,8 +163,39 @@ export function ImgCollage() {
     setDraggingId(null)
   }
 
+  function onThumbTouchStart(e: React.TouchEvent, idx: number) {
+    const t = e.touches[0]
+    touchDragRef.current = { fromIdx: idx, overIdx: null, startX: t.clientX, startY: t.clientY }
+  }
+
+  function onThumbTouchMove(e: React.TouchEvent) {
+    const drag = touchDragRef.current
+    if (!drag) return
+    const t = e.touches[0]
+    if (Math.abs(t.clientX - drag.startX) < 6 && Math.abs(t.clientY - drag.startY) < 6) return
+    e.preventDefault()
+    setDraggingId(imgs[drag.fromIdx]?.id ?? null)
+    const under = document.elementFromPoint(t.clientX, t.clientY)
+    const thumb = (under as HTMLElement | null)?.closest<HTMLElement>('[data-drag-idx]')
+    if (thumb) drag.overIdx = Number(thumb.dataset.dragIdx)
+  }
+
+  function onThumbTouchEnd() {
+    const drag = touchDragRef.current
+    touchDragRef.current = null
+    if (drag && drag.overIdx !== null && drag.fromIdx !== drag.overIdx) {
+      setImgs(prev => {
+        const next = [...prev]
+        const [moved] = next.splice(drag.fromIdx, 1)
+        next.splice(drag.overIdx!, 0, moved)
+        return next
+      })
+    }
+    setDraggingId(null)
+  }
+
   return (
-    <div className="pb-6 max-w-2xl">
+    <div className="max-w-2xl">
       <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Image Collage</h1>
 
       <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-5">
@@ -198,10 +230,14 @@ export function ImgCollage() {
             {imgs.map((img, idx) => (
               <div
                 key={img.id}
+                data-drag-idx={idx}
                 draggable
                 onDragStart={() => onThumbDragStart(idx, img.id)}
                 onDragOver={e => onThumbDragOver(e, idx)}
                 onDragEnd={onThumbDragEnd}
+                onTouchStart={e => onThumbTouchStart(e, idx)}
+                onTouchMove={onThumbTouchMove}
+                onTouchEnd={onThumbTouchEnd}
                 className={`relative group shrink-0 cursor-grab active:cursor-grabbing transition-opacity ${draggingId === img.id ? 'opacity-40' : 'opacity-100'}`}
               >
                 <img
@@ -232,9 +268,9 @@ export function ImgCollage() {
         <div className="flex flex-col gap-2">
           <label className="text-xs text-[#6b7280]">Canvas size</label>
           <div className="flex items-center gap-2 flex-wrap">
-            <input type="number" min={1} value={canvasW} onChange={e => setCanvasW(e.target.value)} className={inputCls} />
+            <input type="number" inputMode="numeric" min={1} value={canvasW} onChange={e => setCanvasW(e.target.value)} className={inputCls} />
             <span className="text-xs text-[#6b7280]">×</span>
-            <input type="number" min={1} value={canvasH} onChange={e => setCanvasH(e.target.value)} className={inputCls} />
+            <input type="number" inputMode="numeric" min={1} value={canvasH} onChange={e => setCanvasH(e.target.value)} className={inputCls} />
             <span className="text-xs text-[#3a3d4a]">px</span>
           </div>
           <div className="flex gap-1.5 flex-wrap">

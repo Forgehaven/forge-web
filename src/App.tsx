@@ -74,7 +74,7 @@ export default function App() {
           <Route
             path="/tools/*"
             element={
-              <Suspense fallback={<div style={{ background: '#0f1117', height: '100vh' }} />}>
+              <Suspense fallback={<div style={{ background: '#0f1117', height: '100dvh' }} />}>
                 <ToolsLayout />
               </Suspense>
             }
@@ -82,7 +82,7 @@ export default function App() {
           <Route
             path="/games/*"
             element={
-              <Suspense fallback={<div style={{ background: '#0f1117', height: '100vh' }} />}>
+              <Suspense fallback={<div style={{ background: '#0f1117', height: '100dvh' }} />}>
                 <GamesLayout />
               </Suspense>
             }

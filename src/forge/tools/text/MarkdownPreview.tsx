@@ -88,7 +88,7 @@ export function MarkdownPreview() {
   const html = useMemo(() => marked.parse(source) as string, [source])
 
   return (
-    <div className="pb-6">
+    <div>
       <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Markdown Preview</h1>
 
       <div className="flex gap-4 h-[70vh]">

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { API_URLS } from '../../../../config/apiUrls'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import { ConfirmButton } from '../../../../components/ConfirmButton'
@@ -45,6 +45,7 @@ export function FriendViewer() {
   const [isFetching, setIsFetching] = useState(false)
   const [draggedIdx, setDraggedIdx] = useState<number | null>(null)
   const [dragOverIdx, setDragOverIdx] = useState<number | null>(null)
+  const touchDragRef = useRef<{ fromIdx: number; overIdx: number | null; startX: number; startY: number } | null>(null)
   const [copied, setCopied] = useState(false)
   const [importOpen, setImportOpen] = useState(false)
 
@@ -108,6 +109,41 @@ export function FriendViewer() {
   }
 
   function handleDragEnd() { setDraggedIdx(null); setDragOverIdx(null) }
+
+  function handleChipTouchStart(e: React.TouchEvent, idx: number) {
+    if ((e.target as HTMLElement).closest('button')) return
+    const t = e.touches[0]
+    touchDragRef.current = { fromIdx: idx, overIdx: null, startX: t.clientX, startY: t.clientY }
+  }
+
+  function handleChipTouchMove(e: React.TouchEvent) {
+    const drag = touchDragRef.current
+    if (!drag) return
+    const t = e.touches[0]
+    if (Math.abs(t.clientX - drag.startX) < 6 && Math.abs(t.clientY - drag.startY) < 6) return
+    e.preventDefault()
+    setDraggedIdx(drag.fromIdx)
+    const under = document.elementFromPoint(t.clientX, t.clientY)
+    const chip = (under as HTMLElement | null)?.closest<HTMLElement>('[data-drag-idx]')
+    if (chip) {
+      const targetIdx = Number(chip.dataset.dragIdx)
+      drag.overIdx = targetIdx
+      setDragOverIdx(targetIdx)
+    }
+  }
+
+  function handleChipTouchEnd() {
+    const drag = touchDragRef.current
+    touchDragRef.current = null
+    if (drag && drag.overIdx !== null && drag.fromIdx !== drag.overIdx) {
+      const names = [...saved.names]
+      const [removed] = names.splice(drag.fromIdx, 1)
+      names.splice(drag.overIdx, 0, removed)
+      save({ ...saved, names })
+    }
+    setDraggedIdx(null)
+    setDragOverIdx(null)
+  }
 
   function exportNames() {
     navigator.clipboard.writeText(btoa(JSON.stringify(saved.names)))
@@ -263,11 +299,15 @@ export function FriendViewer() {
                 return (
                   <span
                     key={name}
+                    data-drag-idx={idx}
                     draggable
                     onDragStart={() => handleDragStart(idx)}
                     onDragOver={e => handleDragOver(e, idx)}
                     onDrop={() => handleDrop(idx)}
                     onDragEnd={handleDragEnd}
+                    onTouchStart={e => handleChipTouchStart(e, idx)}
+                    onTouchMove={handleChipTouchMove}
+                    onTouchEnd={handleChipTouchEnd}
                     className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs border bg-[#1a1d27] text-[#9ca3af] cursor-grab active:cursor-grabbing select-none transition-opacity"
                     style={{
                       borderColor: isDropTarget ? '#c4af64' : '#2a2d3a',

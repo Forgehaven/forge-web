@@ -126,7 +126,7 @@ export function DiscordTimestamp() {
   }
 
   return (
-    <div className="pb-6 max-w-2xl">
+    <div className="max-w-2xl">
       <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Discord Timestamp Converter</h1>
 
       <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">
@@ -146,7 +146,7 @@ export function DiscordTimestamp() {
 
         <div>
           <label className="block text-xs text-[#6b7280] mb-1">Unix Timestamp → Human Date</label>
-          <input className={inputClass} type="number" value={tsInput} onChange={e => setTsInput(e.target.value)} placeholder="e.g. 1700000000" />
+          <input className={inputClass} type="number" inputMode="numeric" value={tsInput} onChange={e => setTsInput(e.target.value)} placeholder="e.g. 1700000000" />
           {tsResult && (
             <div className="mt-2 flex items-center justify-between">
               <p className="font-mono text-sm text-[#c4af64]">

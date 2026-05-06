@@ -291,7 +291,7 @@ export function AudioCutter() {
   const endPct = duration > 0 ? (trimEnd / duration) * 100 : 100
 
   return (
-    <div className="pb-6 max-w-2xl">
+    <div className="max-w-2xl">
       <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Audio Cutter</h1>
 
       <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-5">
@@ -357,7 +357,7 @@ export function AudioCutter() {
               <div>
                 <label className="block text-xs text-[#6b7280] mb-1">Start (s)</label>
                 <input
-                  type="number" min={0} max={trimEnd - 0.05} step={0.01}
+                  type="number" inputMode="decimal" min={0} max={trimEnd - 0.05} step={0.01}
                   value={trimStart.toFixed(2)}
                   onChange={e => {
                     const v = Math.max(0, Math.min(parseFloat(e.target.value) || 0, trimEndRef.current - 0.05))
@@ -371,7 +371,7 @@ export function AudioCutter() {
               <div>
                 <label className="block text-xs text-[#6b7280] mb-1">End (s)</label>
                 <input
-                  type="number" min={trimStart + 0.05} max={duration} step={0.01}
+                  type="number" inputMode="decimal" min={trimStart + 0.05} max={duration} step={0.01}
                   value={trimEnd.toFixed(2)}
                   onChange={e => {
                     const v = Math.min(durationRef.current, Math.max(parseFloat(e.target.value) || 0, trimStartRef.current + 0.05))

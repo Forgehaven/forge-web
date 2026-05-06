@@ -213,7 +213,7 @@ export function PdfToEpub() {
   const progressPct = Math.round(progress * 100)
 
   return (
-    <div className="pb-6 max-w-xl">
+    <div className="max-w-xl">
       <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">PDF to EPUB</h1>
 
       <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">

@@ -68,7 +68,7 @@ export function UnitConverter() {
   const inputClass ="bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full font-mono"
 
   return (
-    <div className="pb-6 max-w-2xl">
+    <div className="max-w-2xl">
       <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Unit Converter</h1>
 
       <div className="flex gap-2 mb-6">
@@ -114,6 +114,7 @@ export function UnitConverter() {
           <input
             className={inputClass}
             type="number"
+            inputMode="decimal"
             value={value}
             onChange={e => setValue(e.target.value)}
             placeholder="Enter value..."

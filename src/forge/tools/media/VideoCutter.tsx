@@ -235,7 +235,7 @@ export function VideoCutter() {
   const isBusy = ffmpegLoading || cutting
 
   return (
-    <div className="pb-6 max-w-2xl">
+    <div className="max-w-2xl">
       <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Video Cutter</h1>
 
       <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-5">
@@ -334,7 +334,7 @@ export function VideoCutter() {
               <div>
                 <label className="block text-xs text-[#6b7280] mb-1">Start (s)</label>
                 <input
-                  type="number" min={0} max={trimEnd - 0.1} step={0.1}
+                  type="number" inputMode="decimal" min={0} max={trimEnd - 0.1} step={0.1}
                   value={trimStart.toFixed(2)}
                   onChange={e => {
                     const v = Math.max(0, Math.min(parseFloat(e.target.value) || 0, trimEndRef.current - 0.1))
@@ -347,7 +347,7 @@ export function VideoCutter() {
               <div>
                 <label className="block text-xs text-[#6b7280] mb-1">End (s)</label>
                 <input
-                  type="number" min={trimStart + 0.1} max={duration} step={0.1}
+                  type="number" inputMode="decimal" min={trimStart + 0.1} max={duration} step={0.1}
                   value={trimEnd.toFixed(2)}
                   onChange={e => {
                     const v = Math.min(durationRef.current, Math.max(parseFloat(e.target.value) || 0, trimStartRef.current + 0.1))

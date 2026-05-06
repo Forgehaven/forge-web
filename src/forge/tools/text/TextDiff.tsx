@@ -79,7 +79,7 @@ export function TextDiff() {
   const [left, setLeft] = useState('')
   const [right, setRight] = useState('')
 
-  const textareaClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full font-mono resize-none"
+  const textareaClass = "flex-1 min-h-0 bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full font-mono resize-none"
 
   const result = useMemo(() => {
     if (!left.trim() && !right.trim()) return null
@@ -89,8 +89,8 @@ export function TextDiff() {
   }, [left, right, mode])
 
   return (
-    <div className="pb-6 max-w-2xl">
-      <div className="flex items-center justify-between mb-6">
+    <div className="h-full flex flex-col">
+      <div className="flex items-center justify-between mb-4 shrink-0">
         <h1 className="text-xl font-semibold text-[#e2e4ed]">Text Diff</h1>
         <div className="flex bg-[#1a1d27] border border-[#2a2d3a] rounded overflow-hidden">
           {MODES.map(m => (
@@ -109,27 +109,27 @@ export function TextDiff() {
         </div>
       </div>
 
-      <div className="flex gap-4 mb-4">
-        <div className="flex-1">
-          <label className="block text-xs text-[#6b7280] mb-1">Left</label>
-          <textarea className={textareaClass} rows={10} value={left} onChange={e => setLeft(e.target.value)}
+      <div className="flex flex-col md:flex-row gap-4 md:h-[60vh] shrink-0">
+        <div className="min-w-0 min-h-0 flex flex-col gap-1 h-[35vh] md:flex-1 md:h-auto">
+          <label className="block text-xs text-[#6b7280] shrink-0">Left</label>
+          <textarea className={textareaClass} value={left} onChange={e => setLeft(e.target.value)}
             placeholder={mode === 'json' ? '{"name": "Alice"}' : 'Line one\nLine two'} />
           {result?.mode === 'json' && result.leftError && (
-            <p className="text-xs text-red-400 mt-1">{result.leftError}</p>
+            <p className="text-xs text-red-400 shrink-0">{result.leftError}</p>
           )}
         </div>
-        <div className="flex-1">
-          <label className="block text-xs text-[#6b7280] mb-1">Right</label>
-          <textarea className={textareaClass} rows={10} value={right} onChange={e => setRight(e.target.value)}
+        <div className="min-w-0 min-h-0 flex flex-col gap-1 h-[35vh] md:flex-1 md:h-auto">
+          <label className="block text-xs text-[#6b7280] shrink-0">Right</label>
+          <textarea className={textareaClass} value={right} onChange={e => setRight(e.target.value)}
             placeholder={mode === 'json' ? '{"name": "Bob"}' : 'Line one\nLine three'} />
           {result?.mode === 'json' && result.rightError && (
-            <p className="text-xs text-red-400 mt-1">{result.rightError}</p>
+            <p className="text-xs text-red-400 shrink-0">{result.rightError}</p>
           )}
         </div>
       </div>
 
       {result && (
-        <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-4">
+        <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-4 mt-4 shrink-0">
           {result.mode === 'json' && result.entries.length > 0 && (() => {
             const changed = result.entries.filter(e => e.type !== 'same')
             const colors: Record<string, string> = {
