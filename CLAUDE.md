@@ -39,20 +39,27 @@ Defined in `src/index.css` via `@theme`. **Prefer these over raw hex values:**
 | Path | Component | Notes |
 |---|---|---|
 | `/` | `LandingPage` | forgehaven theme + animations |
-| `/tools` | `ForgeLayout` → `Home` | sidebar shell, world clock widget |
-| `/tools/<slug>` | individual tools | see App.tsx |
+| `/tools` | `ToolsLayout` → `ToolsHome` | sidebar shell, world clock widget |
+| `/tools/<slug>` | individual tools | see `ToolsLayout.tsx` |
+| `/games` | `GamesLayout` → `GamesHome` | sidebar shell, FFXI tools |
+| `/games/<slug>` | individual game tools | see `GamesLayout.tsx` |
 | `*` outside /tools | `NotFoundLanding` | forgehaven theme |
 | `*` inside /tools | `NotFound` | plain tools 404 |
 
 ---
 
 ## Adding a new tool
-1. Create component in `src/tools/<section>/ToolName.tsx`
-2. Add `<Route path="slug" element={<ToolName />} />` inside `src/ToolsLayout.tsx` (NOT `App.tsx` — the tools subtree is lazy-loaded from there)
-3. Add `{ path: '/tools/slug', label: 'Tool Name' }` to the correct section in the `sections` array in `src/components/Sidebar.tsx`
+1. Create component in `src/forge/tools/<section>/ToolName.tsx`
+2. Add `<Route path="slug" element={<ToolName />} />` inside `src/forge/tools/ToolsLayout.tsx` (NOT `App.tsx` — the tools subtree is lazy-loaded from there)
+3. Add `{ path: '/tools/slug', label: 'Tool Name' }` to the correct section in the `sections` array in `src/forge/tools/ToolsSidebar.tsx`
 
 ### Sidebar sections (in order)
 Converters · Text · Media · Lookups · Encoding · Generators · Sysadmin · Network · Crypto
+
+## Adding a new game tool
+1. Create component in `src/forge/games/<game>/ToolName.tsx`
+2. Add `<Route path="slug" element={<ToolName />} />` inside `src/forge/games/GamesLayout.tsx`
+3. Add `{ path: '/games/slug', label: 'Tool Name' }` to the correct section in `src/forge/games/GamesSidebar.tsx`
 
 ---
 
@@ -61,6 +68,11 @@ Converters · Text · Media · Lookups · Encoding · Generators · Sysadmin · 
 - Landing page / 404: call `useForgehavenStyles()` — injects `src/styles/forgehaven.css` as an inline `<style>` via `useLayoutEffect`, removed cleanly on unmount
 - **Never** import `forgehaven.css` as a regular stylesheet — it has global `html/body` resets that conflict with Tailwind
 - `forgehaven.css` is **not** in `public/` — it lives in `src/styles/` and is bundled via `?inline` import
+
+### Conventions
+- **No `pb-6` on tool outer divs** — the layout wrapper (`ForgeLayout`) already provides `px-5 py-6 md:px-8 md:py-8` padding around all content. Adding bottom padding on top causes double-spacing and unwanted scroll.
+- **Use `100dvh` not `100vh`** — `dvh` accounts for iOS Safari's dynamic toolbar; `100vh` clips content on mobile.
+- **`inputMode` on number inputs** — always pair `type="number"` with `inputMode="numeric"` (integers) or `inputMode="decimal"` (floats) so iOS shows the right keyboard.
 
 ---
 
@@ -170,6 +182,16 @@ const scale = ref.current ? ... : 1
 | `forgetools_city_favourites` | `CityFavourite[]` — pinned cities |
 | `forgetools_collapsed_sections` | `Record<string, boolean>` — collapsed sidebar sections |
 | `forge_ip_v1` | Cached IPInfo + timestamp (5-min TTL) |
+
+---
+
+## Key shared components
+
+| Component | Purpose |
+|---|---|
+| `ForgeLayout` | Shared shell for Tools and Games — swipe gesture, sidebar, mobile header, settings modal, content padding. Pass `sidebar`, `settings`, `bottomBar`, `title`, `homePath`, optional `headerExtra`. |
+| `ConfirmButton` | Two-step confirm pattern (label → confirm/cancel). Use for destructive actions. |
+| `ImportPanel` | Paste-a-code import flow with close button. Pair with `ConfirmButton` for export/import/reset controls. |
 
 ---
 

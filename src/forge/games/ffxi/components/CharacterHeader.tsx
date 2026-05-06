@@ -3,7 +3,7 @@ import { API_URLS } from '../../../../config/apiUrls'
 
 type FetchStatus = 'idle' | 'loading' | 'success' | 'error'
 
-export type NationMeta = { name: string; symbol: string; color: string }
+export type NationMeta = { name: string; symbol: string; color: string; icon?: string }
 
 type Props = {
   charName: string
@@ -33,11 +33,12 @@ export function CharacterHeader({
         )}
         <div>
           {charName && <h2 className="text-2xl font-bold text-[#e2e4ed] tracking-wide">{charName}</h2>}
-          <p
-            className={`font-medium ${charName ? 'text-sm mt-0.5' : 'text-lg'}`}
-            style={{ color: nation.color }}
-          >
-            {nation.symbol} {nation.name}
+          <p className={`font-medium flex items-center gap-1.5 ${charName ? 'text-sm mt-0.5' : 'text-lg'}`}>
+            {nation.icon
+              ? <img src={nation.icon} alt="" className="w-4 h-4 object-contain shrink-0" />
+              : <span style={{ color: nation.color }}>{nation.symbol}</span>
+            }
+            <span style={{ color: nation.color }}>{nation.name}</span>
           </p>
           <button
             onClick={onClear}

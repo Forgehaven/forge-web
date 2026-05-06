@@ -3,6 +3,9 @@ import { API_URLS } from '../../../../config/apiUrls'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import { ConfirmButton } from '../../../../components/ConfirmButton'
 import { ImportPanel } from '../../../../components/ImportPanel'
+import bastokIcon from '../data/BastokIcon.png'
+import windurstIcon from '../data/WindurstIcon.png'
+import sandoriaIcon from '../data/SandoriaIcon.png'
 
 const SK = STORAGE_KEYS.ffxiFriendViewer
 
@@ -12,7 +15,36 @@ const JOB_ORDER = [
   'COR', 'PUP', 'DNC', 'SCH',
 ]
 
-type FriendData = { jobs: Record<string, number> }
+const NATION_META: Record<number, { icon: string; name: string }> = {
+  0: { icon: sandoriaIcon, name: "San d'Oria" },
+  1: { icon: bastokIcon,   name: 'Bastok' },
+  2: { icon: windurstIcon, name: 'Windurst' },
+}
+
+function getRaceDisplay(avatar: string | null | undefined): string | null {
+  if (!avatar) return null
+  const first = avatar[0]
+  const second = avatar[1]
+  if (first === 'H') return second === 'm' ? 'H♂' : 'H♀'
+  if (first === 'E') return second === 'm' ? 'E♂' : 'E♀'
+  if (first === 'T') return second === 'm' ? 'T♂' : 'T♀'
+  if (first === 'M') return 'M'
+  if (first === 'G') return 'G'
+  return null
+}
+
+function parseRank(rank: string | null | undefined): number | null {
+  if (!rank) return null
+  const m = rank.match(/(\d+)/)
+  return m ? parseInt(m[1], 10) : null
+}
+
+type FriendData = {
+  jobs: Record<string, number>
+  nation?: number | null
+  rank?: string | null
+  avatar?: string | null
+}
 type FetchStatus = 'loading' | 'error' | null
 
 type SavedState = {
@@ -184,7 +216,13 @@ export function FriendViewer() {
         const res = await fetch(`${API_URLS.horizonXiChars}/${encodeURIComponent(name)}`)
         if (!res.ok) throw new Error()
         const json = await res.json()
-        return { name, jobs: json.jobs as Record<string, number> }
+        return {
+          name,
+          jobs: json.jobs as Record<string, number>,
+          nation: json.nation ?? null,
+          rank: json.rank ?? null,
+          avatar: json.avatar ?? null,
+        }
       })
     )
 
@@ -194,7 +232,7 @@ export function FriendViewer() {
     for (let i = 0; i < names.length; i++) {
       const r = results[i]
       if (r.status === 'fulfilled') {
-        newData[names[i]] = { jobs: r.value.jobs }
+        newData[names[i]] = { jobs: r.value.jobs, nation: r.value.nation, rank: r.value.rank, avatar: r.value.avatar }
         newStatuses[names[i]] = null
       } else {
         newStatuses[names[i]] = 'error'
@@ -360,8 +398,14 @@ export function FriendViewer() {
             <table className="min-w-full text-sm border-collapse">
               <thead>
                 <tr className="bg-[#1a1d27] border-b border-[#2a2d3a]">
-                  <th className="sticky left-0 z-10 bg-[#1a1d27] px-4 py-2.5 text-left text-xs text-[#6b7280] uppercase tracking-widest font-semibold w-40 min-w-[10rem]">
+                  <th className="sticky left-0 z-10 bg-[#1a1d27] px-3 py-2.5 text-left text-xs text-[#6b7280] uppercase tracking-widest font-semibold w-32 min-w-[8rem] border-r border-[#2a2d3a]">
                     Character
+                  </th>
+                  <th className="px-2 py-2.5 text-center text-xs text-[#6b7280] uppercase tracking-widest font-semibold w-12">
+                    Nation
+                  </th>
+                  <th className="px-1 py-2.5 text-center text-xs text-[#6b7280] uppercase tracking-widest font-semibold w-9 border-r border-[#2a2d3a]">
+                    Race
                   </th>
                   {activeJobs.map(job => {
                     const isActive = sortJob === job
@@ -369,15 +413,17 @@ export function FriendViewer() {
                       <th
                         key={job}
                         onClick={() => handleSortJob(job)}
-                        className={`px-2.5 py-2.5 text-center text-xs uppercase tracking-widest font-semibold select-none whitespace-nowrap cursor-pointer transition-colors ${
+                        className={`px-1 py-2.5 text-center text-xs uppercase tracking-widest font-semibold select-none whitespace-nowrap cursor-pointer transition-colors ${
                           isActive ? 'text-[#c4af64]' : 'text-[#6b7280] hover:text-[#9ca3af]'
                         }`}
                       >
-                        <span className="inline-flex items-center gap-0.5">
+                        <span className="relative inline-block">
                           {job}
-                          <span className={isActive ? '' : 'opacity-0'}>
-                            {sortDir === 'desc' ? '↓' : '↑'}
-                          </span>
+                          {isActive && (
+                            <span className="absolute -right-2.5 top-0 text-[8px] leading-none">
+                              {sortDir === 'desc' ? '↓' : '↑'}
+                            </span>
+                          )}
                         </span>
                       </th>
                     )
@@ -392,7 +438,7 @@ export function FriendViewer() {
                   const rowBg = i % 2 === 0 ? '#0f1117' : '#111420'
                   return (
                     <tr key={name} className="border-b border-[#1e2130] last:border-0" style={{ background: rowBg }}>
-                      <td className="sticky left-0 z-10 px-4 py-2" style={{ background: rowBg }}>
+                      <td className="sticky left-0 z-10 px-3 py-2 border-r border-[#2a2d3a]" style={{ background: rowBg }}>
                         <div className="flex items-center gap-2 min-w-0">
                           <button
                             onClick={() => toggleStar(name)}
@@ -420,20 +466,40 @@ export function FriendViewer() {
                           {status === 'error'   && <span className="text-xs text-[#ef4444] shrink-0" title="Character not found">!</span>}
                         </div>
                       </td>
+                      <td className="px-2 py-2 text-center whitespace-nowrap">
+                        {d?.nation != null ? (() => {
+                          const meta = NATION_META[d.nation]
+                          const rank = parseRank(d.rank)
+                          return meta ? (
+                            <span className="inline-flex items-center gap-1">
+                              <img src={meta.icon} alt={meta.name} title={meta.name} className="w-4 h-4 object-contain" />
+                              <span className="text-xs text-[#9ca3af] tabular-nums w-5 text-center">{rank ?? '?'}</span>
+                            </span>
+                          ) : <span className="text-[#2a2d3a] select-none">—</span>
+                        })() : <span className="text-[#2a2d3a] select-none">—</span>}
+                      </td>
+                      <td className="px-1 py-2 text-center border-r border-[#2a2d3a]">
+                        {(() => {
+                          const race = getRaceDisplay(d?.avatar)
+                          return race
+                            ? <span className="text-xs text-[#9ca3af]">{race}</span>
+                            : <span className="text-[#2a2d3a] select-none">—</span>
+                        })()}
+                      </td>
                       {activeJobs.map(job => {
                         const lvl = d?.jobs[job] ?? 0
                         const colors = levelColor(lvl)
                         return (
-                          <td key={job} className="px-2.5 py-2 text-center tabular-nums">
+                          <td key={job} className="px-1 py-2 text-center tabular-nums">
                             {colors ? (
                               <span
-                                className="inline-flex items-center justify-center min-w-[2rem] px-1.5 py-0.5 rounded text-sm font-semibold"
+                                className="inline-flex items-center justify-center w-7 py-0.5 rounded text-sm font-semibold"
                                 style={{ color: colors.text, background: colors.bg }}
                               >
                                 {lvl}
                               </span>
                             ) : (
-                              <span className="text-[#2a2d3a] text-sm select-none">—</span>
+                              <span className="text-[#2a2d3a] select-none">—</span>
                             )}
                           </td>
                         )

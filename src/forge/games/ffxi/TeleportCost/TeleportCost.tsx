@@ -6,6 +6,10 @@ import { CharacterHeader } from '../components/CharacterHeader'
 import type { NationMeta } from '../components/CharacterHeader'
 import { ConfirmButton } from '../../../../components/ConfirmButton'
 import { ImportPanel } from '../../../../components/ImportPanel'
+import bastokIcon from '../data/BastokIcon.png'
+import windurstIcon from '../data/WindurstIcon.png'
+import sandoriaIcon from '../data/SandoriaIcon.png'
+import beastmenIcon from '../data/BeastmenIcon.png'
 
 const getNow = () => Date.now()
 
@@ -18,10 +22,10 @@ const ST_SK = STORAGE_KEYS.ffxiSpellTracker
 
 type NationId = 1 | 2 | 3 | 4
 const NATIONS: Record<NationId, NationMeta> = {
-  1: { name: 'Bastok',     symbol: '⚙',  color: '#5b8db8' },
-  2: { name: 'Windurst',   symbol: '✦',  color: '#8aab7e' },
-  3: { name: "San d'Oria", symbol: '⚔',  color: '#c0453a' },
-  4: { name: 'Beastmen',   symbol: '☠',  color: '#9333ea' },
+  1: { name: 'Bastok',     symbol: '⚙', color: '#5b8db8', icon: bastokIcon },
+  2: { name: 'Windurst',   symbol: '✦', color: '#8aab7e', icon: windurstIcon },
+  3: { name: "San d'Oria", symbol: '⚔', color: '#c0453a', icon: sandoriaIcon },
+  4: { name: 'Beastmen',   symbol: '☠', color: '#9333ea', icon: beastmenIcon },
 }
 const NATION_IDS = [1, 2, 3, 4] as NationId[]
 
@@ -115,7 +119,7 @@ function OutpostRow({ outpost, mode, userNation, owner, onOwnerChange }: Outpost
         </a>
       </td>
       <td className="py-2 pr-3 text-xs text-[#c4af64]/70 whitespace-nowrap hidden md:table-cell">{outpost.region}</td>
-      <td className="py-2 pr-3 text-xs text-[#374151] text-center tabular-nums">{access.lv}</td>
+      <td className="py-2 pr-3 text-xs text-[#6b7280] text-center tabular-nums">{access.lv}</td>
       <td
         style={{ width: '64px' }}
         className={`py-2 pr-2 text-xs text-right tabular-nums whitespace-nowrap ${
@@ -151,7 +155,10 @@ function OutpostRow({ outpost, mode, userNation, owner, onOwnerChange }: Outpost
                 color: owner === null ? '#6b7280' : '#374151',
               }}
             >
-              <span style={{ fontSize: '11px', lineHeight: 0 }}>{meta.symbol}</span>
+              {meta.icon
+                ? <img src={meta.icon} alt={meta.name} className="w-3.5 h-3.5 object-contain" style={{ opacity: active ? 1 : 0.25 }} />
+                : <span style={{ fontSize: '11px', lineHeight: 0 }}>{meta.symbol}</span>
+              }
             </button>
           </td>
         )
@@ -288,10 +295,14 @@ export function TeleportCost() {
                 <button
                   key={nid}
                   onClick={() => persist({ ...saved, nation: nid, avatar: null })}
-                  className="text-xs px-2.5 py-1 rounded border transition-colors cursor-pointer"
+                  className="text-xs px-2.5 py-1 rounded border transition-colors cursor-pointer flex items-center gap-1.5"
                   style={{ color: meta.color, borderColor: `${meta.color}50`, background: `${meta.color}10` }}
                 >
-                  {meta.symbol} {meta.name}
+                  {meta.icon
+                    ? <img src={meta.icon} alt="" className="w-3.5 h-3.5 object-contain shrink-0" />
+                    : meta.symbol
+                  }
+                  {meta.name}
                 </button>
               )
             })}
@@ -303,30 +314,30 @@ export function TeleportCost() {
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
-            Teleport <span className="text-[#c4af64]">Costs</span>
+            Teleport <span className="text-[#c4af64]">Cost</span>
           </h1>
           <p className="text-sm text-[#6b7280] mt-0.5">FFXI · Horizon</p>
         </div>
         <div className="flex items-center gap-3 mt-1 shrink-0">
           <div className="text-right">
-            <p className="text-[10px] text-[#374151] uppercase tracking-wider">Next reset</p>
-            <p className="text-xs text-[#4b5563] tabular-nums">{formatNextReset()}</p>
+            <p className="text-[10px] text-[#6b7280] uppercase tracking-wider">Next reset</p>
+            <p className="text-xs text-[#c4af64] tabular-nums">{formatNextReset()}</p>
           </div>
           <span className="text-[#2a2d3a]">|</span>
           <button
             onClick={exportState}
-            className="text-xs text-[#4b5563] hover:text-[#e2e4ed] transition-colors cursor-pointer"
+            className="text-xs text-[#9ca3af] hover:text-[#e2e4ed] transition-colors cursor-pointer"
           >
             {copied ? 'Copied!' : 'Export'}
           </button>
           <button
             onClick={() => setImportOpen(v => !v)}
-            className="text-xs text-[#4b5563] hover:text-[#e2e4ed] transition-colors cursor-pointer"
+            className="text-xs text-[#9ca3af] hover:text-[#e2e4ed] transition-colors cursor-pointer"
           >
             Import
           </button>
           <span className="text-[#2a2d3a]">|</span>
-          <ConfirmButton label="Reset Conquest" onConfirm={handleReset} />
+          <ConfirmButton label="Reset Conquest" onConfirm={handleReset} className="text-xs text-[#9ca3af] hover:text-[#e2e4ed] transition-colors cursor-pointer" />
         </div>
       </div>
 
@@ -357,16 +368,6 @@ export function TeleportCost() {
               {m === 'home' ? 'Home Nation' : 'Jeuno'}
             </button>
           ))}
-          <div className="ml-auto flex items-center gap-3 px-4">
-            {NATION_IDS.map(nid => {
-              const meta = NATIONS[nid]
-              return (
-                <span key={nid} className="text-xs hidden sm:flex items-center gap-1.5" style={{ color: meta.color }}>
-                  <span className="text-base leading-none">{meta.symbol}</span>{meta.name}
-                </span>
-              )
-            })}
-          </div>
         </div>
 
         {/* Table */}
@@ -399,9 +400,12 @@ export function TeleportCost() {
                 <th className="pr-3 py-1.5 text-center text-[10px] text-[#9ca3af] uppercase tracking-wider font-semibold">Lv.</th>
                 <th colSpan={2} className="py-1.5 text-center text-[10px] text-[#9ca3af] uppercase tracking-wider font-semibold">Cost</th>
                 {NATION_IDS.map(nid => (
-                  <th key={nid} className="px-1.5 py-1.5 text-center w-9 text-base font-semibold"
+                  <th key={nid} className="px-1.5 py-1.5 text-center w-9 font-semibold"
                     style={{ color: NATIONS[nid].color }}>
-                    {NATIONS[nid].symbol}
+                    {NATIONS[nid].icon
+                      ? <img src={NATIONS[nid].icon} alt={NATIONS[nid].name} title={NATIONS[nid].name} className="w-4 h-4 object-contain mx-auto" />
+                      : <span className="text-base">{NATIONS[nid].symbol}</span>
+                    }
                   </th>
                 ))}
               </tr>

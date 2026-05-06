@@ -9,6 +9,9 @@ import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import { API_URLS } from '../../../../config/apiUrls'
 import { CharacterHeader } from '../components/CharacterHeader'
 import type { NationMeta } from '../components/CharacterHeader'
+import bastokIcon from '../data/BastokIcon.png'
+import windurstIcon from '../data/WindurstIcon.png'
+import sandoriaIcon from '../data/SandoriaIcon.png'
 
 const SK = STORAGE_KEYS.ffxiSpellTracker
 
@@ -46,9 +49,9 @@ const JOB_SPELLS: Record<JobAbbr, Spell[]> = Object.fromEntries(
 ) as Record<JobAbbr, Spell[]>
 
 const NATIONS: Record<number, NationMeta> = {
-  1: { name: 'Bastok',     symbol: '⚙',  color: '#5b8db8' }, // steel blue — rivers of Bastok
-  2: { name: 'Windurst',   symbol: '✦',  color: '#8aab7e' }, // sage green — Windurstians' fondness of nature
-  3: { name: "San d'Oria", symbol: '⚔',  color: '#c0453a' }, // scarlet — noble blood of the Elvaan
+  0: { name: "San d'Oria", symbol: '⚔', color: '#c0453a', icon: sandoriaIcon },
+  1: { name: 'Bastok',     symbol: '⚙', color: '#5b8db8', icon: bastokIcon },
+  2: { name: 'Windurst',   symbol: '✦', color: '#8aab7e', icon: windurstIcon },
 }
 
 type SchoolMeta = { label: string; color: string }
