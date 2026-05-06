@@ -466,12 +466,12 @@ export function FriendViewer() {
                           {status === 'error'   && <span className="text-xs text-[#ef4444] shrink-0" title="Character not found">!</span>}
                         </div>
                       </td>
-                      <td className="px-2 py-2 text-center whitespace-nowrap">
+                      <td className="px-2 py-2 text-center whitespace-nowrap align-middle">
                         {d?.nation != null ? (() => {
                           const meta = NATION_META[d.nation]
                           const rank = parseRank(d.rank)
                           return meta ? (
-                            <span className="inline-flex items-center gap-1">
+                            <span className="inline-flex items-center gap-1 align-middle">
                               <img src={meta.icon} alt={meta.name} title={meta.name} className="w-4 h-4 object-contain" />
                               <span className="text-xs text-[#9ca3af] tabular-nums w-5 text-center">{rank ?? '?'}</span>
                             </span>
