@@ -157,7 +157,7 @@ function SpellRow({ spell, job, jobLevel, learned, isAnimating, onToggle }: Spel
           </span>
         )}
       </td>
-      <td className="py-1.5 pr-3 text-right text-[10px] text-[#4b5563] tabular-nums">
+      <td className="py-1.5 pr-3 text-center text-[10px] text-[#9ca3af] tabular-nums">
         {spellLevel}
       </td>
       <td className="py-1.5 pr-4 text-center">
@@ -165,7 +165,7 @@ function SpellRow({ spell, job, jobLevel, learned, isAnimating, onToggle }: Spel
           href={`https://horizonffxi.wiki/${encodeURIComponent(spell.name.replace(/ /g, '_'))}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[#4b5563] hover:text-[#9ca3af] transition-colors text-xs"
+          className="text-[#6b7280] hover:text-[#e2e4ed] transition-colors text-xs"
           title={`${spell.name} on HorizonXI wiki`}
         >
           ↗
@@ -496,7 +496,7 @@ export function SpellTracker() {
                   <th className="py-1.5 pr-3 text-center text-[10px] text-[#9ca3af] uppercase tracking-wider font-semibold">Type</th>
                   <th className="py-1.5 pr-3 text-center text-[10px] text-[#9ca3af] uppercase tracking-wider font-semibold">Skill</th>
                   <th className="py-1.5 pr-3 text-center text-[10px] text-[#9ca3af] uppercase tracking-wider font-semibold">Element</th>
-                  <th className="py-1.5 pr-3 text-right text-[10px] text-[#9ca3af] uppercase tracking-wider font-semibold">Lv.</th>
+                  <th className="py-1.5 pr-3 text-center text-[10px] text-[#9ca3af] uppercase tracking-wider font-semibold">LVL</th>
                   <th className="py-1.5 pr-4 w-8" />
                 </tr>
               </thead>
