@@ -216,7 +216,7 @@ export function VideoCutter() {
       const blob = new Blob([data as BlobPart], { type: 'video/mp4' })
       setOutputUrl(URL.createObjectURL(blob))
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Cut failed. Try a different format or range.')
+      setError(String(err))
       // Reset singleton so next attempt reloads
       _ffmpegReady = null
       _ffmpeg = null

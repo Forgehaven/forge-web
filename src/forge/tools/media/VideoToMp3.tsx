@@ -68,7 +68,7 @@ export function VideoToMp3() {
       setOutputUrl(URL.createObjectURL(blob))
       setOutputSize(blob.size)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Conversion failed.')
+      setError(String(err))
       _ffmpegReady = null; _ffmpeg = null
     } finally { setFfmpegLoading(false); setConverting(false) }
   }

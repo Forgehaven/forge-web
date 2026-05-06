@@ -213,7 +213,7 @@ function AudioTab() {
         setOutputName(file.name.replace(/\.[^.]+$/, '') + `-${bitrate}k.mp3`)
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Compression failed.')
+      setError(String(err))
       _ffmpegReady = null; _ffmpeg = null
     } finally { setFfmpegLoading(false); setProcessing(false) }
   }
@@ -331,7 +331,7 @@ function VideoTab() {
       setOutputUrl(URL.createObjectURL(blob)); setOutputSize(blob.size)
       setOutputName(file.name.replace(/\.[^.]+$/, '') + '-compressed.mp4')
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Compression failed.')
+      setError(String(err))
       _ffmpegReady = null; _ffmpeg = null
     } finally { setFfmpegLoading(false); setProcessing(false) }
   }
