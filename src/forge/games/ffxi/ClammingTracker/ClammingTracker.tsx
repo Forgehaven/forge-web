@@ -325,6 +325,58 @@ function DroppableSection({ label, count, isDragTarget, onDragOver, onDrop, onDr
   )
 }
 
+// HXICLAM export — maps HXICLAM item names to our item IDs (null = we don't track it, export 0)
+const HXICLAM_MAP: Record<string, string | null> = {
+  'bibiki slug':                          'bibiki-slug',
+  'bibiki urchin':                        'bibiki-urchin',
+  'broken willow fishing rod':            null,
+  'clump of pamtam kelp':                 'pamtam-kelp',
+  'coral fragment':                       'coral-fragment',
+  'crab shell':                           'crab-shell',
+  'elm log':                              'elm-log',
+  'elshimo coconut':                      null,
+  'goblin mask':                          null,
+  'handful of fish scales':               'fish-scales',
+  'handful of high-quality pugil scales': 'hq-pugil-scales',
+  'handful of pugil scales':              'pugil-scales',
+  'high-quality crab shell':              'hq-crab-shell',
+  'hobgoblin pie':                        'hobgoblin-pie',
+  'igneous rock':                         null,
+  'jacknife':                             'jacknife',
+  'lacquer tree log':                     'lacquer-tree-log',
+  'loaf of hobgoblin bread':              'hobgoblin-bread',
+  'maple log':                            'maple-log',
+  'nebimonite':                           'nebimonite',
+  'pamamas':                              null,
+  'pamtam kelp':                          'pamtam-kelp',
+  'pebble':                               'pebble',
+  'petrified log':                        'petrified-log',
+  'piece of oxblood':                     'oxblood',
+  'rock salt':                            null,
+  'sack of white sand':                   'white-sand',
+  'seashell':                             'seashell',
+  'shall shell':                          'shall-shell',
+  'suit of goblin armor':                 null,
+  'suit of goblin mail':                  null,
+  'titanictus shell':                     'titanictus-shell',
+  'tropical clam':                        'tropical-clam',
+  'turtle shell':                         'turtle-shell',
+  'uragnite shell':                       'uragnite-shell',
+  'vongola clam':                         'vongola-clam',
+}
+
+// Returns the raw listing price HXICLAM expects (not net-after-fees)
+function hxiclamPrice(item: ClammingItemDef, ah: number, ahStack: number, disabledRec: Record<string, boolean>): number {
+  const rec = item.devRecommended && !disabledRec[item.id] ? item.devRecommended : null
+  if (rec === 'vendor')   return item.vendorPrice
+  if (rec === 'ah_single') return ah
+  if (rec === 'ah_stack')  return item.stackSize > 0 ? Math.round(ahStack / item.stackSize) : ah
+  const best = calcBest(item, ah, ahStack)
+  if (best.where === 'vendor') return item.vendorPrice
+  if (best.mode === 'single')  return ah
+  return item.stackSize > 0 ? Math.round(ahStack / item.stackSize) : ah
+}
+
 // Shared column widths — keeps both tables pixel-identical
 const itemTableCols = (
   <colgroup>
@@ -365,6 +417,7 @@ export function ClammingTracker() {
   const [draggingId, setDraggingId] = useState<string | null>(null)
   const [dragTarget, setDragTarget] = useState<'ah' | 'vendor' | null>(null)
   const [copied, setCopied] = useState(false)
+  const [copiedHXI, setCopiedHXI] = useState(false)
   const [importOpen, setImportOpen] = useState(false)
 
   // Debounce category recalculation 2s after last price change.
@@ -424,6 +477,20 @@ export function ClammingTracker() {
     setSaved(empty)
     setStableOverrides({})
     localStorage.setItem(SK, JSON.stringify(empty))
+  }
+
+  function exportHXICLAM() {
+    const byId = Object.fromEntries(ITEMS.map(i => [i.id, i]))
+    const lines = Object.entries(HXICLAM_MAP).map(([hxiName, itemId]) => {
+      if (!itemId) return `${hxiName}:0`
+      const item = byId[itemId]
+      if (!item) return `${hxiName}:0`
+      const { ah, ahStack } = effectivePrices(item, saved.overrides)
+      return `${hxiName}:${hxiclamPrice(item, ah, ahStack, saved.disabledRec)}`
+    })
+    navigator.clipboard.writeText(lines.join('\n'))
+    setCopiedHXI(true)
+    setTimeout(() => setCopiedHXI(false), 1500)
   }
 
   function exportState() {
@@ -491,9 +558,16 @@ export function ClammingTracker() {
           <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
             Clamming <span className="text-[#c4af64]">Tracker</span>
           </h1>
-          <p className="text-sm text-[#6b7280] mt-0.5">FFXI · Horizon — Bibiki Bay</p>
+          <p className="text-sm text-[#6b7280] mt-0.5">FFXI · Horizon — Purgonorgo Isle</p>
         </div>
         <div className="flex items-center gap-3 mt-1 shrink-0">
+          <button
+            onClick={exportHXICLAM}
+            className="text-xs px-2.5 py-1 rounded border border-[#c4af64]/40 text-[#c4af64] hover:bg-[#c4af64]/10 transition-colors cursor-pointer whitespace-nowrap"
+          >
+            {copiedHXI ? 'Copied!' : 'Export for HXICLAM'}
+          </button>
+          <span className="text-[#2a2d3a]">|</span>
           <button
             onClick={exportState}
             className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer"
