@@ -8,4 +8,5 @@ export const STORAGE_KEYS = {
   ffxiSpellTracker:        'forgegames_ffxi_spelltracker_v1',
   ffxiTeleportCost:        'forgegames_ffxi_teleportcost_v1',
   ffxiClamming:            'forgegames_ffxi_clamming_v1',
+  ffxiFriendViewer:        'forgegames_ffxi_friendviewer_v1',
 } as const

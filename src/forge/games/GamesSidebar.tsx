@@ -27,6 +27,7 @@ const sections: GameSection[] = [
       { path: `${G}/clamming-tracker`, label: 'Clamming Tracker' },
       { path: `${G}/spell-tracker`,    label: 'Spell Tracker' },
       { path: `${G}/teleport-cost`,   label: 'Teleport Cost' },
+      { path: `${G}/friend-viewer`,  label: 'Friend Viewer' },
     ],
   },
 ]

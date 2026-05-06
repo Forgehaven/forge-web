@@ -11,6 +11,7 @@ import { SkillchainCalc } from './ffxi/SkillchainCalc'
 import { ClammingTracker } from './ffxi/ClammingTracker'
 import { SpellTracker } from './ffxi/SpellTracker'
 import { TeleportCost } from './ffxi/TeleportCost'
+import { FriendViewer } from './ffxi/FriendViewer'
 
 
 function GamesShell() {
@@ -104,6 +105,7 @@ export default function GamesLayout() {
         <Route path="clamming-tracker" element={<ClammingTracker />} />
         <Route path="spell-tracker" element={<SpellTracker />} />
         <Route path="teleport-cost" element={<TeleportCost />} />
+        <Route path="friend-viewer" element={<FriendViewer />} />
         <Route path="*" element={<NotFound backTo="/games" backLabel="Back to games" />} />
       </Route>
     </Routes>
