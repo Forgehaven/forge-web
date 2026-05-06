@@ -14,7 +14,7 @@ The chunk-size warning about ffmpeg/pdf.js is expected and not an error.
 - React Router v7 (BrowserRouter), Redux Toolkit (IP geolocation store), SWR (weather/currency)
 - `eslint-plugin-react-hooks` v7 — React 19's stricter ruleset (see ESLint patterns below)
 - Deployed via GitHub Actions on push to `main` → GitHub Pages, custom domain `forgehaven.io` (CNAME at root)
-- FFmpeg packages excluded from Vite `optimizeDeps` (loaded from `public/ffmpeg/`)
+- FFmpeg packages excluded from Vite `optimizeDeps` (served from `node_modules/@ffmpeg/core/dist/umd/` via `ffmpegCorePlugin` in vite.config.ts; copied to `dist/ffmpeg/` on build)
 
 ---
 
@@ -140,7 +140,7 @@ import type { SelectOption } from '../../components/Select'
 ---
 
 ## Key dependencies
-- `@ffmpeg/ffmpeg` + `@ffmpeg/util` + `@ffmpeg/core-st` — video/audio processing (WASM, loaded from `public/ffmpeg/`)
+- `@ffmpeg/ffmpeg` + `@ffmpeg/util` + `@ffmpeg/core` — video/audio processing (WASM, served via `ffmpegCorePlugin` in vite.config.ts)
 - `pdfjs-dist` — PDF processing (WASM, loaded from `public/`)
 - `react-image-crop` — image cropping in ImgEditor
 - `sql-formatter` — SQL formatting in TextFormatter
