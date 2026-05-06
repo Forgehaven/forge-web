@@ -11,12 +11,14 @@ const bitrateOptions: SelectOption[] = [
   { value: '320', label: '320 kbps — maximum' },
 ]
 
+let _ff: FFmpeg | null = null
 let _ffmpeg: FFmpeg | null = null
 let _ffmpegReady: Promise<FFmpeg> | null = null
 
 function getFFmpeg(onProgress: (p: number) => void): Promise<FFmpeg> {
   if (_ffmpegReady) return _ffmpegReady
   const ff = new FFmpeg()
+  _ff = ff
   ff.on('progress', ({ progress }) => onProgress(Math.max(0, Math.min(1, progress))))
   _ffmpegReady = ff.load({
     coreURL: '/ffmpeg/ffmpeg-core.js',
@@ -24,6 +26,8 @@ function getFFmpeg(onProgress: (p: number) => void): Promise<FFmpeg> {
   }).then(() => { _ffmpeg = ff; return ff })
   return _ffmpegReady
 }
+
+function cancelFFmpeg() { _ff?.terminate(); _ff = null; _ffmpeg = null; _ffmpegReady = null }
 
 
 export function VideoToMp3() {
@@ -68,13 +72,15 @@ export function VideoToMp3() {
       setOutputUrl(URL.createObjectURL(blob))
       setOutputSize(blob.size)
     } catch (err) {
-      setError(String(err))
-      _ffmpegReady = null; _ffmpeg = null
+      if (err instanceof Error && err.message === 'called FFmpeg.terminate()') return
+      setError(String(err)); _ff = null; _ffmpeg = null; _ffmpegReady = null
     } finally { setFfmpegLoading(false); setConverting(false) }
   }
 
+  function cancel() { cancelFFmpeg(); setFfmpegLoading(false); setConverting(false); setError('') }
+
   const btnClass = "px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-  const isBusy =ffmpegLoading || converting
+  const isBusy = ffmpegLoading || converting
 
   return (
     <div className="max-w-2xl">
@@ -121,6 +127,7 @@ export function VideoToMp3() {
               <button onClick={convert} disabled={isBusy} className={btnClass}>
                 {converting ? 'Extracting…' : ffmpegLoading ? 'Loading FFmpeg…' : 'Extract MP3'}
               </button>
+              {isBusy && <button onClick={cancel} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">Cancel</button>}
             </div>
 
             {ffmpegLoading && <ProgressBar label="Loading FFmpeg (~24 MB, cached after first use)…" pct={ffmpegProgress} />}

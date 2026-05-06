@@ -32,16 +32,20 @@ const videoScaleOptions: SelectOption[] = [
 ]
 
 // ── FFmpeg singleton ─────────────────────────────────────────────────────────
+let _ff: FFmpeg | null = null
 let _ffmpeg: FFmpeg | null = null
 let _ffmpegReady: Promise<FFmpeg> | null = null
 function getFFmpeg(onProgress: (p: number) => void): Promise<FFmpeg> {
   if (_ffmpegReady) return _ffmpegReady
   const ff = new FFmpeg()
+  _ff = ff
   ff.on('progress', ({ progress }) => onProgress(Math.max(0, Math.min(1, progress))))
   _ffmpegReady = ff.load({ coreURL: '/ffmpeg/ffmpeg-core.js', wasmURL: '/ffmpeg/ffmpeg-core.wasm' })
     .then(() => { _ffmpeg = ff; return ff })
   return _ffmpegReady
 }
+
+function cancelFFmpeg() { _ff?.terminate(); _ff = null; _ffmpeg = null; _ffmpegReady = null }
 
 // ── Image tab ────────────────────────────────────────────────────────────────
 function ImageTab() {
@@ -213,14 +217,15 @@ function AudioTab() {
         setOutputName(file.name.replace(/\.[^.]+$/, '') + `-${bitrate}k.mp3`)
       }
     } catch (err) {
-      setError(String(err))
-      _ffmpegReady = null; _ffmpeg = null
+      if (err instanceof Error && err.message === 'called FFmpeg.terminate()') return
+      setError(String(err)); _ff = null; _ffmpeg = null; _ffmpegReady = null
     } finally { setFfmpegLoading(false); setProcessing(false) }
   }
 
+  function cancel() { cancelFFmpeg(); setFfmpegLoading(false); setProcessing(false); setError('') }
+
   const isBusy = ffmpegLoading || processing
   const btnClass = "px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-
 
   return (
     <div className="flex flex-col gap-5">
@@ -271,6 +276,7 @@ function AudioTab() {
             <button onClick={compress} disabled={isBusy} className={btnClass}>
               {processing ? 'Compressing…' : ffmpegLoading ? 'Loading FFmpeg…' : 'Compress'}
             </button>
+            {isBusy && <button onClick={cancel} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">Cancel</button>}
           </div>
           {ffmpegLoading && <ProgressBar label="Loading FFmpeg (~24 MB, cached after first use)…" pct={ffmpegProgress} />}
           {processing && <ProgressBar label="Compressing…" pct={procProgress} />}
@@ -331,10 +337,12 @@ function VideoTab() {
       setOutputUrl(URL.createObjectURL(blob)); setOutputSize(blob.size)
       setOutputName(file.name.replace(/\.[^.]+$/, '') + '-compressed.mp4')
     } catch (err) {
-      setError(String(err))
-      _ffmpegReady = null; _ffmpeg = null
+      if (err instanceof Error && err.message === 'called FFmpeg.terminate()') return
+      setError(String(err)); _ff = null; _ffmpeg = null; _ffmpegReady = null
     } finally { setFfmpegLoading(false); setProcessing(false) }
   }
+
+  function cancel() { cancelFFmpeg(); setFfmpegLoading(false); setProcessing(false); setError('') }
 
   const isBusy = ffmpegLoading || processing
   const btnClass = "px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
@@ -389,7 +397,8 @@ function VideoTab() {
             <button onClick={compress} disabled={isBusy} className={btnClass}>
               {processing ? 'Compressing…' : ffmpegLoading ? 'Loading FFmpeg…' : 'Compress'}
             </button>
-            {processing && <span className="text-xs text-[#6b7280]">This may take a while for large files…</span>}
+            {isBusy && <button onClick={cancel} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">Cancel</button>}
+            {processing && !isBusy && <span className="text-xs text-[#6b7280]">This may take a while for large files…</span>}
           </div>
           {ffmpegLoading && <ProgressBar label="Loading FFmpeg (~24 MB, cached after first use)…" pct={ffmpegProgress} />}
           {processing && <ProgressBar label="Compressing video…" pct={procProgress} />}

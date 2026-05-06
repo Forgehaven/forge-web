@@ -27,12 +27,14 @@ function formatTime(s: number): string {
   return `${m}:${sec.toFixed(1).padStart(4, '0')}`
 }
 
+let _ff: FFmpeg | null = null
 let _ffmpeg: FFmpeg | null = null
 let _ffmpegReady: Promise<FFmpeg> | null = null
 
 function getFFmpeg(onProgress: (p: number) => void): Promise<FFmpeg> {
   if (_ffmpegReady) return _ffmpegReady
   const ff = new FFmpeg()
+  _ff = ff
   ff.on('progress', ({ progress }) => onProgress(Math.max(0, Math.min(1, progress))))
   _ffmpegReady = ff.load({
     coreURL: '/ffmpeg/ffmpeg-core.js',
@@ -40,6 +42,8 @@ function getFFmpeg(onProgress: (p: number) => void): Promise<FFmpeg> {
   }).then(() => { _ffmpeg = ff; return ff })
   return _ffmpegReady
 }
+
+function cancelFFmpeg() { _ff?.terminate(); _ff = null; _ffmpeg = null; _ffmpegReady = null }
 
 export function VideoToGif() {
   const [file, setFile] = useState<File | null>(null)
@@ -125,14 +129,15 @@ export function VideoToGif() {
       setOutputUrl(URL.createObjectURL(blob))
       setOutputSize(blob.size)
     } catch (err) {
-      setError(String(err))
-      _ffmpegReady = null
-      _ffmpeg = null
+      if (err instanceof Error && err.message === 'called FFmpeg.terminate()') return
+      setError(String(err)); _ff = null; _ffmpeg = null; _ffmpegReady = null
     } finally {
       setFfmpegLoading(false)
       setGenerating(false)
     }
   }
+
+  function cancel() { cancelFFmpeg(); setFfmpegLoading(false); setGenerating(false); setError('') }
 
   const btnClass = "px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
   const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full"
@@ -256,6 +261,7 @@ export function VideoToGif() {
               <button onClick={generateGif} disabled={isBusy} className={btnClass}>
                 {generating ? 'Generating…' : ffmpegLoading ? 'Loading FFmpeg…' : 'Generate GIF'}
               </button>
+              {isBusy && <button onClick={cancel} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">Cancel</button>}
               <span className="text-xs text-[#6b7280]">{gifDuration.toFixed(1)}s · {fps} fps · {width}px</span>
             </div>
 
