@@ -56,3 +56,8 @@ export const SC_BURST_ELEMENTS: Record<string, Element[]> = {
   Light:         ['Fire', 'Light', 'Lightning', 'Wind'],
   Darkness:      ['Water', 'Ice', 'Earth', 'Dark'],
 }
+
+// Resistance types — stored here so both engine and mob data can import them
+// without a cross-tool dependency.
+export type ResistanceState = 'weak' | 'neutral' | 'resistant'
+export type ResistanceMap = Partial<Record<DamageType, ResistanceState>>

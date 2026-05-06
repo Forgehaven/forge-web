@@ -1,5 +1,5 @@
-import { SC_COLORS, ELEMENT_COLORS } from './data/elements'
-import type { Element } from './data/elements'
+import { SC_COLORS, ELEMENT_COLORS } from '../data/elements'
+import type { Element } from '../data/elements'
 import type { SkillchainLink, BurstInfo, PartyMember } from './engine'
 
 function scLabelSizes(level: 1 | 2 | 3, isFinal: boolean) {

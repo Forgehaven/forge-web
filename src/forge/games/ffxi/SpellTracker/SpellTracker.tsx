@@ -1,10 +1,10 @@
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import {
   whiteMagic, blackMagic, songs, ninjutsu, summoningMagic, blueMagic,
-  spellSchoolMap, spellSkillMap,
+  spellSchoolMap,
   type JobAbbr, type Spell,
-} from './spellData'
-import { ELEMENT_COLORS, type Element } from '../SkillchainCalc/data/elements'
+} from '../data/spells'
+import { ELEMENT_COLORS } from '../data/elements'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import { API_URLS } from '../../../../config/apiUrls'
 import { CharacterHeader } from '../components/CharacterHeader'
@@ -75,49 +75,6 @@ const SKILL_META: Record<string, SkillMeta> = {
   'Blue Magic':       { label: 'Blue Magic', color: '#60a5fa' },
 }
 
-// Overrides for spells whose element isn't derivable from their name
-const SPELL_ELEMENT_OVERRIDES: Partial<Record<string, Element>> = {
-  'Shiva':      'Ice',
-  'Ifrit':      'Fire',
-  'Garuda':     'Wind',
-  'Titan':      'Earth',
-  'Ramuh':      'Lightning',
-  'Leviathan':  'Water',
-  'Fenrir':     'Dark',
-  'Carbuncle':  'Light',
-  'Alexander':  'Light',
-  'Diabolos':   'Dark',
-  'Odin':       'Dark',
-  'Phoenix':    'Fire',
-}
-
-function getSpellElement(name: string): Element | null {
-  if (SPELL_ELEMENT_OVERRIDES[name]) return SPELL_ELEMENT_OVERRIDES[name]!
-  const n = name.toLowerCase()
-  // Ninjutsu by Japanese prefix
-  if (n.startsWith('katon'))    return 'Fire'
-  if (n.startsWith('hyoton'))   return 'Ice'
-  if (n.startsWith('huton'))    return 'Wind'
-  if (n.startsWith('doton'))    return 'Earth'
-  if (n.startsWith('raiton'))   return 'Lightning'
-  if (n.startsWith('suiton'))   return 'Water'
-  if (n.startsWith('kurayami') || n.startsWith('dokumori')) return 'Dark'
-  // Elemental spell lines — name contains the element
-  if (n.includes('fire'))     return 'Fire'
-  if (n.includes('blizzard') || n === 'ice break') return 'Ice'
-  if (n.includes('aero'))     return 'Wind'
-  if (n.includes('stone'))    return 'Earth'
-  if (n.includes('thunder'))  return 'Lightning'
-  if (n.includes('water'))    return 'Water'
-  // Light-aspected white magic
-  if (n.startsWith('cure') || n.startsWith('regen') || n.startsWith('banish') ||
-      n.startsWith('raise') || n.startsWith('reraise') || n.startsWith('dia') ||
-      n === 'holy' || n === 'flash') return 'Light'
-  // Dark-aspected
-  if (n === 'bio' || n.startsWith('bio ') || n === 'drain' || n === 'aspir') return 'Dark'
-  return null
-}
-
 // --- Sub-components ---
 
 type SpellRowProps = {
@@ -134,9 +91,8 @@ function SpellRow({ spell, job, jobLevel, learned, isAnimating, onToggle }: Spel
   const canLearn = jobLevel >= spellLevel
   const school = spellSchoolMap[spell.name]
   const schoolMeta = school ? SCHOOL_META[school] : null
-  const skill = spellSkillMap[spell.name]
-  const skillMeta = skill ? SKILL_META[skill] : null
-  const element = getSpellElement(spell.name)
+  const skillMeta = spell.skill ? SKILL_META[spell.skill] : null
+  const element = spell.element ?? null
   const elementColor = element ? ELEMENT_COLORS[element] : null
 
   return (

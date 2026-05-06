@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest'
 import { computeSkillchain, getSkillCap, getAvailableWSes, findBestGroups } from './engine'
 import type { ChainGroup, PartyMember } from './engine'
-import type { WeaponType } from './data/weaponSkills'
-import type { Job } from './data/jobs'
-import { WEAPON_SKILLS } from './data/weaponSkills'
+import type { WeaponType } from '../data/weaponSkills'
+import type { Job } from '../data/jobs'
+import { WEAPON_SKILLS } from '../data/weaponSkills'
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
 

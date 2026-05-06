@@ -1,7 +1,7 @@
 import type { Element } from './elements'
 import type { Job } from './jobs'
 
-export interface Spell {
+export interface BurstSpell {
   name: string
   job: Job
   element: Element
@@ -9,7 +9,7 @@ export interface Spell {
 }
 
 // Elemental spells available for magic bursts — sourced from horizonffxi.wiki
-export const SPELLS: Spell[] = [
+export const BURST_SPELLS: BurstSpell[] = [
   // Black Mage — tier I
   { name: 'Stone',    job: 'BLM', element: 'Earth',     minLevel: 1  },
   { name: 'Water',    job: 'BLM', element: 'Water',     minLevel: 5  },
@@ -66,9 +66,9 @@ export const SPELLS: Spell[] = [
 ]
 
 // Returns the highest available spell per element for a job at the given level
-export function getBurstSpells(job: Job, level: number): Partial<Record<Element, Spell>> {
-  const result: Partial<Record<Element, Spell>> = {}
-  for (const spell of SPELLS) {
+export function getBurstSpells(job: Job, level: number): Partial<Record<Element, BurstSpell>> {
+  const result: Partial<Record<Element, BurstSpell>> = {}
+  for (const spell of BURST_SPELLS) {
     if (spell.job !== job || spell.minLevel > level) continue
     const existing = result[spell.element]
     if (!existing || spell.minLevel > existing.minLevel) {

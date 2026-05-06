@@ -1,18 +1,16 @@
-import { WEAPON_SKILLS, WEAPON_DAMAGE_TYPE, type WeaponSkill, type WeaponType, type SCAttr } from './data/weaponSkills'
-import { JOBS, SKILL_CAP_75, type Job, type SkillRank } from './data/jobs'
-import { SC_BURST_ELEMENTS, type DamageType, type Element } from './data/elements'
-import { getBurstSpells, type Spell } from './data/spells'
+import { WEAPON_SKILLS, WEAPON_DAMAGE_TYPE, type WeaponSkill, type WeaponType, type SCAttr } from '../data/weaponSkills'
+import { JOBS, SKILL_CAP_75, type Job, type SkillRank } from '../data/jobs'
+import { SC_BURST_ELEMENTS, type Element, type ResistanceMap } from '../data/elements'
+import { getBurstSpells, type BurstSpell as Spell } from '../data/burstSpells'
 
 export type { SCAttr }
+export type { ResistanceState, ResistanceMap } from '../data/elements'
 
 export interface SkillchainResult {
   name: string
   level: 1 | 2 | 3
   element: string
 }
-
-export type ResistanceState = 'weak' | 'neutral' | 'resistant'
-export type ResistanceMap = Partial<Record<DamageType, ResistanceState>>
 
 export interface PartyMember {
   job: Job | null

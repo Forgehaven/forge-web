@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ITEMS, type ClammingItemDef } from './data/items'
+import { ITEMS, type ClammingItemDef } from '../data/items'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import { ConfirmButton } from '../../../../components/ConfirmButton'
 import { ImportPanel } from '../../../../components/ImportPanel'

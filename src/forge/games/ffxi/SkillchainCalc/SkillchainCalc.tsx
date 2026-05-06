@@ -1,15 +1,17 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ResistanceHeader } from './ResistanceHeader'
+import { MobSelector } from './MobSelector'
 import { PartyCard } from './PartyCard'
 import { ChainCard } from './ChainCard'
 import { findBestGroups } from './engine'
 import type { ChainGroup, PartyMember, ResistanceMap, ResistanceState, SkillchainLink } from './engine'
-import type { DamageType } from './data/elements'
+import type { DamageType } from '../data/elements'
 
 const SK_PARTY = 'forge_ffxi_sc_party'
 const SK_RESISTANCES = 'forge_ffxi_sc_resistances'
 const SK_LEVEL = 'forge_ffxi_sc_level'
 const SK_FAVOURITE = 'forge_ffxi_sc_favourite'
+const SK_MOB = 'forge_ffxi_sc_mob'
 
 function emptyMember(): PartyMember {
   return { job: null, weaponType: null, name: '' }
@@ -44,6 +46,10 @@ function loadLevelSync(): number {
 
 function loadFavourite(): string | null {
   try { return localStorage.getItem(SK_FAVOURITE) } catch { return null }
+}
+
+function loadMob(): string | null {
+  try { return localStorage.getItem(SK_MOB) } catch { return null }
 }
 
 function chainKey(link: SkillchainLink): string {
@@ -136,6 +142,7 @@ function GroupRow({ group, party, rank, compact, isFavourite, onToggleFavourite 
 
 export function SkillchainCalc() {
   const [resistances, setResistances] = useState<ResistanceMap>(loadResistances)
+  const [selectedMob, setSelectedMob] = useState<string | null>(loadMob)
   const [levelSync, setLevelSync] = useState<number>(loadLevelSync)
   const [levelSyncRaw, setLevelSyncRaw] = useState<string>(() => String(loadLevelSync()))
   const [party, setParty] = useState<PartyMember[]>(loadParty)
@@ -151,12 +158,23 @@ export function SkillchainCalc() {
     if (favourite !== null) localStorage.setItem(SK_FAVOURITE, favourite)
     else localStorage.removeItem(SK_FAVOURITE)
   }, [favourite])
+  useEffect(() => {
+    if (selectedMob !== null) localStorage.setItem(SK_MOB, selectedMob)
+    else localStorage.removeItem(SK_MOB)
+  }, [selectedMob])
 
   function clearFavourite() { setFavourite(null) }
 
   function handleResistanceChange(type: DamageType, state: ResistanceState) {
+    setSelectedMob(null)
     clearFavourite()
     setResistances(prev => ({ ...prev, [type]: state }))
+  }
+
+  function handleMobSelect(resistances: ResistanceMap | null, mobName: string | null) {
+    setSelectedMob(mobName)
+    clearFavourite()
+    setResistances(resistances ?? {})
   }
 
   function handleMemberChange(idx: number, m: PartyMember) {
@@ -184,7 +202,7 @@ export function SkillchainCalc() {
     setLevelSyncRaw(String(levelSync))
   }
 
-  function resetResistances() { clearFavourite(); setResistances({}) }
+  function resetResistances() { setSelectedMob(null); clearFavourite(); setResistances({}) }
   function resetParty() {
     clearFavourite()
     setParty(Array.from({ length: 6 }, emptyMember))
@@ -228,7 +246,13 @@ export function SkillchainCalc() {
           onReset={hasResistances ? resetResistances : undefined}
         />
         {resistanceOpen && (
-          <ResistanceHeader resistances={resistances} onChange={handleResistanceChange} />
+          <div className="flex flex-col gap-2">
+            <MobSelector
+              selectedMobName={selectedMob}
+              onSelect={(res, name) => handleMobSelect(res, name)}
+            />
+            <ResistanceHeader resistances={resistances} onChange={handleResistanceChange} />
+          </div>
         )}
       </div>
 

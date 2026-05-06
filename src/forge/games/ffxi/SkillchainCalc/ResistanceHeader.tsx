@@ -1,5 +1,5 @@
-import { ELEMENTS, PHYSICAL_TYPES, ELEMENT_COLORS, PHYSICAL_COLORS } from './data/elements'
-import type { DamageType, Element, PhysicalType } from './data/elements'
+import { ELEMENTS, PHYSICAL_TYPES, ELEMENT_COLORS, PHYSICAL_COLORS } from '../data/elements'
+import type { DamageType, Element, PhysicalType } from '../data/elements'
 import type { ResistanceState, ResistanceMap } from './engine'
 
 function damageTypeColor(type: DamageType): string {
