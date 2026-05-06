@@ -110,6 +110,8 @@ export function TextTranslate() {
 
   async function translate() {
     const trimmed = text.trim()
+      .replace(/[‘’]/g, "'")
+      .replace(/[“”]/g, '"')
     if (!trimmed) return
     setLoading(true)
     setError('')
