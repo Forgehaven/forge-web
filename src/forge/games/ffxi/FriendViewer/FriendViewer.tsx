@@ -80,6 +80,7 @@ export function FriendViewer() {
   const touchDragRef = useRef<{ fromIdx: number; overIdx: number | null; startX: number; startY: number } | null>(null)
   const [copied, setCopied] = useState(false)
   const [importOpen, setImportOpen] = useState(false)
+  const [diff, setDiff] = useState<Record<string, Record<string, number>>>({})
 
   function save(next: SavedState) {
     setSaved(next)
@@ -208,6 +209,7 @@ export function FriendViewer() {
   async function fetchAll() {
     if (!saved.names.length || isFetching) return
     setIsFetching(true)
+    const snapshot = { ...saved.data }
     setStatuses(Object.fromEntries(saved.names.map(n => [n, 'loading' as FetchStatus])))
 
     const names = saved.names
@@ -228,17 +230,29 @@ export function FriendViewer() {
 
     const newData = { ...saved.data }
     const newStatuses: Record<string, FetchStatus> = {}
+    const newDiff: Record<string, Record<string, number>> = {}
 
     for (let i = 0; i < names.length; i++) {
       const r = results[i]
+      const name = names[i]
       if (r.status === 'fulfilled') {
-        newData[names[i]] = { jobs: r.value.jobs, nation: r.value.nation, rank: r.value.rank, avatar: r.value.avatar }
-        newStatuses[names[i]] = null
+        newData[name] = { jobs: r.value.jobs, nation: r.value.nation, rank: r.value.rank, avatar: r.value.avatar }
+        newStatuses[name] = null
+        const prevJobs = snapshot[name]?.jobs
+        if (prevJobs) {
+          const charDiff: Record<string, number> = {}
+          for (const [job, newLvl] of Object.entries(r.value.jobs)) {
+            const delta = (newLvl as number) - (prevJobs[job] ?? 0)
+            if (delta !== 0) charDiff[job] = delta
+          }
+          if (Object.keys(charDiff).length > 0) newDiff[name] = charDiff
+        }
       } else {
-        newStatuses[names[i]] = 'error'
+        newStatuses[name] = 'error'
       }
     }
 
+    setDiff(newDiff)
     setStatuses(newStatuses)
     save({ ...saved, data: newData })
     setIsFetching(false)
@@ -395,6 +409,13 @@ export function FriendViewer() {
       {hasData && (
         <>
           <div className="overflow-x-auto rounded-lg border border-[#2a2d3a]">
+            {Object.keys(diff).length > 0 && (
+              <div className="flex justify-end px-3 py-1.5 border-b border-[#2a2d3a] bg-[#1a1d27]">
+                <button onClick={() => setDiff({})} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">
+                  Clear Diff
+                </button>
+              </div>
+            )}
             <table className="min-w-full text-sm border-collapse">
               <thead>
                 <tr className="bg-[#1a1d27] border-b border-[#2a2d3a]">
@@ -489,14 +510,22 @@ export function FriendViewer() {
                       {activeJobs.map(job => {
                         const lvl = d?.jobs[job] ?? 0
                         const colors = levelColor(lvl)
+                        const delta = diff[name]?.[job]
                         return (
                           <td key={job} className="px-1 py-2 text-center tabular-nums">
                             {colors ? (
-                              <span
-                                className="inline-flex items-center justify-center w-7 py-0.5 rounded text-sm font-semibold"
-                                style={{ color: colors.text, background: colors.bg }}
-                              >
-                                {lvl}
+                              <span className="inline-flex items-center gap-0.5">
+                                <span
+                                  className="inline-flex items-center justify-center w-7 py-0.5 rounded text-sm font-semibold"
+                                  style={{ color: colors.text, background: colors.bg }}
+                                >
+                                  {lvl}
+                                </span>
+                                {delta !== undefined && (
+                                  <span className="text-[9px] font-semibold leading-none" style={{ color: delta > 0 ? '#4ade80' : '#f87171' }}>
+                                    {delta > 0 ? `+${delta}` : delta}
+                                  </span>
+                                )}
                               </span>
                             ) : (
                               <span className="text-[#2a2d3a] select-none">—</span>
