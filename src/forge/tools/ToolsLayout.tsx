@@ -22,6 +22,7 @@ import { RegexTester } from './text/RegexTester'
 import { MarkdownPreview } from './text/MarkdownPreview'
 import { PdfToEpub } from './text/PdfToEpub'
 import { WordCounter } from './text/WordCounter'
+import { FileReader } from './text/FileReader'
 
 // Encoding
 import { Base64 } from './encoding/Base64'
@@ -67,6 +68,7 @@ import { QrGenerator } from './media/QrGenerator'
 import { VideoToMp3 } from './media/VideoToMp3'
 import { ImageConverter } from './media/ImageConverter'
 import { MediaCompressor } from './media/MediaCompressor'
+import { AudioTuner } from './media/AudioTuner'
 import { ImgCollage } from './media/ImgCollage'
 
 
@@ -112,6 +114,7 @@ export default function ToolsLayout() {
         <Route path="markdown-preview" element={<MarkdownPreview />} />
         <Route path="pdf-to-epub" element={<PdfToEpub />} />
         <Route path="word-counter" element={<WordCounter />} />
+        <Route path="file-reader" element={<FileReader />} />
 
         {/* Encoding */}
         <Route path="base64" element={<Base64 />} />
@@ -158,6 +161,7 @@ export default function ToolsLayout() {
         <Route path="video-to-mp3" element={<VideoToMp3 />} />
         <Route path="image-converter" element={<ImageConverter />} />
         <Route path="media-compressor" element={<MediaCompressor />} />
+        <Route path="audio-tuner" element={<AudioTuner />} />
 
         <Route path="*" element={<NotFound backTo="/tools" backLabel="Back to tools" />} />
       </Route>

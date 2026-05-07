@@ -44,6 +44,7 @@ const sections: Section[] = [
       { path: `${T}/markdown-preview`, label: 'Markdown Preview' },
       { path: `${T}/pdf-to-epub`, label: 'PDF to EPUB' },
       { path: `${T}/word-counter`, label: 'Word Counter' },
+      { path: `${T}/file-reader`, label: 'File Reader' },
     ],
   },
   {
@@ -60,6 +61,7 @@ const sections: Section[] = [
       { path: `${T}/video-to-mp3`, label: 'Video to MP3' },
       { path: `${T}/image-converter`, label: 'Image Converter' },
       { path: `${T}/media-compressor`, label: 'Media Compressor' },
+      { path: `${T}/audio-tuner`, label: 'Audio Tuner' },
     ],
   },
   {
