@@ -86,7 +86,10 @@ export function AudioCutter() {
   const [outputUrl, setOutputUrl] = useState<string | null>(null)
   const [outputName, setOutputName] = useState('')
 
-  const audioRef = useRef<HTMLAudioElement>(null)
+  const actxRef = useRef<AudioContext | null>(null)
+  const sourceRef = useRef<AudioBufferSourceNode | null>(null)
+  const playStartAudioTimeRef = useRef(0)
+  const playStartPositionRef = useRef(0)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const waveRef = useRef<HTMLDivElement>(null)
   const fileRef = useRef<HTMLInputElement>(null)
@@ -140,6 +143,13 @@ export function AudioCutter() {
   }, [])
 
   useEffect(() => {
+    return () => {
+      stopSource()
+      actxRef.current?.close()
+    }
+  }, [])
+
+  useEffect(() => {
     audioBufRef.current = audioBuf
     trimStartRef.current = trimStart
     trimEndRef.current = trimEnd
@@ -151,12 +161,13 @@ export function AudioCutter() {
   useEffect(() => {
     if (!isPlaying) return
     const tick = () => {
-      const audio = audioRef.current
-      if (!audio) return
-      currentTimeRef.current = audio.currentTime
-      setCurrentTime(audio.currentTime)
-      if (audio.currentTime >= trimEndRef.current) {
-        audio.pause()
+      const actx = actxRef.current
+      if (!actx || !sourceRef.current) return
+      const elapsed = actx.currentTime - playStartAudioTimeRef.current
+      const current = Math.min(playStartPositionRef.current + elapsed, trimEndRef.current)
+      currentTimeRef.current = current
+      setCurrentTime(current)
+      if (current >= trimEndRef.current) {
         setIsPlaying(false)
         return
       }
@@ -166,15 +177,18 @@ export function AudioCutter() {
     return () => cancelAnimationFrame(rafRef.current)
   }, [isPlaying])
 
+  function stopSource() {
+    try { sourceRef.current?.stop(0) } catch { /* already stopped */ }
+    sourceRef.current = null
+  }
+
   async function acceptFile(f: File) {
     setError('')
     setOutputUrl(null)
     setIsPlaying(false)
     cancelAnimationFrame(rafRef.current)
+    stopSource()
     setFile(f)
-
-    const audio = audioRef.current!
-    audio.src = URL.createObjectURL(f)
 
     setIsDecoding(true)
     try {
@@ -201,18 +215,50 @@ export function AudioCutter() {
   }
 
   function togglePlay() {
-    const audio = audioRef.current
-    if (!audio || !audioBuf) return
+    if (!audioBuf) return
     if (isPlaying) {
-      audio.pause()
-      setIsPlaying(false)
-    } else {
-      const t = currentTimeRef.current
-      if (t < trimStartRef.current || t >= trimEndRef.current) {
-        audio.currentTime = trimStartRef.current
+      const actx = actxRef.current
+      if (actx) {
+        const elapsed = actx.currentTime - playStartAudioTimeRef.current
+        const pos = Math.min(playStartPositionRef.current + elapsed, trimEndRef.current)
+        currentTimeRef.current = pos
+        setCurrentTime(pos)
       }
-      audio.play()
+      stopSource()
+      setIsPlaying(false)
+      return
+    }
+
+    let from = currentTimeRef.current
+    if (from < trimStartRef.current || from >= trimEndRef.current) from = trimStartRef.current
+
+    if (!actxRef.current) actxRef.current = new AudioContext()
+    const actx = actxRef.current
+
+    const doPlay = () => {
+      stopSource()
+      const source = actx.createBufferSource()
+      source.buffer = audioBufRef.current!
+      source.connect(actx.destination)
+      source.start(0, from, trimEndRef.current - from)
+      source.onended = () => {
+        if (sourceRef.current === source) {
+          sourceRef.current = null
+          setIsPlaying(false)
+          currentTimeRef.current = trimEndRef.current
+          setCurrentTime(trimEndRef.current)
+        }
+      }
+      sourceRef.current = source
+      playStartAudioTimeRef.current = actx.currentTime
+      playStartPositionRef.current = from
       setIsPlaying(true)
+    }
+
+    if (actx.state === 'suspended') {
+      actx.resume().then(doPlay)
+    } else {
+      doPlay()
     }
   }
 
@@ -234,8 +280,6 @@ export function AudioCutter() {
     else {
       const t = relX * dur
       if (t >= trimStartRef.current && t <= trimEndRef.current) {
-        const audio = audioRef.current
-        if (audio) audio.currentTime = t
         currentTimeRef.current = t
         setCurrentTime(t)
         redraw()
@@ -295,8 +339,6 @@ export function AudioCutter() {
       <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Audio Cutter</h1>
 
       <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-5">
-
-        <audio ref={audioRef} onEnded={() => setIsPlaying(false)} className="hidden" />
 
         {/* Drop zone */}
         <div
