@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { ResistanceHeader } from './ResistanceHeader'
 import { MobSelector } from './MobSelector'
 import { PartyCard } from './PartyCard'
@@ -6,6 +6,8 @@ import { ChainCard } from './ChainCard'
 import { findBestGroups } from './engine'
 import type { ChainGroup, PartyMember, ResistanceMap, ResistanceState, SkillchainLink } from './engine'
 import type { DamageType } from '../data/elements'
+import { ImportPanel } from '../../../../components/ImportPanel'
+import { useCopy } from '../../../../hooks/useCopy'
 
 const SK_PARTY = 'forge_ffxi_sc_party'
 const SK_RESISTANCES = 'forge_ffxi_sc_resistances'
@@ -78,9 +80,10 @@ type SectionHeaderProps = {
   onToggle: () => void
   onReset?: () => void
   resetLabel?: string
+  extra?: React.ReactNode
 }
 
-function SectionHeader({ label, open, onToggle, onReset, resetLabel = 'Reset' }: SectionHeaderProps) {
+function SectionHeader({ label, open, onToggle, onReset, resetLabel = 'Reset', extra }: SectionHeaderProps) {
   return (
     <div className="flex items-center justify-between mb-3">
       <button onClick={onToggle} className="flex items-center gap-1.5 cursor-pointer">
@@ -92,14 +95,17 @@ function SectionHeader({ label, open, onToggle, onReset, resetLabel = 'Reset' }:
           ▾
         </span>
       </button>
-      {onReset && (
-        <button
-          onClick={onReset}
-          className="text-xs text-[#4b5563] hover:text-[#6b7280] transition-colors cursor-pointer"
-        >
-          {resetLabel}
-        </button>
-      )}
+      <div className="flex items-center gap-2">
+        {extra}
+        {onReset && (
+          <button
+            onClick={onReset}
+            className="text-xs text-[#4b5563] hover:text-[#6b7280] transition-colors cursor-pointer"
+          >
+            {resetLabel}
+          </button>
+        )}
+      </div>
     </div>
   )
 }
@@ -163,7 +169,9 @@ export function SkillchainCalc() {
   const [resetKeys, setResetKeys] = useState<number[]>(() => Array(6).fill(0))
   const [resistanceOpen, setResistanceOpen] = useState(true)
   const [partyOpen, setPartyOpen] = useState(true)
+  const [showImport, setShowImport] = useState(false)
   const [favourite, setFavourite] = useState<string | null>(loadFavourite)
+  const { copy, copied } = useCopy()
   const [meIdx, setMeIdx] = useState<number | null>(loadMe)
 
   useEffect(() => { localStorage.setItem(SK_PARTY, JSON.stringify(party)) }, [party])
@@ -220,6 +228,28 @@ export function SkillchainCalc() {
 
   function handleLevelSyncBlur() {
     setLevelSyncRaw(String(levelSync))
+  }
+
+  function handleExport() {
+    copy(btoa(JSON.stringify({ party, levelSync })))
+  }
+
+  function handleImport(code: string): boolean {
+    try {
+      const data = JSON.parse(atob(code))
+      if (!Array.isArray(data.party)) return false
+      clearFavourite()
+      setMeIdx(null)
+      const lvl = typeof data.levelSync === 'number' ? Math.max(1, Math.min(75, data.levelSync)) : 75
+      setLevelSync(lvl)
+      setLevelSyncRaw(String(lvl))
+      setParty(data.party)
+      setResetKeys(prev => prev.map(k => k + 1))
+      setShowImport(false)
+      return true
+    } catch {
+      return false
+    }
   }
 
   function resetResistances() { setSelectedMob(null); clearFavourite(); setResistances({}) }
@@ -303,7 +333,32 @@ export function SkillchainCalc() {
           open={partyOpen}
           onToggle={() => setPartyOpen(o => !o)}
           onReset={hasPartyData ? resetParty : undefined}
+          extra={
+            <>
+              <button
+                onClick={handleExport}
+                className="text-xs text-[#4b5563] hover:text-[#6b7280] transition-colors cursor-pointer"
+              >
+                {copied ? 'Copied!' : 'Export'}
+              </button>
+              <button
+                onClick={() => setShowImport(v => !v)}
+                className="text-xs text-[#4b5563] hover:text-[#6b7280] transition-colors cursor-pointer"
+              >
+                Import
+              </button>
+            </>
+          }
         />
+        {showImport && (
+          <div className="mb-3">
+            <ImportPanel
+              description="Paste an export code to load a party setup and level sync."
+              onImport={handleImport}
+              onClose={() => setShowImport(false)}
+            />
+          </div>
+        )}
         {partyOpen && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {party.map((m, i) => (
