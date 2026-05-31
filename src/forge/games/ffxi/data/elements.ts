@@ -1,4 +1,78 @@
 export type Element = 'Fire' | 'Ice' | 'Wind' | 'Earth' | 'Lightning' | 'Water' | 'Light' | 'Dark'
+
+export type SCAttr =
+  | 'Liquefaction' | 'Impaction' | 'Detonation' | 'Scission'
+  | 'Reverberation' | 'Transfixion' | 'Compression' | 'Induration'
+  | 'Fusion' | 'Gravitation' | 'Distortion' | 'Fragmentation'
+  | 'Light' | 'Darkness'
+
+export type SCResonance = {
+  closer: SCAttr
+  result: string
+  level: 1 | 2 | 3
+  element: string
+}
+
+// Keyed by opener attribute. Each entry lists what closer attributes can follow
+// and what skillchain they produce.
+// HorizonXI skillchain resonance. L2 chains form from specific L1+L1 pairs
+// (not from L1 opener + L2 attr closer as in retail). L2 attrs (Fusion etc.)
+// only appear as openers/closers in the four continuation entries.
+export const SC_RESONANCES: Partial<Record<SCAttr, SCResonance[]>> = {
+  // ── L1 openers ────────────────────────────────────────────────────────────────
+  Impaction: [
+    { closer: 'Liquefaction', result: 'Liquefaction', level: 1, element: 'Fire' },
+    { closer: 'Detonation',   result: 'Detonation',   level: 1, element: 'Wind' },
+  ],
+  Scission: [
+    { closer: 'Liquefaction',  result: 'Liquefaction',  level: 1, element: 'Fire' },
+    { closer: 'Detonation',    result: 'Detonation',    level: 1, element: 'Wind' },
+    { closer: 'Reverberation', result: 'Reverberation', level: 1, element: 'Water' },
+  ],
+  Reverberation: [
+    { closer: 'Impaction',  result: 'Impaction',  level: 1, element: 'Lightning' },
+    { closer: 'Induration', result: 'Induration', level: 1, element: 'Ice' },
+  ],
+  Induration: [
+    { closer: 'Impaction',     result: 'Impaction',     level: 1, element: 'Lightning' },
+    { closer: 'Compression',   result: 'Compression',   level: 1, element: 'Dark' },
+    { closer: 'Reverberation', result: 'Fragmentation', level: 2, element: 'Wind · Lightning' },
+  ],
+  Compression: [
+    { closer: 'Detonation',  result: 'Detonation',  level: 1, element: 'Wind' },
+    { closer: 'Transfixion', result: 'Transfixion', level: 1, element: 'Light' },
+  ],
+  Liquefaction: [
+    { closer: 'Scission',  result: 'Scission', level: 1, element: 'Earth' },
+    { closer: 'Impaction', result: 'Fusion',   level: 2, element: 'Fire · Light' },
+  ],
+  Detonation: [
+    { closer: 'Scission',    result: 'Scission',    level: 1, element: 'Earth' },
+    { closer: 'Compression', result: 'Gravitation', level: 2, element: 'Earth · Dark' },
+  ],
+  Transfixion: [
+    { closer: 'Reverberation', result: 'Reverberation', level: 1, element: 'Water' },
+    { closer: 'Compression',   result: 'Compression',   level: 1, element: 'Dark' },
+    { closer: 'Scission',      result: 'Distortion',    level: 2, element: 'Ice · Water' },
+  ],
+  // ── L2 openers (continuation chains and L3) ───────────────────────────────────
+  Distortion: [
+    { closer: 'Fusion',      result: 'Fusion',    level: 2, element: 'Fire · Light' },
+    { closer: 'Gravitation', result: 'Darkness',  level: 3, element: 'All Elements (Umbra)' },
+  ],
+  Gravitation: [
+    { closer: 'Fragmentation', result: 'Fragmentation', level: 2, element: 'Wind · Lightning' },
+    { closer: 'Distortion',    result: 'Darkness',      level: 3, element: 'All Elements (Umbra)' },
+  ],
+  Fusion: [
+    { closer: 'Gravitation',   result: 'Gravitation', level: 2, element: 'Earth · Dark' },
+    { closer: 'Fragmentation', result: 'Light',       level: 3, element: 'All Elements (Radiance)' },
+  ],
+  Fragmentation: [
+    { closer: 'Distortion', result: 'Distortion', level: 2, element: 'Ice · Water' },
+    { closer: 'Fusion',     result: 'Light',      level: 3, element: 'All Elements (Radiance)' },
+  ],
+}
 export type PhysicalType = 'Blunt' | 'Slashing' | 'Piercing'
 export type DamageType = Element | PhysicalType
 

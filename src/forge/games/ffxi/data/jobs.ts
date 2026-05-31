@@ -29,7 +29,7 @@ export const JOBS: JobInfo[] = [
     name: 'WAR', fullName: 'Warrior', isMage: false, isRanged: false,
     weapons: {
       'Hand-to-Hand': 'D', 'Dagger': 'B-', 'Sword': 'B', 'Great Sword': 'B+',
-      'Axe': 'A-', 'Great Axe': 'A+', 'Scythe': 'B+', 'Polearm': 'B-',
+      'Axe': 'A-', 'Great Axe': 'A+', 'Scythe': 'B+', 'Polearm': 'B',
       'Club': 'B-', 'Staff': 'B',
     },
   },
@@ -52,7 +52,8 @@ export const JOBS: JobInfo[] = [
   {
     name: 'THF', fullName: 'Thief', isMage: false, isRanged: false,
     weapons: {
-      'Hand-to-Hand': 'E', 'Dagger': 'A-', 'Sword': 'D', 'Club': 'E',
+      'Hand-to-Hand': 'E', 'Dagger': 'A-', 'Sword': 'D', 'Club': 'D',
+      'Archery': 'C+', 'Marksmanship': 'C-',
     },
   },
   {
@@ -88,7 +89,7 @@ export const JOBS: JobInfo[] = [
     name: 'SAM', fullName: 'Samurai', isMage: false, isRanged: false,
     weapons: {
       'Dagger': 'E', 'Sword': 'C+', 'Polearm': 'B-',
-      'Great Katana': 'A+', 'Club': 'E',
+      'Great Katana': 'A+', 'Club': 'E', 'Archery': 'C+',
     },
   },
   {
@@ -96,6 +97,7 @@ export const JOBS: JobInfo[] = [
     weapons: {
       'Hand-to-Hand': 'E', 'Dagger': 'C+', 'Sword': 'C',
       'Katana': 'A-', 'Great Katana': 'C-', 'Club': 'E',
+      'Archery': 'E', 'Marksmanship': 'C',
     },
   },
   {

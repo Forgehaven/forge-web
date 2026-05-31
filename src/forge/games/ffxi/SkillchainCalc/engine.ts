@@ -1,6 +1,6 @@
 import { WEAPON_SKILLS, WEAPON_DAMAGE_TYPE, type WeaponSkill, type WeaponType, type SCAttr } from '../data/weaponSkills'
 import { JOBS, SKILL_CAP_75, type Job, type SkillRank } from '../data/jobs'
-import { SC_BURST_ELEMENTS, type Element, type ResistanceMap } from '../data/elements'
+import { SC_BURST_ELEMENTS, SC_RESONANCES, type Element, type ResistanceMap } from '../data/elements'
 import { getBurstSpells, type BurstSpell as Spell } from '../data/burstSpells'
 
 export type { SCAttr }
@@ -44,45 +44,14 @@ export interface ChainGroup {
   totalScore: number
 }
 
-// [opener_attr, closer_attr, sc_name, level, element_label]
-const RESONANCE_TABLE: [SCAttr, SCAttr, string, 1 | 2 | 3, string][] = [
-  // Level 1
-  ['Liquefaction', 'Liquefaction', 'Liquefaction',   1, 'Fire'],
-  ['Scission',     'Liquefaction', 'Liquefaction',   1, 'Fire'],
-  ['Impaction',    'Impaction',    'Impaction',       1, 'Lightning'],
-  ['Reverberation','Impaction',    'Impaction',       1, 'Lightning'],
-  ['Detonation',   'Detonation',   'Detonation',      1, 'Wind'],
-  ['Induration',   'Detonation',   'Detonation',      1, 'Wind'],
-  ['Scission',     'Scission',     'Scission',        1, 'Earth'],
-  ['Reverberation','Reverberation','Reverberation',   1, 'Water'],
-  ['Induration',   'Reverberation','Reverberation',   1, 'Water'],
-  ['Transfixion',  'Transfixion',  'Transfixion',     1, 'Light'],
-  ['Compression',  'Compression',  'Compression',     1, 'Dark'],
-  // Level 2
-  ['Liquefaction', 'Fusion',       'Fusion',          2, 'Fire · Light'],
-  ['Transfixion',  'Fusion',       'Fusion',          2, 'Fire · Light'],
-  ['Scission',     'Gravitation',  'Gravitation',     2, 'Earth · Dark'],
-  ['Compression',  'Gravitation',  'Gravitation',     2, 'Earth · Dark'],
-  ['Reverberation','Distortion',   'Distortion',      2, 'Ice · Water'],
-  ['Induration',   'Distortion',   'Distortion',      2, 'Ice · Water'],
-  ['Detonation',   'Fragmentation','Fragmentation',   2, 'Wind · Lightning'],
-  ['Impaction',    'Fragmentation','Fragmentation',   2, 'Wind · Lightning'],
-  // Level 3
-  ['Fragmentation','Fusion',       'Light',           3, 'All Elements (Radiance)'],
-  ['Fusion',       'Fragmentation','Light',           3, 'All Elements (Radiance)'],
-  ['Gravitation',  'Distortion',   'Darkness',        3, 'All Elements (Umbra)'],
-  ['Distortion',   'Gravitation',  'Darkness',        3, 'All Elements (Umbra)'],
-]
-
 // Best SC from explicit attr lists — used for both WS→WS and SC→WS
 function findBestSC(openerAttrs: SCAttr[], closerAttrs: SCAttr[]): SkillchainResult | null {
   let best: SkillchainResult | null = null
   for (const o of openerAttrs) {
-    for (const c of closerAttrs) {
-      const match = RESONANCE_TABLE.find(([ro, rc]) => ro === o && rc === c)
-      if (match) {
-        const [,, name, level, element] = match
-        if (!best || level > best.level) best = { name, level, element }
+    const resonances = SC_RESONANCES[o] ?? []
+    for (const r of resonances) {
+      if (closerAttrs.includes(r.closer)) {
+        if (!best || r.level > best.level) best = { name: r.result, level: r.level, element: r.element }
       }
     }
   }
@@ -188,9 +157,9 @@ export function findBestGroups(
   for (let i = 0; i < party.length; i++) {
     const m = party[i]
     if (!m.job) continue
-    const jobInfo = JOBS.find(j => j.name === m.job)
-    if (!jobInfo?.isMage) continue
-    mageBursts.push({ memberIdx: i, job: m.job, bursts: getBurstSpells(m.job, levelSync) })
+    const bursts = getBurstSpells(m.job, levelSync)
+    if (Object.keys(bursts).length === 0) continue
+    mageBursts.push({ memberIdx: i, job: m.job, bursts })
   }
 
   // ── Build 2-step links ──────────────────────────────────────────────────────

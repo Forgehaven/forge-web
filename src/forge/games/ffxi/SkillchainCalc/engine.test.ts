@@ -1,9 +1,10 @@
 import { describe, it, expect } from 'vitest'
 import { computeSkillchain, getSkillCap, getAvailableWSes, findBestGroups } from './engine'
 import type { ChainGroup, PartyMember } from './engine'
-import type { WeaponType } from '../data/weaponSkills'
+import type { WeaponSkill, WeaponType } from '../data/weaponSkills'
 import type { Job } from '../data/jobs'
 import { WEAPON_SKILLS } from '../data/weaponSkills'
+import { SC_RESONANCES } from '../data/elements'
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -31,32 +32,38 @@ function allFinalSCs(groups: ChainGroup[]): Set<string> {
 
 describe('computeSkillchain', () => {
   it('returns null when no resonance', () => {
-    const ws1 = WEAPON_SKILLS.find(w => w.name === 'Slice')!
-    const ws2 = WEAPON_SKILLS.find(w => w.name === 'Shadow of Death')!
+    // Hard Slash (Scission) → Combo (Impaction): Scission closers are Liquefaction/Detonation/Reverberation — no Impaction
+    const ws1 = WEAPON_SKILLS.find(w => w.name === 'Hard Slash')!
+    const ws2 = WEAPON_SKILLS.find(w => w.name === 'Combo')!
     expect(computeSkillchain(ws1, ws2)).toBeNull()
   })
 
   it('computes a Level 2 Distortion chain', () => {
-    const ws1 = WEAPON_SKILLS.find(w => w.name === 'Tachi: Gekko')!
-    const ws2 = WEAPON_SKILLS.find(w => w.name === 'Tachi: Yukikaze')!
+    // HorizonXI: Distortion = Transfixion opener + Scission closer
+    const ws1 = WEAPON_SKILLS.find(w => w.name === 'Double Thrust')! // Transfixion
+    const ws2 = WEAPON_SKILLS.find(w => w.name === 'Iron Tempest')!  // Scission
     const result = computeSkillchain(ws1, ws2)
     expect(result?.name).toBe('Distortion')
     expect(result?.level).toBe(2)
   })
 
   it('computes a Level 3 Light chain', () => {
-    const ws1 = WEAPON_SKILLS.find(w => w.name === 'Tachi: Kasha')!
-    const ws2 = WEAPON_SKILLS.find(w => w.name === 'Tachi: Jinpu')!
+    // Wheeling Thrust (Fusion) → Spinning Slash (Fragmentation) = Light L3
+    const ws1 = WEAPON_SKILLS.find(w => w.name === 'Wheeling Thrust')!
+    const ws2 = WEAPON_SKILLS.find(w => w.name === 'Spinning Slash')!
     const result = computeSkillchain(ws1, ws2)
     expect(result?.name).toBe('Light')
     expect(result?.level).toBe(3)
   })
 
   it('picks highest level chain when multiple resonate', () => {
-    const ws1 = WEAPON_SKILLS.find(w => w.name === 'Tachi: Gekko')!
-    const ws2 = WEAPON_SKILLS.find(w => w.name === 'Tachi: Yukikaze')!
+    // Avalanche Axe (Induration). Shoulder Tackle (Reverberation+Impaction).
+    // Induration→Impaction = Impaction L1, Induration→Reverberation = Fragmentation L2 — L2 wins.
+    const ws1 = WEAPON_SKILLS.find(w => w.name === 'Avalanche Axe')!
+    const ws2 = WEAPON_SKILLS.find(w => w.name === 'Shoulder Tackle')!
     const result = computeSkillchain(ws1, ws2)
-    expect(result?.level).toBeGreaterThanOrEqual(2)
+    expect(result?.name).toBe('Fragmentation')
+    expect(result?.level).toBe(2)
   })
 })
 
@@ -124,41 +131,39 @@ describe('findBestGroups', () => {
     expect(scs.has('Liquefaction')).toBe(true)
   })
 
+  // Two WAR/Sword at lv20: Fast Blade (Scission) and Burning Blade (Liquefaction) only.
+  // Power Slash (GS) is now Transfixion — pairing with GS introduces Distortion L2 which
+  // dominates. Using Sword+Sword avoids that: only Scission and Liquefaction L1 chains exist.
   it('Earth resistance ranks Liquefaction above Scission', () => {
-    // Scission bursts Earth — if Earth is resistant, Scission score drops
-    const p = party(member('WAR', 'Sword'), member('WAR', 'Great Sword'))
+    const p = party(member('WAR', 'Sword'), member('WAR', 'Sword'))
     const groups = findBestGroups(p, 20, { Earth: 'resistant' })
     const topSC = groups[0]?.links[0]?.boundaries.at(-1)?.name
     expect(topSC).toBe('Liquefaction')
   })
 
   it('Fire resistance ranks Scission above Liquefaction', () => {
-    // Liquefaction bursts Fire — if Fire is resistant, Liquefaction score drops
-    const p = party(member('WAR', 'Sword'), member('WAR', 'Great Sword'))
+    const p = party(member('WAR', 'Sword'), member('WAR', 'Sword'))
     const groups = findBestGroups(p, 20, { Fire: 'resistant' })
     const topSC = groups[0]?.links[0]?.boundaries.at(-1)?.name
     expect(topSC).toBe('Scission')
   })
 
   it('Fire weakness ranks Liquefaction above Scission', () => {
-    // Liquefaction bursts Fire — if Fire is weak, Liquefaction score rises.
-    // Bug: Math.round(base * 0.05) with base=5 rounds to 0, killing the bonus.
-    // Fix: Math.max(1, ...) ensures a non-zero delta even for L1 chains.
-    const p = party(member('WAR', 'Sword'), member('WAR', 'Great Sword'))
+    const p = party(member('WAR', 'Sword'), member('WAR', 'Sword'))
     const groups = findBestGroups(p, 20, { Fire: 'weak' })
     const topSC = groups[0]?.links[0]?.boundaries.at(-1)?.name
     expect(topSC).toBe('Liquefaction')
   })
 
   it('Earth weakness ranks Scission above Liquefaction', () => {
-    const p = party(member('WAR', 'Sword'), member('WAR', 'Great Sword'))
+    const p = party(member('WAR', 'Sword'), member('WAR', 'Sword'))
     const groups = findBestGroups(p, 20, { Earth: 'weak' })
     const topSC = groups[0]?.links[0]?.boundaries.at(-1)?.name
     expect(topSC).toBe('Scission')
   })
 
   it('resistances re-rank but never hide SC types from results', () => {
-    const p = party(member('WAR', 'Sword'), member('WAR', 'Great Sword'))
+    const p = party(member('WAR', 'Sword'), member('WAR', 'Sword'))
 
     const withEarth = allFinalSCs(findBestGroups(p, 20, { Earth: 'resistant' }))
     expect(withEarth.has('Scission')).toBe(true)
@@ -169,9 +174,9 @@ describe('findBestGroups', () => {
     expect(withFire.has('Liquefaction')).toBe(true)
   })
 
-  // 2 SAMs at lv75: Tachi:Jinpu (Fragmentation) + Tachi:Kasha (Fusion) = Light L3
+  // DRG/Polearm (Wheeling Thrust = Fusion) + WAR/GS (Spinning Slash = Fragmentation) = Light L3
   it('L3 chain ranks first when achievable', () => {
-    const p = party(member('SAM', 'Great Katana'), member('SAM', 'Great Katana'))
+    const p = party(member('DRG', 'Polearm'), member('WAR', 'Great Sword'))
     const groups = findBestGroups(p, 75, {})
     const topFinal = groups[0]?.links[0]?.boundaries.at(-1)
     expect(topFinal?.level).toBe(3)
@@ -179,15 +184,15 @@ describe('findBestGroups', () => {
   })
 
   it('L3 stays top even when its burst elements are resistant', () => {
-    const p = party(member('SAM', 'Great Katana'), member('SAM', 'Great Katana'))
-    // Light bursts all elements — penalise several; it should still beat L2/L1
+    const p = party(member('DRG', 'Polearm'), member('WAR', 'Great Sword'))
+    // Light bursts Fire/Light/Lightning/Wind — penalise several; should still beat L2/L1
     const groups = findBestGroups(p, 75, { Fire: 'resistant', Ice: 'resistant', Wind: 'resistant' })
     const topFinal = groups[0]?.links[0]?.boundaries.at(-1)
     expect(topFinal?.level).toBe(3)
   })
 
-  // 4 WARs: Sword members have Swift Blade (Gravitation); GS members have Freezebite (Distortion)
-  // Pair {0,1} and pair {2,3} can each form Darkness L3 independently.
+  // 4 WARs: Sword members have Swift Blade (Gravitation); GS members have Ground Strike (Distortion)
+  // Pair {0,1} and pair {2,3} can each form Darkness L3 (Gravitation→Distortion) independently.
   it('two concurrent L3 chains score higher than any single chain', () => {
     const p = party(
       member('WAR', 'Sword'),      // m0: Swift Blade (Gravitation)
@@ -232,13 +237,12 @@ describe('findBestGroups', () => {
     expect(findBestGroups(p, 75, {})).toHaveLength(0)
   })
 
-  it('level 5 WAR/GS produces only Scission (single WS available)', () => {
-    // At lv5 WAR GS cap ≈ 16 — only Hard Slash (Scission, req 5) is available
+  it('level 5 WAR/GS produces no chains (only Hard Slash/Scission available, Scission+Scission does not chain)', () => {
+    // At lv5 WAR GS cap ≈ 16 — only Hard Slash (Scission, req 5) is available.
+    // No valid opener+closer pair exists: Scission→Scission is not in the resonance table.
     const p = party(member('WAR', 'Great Sword'), member('WAR', 'Great Sword'))
     const groups = findBestGroups(p, 5, {})
-    const scs = allFinalSCs(groups)
-    expect(scs.has('Scission')).toBe(true)
-    expect(scs.size).toBe(1)
+    expect(groups).toHaveLength(0)
   })
 
   it('level 75 WAR/GS unlocks more SC types than level 5', () => {
@@ -246,5 +250,56 @@ describe('findBestGroups', () => {
     const lv5 = allFinalSCs(findBestGroups(p, 5, {}))
     const lv75 = allFinalSCs(findBestGroups(p, 75, {}))
     expect(lv75.size).toBeGreaterThan(lv5.size)
+  })
+})
+
+// ── Exhaustive cross-weapon chain validation ──────────────────────────────────
+//
+// For every WS pair on different weapon types, derive the expected chain from
+// SC_RESONANCES (the authoritative data source) and assert computeSkillchain
+// returns exactly that. Catches any bug in findBestSC's attr iteration or
+// level-priority logic.
+
+type PairCase = {
+  label: string
+  ws1: WeaponSkill
+  ws2: WeaponSkill
+  name: string
+  level: 1 | 2 | 3
+}
+
+function buildAllValidPairs(): PairCase[] {
+  const pairs: PairCase[] = []
+  for (const ws1 of WEAPON_SKILLS) {
+    if (ws1.attrs.length === 0) continue
+    for (const ws2 of WEAPON_SKILLS) {
+      if (ws2.attrs.length === 0) continue
+      if (ws1.weapon === ws2.weapon) continue
+      let best: { name: string; level: 1 | 2 | 3 } | null = null
+      for (const o of ws1.attrs) {
+        for (const r of SC_RESONANCES[o] ?? []) {
+          if (ws2.attrs.includes(r.closer)) {
+            if (!best || r.level > best.level) best = { name: r.result, level: r.level }
+          }
+        }
+      }
+      if (!best) continue
+      pairs.push({
+        label: `${ws1.name} (${ws1.weapon}) → ${ws2.name} (${ws2.weapon}) = ${best.name} L${best.level}`,
+        ws1, ws2,
+        name: best.name,
+        level: best.level,
+      })
+    }
+  }
+  return pairs
+}
+
+describe('computeSkillchain — all valid cross-weapon pairs', () => {
+  it.each(buildAllValidPairs())('$label', ({ ws1, ws2, name, level }) => {
+    const result = computeSkillchain(ws1, ws2)
+    expect(result).not.toBeNull()
+    expect(result?.name).toBe(name)
+    expect(result?.level).toBe(level)
   })
 })
