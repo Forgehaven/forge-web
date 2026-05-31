@@ -10,7 +10,7 @@ export type SCResonance = {
   closer: SCAttr
   result: string
   level: 1 | 2 | 3
-  element: string
+  elements: Element[]
 }
 
 // Keyed by opener attribute. Each entry lists what closer attributes can follow
@@ -21,56 +21,56 @@ export type SCResonance = {
 export const SC_RESONANCES: Partial<Record<SCAttr, SCResonance[]>> = {
   // ── L1 openers ────────────────────────────────────────────────────────────────
   Impaction: [
-    { closer: 'Liquefaction', result: 'Liquefaction', level: 1, element: 'Fire' },
-    { closer: 'Detonation',   result: 'Detonation',   level: 1, element: 'Wind' },
+    { closer: 'Liquefaction', result: 'Liquefaction', level: 1, elements: ['Fire'] },
+    { closer: 'Detonation',   result: 'Detonation',   level: 1, elements: ['Wind'] },
   ],
   Scission: [
-    { closer: 'Liquefaction',  result: 'Liquefaction',  level: 1, element: 'Fire' },
-    { closer: 'Detonation',    result: 'Detonation',    level: 1, element: 'Wind' },
-    { closer: 'Reverberation', result: 'Reverberation', level: 1, element: 'Water' },
+    { closer: 'Liquefaction',  result: 'Liquefaction',  level: 1, elements: ['Fire'] },
+    { closer: 'Detonation',    result: 'Detonation',    level: 1, elements: ['Wind'] },
+    { closer: 'Reverberation', result: 'Reverberation', level: 1, elements: ['Water'] },
   ],
   Reverberation: [
-    { closer: 'Impaction',  result: 'Impaction',  level: 1, element: 'Lightning' },
-    { closer: 'Induration', result: 'Induration', level: 1, element: 'Ice' },
+    { closer: 'Impaction',  result: 'Impaction',  level: 1, elements: ['Lightning'] },
+    { closer: 'Induration', result: 'Induration', level: 1, elements: ['Ice'] },
   ],
   Induration: [
-    { closer: 'Impaction',     result: 'Impaction',     level: 1, element: 'Lightning' },
-    { closer: 'Compression',   result: 'Compression',   level: 1, element: 'Dark' },
-    { closer: 'Reverberation', result: 'Fragmentation', level: 2, element: 'Wind · Lightning' },
+    { closer: 'Impaction',     result: 'Impaction',     level: 1, elements: ['Lightning'] },
+    { closer: 'Compression',   result: 'Compression',   level: 1, elements: ['Dark'] },
+    { closer: 'Reverberation', result: 'Fragmentation', level: 2, elements: ['Wind', 'Lightning'] },
   ],
   Compression: [
-    { closer: 'Detonation',  result: 'Detonation',  level: 1, element: 'Wind' },
-    { closer: 'Transfixion', result: 'Transfixion', level: 1, element: 'Light' },
+    { closer: 'Detonation',  result: 'Detonation',  level: 1, elements: ['Wind'] },
+    { closer: 'Transfixion', result: 'Transfixion', level: 1, elements: ['Light'] },
   ],
   Liquefaction: [
-    { closer: 'Scission',  result: 'Scission', level: 1, element: 'Earth' },
-    { closer: 'Impaction', result: 'Fusion',   level: 2, element: 'Fire · Light' },
+    { closer: 'Scission',  result: 'Scission', level: 1, elements: ['Earth'] },
+    { closer: 'Impaction', result: 'Fusion',   level: 2, elements: ['Fire', 'Light'] },
   ],
   Detonation: [
-    { closer: 'Scission',    result: 'Scission',    level: 1, element: 'Earth' },
-    { closer: 'Compression', result: 'Gravitation', level: 2, element: 'Earth · Dark' },
+    { closer: 'Scission',    result: 'Scission',    level: 1, elements: ['Earth'] },
+    { closer: 'Compression', result: 'Gravitation', level: 2, elements: ['Earth', 'Dark'] },
   ],
   Transfixion: [
-    { closer: 'Reverberation', result: 'Reverberation', level: 1, element: 'Water' },
-    { closer: 'Compression',   result: 'Compression',   level: 1, element: 'Dark' },
-    { closer: 'Scission',      result: 'Distortion',    level: 2, element: 'Ice · Water' },
+    { closer: 'Reverberation', result: 'Reverberation', level: 1, elements: ['Water'] },
+    { closer: 'Compression',   result: 'Compression',   level: 1, elements: ['Dark'] },
+    { closer: 'Scission',      result: 'Distortion',    level: 2, elements: ['Ice', 'Water'] },
   ],
   // ── L2 openers (continuation chains and L3) ───────────────────────────────────
   Distortion: [
-    { closer: 'Fusion',      result: 'Fusion',    level: 2, element: 'Fire · Light' },
-    { closer: 'Gravitation', result: 'Darkness',  level: 3, element: 'All Elements (Umbra)' },
+    { closer: 'Fusion',      result: 'Fusion',    level: 2, elements: ['Fire', 'Light'] },
+    { closer: 'Gravitation', result: 'Darkness',  level: 3, elements: ['Dark', 'Earth', 'Ice', 'Water'] },
   ],
   Gravitation: [
-    { closer: 'Fragmentation', result: 'Fragmentation', level: 2, element: 'Wind · Lightning' },
-    { closer: 'Distortion',    result: 'Darkness',      level: 3, element: 'All Elements (Umbra)' },
+    { closer: 'Fragmentation', result: 'Fragmentation', level: 2, elements: ['Wind', 'Lightning'] },
+    { closer: 'Distortion',    result: 'Darkness',      level: 3, elements: ['Dark', 'Earth', 'Ice', 'Water'] },
   ],
   Fusion: [
-    { closer: 'Gravitation',   result: 'Gravitation', level: 2, element: 'Earth · Dark' },
-    { closer: 'Fragmentation', result: 'Light',       level: 3, element: 'All Elements (Radiance)' },
+    { closer: 'Gravitation',   result: 'Gravitation', level: 2, elements: ['Earth', 'Dark'] },
+    { closer: 'Fragmentation', result: 'Light',       level: 3, elements: ['Fire', 'Light', 'Lightning', 'Wind'] },
   ],
   Fragmentation: [
-    { closer: 'Distortion', result: 'Distortion', level: 2, element: 'Ice · Water' },
-    { closer: 'Fusion',     result: 'Light',      level: 3, element: 'All Elements (Radiance)' },
+    { closer: 'Distortion', result: 'Distortion', level: 2, elements: ['Ice', 'Water'] },
+    { closer: 'Fusion',     result: 'Light',      level: 3, elements: ['Fire', 'Light', 'Lightning', 'Wind'] },
   ],
 }
 export type PhysicalType = 'Blunt' | 'Slashing' | 'Piercing'

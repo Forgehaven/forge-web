@@ -12,6 +12,7 @@ const SK_RESISTANCES = 'forge_ffxi_sc_resistances'
 const SK_LEVEL = 'forge_ffxi_sc_level'
 const SK_FAVOURITE = 'forge_ffxi_sc_favourite'
 const SK_MOB = 'forge_ffxi_sc_mob'
+const SK_ME = 'forge_ffxi_sc_me'
 
 function emptyMember(): PartyMember {
   return { job: null, weaponType: null, name: '' }
@@ -50,6 +51,17 @@ function loadFavourite(): string | null {
 
 function loadMob(): string | null {
   try { return localStorage.getItem(SK_MOB) } catch { return null }
+}
+
+function loadMe(): number | null {
+  try {
+    const raw = localStorage.getItem(SK_ME)
+    if (raw !== null) {
+      const v = parseInt(raw)
+      if (!isNaN(v)) return v
+    }
+  } catch { /* ignore */ }
+  return null
 }
 
 function chainKey(link: SkillchainLink): string {
@@ -100,9 +112,10 @@ type GroupRowProps = {
   panelWidth: number
   isFavourite: boolean
   onToggleFavourite: () => void
+  meIdx: number | null
 }
 
-function GroupRow({ group, party, rank, compact, panelWidth, isFavourite, onToggleFavourite }: GroupRowProps) {
+function GroupRow({ group, party, rank, compact, panelWidth, isFavourite, onToggleFavourite, meIdx }: GroupRowProps) {
   if (group.links.length === 1) {
     return (
       <ChainCard
@@ -113,6 +126,7 @@ function GroupRow({ group, party, rank, compact, panelWidth, isFavourite, onTogg
         panelWidth={panelWidth}
         isFavourite={isFavourite}
         onToggleFavourite={onToggleFavourite}
+        meIdx={meIdx}
       />
     )
   }
@@ -128,14 +142,14 @@ function GroupRow({ group, party, rank, compact, panelWidth, isFavourite, onTogg
         <button
           onClick={onToggleFavourite}
           className="text-base leading-none cursor-pointer transition-colors"
-          style={{ color: isFavourite ? '#c4af64' : '#374151' }}
+          style={{ color: isFavourite ? '#c4af64' : '#4b5563' }}
         >
           {isFavourite ? '★' : '☆'}
         </button>
       </div>
       <div className="flex flex-col gap-3">
         {group.links.map((link, i) => (
-          <ChainCard key={i} link={link} party={party} rank={rank} compact={compact} panelWidth={panelWidth} />
+          <ChainCard key={i} link={link} party={party} rank={rank} compact={compact} panelWidth={panelWidth} meIdx={meIdx} />
         ))}
       </div>
     </div>
@@ -152,6 +166,7 @@ export function SkillchainCalc() {
   const [resistanceOpen, setResistanceOpen] = useState(true)
   const [partyOpen, setPartyOpen] = useState(true)
   const [favourite, setFavourite] = useState<string | null>(loadFavourite)
+  const [meIdx, setMeIdx] = useState<number | null>(loadMe)
 
   useEffect(() => { localStorage.setItem(SK_PARTY, JSON.stringify(party)) }, [party])
   useEffect(() => { localStorage.setItem(SK_RESISTANCES, JSON.stringify(resistances)) }, [resistances])
@@ -164,6 +179,10 @@ export function SkillchainCalc() {
     if (selectedMob !== null) localStorage.setItem(SK_MOB, selectedMob)
     else localStorage.removeItem(SK_MOB)
   }, [selectedMob])
+  useEffect(() => {
+    if (meIdx !== null) localStorage.setItem(SK_ME, String(meIdx))
+    else localStorage.removeItem(SK_ME)
+  }, [meIdx])
 
   function clearFavourite() { setFavourite(null) }
 
@@ -186,6 +205,7 @@ export function SkillchainCalc() {
 
   function handleMemberReset(idx: number) {
     clearFavourite()
+    if (meIdx === idx) setMeIdx(null)
     setParty(prev => prev.map((old, i) => i === idx ? emptyMember() : old))
     setResetKeys(prev => prev.map((k, i) => i === idx ? k + 1 : k))
   }
@@ -207,6 +227,7 @@ export function SkillchainCalc() {
   function resetResistances() { setSelectedMob(null); clearFavourite(); setResistances({}) }
   function resetParty() {
     clearFavourite()
+    setMeIdx(null)
     setParty(Array.from({ length: 6 }, emptyMember))
     setResetKeys(prev => prev.map(k => k + 1))
   }
@@ -300,6 +321,8 @@ export function SkillchainCalc() {
                 onReset={() => handleMemberReset(i)}
                 levelSync={levelSync}
                 index={i}
+                isMe={meIdx === i}
+                onToggleMe={() => setMeIdx(prev => prev === i ? null : i)}
               />
             ))}
           </div>
@@ -323,6 +346,7 @@ export function SkillchainCalc() {
                   panelWidth={scPanelWidth}
                   isFavourite={isFavGroup}
                   onToggleFavourite={() => setFavourite(prev => prev === gKey ? null : gKey)}
+                  meIdx={meIdx}
                 />
               )
             })}

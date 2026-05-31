@@ -40,7 +40,9 @@ export const BURST_SPELLS: BurstSpell[] = [
   { name: 'Thunder IV',  job: 'BLM', element: 'Lightning', minLevel: 75 },
 
   // White Mage
-  { name: 'Holy', job: 'WHM', element: 'Light', minLevel: 50 },
+  { name: 'Banish',    job: 'WHM', element: 'Light', minLevel: 5  },
+  { name: 'Banish II', job: 'WHM', element: 'Light', minLevel: 30 },
+  { name: 'Holy',      job: 'WHM', element: 'Light', minLevel: 50 },
 
   // Ninja — elemental ninjutsu (can burst off skillchains; no :San tier on HorizonXI)
   { name: 'Katon: Ichi',  job: 'NIN', element: 'Fire',      minLevel: 12 },

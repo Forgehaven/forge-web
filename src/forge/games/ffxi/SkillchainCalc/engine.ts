@@ -1,4 +1,4 @@
-import { WEAPON_SKILLS, WEAPON_DAMAGE_TYPE, type WeaponSkill, type WeaponType, type SCAttr } from '../data/weaponSkills'
+import { WEAPON_SKILLS, type WeaponSkill, type WeaponType, type SCAttr } from '../data/weaponSkills'
 import { JOBS, SKILL_CAP_75, type Job, type SkillRank } from '../data/jobs'
 import { SC_BURST_ELEMENTS, SC_RESONANCES, type Element, type ResistanceMap } from '../data/elements'
 import { getBurstSpells, type BurstSpell as Spell } from '../data/burstSpells'
@@ -9,7 +9,7 @@ export type { ResistanceState, ResistanceMap } from '../data/elements'
 export interface SkillchainResult {
   name: string
   level: 1 | 2 | 3
-  element: string
+  elements: Element[]
 }
 
 export interface PartyMember {
@@ -51,7 +51,7 @@ function findBestSC(openerAttrs: SCAttr[], closerAttrs: SCAttr[]): SkillchainRes
     const resonances = SC_RESONANCES[o] ?? []
     for (const r of resonances) {
       if (closerAttrs.includes(r.closer)) {
-        if (!best || r.level > best.level) best = { name: r.result, level: r.level, element: r.element }
+        if (!best || r.level > best.level) best = { name: r.result, level: r.level, elements: r.elements }
       }
     }
   }
@@ -80,10 +80,6 @@ function tryExtend(
   }
 }
 
-// Level scores are intentionally non-linear: L3 must always beat any number of L2 chains
-// when comparing individual links so that group totalScore reflects L3 dominance.
-const LEVEL_SCORE: Record<1 | 2 | 3, number> = { 1: 5, 2: 100, 3: 1000 }
-
 function scoreLink(
   link: SkillchainLink,
   resistances: ResistanceMap,
@@ -105,29 +101,20 @@ function scoreLink(
     return byEl
   })
 
-  const base = LEVEL_SCORE[finalResult.level]
+  // Base: SC level (1, 2, 3)
+  // +1 per SC element mob is weak to, -1 per element mob is resistant to
+  // +1 if any party member can burst off the final SC
+  let score = finalResult.level as number
 
-  // Tiebreakers within same level: chain length (more people involved) and burst availability
-  const lengthBonus = (link.steps.length - 2) * 8
-  let burstBonus = 0
-  for (const byEl of burstsByBoundary) burstBonus += Object.keys(byEl).length
-
-  let score = base + lengthBonus + burstBonus * 3
-
-  // Resistance adjustments — proportional to base so they never flip level priority.
-  // Math.max(1, ...) ensures small bases (L1=5) always produce a non-zero delta.
   const finalBurstElements: Element[] = SC_BURST_ELEMENTS[finalResult.name] ?? []
   for (const el of finalBurstElements) {
     const state = resistances[el] ?? 'neutral'
-    if (state === 'weak') score += Math.max(1, Math.round(base * 0.05))
-    else if (state === 'resistant') score -= Math.max(1, Math.round(base * 0.10))
+    if (state === 'weak') score += 1
+    else if (state === 'resistant') score -= 1
   }
-  for (const step of link.steps) {
-    const dmgType = WEAPON_DAMAGE_TYPE[step.ws.weapon]
-    const state = resistances[dmgType] ?? 'neutral'
-    if (state === 'weak') score += Math.max(1, Math.round(base * 0.01))
-    else if (state === 'resistant') score -= Math.max(1, Math.round(base * 0.02))
-  }
+
+  const finalBursts = burstsByBoundary[burstsByBoundary.length - 1]
+  if (Object.keys(finalBursts).length > 0) score += 1
 
   return { ...link, score, burstsByBoundary }
 }

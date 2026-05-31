@@ -33,14 +33,16 @@ type PartyCardProps = {
   onReset: () => void
   levelSync: number
   index: number
+  isMe?: boolean
+  onToggleMe?: () => void
 }
 
-export function PartyCard({ member, onChange, onReset, levelSync, index }: PartyCardProps) {
+export function PartyCard({ member, onChange, onReset, levelSync, index, isMe, onToggleMe }: PartyCardProps) {
   const jobInfo = member.job ? JOBS.find(j => j.name === member.job) : undefined
   const isMage = jobInfo?.isMage ?? false
 
   const wsOptions = jobInfo ? weaponOptions(jobInfo) : []
-  const burstSpells = isMage && member.job ? getBurstSpells(member.job, levelSync) : null
+  const burstSpells = member.job ? getBurstSpells(member.job, levelSync) : null
   const wsCount = !isMage && member.job && member.weaponType
     ? getAvailableWSes(member.job, member.weaponType, levelSync).length
     : null
@@ -56,7 +58,10 @@ export function PartyCard({ member, onChange, onReset, levelSync, index }: Party
   }
 
   return (
-    <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg px-4 py-3 flex flex-col gap-2 min-w-0">
+    <div
+      className="bg-[#1a1d27] border rounded-lg px-4 py-3 flex flex-col gap-2 min-w-0 transition-colors"
+      style={{ borderColor: isMe ? '#c4af64' : '#2a2d3a' }}
+    >
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2 min-w-0">
           <span className="text-xs text-[#6b7280] uppercase tracking-widest shrink-0">Slot {index + 1}</span>
@@ -66,13 +71,27 @@ export function PartyCard({ member, onChange, onReset, levelSync, index }: Party
             </span>
           )}
         </div>
-        <button
-          onClick={onReset}
-          disabled={!hasData}
-          className="text-xs text-[#4b5563] hover:text-[#6b7280] disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer shrink-0"
-        >
-          Reset
-        </button>
+        <div className="flex items-center gap-2 shrink-0">
+          {onToggleMe && (
+            <button
+              onClick={onToggleMe}
+              className="text-[10px] font-medium px-1.5 py-0.5 rounded uppercase tracking-widest cursor-pointer transition-colors"
+              style={isMe
+                ? { color: '#c4af64', background: '#c4af6420', border: '1px solid #c4af6440' }
+                : { color: '#4b5563', background: 'transparent', border: '1px solid #2a2d3a' }
+              }
+            >
+              ME
+            </button>
+          )}
+          <button
+            onClick={onReset}
+            disabled={!hasData}
+            className="text-xs text-[#4b5563] hover:text-[#6b7280] disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
+          >
+            Reset
+          </button>
+        </div>
       </div>
 
       <input
@@ -96,6 +115,7 @@ export function PartyCard({ member, onChange, onReset, levelSync, index }: Party
           value={member.weaponType ? { value: member.weaponType, label: member.weaponType } : null}
           onChange={handleWeaponChange}
           placeholder="Weapon…"
+          isSearchable
           isDisabled={!member.job}
         />
       )}
@@ -104,7 +124,7 @@ export function PartyCard({ member, onChange, onReset, levelSync, index }: Party
         <p className="text-xs text-[#6b7280]">{wsCount} WS available at this level</p>
       )}
 
-      {isMage && burstSpells && Object.keys(burstSpells).length > 0 && (
+      {burstSpells && Object.keys(burstSpells).length > 0 && (
         <div className="flex flex-wrap gap-1 mt-0.5">
           {(Object.entries(burstSpells) as [Element, NonNullable<typeof burstSpells[Element]>][])
             .filter(([, s]) => s != null)
@@ -125,7 +145,7 @@ export function PartyCard({ member, onChange, onReset, levelSync, index }: Party
         </div>
       )}
 
-      {isMage && member.job && (!burstSpells || Object.keys(burstSpells).length === 0) && (
+      {isMage && member.job && Object.keys(burstSpells ?? {}).length === 0 && (
         <p className="text-xs text-[#374151] italic">No spells at this level</p>
       )}
     </div>
