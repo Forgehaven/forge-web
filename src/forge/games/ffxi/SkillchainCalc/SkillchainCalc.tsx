@@ -272,13 +272,12 @@ export function SkillchainCalc() {
     return Math.max(88, maxLen * 9 + 24)
   }, [groups])
 
-  const sortedGroups = useMemo(() => {
-    if (!favourite) return groups
-    const favIdx = groups.findIndex(g => groupKey(g) === favourite)
-    if (favIdx <= 0) return groups
-    const copy = [...groups]
-    const [favGroup] = copy.splice(favIdx, 1)
-    return [favGroup, ...copy]
+  const { favGroup, topGroups, otherGroups } = useMemo(() => {
+    const topScore = groups[0]?.totalScore ?? 0
+    const fav = favourite ? (groups.find(g => groupKey(g) === favourite) ?? null) : null
+    const top = groups.filter(g => groupKey(g) !== favourite && g.totalScore >= topScore)
+    const other = groups.filter(g => groupKey(g) !== favourite && g.totalScore < topScore)
+    return { favGroup: fav, topGroups: top, otherGroups: other }
   }, [groups, favourite])
 
   const hasAnyMelee = party.some(m => m.job && m.weaponType)
@@ -377,25 +376,53 @@ export function SkillchainCalc() {
         )}
       </div>
 
-      {sortedGroups.length > 0 && (
+      {groups.length > 0 && (
         <div>
           <p className="forge-label text-xs uppercase tracking-widest mb-3">Best Skillchains</p>
           <div className="flex flex-col gap-3">
-            {sortedGroups.filter((group, gi) => {
-              if (gi === 0) return true
-              if (favourite === groupKey(group)) return true
-              return group.totalScore >= sortedGroups[0].totalScore - 1
-            }).map((group, gi) => {
+            {favGroup && (() => {
+              const gKey = groupKey(favGroup)
+              return (
+                <GroupRow
+                  key={gKey}
+                  group={favGroup}
+                  party={party}
+                  compact={false}
+                  panelWidth={scPanelWidth}
+                  isFavourite={true}
+                  onToggleFavourite={() => setFavourite(null)}
+                  meIdx={meIdx}
+                />
+              )
+            })()}
+            {topGroups.map(group => {
               const gKey = groupKey(group)
-              const isFavGroup = favourite === gKey
               return (
                 <GroupRow
                   key={gKey}
                   group={group}
                   party={party}
-                  compact={!isFavGroup && gi !== 0 && group.totalScore < sortedGroups[0].totalScore}
+                  compact={false}
                   panelWidth={scPanelWidth}
-                  isFavourite={isFavGroup}
+                  isFavourite={false}
+                  onToggleFavourite={() => setFavourite(prev => prev === gKey ? null : gKey)}
+                  meIdx={meIdx}
+                />
+              )
+            })}
+            {otherGroups.length > 0 && (favGroup !== null || topGroups.length > 0) && (
+              <div className="h-px bg-[#2a2d3a]" />
+            )}
+            {otherGroups.map(group => {
+              const gKey = groupKey(group)
+              return (
+                <GroupRow
+                  key={gKey}
+                  group={group}
+                  party={party}
+                  compact={true}
+                  panelWidth={scPanelWidth}
+                  isFavourite={false}
                   onToggleFavourite={() => setFavourite(prev => prev === gKey ? null : gKey)}
                   meIdx={meIdx}
                 />
