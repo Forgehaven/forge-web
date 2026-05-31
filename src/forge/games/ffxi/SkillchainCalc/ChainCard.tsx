@@ -3,7 +3,6 @@ import { SC_COLORS, ELEMENT_COLORS } from '../data/elements'
 import type { Element } from '../data/elements'
 import type { SkillchainLink, BurstInfo, PartyMember } from './engine'
 
-
 function MemberLabel({ party, idx }: { party: PartyMember[]; idx: number }) {
   const m = party[idx]
   if (!m || (!m.name && !m.job)) {
@@ -20,7 +19,6 @@ function MemberLabel({ party, idx }: { party: PartyMember[]; idx: number }) {
 type ChainCardProps = {
   link: SkillchainLink
   party: PartyMember[]
-  rank: number
   compact?: boolean
   panelWidth?: number
   isFavourite?: boolean
@@ -28,7 +26,7 @@ type ChainCardProps = {
   meIdx?: number | null
 }
 
-export function ChainCard({ link, party, rank, compact, panelWidth, isFavourite, onToggleFavourite, meIdx }: ChainCardProps) {
+export function ChainCard({ link, party, compact, panelWidth, isFavourite, onToggleFavourite, meIdx }: ChainCardProps) {
   const finalResult = link.boundaries[link.boundaries.length - 1]
   const color = SC_COLORS[finalResult.name] ?? '#c4af64'
 
@@ -78,15 +76,18 @@ export function ChainCard({ link, party, rank, compact, panelWidth, isFavourite,
             </Fragment>
           ))}
         </div>
-        {onToggleFavourite && (
-          <button
-            onClick={onToggleFavourite}
-            className="text-sm leading-none cursor-pointer transition-colors shrink-0 px-2"
-            style={{ color: isFavourite ? '#c4af64' : '#4b5563' }}
-          >
-            {isFavourite ? '★' : '☆'}
-          </button>
-        )}
+        <div className="flex items-center self-start shrink-0 px-2 pt-1.5 gap-1">
+          <span className="text-[10px] tabular-nums" style={{ color: '#374151' }}>{link.score}</span>
+          {onToggleFavourite && (
+            <button
+              onClick={onToggleFavourite}
+              className="text-sm leading-none cursor-pointer transition-colors"
+              style={{ color: isFavourite ? '#c4af64' : '#4b5563' }}
+            >
+              {isFavourite ? '★' : '☆'}
+            </button>
+          )}
+        </div>
       </div>
     )
   }
@@ -106,6 +107,11 @@ export function ChainCard({ link, party, rank, compact, panelWidth, isFavourite,
     const isMe = meIdx != null && step.memberIdx === meIdx
     const wsBox = (
       <div className="flex flex-col gap-0.5">
+        {bColor && (
+          <span className="text-[9px] font-bold uppercase tracking-wide text-center" style={{ color: bColor }}>
+            {boundary!.name}
+          </span>
+        )}
         <div
           className="border rounded-md px-2.5 py-2 flex flex-col items-center gap-0.5"
           style={isMe
@@ -181,15 +187,10 @@ export function ChainCard({ link, party, rank, compact, panelWidth, isFavourite,
       {/* Steps + bursts */}
       <div className="flex flex-col px-3 py-3 gap-2 flex-1 min-w-0">
         <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-0 sm:flex-wrap">
-          {steps.map(({ si, bColor, boundary, wsBox }) => (
+          {steps.map(({ si, wsBox }) => (
             <div key={si} className="flex flex-col sm:flex-row sm:items-center">
               {si > 0 && (
-                <div className="flex flex-col items-center sm:mx-2 my-1 sm:my-0 shrink-0 gap-0.5">
-                  {bColor && (
-                    <span className="text-[9px] font-bold uppercase tracking-wide" style={{ color: bColor }}>
-                      {boundary!.name}
-                    </span>
-                  )}
+                <div className="flex items-center justify-center w-full sm:w-auto sm:mx-2 my-1 sm:my-0 shrink-0">
                   <span className="text-[#4b5563] text-sm leading-none">
                     <span className="sm:hidden">↓</span>
                     <span className="hidden sm:inline">→</span>
@@ -199,7 +200,6 @@ export function ChainCard({ link, party, rank, compact, panelWidth, isFavourite,
               {wsBox}
             </div>
           ))}
-          <span className="text-xs text-[#374151] sm:ml-auto sm:self-end sm:pl-2 self-end mt-1 sm:mt-0">#{rank}</span>
         </div>
         {finalBurstEntries.length > 0 && (
           <div className="flex flex-wrap gap-1 pt-1 border-t border-[#2a2d3a]">
@@ -223,15 +223,18 @@ export function ChainCard({ link, party, rank, compact, panelWidth, isFavourite,
         )}
       </div>
 
-      {onToggleFavourite && (
-        <button
-          onClick={onToggleFavourite}
-          className="text-base leading-none cursor-pointer transition-colors shrink-0 px-2 self-start pt-2"
-          style={{ color: isFavourite ? '#c4af64' : '#4b5563' }}
-        >
-          {isFavourite ? '★' : '☆'}
-        </button>
-      )}
+      <div className="flex items-center self-start shrink-0 px-2 pt-2 gap-1">
+        <span className="text-[10px] tabular-nums" style={{ color: '#374151' }}>{link.score}</span>
+        {onToggleFavourite && (
+          <button
+            onClick={onToggleFavourite}
+            className="text-base leading-none cursor-pointer transition-colors"
+            style={{ color: isFavourite ? '#c4af64' : '#4b5563' }}
+          >
+            {isFavourite ? '★' : '☆'}
+          </button>
+        )}
+      </div>
     </div>
   )
 }

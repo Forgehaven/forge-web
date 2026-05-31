@@ -101,17 +101,16 @@ function scoreLink(
     return byEl
   })
 
-  // Base: SC level (1, 2, 3)
-  // +1 per SC element mob is weak to, -1 per element mob is resistant to
+  // Base: sum of all boundary levels (rewards longer chains and higher intermediates)
+  // +1 if any burst element is weak, -1 if no weak and any resistant
   // +1 if any party member can burst off the final SC
-  let score = finalResult.level as number
+  let score = link.boundaries.reduce((s, b) => s + (b.level as number), 0)
 
   const finalBurstElements: Element[] = SC_BURST_ELEMENTS[finalResult.name] ?? []
-  for (const el of finalBurstElements) {
-    const state = resistances[el] ?? 'neutral'
-    if (state === 'weak') score += 1
-    else if (state === 'resistant') score -= 1
-  }
+  const hasWeakBurst = finalBurstElements.some(el => (resistances[el] ?? 'neutral') === 'weak')
+  const hasResistantBurst = finalBurstElements.some(el => (resistances[el] ?? 'neutral') === 'resistant')
+  if (hasWeakBurst) score += 1
+  else if (hasResistantBurst) score -= 1
 
   const finalBursts = burstsByBoundary[burstsByBoundary.length - 1]
   if (Object.keys(finalBursts).length > 0) score += 1

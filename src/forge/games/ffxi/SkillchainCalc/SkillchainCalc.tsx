@@ -107,7 +107,6 @@ function SectionHeader({ label, open, onToggle, onReset, resetLabel = 'Reset' }:
 type GroupRowProps = {
   group: ChainGroup
   party: PartyMember[]
-  rank: number
   compact: boolean
   panelWidth: number
   isFavourite: boolean
@@ -115,13 +114,12 @@ type GroupRowProps = {
   meIdx: number | null
 }
 
-function GroupRow({ group, party, rank, compact, panelWidth, isFavourite, onToggleFavourite, meIdx }: GroupRowProps) {
+function GroupRow({ group, party, compact, panelWidth, isFavourite, onToggleFavourite, meIdx }: GroupRowProps) {
   if (group.links.length === 1) {
     return (
       <ChainCard
         link={group.links[0]}
         party={party}
-        rank={rank}
         compact={compact}
         panelWidth={panelWidth}
         isFavourite={isFavourite}
@@ -137,7 +135,7 @@ function GroupRow({ group, party, rank, compact, panelWidth, isFavourite, onTogg
     >
       <div className="flex items-center justify-between">
         <p className="text-xs text-[#4b5563] uppercase tracking-widest">
-          {group.links.length} concurrent chains · #{rank}
+          {group.links.length} concurrent chains
         </p>
         <button
           onClick={onToggleFavourite}
@@ -149,7 +147,7 @@ function GroupRow({ group, party, rank, compact, panelWidth, isFavourite, onTogg
       </div>
       <div className="flex flex-col gap-3">
         {group.links.map((link, i) => (
-          <ChainCard key={i} link={link} party={party} rank={rank} compact={compact} panelWidth={panelWidth} meIdx={meIdx} />
+          <ChainCard key={i} link={link} party={party} compact={compact} panelWidth={panelWidth} meIdx={meIdx} />
         ))}
       </div>
     </div>
@@ -235,11 +233,6 @@ export function SkillchainCalc() {
   const groups = useMemo(
     () => findBestGroups(party, levelSync, resistances),
     [party, levelSync, resistances],
-  )
-
-  const topLevelSum = useMemo(
-    () => Math.max(...groups.map(g => g.links.reduce((s, l) => s + (l.boundaries.at(-1)?.level ?? 1), 0)), 0),
-    [groups],
   )
 
   // ~9px per uppercase char at text-sm bold + 24px horizontal padding
@@ -333,16 +326,19 @@ export function SkillchainCalc() {
         <div>
           <p className="forge-label text-xs uppercase tracking-widest mb-3">Best Skillchains</p>
           <div className="flex flex-col gap-3">
-            {sortedGroups.map((group, gi) => {
+            {sortedGroups.filter((group, gi) => {
+              if (gi === 0) return true
+              if (favourite === groupKey(group)) return true
+              return group.totalScore >= sortedGroups[0].totalScore - 1
+            }).map((group, gi) => {
               const gKey = groupKey(group)
               const isFavGroup = favourite === gKey
               return (
                 <GroupRow
-                  key={gi}
+                  key={gKey}
                   group={group}
                   party={party}
-                  rank={gi + 1}
-                  compact={!isFavGroup && group.links.reduce((s, l) => s + (l.boundaries.at(-1)?.level ?? 1), 0) < topLevelSum}
+                  compact={!isFavGroup && gi !== 0 && group.totalScore < sortedGroups[0].totalScore}
                   panelWidth={scPanelWidth}
                   isFavourite={isFavGroup}
                   onToggleFavourite={() => setFavourite(prev => prev === gKey ? null : gKey)}
