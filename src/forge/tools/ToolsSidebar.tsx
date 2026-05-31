@@ -115,6 +115,12 @@ const sections: Section[] = [
       { path: `${T}/bcrypt`, label: 'Bcrypt Tester' },
     ],
   },
+  {
+    section: 'Data',
+    tools: [
+      { path: `${T}/qr-data-xfer`, label: 'QR Data Transfer' },
+    ],
+  },
 ]
 
 const allTools = sections.flatMap(s => s.tools)

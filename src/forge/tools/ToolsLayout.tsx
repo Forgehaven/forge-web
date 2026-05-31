@@ -57,6 +57,9 @@ import { UserAgentParser } from './network/UserAgentParser'
 import { AesEncryptDecrypt } from './crypto/AesEncryptDecrypt'
 import { BcryptTester } from './crypto/BcryptTester'
 
+// Data
+import { QrDataXfer } from './data/QrDataXfer'
+
 // Media
 import { AudioCutter } from './media/AudioCutter'
 import { VideoCutter } from './media/VideoCutter'
@@ -162,6 +165,9 @@ export default function ToolsLayout() {
         <Route path="image-converter" element={<ImageConverter />} />
         <Route path="media-compressor" element={<MediaCompressor />} />
         <Route path="audio-tuner" element={<AudioTuner />} />
+
+        {/* Data */}
+        <Route path="qr-data-xfer" element={<QrDataXfer />} />
 
         <Route path="*" element={<NotFound backTo="/tools" backLabel="Back to tools" />} />
       </Route>
