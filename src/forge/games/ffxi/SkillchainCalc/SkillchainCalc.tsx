@@ -97,11 +97,12 @@ type GroupRowProps = {
   party: PartyMember[]
   rank: number
   compact: boolean
+  panelWidth: number
   isFavourite: boolean
   onToggleFavourite: () => void
 }
 
-function GroupRow({ group, party, rank, compact, isFavourite, onToggleFavourite }: GroupRowProps) {
+function GroupRow({ group, party, rank, compact, panelWidth, isFavourite, onToggleFavourite }: GroupRowProps) {
   if (group.links.length === 1) {
     return (
       <ChainCard
@@ -109,6 +110,7 @@ function GroupRow({ group, party, rank, compact, isFavourite, onToggleFavourite 
         party={party}
         rank={rank}
         compact={compact}
+        panelWidth={panelWidth}
         isFavourite={isFavourite}
         onToggleFavourite={onToggleFavourite}
       />
@@ -133,7 +135,7 @@ function GroupRow({ group, party, rank, compact, isFavourite, onToggleFavourite 
       </div>
       <div className="flex flex-col gap-3">
         {group.links.map((link, i) => (
-          <ChainCard key={i} link={link} party={party} rank={rank} compact={compact} />
+          <ChainCard key={i} link={link} party={party} rank={rank} compact={compact} panelWidth={panelWidth} />
         ))}
       </div>
     </div>
@@ -214,7 +216,17 @@ export function SkillchainCalc() {
     [party, levelSync, resistances],
   )
 
-  const topScore = groups[0]?.totalScore ?? -Infinity
+  const topLevelSum = useMemo(
+    () => Math.max(...groups.map(g => g.links.reduce((s, l) => s + (l.boundaries.at(-1)?.level ?? 1), 0)), 0),
+    [groups],
+  )
+
+  // ~9px per uppercase char at text-sm bold + 24px horizontal padding
+  const scPanelWidth = useMemo(() => {
+    const names = groups.flatMap(g => g.links.map(l => l.boundaries.at(-1)?.name ?? ''))
+    const maxLen = Math.max(...names.map(n => n.length), 0)
+    return Math.max(88, maxLen * 9 + 24)
+  }, [groups])
 
   const sortedGroups = useMemo(() => {
     if (!favourite) return groups
@@ -307,7 +319,8 @@ export function SkillchainCalc() {
                   group={group}
                   party={party}
                   rank={gi + 1}
-                  compact={!isFavGroup && group.totalScore < topScore}
+                  compact={!isFavGroup && group.links.reduce((s, l) => s + (l.boundaries.at(-1)?.level ?? 1), 0) < topLevelSum}
+                  panelWidth={scPanelWidth}
                   isFavourite={isFavGroup}
                   onToggleFavourite={() => setFavourite(prev => prev === gKey ? null : gKey)}
                 />
