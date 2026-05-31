@@ -116,6 +116,7 @@ export function PartyCard({ member, onChange, onReset, levelSync, index, isMe, o
           onChange={handleWeaponChange}
           placeholder="Weapon…"
           isSearchable
+          isClearable
           isDisabled={!member.job}
         />
       )}
