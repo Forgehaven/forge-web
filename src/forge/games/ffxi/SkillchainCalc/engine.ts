@@ -133,7 +133,7 @@ export function findBestGroups(
     const m = party[i]
     if (!m.job || !m.weaponType) continue
     const jobInfo = JOBS.find(j => j.name === m.job)
-    if (!jobInfo || jobInfo.isMage) continue
+    if (!jobInfo || (!jobInfo.roles.includes('melee') && !jobInfo.roles.includes('ranged'))) continue
     for (const ws of getAvailableWSes(m.job, m.weaponType, levelSync)) {
       candidates.push({ memberIdx: i, ws })
     }

@@ -16,17 +16,18 @@ export const SKILL_CAP_75: Record<SkillRank, number> = {
   'C+': 230, 'C':  225, 'C-': 220, 'D': 210, 'E':  200, 'F': 189,
 }
 
+export type JobRole = 'melee' | 'mage' | 'ranged'
+
 export interface JobInfo {
   name: Job
   fullName: string
-  isMage: boolean      // WHM, BLM, RDM, SMN — no WS panel in party card
-  isRanged: boolean    // RNG — ranged WSes shown first
+  roles: JobRole[]
   weapons: Partial<Record<WeaponType, SkillRank>>
 }
 
 export const JOBS: JobInfo[] = [
   {
-    name: 'WAR', fullName: 'Warrior', isMage: false, isRanged: false,
+    name: 'WAR', fullName: 'Warrior', roles: ['melee'],
     weapons: {
       'Hand-to-Hand': 'D', 'Dagger': 'B-', 'Sword': 'B', 'Great Sword': 'B+',
       'Axe': 'A-', 'Great Axe': 'A+', 'Scythe': 'B+', 'Polearm': 'B',
@@ -34,66 +35,66 @@ export const JOBS: JobInfo[] = [
     },
   },
   {
-    name: 'MNK', fullName: 'Monk', isMage: false, isRanged: false,
+    name: 'MNK', fullName: 'Monk', roles: ['melee'],
     weapons: { 'Hand-to-Hand': 'A+', 'Club': 'C+', 'Staff': 'B' },
   },
   {
-    name: 'WHM', fullName: 'White Mage', isMage: true, isRanged: false,
+    name: 'WHM', fullName: 'White Mage', roles: ['mage'],
     weapons: { 'Club': 'B+', 'Staff': 'C+' },
   },
   {
-    name: 'BLM', fullName: 'Black Mage', isMage: true, isRanged: false,
+    name: 'BLM', fullName: 'Black Mage', roles: ['mage'],
     weapons: { 'Staff': 'B-' },
   },
   {
-    name: 'RDM', fullName: 'Red Mage', isMage: true, isRanged: false,
+    name: 'RDM', fullName: 'Red Mage', roles: ['melee', 'mage'],
     weapons: { 'Sword': 'B', 'Dagger': 'B', 'Club': 'D' },
   },
   {
-    name: 'THF', fullName: 'Thief', isMage: false, isRanged: false,
+    name: 'THF', fullName: 'Thief', roles: ['melee'],
     weapons: {
       'Hand-to-Hand': 'E', 'Dagger': 'A-', 'Sword': 'D', 'Club': 'D',
       'Archery': 'C+', 'Marksmanship': 'C-',
     },
   },
   {
-    name: 'PLD', fullName: 'Paladin', isMage: false, isRanged: false,
+    name: 'PLD', fullName: 'Paladin', roles: ['melee'],
     weapons: {
       'Dagger': 'C-', 'Sword': 'A+', 'Great Sword': 'B',
       'Polearm': 'E', 'Club': 'A-', 'Staff': 'A-',
     },
   },
   {
-    name: 'DRK', fullName: 'Dark Knight', isMage: false, isRanged: false,
+    name: 'DRK', fullName: 'Dark Knight', roles: ['melee'],
     weapons: {
       'Dagger': 'C', 'Sword': 'B-', 'Great Sword': 'A-',
       'Axe': 'B-', 'Great Axe': 'B-', 'Scythe': 'A+', 'Club': 'C-',
     },
   },
   {
-    name: 'BST', fullName: 'Beastmaster', isMage: false, isRanged: false,
+    name: 'BST', fullName: 'Beastmaster', roles: ['melee'],
     weapons: { 'Dagger': 'C+', 'Sword': 'E', 'Axe': 'A-', 'Scythe': 'B-', 'Club': 'D' },
   },
   {
-    name: 'BRD', fullName: 'Bard', isMage: false, isRanged: false,
+    name: 'BRD', fullName: 'Bard', roles: ['melee'],
     weapons: { 'Dagger': 'B-', 'Sword': 'C-', 'Club': 'D', 'Staff': 'C+' },
   },
   {
-    name: 'RNG', fullName: 'Ranger', isMage: false, isRanged: true,
+    name: 'RNG', fullName: 'Ranger', roles: ['melee', 'ranged'],
     weapons: {
       'Dagger': 'B-', 'Sword': 'D', 'Axe': 'B-', 'Club': 'E',
       'Archery': 'A-', 'Marksmanship': 'A-',
     },
   },
   {
-    name: 'SAM', fullName: 'Samurai', isMage: false, isRanged: false,
+    name: 'SAM', fullName: 'Samurai', roles: ['melee'],
     weapons: {
       'Dagger': 'E', 'Sword': 'C+', 'Polearm': 'B-',
       'Great Katana': 'A+', 'Club': 'E', 'Archery': 'C+',
     },
   },
   {
-    name: 'NIN', fullName: 'Ninja', isMage: false, isRanged: false,
+    name: 'NIN', fullName: 'Ninja', roles: ['melee'],
     weapons: {
       'Hand-to-Hand': 'E', 'Dagger': 'C+', 'Sword': 'C',
       'Katana': 'A-', 'Great Katana': 'C-', 'Club': 'E',
@@ -101,13 +102,13 @@ export const JOBS: JobInfo[] = [
     },
   },
   {
-    name: 'DRG', fullName: 'Dragoon', isMage: false, isRanged: false,
+    name: 'DRG', fullName: 'Dragoon', roles: ['melee'],
     weapons: {
       'Dagger': 'E', 'Sword': 'C-', 'Polearm': 'A+', 'Club': 'E', 'Staff': 'B-',
     },
   },
   {
-    name: 'SMN', fullName: 'Summoner', isMage: true, isRanged: false,
+    name: 'SMN', fullName: 'Summoner', roles: ['mage'],
     weapons: { 'Dagger': 'E', 'Club': 'C+', 'Staff': 'B' },
   },
 ]

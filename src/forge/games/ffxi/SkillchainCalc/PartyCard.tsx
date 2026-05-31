@@ -18,7 +18,7 @@ const JOB_OPTIONS: SelectOption[] = JOBS
 
 function weaponOptions(jobInfo: JobInfo): SelectOption[] {
   const weapons = Object.keys(jobInfo.weapons) as WeaponType[]
-  const sorted = jobInfo.isRanged
+  const sorted = jobInfo.roles.includes('ranged')
     ? [
         ...weapons.filter(w => w === 'Archery' || w === 'Marksmanship'),
         ...weapons.filter(w => w !== 'Archery' && w !== 'Marksmanship'),
@@ -39,11 +39,11 @@ type PartyCardProps = {
 
 export function PartyCard({ member, onChange, onReset, levelSync, index, isMe, onToggleMe }: PartyCardProps) {
   const jobInfo = member.job ? JOBS.find(j => j.name === member.job) : undefined
-  const isMage = jobInfo?.isMage ?? false
+  const canWS = jobInfo ? (jobInfo.roles.includes('melee') || jobInfo.roles.includes('ranged')) : false
 
   const wsOptions = jobInfo ? weaponOptions(jobInfo) : []
   const burstSpells = member.job ? getBurstSpells(member.job, levelSync) : null
-  const wsCount = !isMage && member.job && member.weaponType
+  const wsCount = canWS && member.job && member.weaponType
     ? getAvailableWSes(member.job, member.weaponType, levelSync).length
     : null
 
@@ -109,7 +109,7 @@ export function PartyCard({ member, onChange, onReset, levelSync, index, isMe, o
         isSearchable
       />
 
-      {!isMage && (
+      {canWS && (
         <Select
           options={wsOptions}
           value={member.weaponType ? { value: member.weaponType, label: member.weaponType } : null}
@@ -145,7 +145,7 @@ export function PartyCard({ member, onChange, onReset, levelSync, index, isMe, o
         </div>
       )}
 
-      {isMage && member.job && Object.keys(burstSpells ?? {}).length === 0 && (
+      {jobInfo?.roles.includes('mage') && member.job && Object.keys(burstSpells ?? {}).length === 0 && (
         <p className="text-xs text-[#374151] italic">No spells at this level</p>
       )}
     </div>
