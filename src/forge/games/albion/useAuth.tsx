@@ -1,29 +1,10 @@
-import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react'
+import { useState, useEffect, useCallback, type ReactNode } from 'react'
 import { API_URLS } from '../../../config/apiUrls'
 import { setOnUnauthenticated } from './api'
+import { AuthContext, type AuthUser } from './authContext'
 
 declare const __DISCORD_CLIENT_ID__: string | undefined
 const DISCORD_CLIENT_ID = __DISCORD_CLIENT_ID__ ?? 'your_discord_client_id_here'
-
-export interface AuthUser {
-  id: string
-  discord_id: string
-  username: string
-  avatar: string
-  guild_member: boolean
-  has_role: boolean
-}
-
-interface AuthContextType {
-  user: AuthUser | null
-  loading: boolean
-  isAuthenticated: boolean
-  login: () => void
-  logout: () => Promise<void>
-  clearAuth: () => void
-}
-
-const AuthContext = createContext<AuthContextType | null>(null)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null)
@@ -81,6 +62,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       /* ignore */
     }
     setUser(null)
+    document.cookie = 'forge_session=; Max-Age=0; path=/'
+    window.location.href = '/games'
   }, [])
 
   return (
@@ -88,10 +71,4 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       {children}
     </AuthContext.Provider>
   )
-}
-
-export function useAuth(): AuthContextType {
-  const ctx = useContext(AuthContext)
-  if (!ctx) throw new Error('useAuth must be used within an AuthProvider')
-  return ctx
 }

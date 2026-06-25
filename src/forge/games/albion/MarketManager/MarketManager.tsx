@@ -1,7 +1,20 @@
-import { useAuth } from '../useAuth'
+import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { useAuth } from '../authContext'
+import { useLayoutOverride } from '../../../../components/LayoutOverride'
+import { MarketManagerSidebar } from './MarketManagerSidebar'
+import { MarketManagerBottomBar } from './MarketManagerBottomBar'
 
 export function MarketManager() {
   const { user, loading, isAuthenticated, login } = useAuth()
+  const { setSidebar, setBottomBar } = useLayoutOverride()
+
+  useEffect(() => {
+    setSidebar(MarketManagerSidebar)
+    setBottomBar(MarketManagerBottomBar)
+    return () => { setSidebar(null); setBottomBar(null) }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   if (loading) {
     return (
@@ -32,13 +45,36 @@ export function MarketManager() {
     )
   }
 
+  const denied: string[] = []
+  if (!user?.guild_member) denied.push('Not a Running Dawn guild member.')
+  if (!user?.has_role) denied.push("You don't have the needed discord role.")
+
+  if (denied.length > 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full min-h-[60vh] text-center select-none">
+        <h1 className="text-2xl font-semibold text-[#e2e4ed] mb-2 tracking-wide">
+          Albion Online <span className="text-[#c4af64]">Market Manager</span>
+        </h1>
+        <p className="text-sm text-[#6b7280] mb-4">Signed in as {user?.username}</p>
+        {denied.map(msg => (
+          <p key={msg} className="text-sm text-red-400 mb-1">{msg}</p>
+        ))}
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-col items-center justify-center h-full min-h-[60vh] text-center select-none">
       <h1 className="text-2xl font-semibold text-[#e2e4ed] mb-2 tracking-wide">
         Albion Online <span className="text-[#c4af64]">Market Manager</span>
       </h1>
       <p className="text-sm text-[#6b7280] mb-8">Welcome, {user?.username}</p>
-      <p className="text-sm text-[#6b7280]">Market data coming soon.</p>
+      <Link
+        to="/games/albion/market-manager/guild-data"
+        className="text-sm text-[#c4af64] hover:underline"
+      >
+        View Guild Data →
+      </Link>
     </div>
   )
 }

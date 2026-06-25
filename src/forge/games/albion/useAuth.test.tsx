@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { renderHook, act, waitFor } from '@testing-library/react'
-import { AuthProvider, useAuth } from './useAuth'
+import { useAuth } from './authContext'
+import { AuthProvider } from './useAuth'
 
 const fetchSpy = vi.fn()
 globalThis.fetch = fetchSpy

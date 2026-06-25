@@ -1,7 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { MemoryRouter } from 'react-router-dom'
 import { AuthProvider } from '../useAuth'
+import { LayoutOverrideProvider } from '../../../../components/LayoutOverride'
 import { MarketManager } from './MarketManager'
 
 const fetchSpy = vi.fn()
@@ -25,9 +27,13 @@ afterEach(() => {
 
 function renderMM() {
   return render(
-    <AuthProvider>
-      <MarketManager />
-    </AuthProvider>,
+    <MemoryRouter>
+      <AuthProvider>
+        <LayoutOverrideProvider>
+          <MarketManager />
+        </LayoutOverrideProvider>
+      </AuthProvider>
+    </MemoryRouter>,
   )
 }
 
@@ -75,7 +81,7 @@ describe('MarketManager', () => {
     })
   })
 
-  it('shows market data placeholder when authenticated', async () => {
+  it('shows link to guild data when authenticated', async () => {
     fetchSpy.mockResolvedValue(new Response(JSON.stringify({
       status: 'ok',
       payload: { id: 'u1', discord_id: 'd1', username: 'TestUser#0001', avatar: 'hash', guild_member: true, has_role: true },
@@ -84,7 +90,47 @@ describe('MarketManager', () => {
     renderMM()
 
     await waitFor(() => {
-      expect(screen.getByText('Market data coming soon.')).toBeInTheDocument()
+      expect(screen.getByText('View Guild Data →')).toBeInTheDocument()
+    })
+  })
+
+  it('shows guild denied message when not a guild member', async () => {
+    fetchSpy.mockResolvedValue(new Response(JSON.stringify({
+      status: 'ok',
+      payload: { id: 'u1', discord_id: 'd1', username: 'TestUser#0001', avatar: 'hash', guild_member: false, has_role: true },
+    }), { status: 200 }))
+
+    renderMM()
+
+    await waitFor(() => {
+      expect(screen.getByText('Not a Running Dawn guild member.')).toBeInTheDocument()
+    })
+  })
+
+  it('shows role denied message when missing role', async () => {
+    fetchSpy.mockResolvedValue(new Response(JSON.stringify({
+      status: 'ok',
+      payload: { id: 'u1', discord_id: 'd1', username: 'TestUser#0001', avatar: 'hash', guild_member: true, has_role: false },
+    }), { status: 200 }))
+
+    renderMM()
+
+    await waitFor(() => {
+      expect(screen.getByText("You don't have the needed discord role.")).toBeInTheDocument()
+    })
+  })
+
+  it('shows both denied messages when missing both', async () => {
+    fetchSpy.mockResolvedValue(new Response(JSON.stringify({
+      status: 'ok',
+      payload: { id: 'u1', discord_id: 'd1', username: 'TestUser#0001', avatar: 'hash', guild_member: false, has_role: false },
+    }), { status: 200 }))
+
+    renderMM()
+
+    await waitFor(() => {
+      expect(screen.getByText('Not a Running Dawn guild member.')).toBeInTheDocument()
+      expect(screen.getByText("You don't have the needed discord role.")).toBeInTheDocument()
     })
   })
 })

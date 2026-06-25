@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, Outlet } from 'react-router-dom'
 import { HamburgerIcon } from './Icons'
 import { Modal } from './Modal'
+import { useLayoutOverrideValue } from './LayoutOverride'
 
 interface ForgeLayoutProps {
   title: string
@@ -12,7 +13,10 @@ interface ForgeLayoutProps {
   headerExtra?: React.ReactNode
 }
 
-export function ForgeLayout({ title, homePath, sidebar: Sidebar, settings: Settings, bottomBar: BottomBar, headerExtra }: ForgeLayoutProps) {
+export function ForgeLayout({ title, homePath, sidebar: DefaultSidebar, settings: Settings, bottomBar: DefaultBottomBar, headerExtra }: ForgeLayoutProps) {
+  const override = useLayoutOverrideValue()
+  const Sidebar = override.sidebar ?? DefaultSidebar
+  const BottomBar = override.bottomBar ?? DefaultBottomBar
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const touchStartX = useRef<number | null>(null)

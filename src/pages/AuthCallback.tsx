@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useSearchParams, Navigate } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { API_URLS } from '../config/apiUrls'
 
 export default function AuthCallback() {
@@ -8,9 +8,9 @@ export default function AuthCallback() {
 
   useEffect(() => {
     const code = searchParams.get('code')
-    const err = searchParams.get('error')
+    const errParam = searchParams.get('error')
 
-    if (err) {
+    if (errParam) {
       const returnPath = sessionStorage.getItem('auth_return_path') || '/games'
       sessionStorage.removeItem('auth_return_path')
       window.location.href = returnPath
@@ -18,7 +18,7 @@ export default function AuthCallback() {
     }
 
     if (!code) {
-      setError('No authorization code received from Discord.')
+      Promise.resolve().then(() => setError('No authorization code received from Discord.'))
       return
     }
 

@@ -218,12 +218,13 @@ export function FriendViewer() {
         const res = await fetch(`${API_URLS.forgeAPI}/game/ffxi/char/${encodeURIComponent(name)}`)
         if (!res.ok) throw new Error()
         const json = await res.json()
+        const p = json.payload ?? json
         return {
           name,
-          jobs: json.jobs as Record<string, number>,
-          nation: json.nation ?? null,
-          rank: json.rank ?? null,
-          avatar: json.avatar ?? null,
+          jobs: p.jobs as Record<string, number>,
+          nation: p.nation ?? null,
+          rank: p.rank ?? null,
+          avatar: p.avatar ?? null,
         }
       })
     )
@@ -239,7 +240,7 @@ export function FriendViewer() {
         newData[name] = { jobs: r.value.jobs, nation: r.value.nation, rank: r.value.rank, avatar: r.value.avatar }
         newStatuses[name] = null
         const prevJobs = snapshot[name]?.jobs
-        if (prevJobs) {
+        if (prevJobs && r.value.jobs) {
           const charDiff: Record<string, number> = {}
           for (const [job, newLvl] of Object.entries(r.value.jobs)) {
             const delta = (newLvl as number) - (prevJobs[job] ?? 0)
@@ -261,7 +262,7 @@ export function FriendViewer() {
   const activeJobs = useMemo(() => {
     const seen = new Set<string>()
     for (const d of Object.values(saved.data)) {
-      for (const [job, lvl] of Object.entries(d.jobs)) {
+      for (const [job, lvl] of Object.entries(d.jobs ?? {})) {
         if (lvl > 0) seen.add(job)
       }
     }
@@ -273,15 +274,16 @@ export function FriendViewer() {
     const rest = saved.names.filter(n => n !== starred)
     if (sortJob) {
       rest.sort((a, b) => {
-        const aLvl = saved.data[a]?.jobs[sortJob] ?? 0
-        const bLvl = saved.data[b]?.jobs[sortJob] ?? 0
+        const aLvl = saved.data[a]?.jobs?.[sortJob] ?? 0
+        const bLvl = saved.data[b]?.jobs?.[sortJob] ?? 0
         return sortDir === 'desc' ? bLvl - aLvl : aLvl - bLvl
       })
     }
     return starred ? [starred, ...rest] : rest
   }, [saved.names, saved.starred, saved.data, sortJob, sortDir])
 
-  const hasData = activeJobs.length > 0
+  const hasData = Object.keys(saved.data).length > 0
+  const needsRefresh = hasData && activeJobs.length === 0
   const hasErrors = Object.values(statuses).some(s => s === 'error')
 
   return (
@@ -408,6 +410,11 @@ export function FriendViewer() {
 
       {hasData && (
         <>
+          {needsRefresh && (
+            <div className="forge-card px-4 py-3 text-sm text-[#c4af64] border border-[#c4af64]/30 bg-[#c4af64]/5">
+              Character data needs to be refreshed. Click <strong>Fetch All</strong> above to load job data.
+            </div>
+          )}
           <div className="overflow-x-auto rounded-lg border border-[#2a2d3a]">
             {Object.keys(diff).length > 0 && (
               <div className="flex justify-end px-3 py-1.5 border-b border-[#2a2d3a] bg-[#1a1d27]">
@@ -508,7 +515,7 @@ export function FriendViewer() {
                         })()}
                       </td>
                       {activeJobs.map(job => {
-                        const lvl = d?.jobs[job] ?? 0
+                        const lvl = d?.jobs?.[job] ?? 0
                         const colors = levelColor(lvl)
                         const delta = diff[name]?.[job]
                         return (
