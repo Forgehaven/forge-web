@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import { store } from './store'
 import { LandingPage } from './forge/LandingPage'
 import { NotFoundLanding } from './forge/NotFoundLanding'
+import AuthCallback from './pages/AuthCallback'
 
 import './index.css'
 import { SECTION_TITLES } from './config/sections'
@@ -71,6 +72,7 @@ export default function App() {
         <ManifestSync />
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
           <Route
             path="/tools/*"
             element={

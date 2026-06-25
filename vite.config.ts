@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { SECTION_TITLES } from './src/config/sections'
@@ -46,9 +46,16 @@ function ffmpegCorePlugin(): import('vite').Plugin {
   }
 }
 
-export default defineConfig({
-  plugins: [react(), tailwindcss(), headScripts(), ffmpegCorePlugin()],
-  optimizeDeps: {
-    exclude: ['@ffmpeg/ffmpeg', '@ffmpeg/util'],
-  },
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '')
+  return {
+    plugins: [react(), tailwindcss(), headScripts(), ffmpegCorePlugin()],
+    define: {
+      __DISCORD_CLIENT_ID__: JSON.stringify(env.DISCORD_CLIENT_ID || 'your_discord_client_id_here'),
+      __API_URL__: JSON.stringify(env.FORGE_API_URL || 'https://api.forgehaven.io'),
+    },
+    optimizeDeps: {
+      exclude: ['@ffmpeg/ffmpeg', '@ffmpeg/util'],
+    },
+  }
 })
