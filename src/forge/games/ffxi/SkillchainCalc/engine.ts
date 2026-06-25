@@ -21,6 +21,9 @@ export interface PartyMember {
   weaponType: WeaponType | null
   name: string
   avatar: Avatar | null
+  forceOpener: boolean
+  forceCloser: boolean
+  preferredWS: string[]
 }
 
 export interface BurstInfo {
@@ -89,6 +92,7 @@ function scoreLink(
   link: SkillchainLink,
   resistances: ResistanceMap,
   mageBursts: { memberIdx: number; job: Job; bursts: Partial<Record<Element, Spell>> }[],
+  party: PartyMember[],
 ): SkillchainLink {
   const finalResult = link.boundaries[link.boundaries.length - 1]
 
@@ -119,6 +123,11 @@ function scoreLink(
 
   const finalBursts = burstsByBoundary[burstsByBoundary.length - 1]
   if (Object.keys(finalBursts).length > 0) score += 1
+
+  // +1 per step using a preferred WS
+  for (const step of link.steps) {
+    if (party[step.memberIdx]?.preferredWS?.includes(step.ws.name)) score += 1
+  }
 
   return { ...link, score, burstsByBoundary }
 }
@@ -211,9 +220,20 @@ export function findBestGroups(
     }
   }
 
+  // ── Filter by forced opener/closer roles ────────────────────────────────────
+  const hasForceOpener = party.some(m => m.forceOpener)
+  const hasForceCloser = party.some(m => m.forceCloser)
+
+  function passesForceRoles(link: SkillchainLink): boolean {
+    if (hasForceOpener && !party[link.steps[0].memberIdx]?.forceOpener) return false
+    if (hasForceCloser && !party[link.steps[link.steps.length - 1].memberIdx]?.forceCloser) return false
+    return true
+  }
+
   // ── Score all links ─────────────────────────────────────────────────────────
   const allScored = [...links2, ...links3, ...links4]
-    .map(link => scoreLink(link, resistances, mageBursts))
+    .filter(passesForceRoles)
+    .map(link => scoreLink(link, resistances, mageBursts, party))
     .sort((a, b) => b.score - a.score)
 
   // Keep best chain per (member set, final SC type) so every distinct SC outcome

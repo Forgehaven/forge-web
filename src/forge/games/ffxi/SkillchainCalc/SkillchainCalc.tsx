@@ -16,15 +16,24 @@ const SK_LEVEL = 'forge_ffxi_sc_level'
 const SK_FAVOURITE = 'forge_ffxi_sc_favourite'
 const SK_MOB = 'forge_ffxi_sc_mob'
 const SK_ME = 'forge_ffxi_sc_me'
+const SK_ADVANCED = 'forge_ffxi_sc_advanced'
 
 function emptyMember(): PartyMember {
-  return { job: null, weaponType: null, name: '', avatar: null }
+  return { job: null, weaponType: null, name: '', avatar: null, forceOpener: false, forceCloser: false, preferredWS: [] }
 }
 
 function loadParty(): PartyMember[] {
   try {
     const raw = localStorage.getItem(SK_PARTY)
-    if (raw) return JSON.parse(raw)
+    if (raw) {
+      const parsed: PartyMember[] = JSON.parse(raw)
+      return parsed.map(m => ({
+        ...m,
+        forceOpener: m.forceOpener ?? false,
+        forceCloser: m.forceCloser ?? false,
+        preferredWS: m.preferredWS ?? [],
+      }))
+    }
   } catch { /* ignore */ }
   return Array.from({ length: 6 }, emptyMember)
 }
@@ -176,6 +185,9 @@ export function SkillchainCalc() {
   const [meIdx, setMeIdx] = useState<number | null>(loadMe)
   const [filterElements, setFilterElements] = useState<Element[]>([])
   const [filterOpen, setFilterOpen] = useState(true)
+  const [advanced, setAdvanced] = useState(() => {
+    try { return localStorage.getItem(SK_ADVANCED) === 'true' } catch { return false }
+  })
 
   function toggleFilterElement(el: Element) {
     setFilterElements(prev => prev.includes(el) ? prev.filter(e => e !== el) : [...prev, el])
@@ -196,6 +208,11 @@ export function SkillchainCalc() {
     if (meIdx !== null) localStorage.setItem(SK_ME, String(meIdx))
     else localStorage.removeItem(SK_ME)
   }, [meIdx])
+
+  useEffect(() => {
+    if (advanced) localStorage.setItem(SK_ADVANCED, 'true')
+    else localStorage.removeItem(SK_ADVANCED)
+  }, [advanced])
 
   function clearFavourite() { setFavourite(null) }
 
@@ -250,7 +267,12 @@ export function SkillchainCalc() {
       const lvl = typeof data.levelSync === 'number' ? Math.max(1, Math.min(75, data.levelSync)) : 75
       setLevelSync(lvl)
       setLevelSyncRaw(String(lvl))
-      setParty(data.party)
+      setParty((data.party as PartyMember[]).map(m => ({
+        ...m,
+        forceOpener: m.forceOpener ?? false,
+        forceCloser: m.forceCloser ?? false,
+        preferredWS: m.preferredWS ?? [],
+      })))
       setResetKeys(prev => prev.map(k => k + 1))
       setShowImport(false)
       return true
@@ -354,6 +376,16 @@ export function SkillchainCalc() {
           extra={
             <>
               <button
+                onClick={() => setAdvanced(v => !v)}
+                className="text-xs font-medium px-2 py-0.5 rounded cursor-pointer transition-all"
+                style={advanced
+                  ? { color: '#c4af64', background: '#c4af6420', border: '1px solid #c4af6460' }
+                  : { color: '#4b5563', background: 'transparent', border: '1px solid #2a2d3a' }
+                }
+              >
+                Advanced
+              </button>
+              <button
                 onClick={handleExport}
                 className="text-xs text-[#4b5563] hover:text-[#6b7280] transition-colors cursor-pointer"
               >
@@ -389,6 +421,7 @@ export function SkillchainCalc() {
                 index={i}
                 isMe={meIdx === i}
                 onToggleMe={() => setMeIdx(prev => prev === i ? null : i)}
+                advanced={advanced}
               />
             ))}
           </div>
