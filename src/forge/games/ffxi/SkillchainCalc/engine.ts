@@ -213,6 +213,7 @@ export function findBestGroups(
   const pool = [...poolMap.values()].sort((a, b) => b.score - a.score)
 
   // ── Find non-overlapping groups ─────────────────────────────────────────────
+  const CONCURRENCY_BONUS = 2
   const groups: ChainGroup[] = []
 
   for (const link of pool) {
@@ -221,7 +222,7 @@ export function findBestGroups(
   for (let i = 0; i < pool.length; i++) {
     for (let j = i + 1; j < pool.length; j++) {
       if (linksOverlap(pool[i], pool[j])) continue
-      groups.push({ links: [pool[i], pool[j]], totalScore: pool[i].score + pool[j].score })
+      groups.push({ links: [pool[i], pool[j]], totalScore: pool[i].score + pool[j].score + CONCURRENCY_BONUS })
     }
   }
   for (let i = 0; i < pool.length; i++) {
@@ -230,7 +231,7 @@ export function findBestGroups(
       for (let k = j + 1; k < pool.length; k++) {
         if (linksOverlap(pool[i], pool[k])) continue
         if (linksOverlap(pool[j], pool[k])) continue
-        groups.push({ links: [pool[i], pool[j], pool[k]], totalScore: pool[i].score + pool[j].score + pool[k].score })
+        groups.push({ links: [pool[i], pool[j], pool[k]], totalScore: pool[i].score + pool[j].score + pool[k].score + CONCURRENCY_BONUS * 2 })
       }
     }
   }

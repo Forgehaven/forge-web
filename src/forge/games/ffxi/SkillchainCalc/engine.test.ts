@@ -191,19 +191,20 @@ describe('findBestGroups', () => {
     expect(topFinal?.level).toBe(3)
   })
 
-  // 4 WARs: Sword members have Swift Blade (Gravitation); GS members have Ground Strike (Distortion)
-  // Pair {0,1} and pair {2,3} can each form Darkness L3 (Gravitation→Distortion) independently.
+  // 4 WARs: Sword → Swift Blade (Gravitation+Light) at 225; GS → Ground Strike (Fragmentation+Distortion, quest 71).
+  // Pair {0,1} and pair {2,3} each form Darkness L3 (Gravitation→Distortion) independently.
+  // Concurrency bonus (+2) makes two concurrent L3 chains beat a single 4-step L3 chain.
   it('two concurrent L3 chains score higher than any single chain', () => {
     const p = party(
       member('WAR', 'Sword'),      // m0: Swift Blade (Gravitation)
-      member('WAR', 'Great Sword'), // m1: Freezebite (Distortion)
+      member('WAR', 'Great Sword'), // m1: Ground Strike (Distortion)
       member('WAR', 'Sword'),      // m2: Swift Blade (Gravitation)
-      member('WAR', 'Great Sword'), // m3: Freezebite (Distortion)
+      member('WAR', 'Great Sword'), // m3: Ground Strike (Distortion)
     )
     const groups = findBestGroups(p, 75, {})
     const top = groups[0]
     expect(top.links.length).toBe(2)
-    expect(top.totalScore).toBeGreaterThan(1000) // more than a single L3
+    expect(top.totalScore).toBeGreaterThan(4) // base 3+3 + bonus
     top.links.forEach(l => {
       expect(l.boundaries.at(-1)?.level).toBe(3)
     })
