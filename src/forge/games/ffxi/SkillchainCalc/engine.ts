@@ -2,7 +2,7 @@ import { WEAPON_SKILLS, type WeaponSkill, type WeaponType, type SCAttr } from '.
 import { JOBS, SKILL_CAP_75, type Job, type SkillRank } from '../data/jobs'
 import { SC_BURST_ELEMENTS, SC_RESONANCES, type Element, type ResistanceMap } from '../data/elements'
 import { getBurstSpells, type BurstSpell as Spell } from '../data/burstSpells'
-import { getBloodPacts, getAvailableAvatars, type Avatar, type BloodPact } from '../data/petSkills'
+import { getBloodPacts, type Avatar } from '../data/petSkills'
 
 export type { SCAttr }
 export type { Avatar }
@@ -66,7 +66,7 @@ function findBestSC(openerAttrs: SCAttr[], closerAttrs: SCAttr[]): SkillchainRes
   return best
 }
 
-export function computeSkillchain(ws1: WeaponSkill, ws2: WeaponSkill): SkillchainResult | null {
+export function computeSkillchain(ws1: SkillAttr, ws2: SkillAttr): SkillchainResult | null {
   return findBestSC(ws1.attrs, ws2.attrs)
 }
 

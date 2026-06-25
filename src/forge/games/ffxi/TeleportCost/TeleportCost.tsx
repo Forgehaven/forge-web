@@ -218,7 +218,7 @@ export function TeleportCost() {
     if (!name) return
     setFetchStatus('loading')
     try {
-      const res = await fetch(`${API_URLS.horizonXiChars}/${encodeURIComponent(name)}`)
+      const res = await fetch(`${API_URLS.forgeAPI}/game/ffxi/char/${encodeURIComponent(name)}`)
       if (!res.ok) throw new Error()
       const data = await res.json()
       persist({ ...saved, nation: data.nation ?? null, avatar: data.avatar ?? null })

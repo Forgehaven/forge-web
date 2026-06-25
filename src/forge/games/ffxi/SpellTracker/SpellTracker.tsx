@@ -259,7 +259,7 @@ export function SpellTracker() {
     if (!name) return
     setFetchStatus('loading')
     try {
-      const res = await fetch(`${API_URLS.horizonXiChars}/${encodeURIComponent(name)}`)
+      const res = await fetch(`${API_URLS.forgeAPI}/game/ffxi/char/${encodeURIComponent(name)}`)
       if (!res.ok) throw new Error()
       const data = await res.json()
       const fetched = data.jobs as Record<string, number>

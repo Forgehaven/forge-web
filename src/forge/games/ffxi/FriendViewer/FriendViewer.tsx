@@ -215,7 +215,7 @@ export function FriendViewer() {
     const names = saved.names
     const results = await Promise.allSettled(
       names.map(async name => {
-        const res = await fetch(`${API_URLS.horizonXiChars}/${encodeURIComponent(name)}`)
+        const res = await fetch(`${API_URLS.forgeAPI}/game/ffxi/char/${encodeURIComponent(name)}`)
         if (!res.ok) throw new Error()
         const json = await res.json()
         return {
