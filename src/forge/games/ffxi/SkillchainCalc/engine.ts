@@ -2,9 +2,13 @@ import { WEAPON_SKILLS, type WeaponSkill, type WeaponType, type SCAttr } from '.
 import { JOBS, SKILL_CAP_75, type Job, type SkillRank } from '../data/jobs'
 import { SC_BURST_ELEMENTS, SC_RESONANCES, type Element, type ResistanceMap } from '../data/elements'
 import { getBurstSpells, type BurstSpell as Spell } from '../data/burstSpells'
+import { getBloodPacts, getAvailableAvatars, type Avatar, type BloodPact } from '../data/petSkills'
 
 export type { SCAttr }
+export type { Avatar }
 export type { ResistanceState, ResistanceMap } from '../data/elements'
+
+export type SkillAttr = { name: string; attrs: SCAttr[]; skillReq?: number; avatar?: Avatar }
 
 export interface SkillchainResult {
   name: string
@@ -16,6 +20,7 @@ export interface PartyMember {
   job: Job | null
   weaponType: WeaponType | null
   name: string
+  avatar: Avatar | null
 }
 
 export interface BurstInfo {
@@ -26,7 +31,7 @@ export interface BurstInfo {
 
 export interface ChainStep {
   memberIdx: number
-  ws: WeaponSkill
+  ws: SkillAttr
 }
 
 // boundaries[i] = SC produced when steps[i+1] fires (length = steps.length - 1).
@@ -131,9 +136,21 @@ export function findBestGroups(
   const candidates: ChainStep[] = []
   for (let i = 0; i < party.length; i++) {
     const m = party[i]
-    if (!m.job || !m.weaponType) continue
+    if (!m.job) continue
     const jobInfo = JOBS.find(j => j.name === m.job)
-    if (!jobInfo || (!jobInfo.roles.includes('melee') && !jobInfo.roles.includes('ranged'))) continue
+    if (!jobInfo) continue
+
+    // SMN with avatar selected → blood pact candidates
+    if (m.job === 'SMN' && m.avatar) {
+      for (const bp of getBloodPacts(m.avatar, levelSync)) {
+        candidates.push({ memberIdx: i, ws: bp })
+      }
+      continue
+    }
+
+    // Weapon skill candidates for melee/ranged jobs
+    if (!m.weaponType) continue
+    if (!jobInfo.roles.includes('melee') && !jobInfo.roles.includes('ranged')) continue
     for (const ws of getAvailableWSes(m.job, m.weaponType, levelSync)) {
       candidates.push({ memberIdx: i, ws })
     }

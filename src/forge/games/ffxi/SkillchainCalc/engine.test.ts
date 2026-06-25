@@ -9,11 +9,11 @@ import { SC_RESONANCES } from '../data/elements'
 // ── Helpers ─────────────────────────────────────────────────────────────────
 
 function member(job: Job, weaponType: WeaponType): PartyMember {
-  return { job, weaponType, name: '' }
+  return { job, weaponType, name: '', avatar: null }
 }
 
 function emptySlot(): PartyMember {
-  return { job: null, weaponType: null, name: '' }
+  return { job: null, weaponType: null, name: '', avatar: null }
 }
 
 /** Build a 6-slot party array, padding with empty slots */
@@ -232,8 +232,8 @@ describe('findBestGroups', () => {
 
   it('returns empty when party has no melee weapon assignments', () => {
     const p = party(
-      { job: 'BLM', weaponType: null, name: '' },
-      { job: 'WHM', weaponType: null, name: '' },
+      { job: 'BLM', weaponType: null, name: '', avatar: null },
+      { job: 'WHM', weaponType: null, name: '', avatar: null },
     )
     expect(findBestGroups(p, 75, {})).toHaveLength(0)
   })

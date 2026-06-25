@@ -6,6 +6,7 @@ import type { WeaponType } from '../data/weaponSkills'
 import { getBurstSpells } from '../data/burstSpells'
 import type { Element } from '../data/elements'
 import { ELEMENT_COLORS } from '../data/elements'
+import { getAvailableAvatars, getBloodPacts, type Avatar } from '../data/petSkills'
 import { getAvailableWSes } from './engine'
 import type { PartyMember } from './engine'
 
@@ -47,14 +48,25 @@ export function PartyCard({ member, onChange, onReset, levelSync, index, isMe, o
     ? getAvailableWSes(member.job, member.weaponType, levelSync).length
     : null
 
-  const hasData = !!(member.job || member.name || member.weaponType)
+  const avatarOptions = member.job && getAvailableAvatars(levelSync)
+    .map(a => ({ value: a, label: a }))
+
+  const bloodPactCount = member.job === 'SMN' && member.avatar
+    ? getBloodPacts(member.avatar, levelSync).length
+    : null
+
+  const hasData = !!(member.job || member.name || member.weaponType || member.avatar)
 
   function handleJobChange(opt: SelectOption | null) {
-    onChange({ ...member, job: (opt?.value as Job) ?? null, weaponType: null })
+    onChange({ ...member, job: (opt?.value as Job) ?? null, weaponType: null, avatar: null })
   }
 
   function handleWeaponChange(opt: SelectOption | null) {
     onChange({ ...member, weaponType: (opt?.value as WeaponType) ?? null })
+  }
+
+  function handleAvatarChange(opt: SelectOption | null) {
+    onChange({ ...member, avatar: (opt?.value as Avatar) ?? null })
   }
 
   return (
@@ -123,6 +135,22 @@ export function PartyCard({ member, onChange, onReset, levelSync, index, isMe, o
 
       {wsCount !== null && (
         <p className="text-xs text-[#6b7280]">{wsCount} WS available at this level</p>
+      )}
+
+      {member.job === 'SMN' && (
+        <>
+          <Select
+            options={avatarOptions ?? []}
+            value={member.avatar ? { value: member.avatar, label: member.avatar } : null}
+            onChange={handleAvatarChange}
+            placeholder="Avatar…"
+            isSearchable
+            isClearable
+          />
+          {bloodPactCount !== null && (
+            <p className="text-xs text-[#6b7280]">{bloodPactCount} blood pacts available at this level</p>
+          )}
+        </>
       )}
 
       {burstSpells && Object.keys(burstSpells).length > 0 && (

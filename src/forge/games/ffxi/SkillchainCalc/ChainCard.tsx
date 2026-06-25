@@ -120,8 +120,10 @@ export function ChainCard({ link, party, compact, panelWidth, isFavourite, onTog
           }
         >
           <span className="text-sm font-medium text-[#e2e4ed] whitespace-nowrap">
-            {step.ws.name}{' '}
-            <span className="text-[#6b7280] font-normal">({step.ws.skillReq})</span>
+            {step.ws.name}
+            {(step.ws.avatar ?? step.ws.skillReq) != null && (
+              <span className="text-[#6b7280] font-normal"> ({step.ws.avatar ?? step.ws.skillReq})</span>
+            )}
           </span>
           <div className="flex items-center justify-center gap-1.5 flex-wrap">
             {m?.name && <span className="text-xs text-[#c4af64]">{m.name}</span>}

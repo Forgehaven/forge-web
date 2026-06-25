@@ -5,7 +5,8 @@ import { PartyCard } from './PartyCard'
 import { ChainCard } from './ChainCard'
 import { findBestGroups } from './engine'
 import type { ChainGroup, PartyMember, ResistanceMap, ResistanceState, SkillchainLink } from './engine'
-import type { DamageType } from '../data/elements'
+import type { DamageType, Element } from '../data/elements'
+import { ELEMENTS, ELEMENT_COLORS, SC_BURST_ELEMENTS } from '../data/elements'
 import { ImportPanel } from '../../../../components/ImportPanel'
 import { useCopy } from '../../../../hooks/useCopy'
 
@@ -17,7 +18,7 @@ const SK_MOB = 'forge_ffxi_sc_mob'
 const SK_ME = 'forge_ffxi_sc_me'
 
 function emptyMember(): PartyMember {
-  return { job: null, weaponType: null, name: '' }
+  return { job: null, weaponType: null, name: '', avatar: null }
 }
 
 function loadParty(): PartyMember[] {
@@ -173,6 +174,12 @@ export function SkillchainCalc() {
   const [favourite, setFavourite] = useState<string | null>(loadFavourite)
   const { copy, copied } = useCopy()
   const [meIdx, setMeIdx] = useState<number | null>(loadMe)
+  const [filterElements, setFilterElements] = useState<Element[]>([])
+  const [filterOpen, setFilterOpen] = useState(true)
+
+  function toggleFilterElement(el: Element) {
+    setFilterElements(prev => prev.includes(el) ? prev.filter(e => e !== el) : [...prev, el])
+  }
 
   useEffect(() => { localStorage.setItem(SK_PARTY, JSON.stringify(party)) }, [party])
   useEffect(() => { localStorage.setItem(SK_RESISTANCES, JSON.stringify(resistances)) }, [resistances])
@@ -272,13 +279,25 @@ export function SkillchainCalc() {
     return Math.max(88, maxLen * 9 + 24)
   }, [groups])
 
+  const filteredGroups = useMemo(() => {
+    if (filterElements.length === 0) return groups
+    return groups.filter(g =>
+      g.links.some(link => {
+        const finalName = link.boundaries[link.boundaries.length - 1].name
+        const burstEls = SC_BURST_ELEMENTS[finalName] ?? []
+        return filterElements.some(el => burstEls.includes(el))
+      })
+    )
+  }, [groups, filterElements])
+
   const { favGroup, topGroups, otherGroups } = useMemo(() => {
-    const topScore = groups[0]?.totalScore ?? 0
-    const fav = favourite ? (groups.find(g => groupKey(g) === favourite) ?? null) : null
-    const top = groups.filter(g => groupKey(g) !== favourite && g.totalScore >= topScore)
-    const other = groups.filter(g => groupKey(g) !== favourite && g.totalScore < topScore)
+    const src = filteredGroups
+    const topScore = src[0]?.totalScore ?? 0
+    const fav = favourite ? (src.find(g => groupKey(g) === favourite) ?? null) : null
+    const top = src.filter(g => groupKey(g) !== favourite && g.totalScore >= topScore)
+    const other = src.filter(g => groupKey(g) !== favourite && g.totalScore < topScore)
     return { favGroup: fav, topGroups: top, otherGroups: other }
-  }, [groups, favourite])
+  }, [filteredGroups, favourite])
 
   const hasAnyMelee = party.some(m => m.job && m.weaponType)
   const hasResistances = Object.keys(resistances).length > 0
@@ -376,7 +395,40 @@ export function SkillchainCalc() {
         )}
       </div>
 
-      {groups.length > 0 && (
+      <div>
+        <SectionHeader
+          label="Filter by Burst Element"
+          open={filterOpen}
+          onToggle={() => setFilterOpen(o => !o)}
+          onReset={filterElements.length > 0 ? () => setFilterElements([]) : undefined}
+          resetLabel="Clear"
+        />
+        {filterOpen && (
+          <div className="flex flex-wrap gap-1.5 justify-center">
+            {ELEMENTS.map(el => {
+              const active = filterElements.includes(el)
+              const anyActive = filterElements.length > 0
+              return (
+                <button
+                  key={el}
+                  onClick={() => toggleFilterElement(el)}
+                  className="text-xs px-2.5 py-1 rounded font-medium cursor-pointer transition-all text-center"
+                  style={{
+                    width: '84px',
+                    color: active ? ELEMENT_COLORS[el] : anyActive ? '#4b5563' : ELEMENT_COLORS[el],
+                    background: active ? `${ELEMENT_COLORS[el]}20` : anyActive ? 'transparent' : `${ELEMENT_COLORS[el]}10`,
+                    border: active ? `1px solid ${ELEMENT_COLORS[el]}60` : `1px solid ${anyActive ? '#2a2d3a' : `${ELEMENT_COLORS[el]}30`}`,
+                  }}
+                >
+                  {el}
+                </button>
+              )
+            })}
+          </div>
+        )}
+      </div>
+
+      {filteredGroups.length > 0 && (
         <div>
           <p className="forge-label text-xs uppercase tracking-widest mb-3">Best Skillchains</p>
           <div className="flex flex-col gap-3">
@@ -432,9 +484,13 @@ export function SkillchainCalc() {
         </div>
       )}
 
-      {groups.length === 0 && hasAnyMelee && (
+      {filteredGroups.length === 0 && hasAnyMelee && (
         <div className="forge-card flex items-center justify-center py-6">
-          <p className="text-sm text-[#6b7280]">No skillchains found — add more party members or try different weapons.</p>
+          <p className="text-sm text-[#6b7280]">
+            {filterElements.length > 0
+              ? 'No skillchains match the selected burst elements.'
+              : 'No skillchains found — add more party members or try different weapons.'}
+          </p>
         </div>
       )}
     </div>
