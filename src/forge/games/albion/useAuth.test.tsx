@@ -77,7 +77,7 @@ describe('AuthProvider', () => {
 
     expect(sessionStorage.getItem('auth_return_path')).toBe('/games/market-manager')
     expect(window.location.href).toContain('https://discord.com/api/oauth2/authorize')
-    expect(window.location.href).toContain('client_id=your_discord_client_id_here')
+    expect(window.location.href).toContain('client_id=1519734763139633354')
     expect(window.location.href).toContain('redirect_uri=https%3A%2F%2Fforgehaven.io%2Fauth%2Fcallback')
     expect(window.location.href).toContain('response_type=code')
     expect(window.location.href).toContain('scope=identify')

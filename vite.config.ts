@@ -52,7 +52,6 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react(), tailwindcss(), headScripts(), ffmpegCorePlugin()],
     define: {
-      __DISCORD_CLIENT_ID__: JSON.stringify(env.DISCORD_CLIENT_ID || 'your_discord_client_id_here'),
       __API_URL__: JSON.stringify(env.FORGE_API_URL || 'https://api.forgehaven.io'),
     },
     optimizeDeps: {

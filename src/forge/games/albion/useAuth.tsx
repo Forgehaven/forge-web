@@ -1,10 +1,7 @@
 import { useState, useEffect, useCallback, type ReactNode } from 'react'
-import { API_URLS } from '../../../config/apiUrls'
+import { API_URLS, DISCORD_CLIENT_ID } from '../../../config/apiUrls'
 import { setOnUnauthenticated } from './api'
 import { AuthContext, type AuthUser } from './authContext'
-
-declare const __DISCORD_CLIENT_ID__: string | undefined
-const DISCORD_CLIENT_ID = __DISCORD_CLIENT_ID__ ?? 'your_discord_client_id_here'
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null)

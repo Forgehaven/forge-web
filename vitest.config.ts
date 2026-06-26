@@ -4,7 +4,6 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   define: {
-    __DISCORD_CLIENT_ID__: JSON.stringify(process.env.DISCORD_CLIENT_ID || 'your_discord_client_id_here'),
     __API_URL__: JSON.stringify(process.env.FORGE_API_URL || 'https://api.forgehaven.io'),
   },
   test: {

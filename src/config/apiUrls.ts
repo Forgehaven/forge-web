@@ -1,3 +1,5 @@
+export const DISCORD_CLIENT_ID = '1519734763139633354'
+
 export const API_URLS = {
   ipGeo:              'https://ipapi.co',
   weather:            'https://api.open-meteo.com/v1/forecast',
