@@ -46,7 +46,7 @@ export default function AuthCallback() {
           return
         }
 
-        const returnPath = sessionStorage.getItem('auth_return_path') || '/games/market-manager'
+        const returnPath = sessionStorage.getItem('auth_return_path') || '/games/albion/market-manager'
         sessionStorage.removeItem('auth_return_path')
         window.location.href = returnPath
       } catch {
@@ -60,9 +60,9 @@ export default function AuthCallback() {
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen bg-[#0f1117] text-center">
-        <p className="text-red-400 mb-4 text-sm">{error}</p>
-        <a href="/games/market-manager" className="text-[#c4af64] hover:underline text-sm">
+      <div className="fixed inset-0 flex flex-col items-center justify-center bg-[#0f1117] text-center">
+        <p className="text-red-400 mb-4 text-sm max-w-md px-4">{error}</p>
+        <a href="/games/albion/market-manager" className="text-[#c4af64] hover:underline text-sm">
           Back to Market Manager
         </a>
       </div>
@@ -70,8 +70,8 @@ export default function AuthCallback() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-[#0f1117] text-center">
-      <div className="w-6 h-6 border-2 border-[#c4af64] border-t-transparent rounded-full animate-spin" />
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-[#0f1117] text-center">
+      <div className="w-8 h-8 border-2 border-[#c4af64] border-t-transparent rounded-full animate-spin" />
       <p className="text-[#9ca3af] text-sm mt-4">Authenticating...</p>
     </div>
   )
