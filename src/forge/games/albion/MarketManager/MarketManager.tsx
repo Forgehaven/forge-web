@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { useAuth } from '../authContext'
 import { useLayoutOverride } from '../../../../components/LayoutOverride'
 import { MarketManagerSidebar } from './MarketManagerSidebar'
@@ -76,12 +75,6 @@ export function MarketManager() {
         Albion Online <span className="text-[#c4af64]">Market Manager</span>
       </h1>
       <p className="text-sm text-[#6b7280] mb-8">Welcome, {user?.username}</p>
-      <Link
-        to="/games/albion/market-manager/guild-data"
-        className="text-sm text-[#c4af64] hover:underline"
-      >
-        View Guild Data →
-      </Link>
     </div>
   )
 }

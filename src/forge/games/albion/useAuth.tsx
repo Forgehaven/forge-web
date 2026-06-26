@@ -26,13 +26,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const res = await fetch(`${API_URLS.forgeAPI}/auth/me`, { credentials: 'include' })
         if (cancelled) return
         const body = await res.json()
-        if (!cancelled && body.status === 'ok') {
+        if (!cancelled && body.status === 'ok' && !localStorage.getItem('forge_logged_out')) {
           setUser(body.payload)
         }
       } catch {
         /* not authenticated */
       } finally {
-        if (!cancelled) setLoading(false)
+        if (!cancelled) { localStorage.removeItem('forge_logged_out'); setLoading(false) }
       }
     }
 
@@ -62,7 +62,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       /* ignore */
     }
     setUser(null)
-    document.cookie = 'forge_session=; Max-Age=0; path=/'
+    localStorage.setItem('forge_logged_out', 'true')
+    ;['', '; domain=forgehaven.io', '; Secure'].forEach(suffix => {
+      document.cookie = `forge_session=; Max-Age=0; path=/${suffix}`
+    })
     window.location.href = '/games'
   }, [])
 

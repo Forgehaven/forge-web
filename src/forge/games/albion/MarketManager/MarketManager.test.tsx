@@ -81,19 +81,6 @@ describe('MarketManager', () => {
     })
   })
 
-  it('shows link to guild data when authenticated', async () => {
-    fetchSpy.mockResolvedValue(new Response(JSON.stringify({
-      status: 'ok',
-      payload: { id: 'u1', discord_id: 'd1', username: 'TestUser#0001', avatar: 'hash', guild_member: true, has_role: true },
-    }), { status: 200 }))
-
-    renderMM()
-
-    await waitFor(() => {
-      expect(screen.getByText('View Guild Data →')).toBeInTheDocument()
-    })
-  })
-
   it('shows guild denied message when not a guild member', async () => {
     fetchSpy.mockResolvedValue(new Response(JSON.stringify({
       status: 'ok',
