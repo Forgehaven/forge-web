@@ -1,0 +1,49 @@
+import { useTickerWS, type TickerItem } from './useTickerWS'
+
+function fmtPrice(n: number): string {
+  return n.toLocaleString('en-US')
+}
+
+function shortName(name: string): string {
+  const idx = name.indexOf("'s ")
+  return idx !== -1 ? name.slice(idx + 3) : name
+}
+
+function TickerEntry({ item }: { item: TickerItem }) {
+  const price = item.price ?? 0
+  const chg = item.change ?? 0
+  const chgPct = item.change_pct ?? 0
+  const cls = chg >= 0 ? 'text-green-400' : 'text-red-400'
+  const arrow = chg >= 0 ? '▲' : '▼'
+  return (
+    <span className="inline-flex items-center gap-1.5 mr-6 whitespace-nowrap text-xs">
+      <span className="text-[#e2e4ed] font-medium">{shortName(item.name || item.item_id)}</span>
+      <span className="text-[#e2e4ed]">({item.tier || '?'})</span>
+      <span className="text-[#6b7280]">{item.city}</span>
+      <span className="text-[#9ca3af]">{fmtPrice(price)}</span>
+      <span className={cls}>{arrow} {chg >= 0 ? '+' : ''}{fmtPrice(chg)}</span>
+      <span className={cls}>({chg >= 0 ? '+' : ''}{chgPct.toFixed(1)}%)</span>
+    </span>
+  )
+}
+
+export function TickerTape() {
+  const { items } = useTickerWS()
+
+  const itemsArr = [...items.values()]
+
+  if (itemsArr.length === 0) return null
+
+  return (
+    <div className="overflow-hidden flex-1 min-w-0">
+      <div className="inline-flex animate-marquee hover:[animation-play-state:paused]">
+        {itemsArr.map(item => (
+          <TickerEntry key={`${item.item_id}_${item.city}_${item.quality}`} item={item} />
+        ))}
+        {itemsArr.map(item => (
+          <TickerEntry key={`dup_${item.item_id}_${item.city}_${item.quality}`} item={item} />
+        ))}
+      </div>
+    </div>
+  )
+}

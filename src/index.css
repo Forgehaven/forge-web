@@ -7,6 +7,12 @@
   --color-forge-accent: #c4af64;
   --color-forge-text: #e2e4ed;
   --color-forge-muted: #6b7280;
+  --animate-marquee: marquee 240s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 /* ─── Reset ─────────────────────────────────────────────────────────────── */

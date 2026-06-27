@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
-import { useAuth } from '../authContext'
+import { useAuth } from '../../authContext'
 import { GuildRoster } from './GuildRoster'
-import { useLayoutOverride } from '../../../../components/LayoutOverride'
-import { MarketManagerSidebar } from './MarketManagerSidebar'
-import { MarketManagerBottomBar } from './MarketManagerBottomBar'
+import { useLayoutOverride } from '../../../../../components/LayoutOverride'
+import { MarketManagerSidebar } from '../MarketManagerSidebar'
+import { MarketManagerBottomBar } from '../MarketManagerBottomBar'
 
 export function GuildDataPage() {
   const { isAuthenticated } = useAuth()

@@ -13,7 +13,8 @@ import { TeleportCost } from './ffxi/TeleportCost'
 import { FriendViewer } from './ffxi/FriendViewer'
 import { AlbionSplash } from './albion/AlbionSplash'
 import { MarketManager } from './albion/MarketManager'
-import { GuildDataPage } from './albion/MarketManager/GuildDataPage'
+import { GoldPricePage } from './albion/MarketManager/Gold/GoldPricePage'
+import { GuildDataPage } from './albion/MarketManager/GuildData/GuildDataPage'
 import { AuthProvider } from './albion/useAuth'
 import { LayoutOverrideProvider } from '../../components/LayoutOverride'
 
@@ -40,6 +41,7 @@ export default function GamesLayout() {
           <Route path="ffxi/friend-viewer" element={<FriendViewer />} />
           <Route path="albion" element={<AlbionSplash />} />
           <Route path="albion/market-manager" element={<MarketManager />} />
+          <Route path="albion/market-manager/gold" element={<GoldPricePage />} />
           <Route path="albion/market-manager/guild-data" element={<GuildDataPage />} />
           <Route path="*" element={<NotFound backTo="/games" backLabel="Back to games" />} />
         </Route>

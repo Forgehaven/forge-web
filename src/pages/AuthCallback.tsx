@@ -1,12 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { API_URLS } from '../config/apiUrls'
 
 export default function AuthCallback() {
   const [searchParams] = useSearchParams()
   const [error, setError] = useState<string | null>(null)
+  const initiatedRef = useRef(false)
 
   useEffect(() => {
+    if (initiatedRef.current) return
+    initiatedRef.current = true
+
     const code = searchParams.get('code')
     const errParam = searchParams.get('error')
 
@@ -22,8 +26,6 @@ export default function AuthCallback() {
       return
     }
 
-    let cancelled = false
-
     async function exchange() {
       try {
         const res = await fetch(`${API_URLS.forgeAPI}/auth/discord/callback`, {
@@ -36,10 +38,7 @@ export default function AuthCallback() {
           }),
         })
 
-        if (cancelled) return
         const body = await res.json()
-
-        if (cancelled) return
 
         if (body.status === 'error') {
           setError(`${body.message || 'Authentication failed.'} (redirect_uri: ${window.location.origin}/auth/callback)`)
@@ -50,12 +49,11 @@ export default function AuthCallback() {
         sessionStorage.removeItem('auth_return_path')
         window.location.href = returnPath
       } catch {
-        if (!cancelled) setError('Network error during authentication.')
+        setError('Network error during authentication.')
       }
     }
 
     exchange()
-    return () => { cancelled = true }
   }, [searchParams])
 
   if (error) {

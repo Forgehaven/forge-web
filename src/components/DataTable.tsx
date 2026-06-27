@@ -3,7 +3,7 @@ import { useState, useMemo, type ReactNode } from 'react'
 export interface Column<T> {
   key: string
   label: string
-  render: (row: T) => ReactNode
+  render: (row: T, i: number) => ReactNode
   sortKey?: (row: T) => number | string
   className?: string
   sticky?: boolean
@@ -74,7 +74,7 @@ export function DataTable<T>({ columns, data, rowKey, rowClass, defaultSort, def
                     className={`px-3 py-2 whitespace-nowrap ${col.sticky ? `sticky left-0 z-10 border-r border-[#2a2d3a]` : ''} ${col.className ?? ''}`}
                     style={col.sticky ? { background: bg } : undefined}
                   >
-                    {col.render(row)}
+                    {col.render(row, i)}
                   </td>
                 ))}
               </tr>

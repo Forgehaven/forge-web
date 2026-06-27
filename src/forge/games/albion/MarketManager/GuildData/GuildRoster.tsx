@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
-import { DataTable, type Column } from '../../../../components/DataTable'
-import { API_URLS } from '../../../../config/apiUrls'
+import { useState, useEffect, useMemo } from 'react'
+import { DataTable, type Column } from '../../../../../components/DataTable'
+import { API_URLS } from '../../../../../config/apiUrls'
 const DAY_MS = 86_400_000
 const MONTH_MS = 30 * DAY_MS
 const FORTY8_H_MS = 2 * DAY_MS
@@ -43,6 +43,13 @@ function zoneCell(v: number | undefined) {
   return <>{fmt(v)}</>
 }
 
+function totalFame(m: MemberData): number {
+  return m.LifetimeStatistics.PvE.Total
+    + m.LifetimeStatistics.Gathering.All.Total
+    + m.LifetimeStatistics.Crafting.Total
+    + m.KillFame
+}
+
 function tsCell(ts: string | null) {
   if (!ts) return <span className="text-red-400">Never</span>
   const age = Date.now() - new Date(ts).getTime()
@@ -82,12 +89,36 @@ export function GuildRoster() {
     ? members.filter(m => m.Name.toLowerCase().includes(search.toLowerCase()))
     : members
 
+  const sorted = useMemo(() => {
+    return [...filtered].sort((a, b) => {
+      const dayA = a.LifetimeStatistics.Timestamp
+        ? new Date(a.LifetimeStatistics.Timestamp).setHours(0, 0, 0, 0) : 0
+      const dayB = b.LifetimeStatistics.Timestamp
+        ? new Date(b.LifetimeStatistics.Timestamp).setHours(0, 0, 0, 0) : 0
+      if (dayA !== dayB) return dayB - dayA
+      return totalFame(b) - totalFame(a)
+    })
+  }, [filtered])
+
+  const latestTs = useMemo(() => {
+    let max = 0
+    for (const m of members) {
+      if (m.LifetimeStatistics.Timestamp) {
+        const t = new Date(m.LifetimeStatistics.Timestamp).getTime()
+        if (t > max) max = t
+      }
+    }
+    return max ? new Date(max) : null
+  }, [members])
+
   if (loading) return <div className="flex items-center justify-center py-16"><div className="w-6 h-6 border-2 border-[#c4af64] border-t-transparent rounded-full animate-spin" /></div>
   if (error) return <p className="text-sm text-red-400 text-center py-8">Failed to load guild data: {error}</p>
   if (members.length === 0) return <p className="text-sm text-[#6b7280] text-center py-8">No guild members found.</p>
 
   const columns: Column<MemberData>[] = [
+    { key: '#', label: '', render: (_m, i) => <span className="text-[#3a3d4a] font-mono text-xs tabular-nums">{(i + 1).toLocaleString()}</span>, className: 'w-8 text-center' },
     { key: 'Name', label: 'Name', sortKey: m => m.Name.toLowerCase(), render: m => <span className="text-[#e2e4ed] font-medium">{m.Name}</span> },
+    { key: 'totalFame', label: 'Total Fame', sortKey: m => totalFame(m), render: m => <span className="text-[#c4af64] font-medium">{fmt(totalFame(m))}</span> },
     { key: 'LastLogin', label: 'Last Login', sortKey: m => m.LifetimeStatistics.Timestamp ? new Date(m.LifetimeStatistics.Timestamp).getTime() : 0, render: m => tsCell(m.LifetimeStatistics.Timestamp) },
     { key: 'PvE', label: 'PvE Fame', sortKey: m => m.LifetimeStatistics.PvE[zone], render: m => zoneCell(m.LifetimeStatistics.PvE[zone]) },
     { key: 'Kill', label: 'Kill Fame', sortKey: m => m.KillFame, render: m => <>{fmt(m.KillFame)}</> },
@@ -102,6 +133,14 @@ export function GuildRoster() {
 
   return (
     <div className="w-full">
+      {latestTs && (
+        <p className="text-xs text-[#6b7280] mb-2">
+          Albion API snapshot: {latestTs.toLocaleDateString('en-US', {
+            month: 'short', day: 'numeric', year: 'numeric',
+            hour: '2-digit', minute: '2-digit', timeZoneName: 'short'
+          })}
+        </p>
+      )}
       <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
         <div className="flex flex-wrap gap-1.5">
           {ZONES.map(z => (
@@ -128,10 +167,9 @@ export function GuildRoster() {
       </div>
       <DataTable
         columns={columns}
-        data={filtered}
+        data={sorted}
         rowKey={m => m.Id}
-        defaultSort="LastLogin"
-        defaultSortDir="desc"
+        defaultSort=""
         footer={search ? `${filtered.length} of ${members.length} members` : `${members.length} members`}
       />
     </div>

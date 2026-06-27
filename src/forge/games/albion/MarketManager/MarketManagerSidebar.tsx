@@ -24,6 +24,7 @@ export function MarketManagerSidebar({ isOpen, onClose, onOpenSettings }: Market
 
       <nav className="flex-1 overflow-y-auto py-1 min-w-0">
         {isAuthenticated && user?.guild_member && user?.has_role && (
+          <>
           <NavLink
             to="/games/albion/market-manager/guild-data"
             onClick={onClose}
@@ -37,8 +38,22 @@ export function MarketManagerSidebar({ isOpen, onClose, onOpenSettings }: Market
           >
             Guild Data
           </NavLink>
+          <SidebarDivider />
+          <NavLink
+            to="/games/albion/market-manager/gold"
+            onClick={onClose}
+            className={({ isActive }) =>
+              `block pl-4 pr-8 py-2 md:py-0 text-sm leading-5 transition-colors ${
+                isActive
+                  ? 'bg-[#c4af64]/10 text-[#c4af64] border-r-2 border-[#c4af64]'
+                  : 'text-[#9ca3af] hover:text-[#e2e4ed] hover:bg-[#2a2d3a]'
+              }`
+            }
+          >
+            Gold Price
+          </NavLink>
+          </>
         )}
-        {isAuthenticated && user?.guild_member && user?.has_role && <SidebarDivider />}
       </nav>
 
       {isAuthenticated && user && (

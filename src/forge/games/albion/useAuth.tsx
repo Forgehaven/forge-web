@@ -7,13 +7,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null)
   const [loading, setLoading] = useState(true)
 
-  const clearAuth = useCallback(() => {
-    setUser(null)
-  }, [])
+  const clearAuth = useCallback(() => { setUser(null) }, [])
 
   useEffect(() => {
-    setOnUnauthenticated(clearAuth)
-  }, [clearAuth])
+    setOnUnauthenticated(() => {
+      setUser(null)
+      localStorage.setItem('forge_logged_out', 'true')
+      ;['', '; domain=forgehaven.io', '; Secure'].forEach(suffix => {
+        document.cookie = `forge_session=; Max-Age=0; path=/${suffix}`
+      })
+    })
+  }, [])
 
   useEffect(() => {
     let cancelled = false
