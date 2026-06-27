@@ -1,4 +1,4 @@
-import { useRef, useLayoutEffect } from 'react'
+import { useRef, useLayoutEffect, useState, useEffect } from 'react'
 import { useTickerWS, type TickerItem } from './useTickerWS'
 
 function fmtPrice(n: number): string {
@@ -41,7 +41,9 @@ export function TickerTape() {
 
   const itemsArr = [...items.values()]
 
-  if (itemsArr.length === 0) return null
+  if (itemsArr.length === 0) {
+    return <WaitingDots />
+  }
 
   return (
     <div className="overflow-hidden flex-1 min-w-0">
@@ -55,4 +57,15 @@ export function TickerTape() {
       </div>
     </div>
   )
+}
+
+function WaitingDots() {
+  const [dots, setDots] = useState('')
+  useEffect(() => {
+    const id = setInterval(() => {
+      setDots(p => p.length >= 7 ? '..' : p + '.')
+    }, 400)
+    return () => clearInterval(id)
+  }, [])
+  return <span className="text-[#6b7280] text-xs">Waiting for ticker data{dots}</span>
 }
