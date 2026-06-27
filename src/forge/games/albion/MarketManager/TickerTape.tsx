@@ -1,3 +1,4 @@
+import { useRef, useLayoutEffect } from 'react'
 import { useTickerWS, type TickerItem } from './useTickerWS'
 
 function fmtPrice(n: number): string {
@@ -29,6 +30,14 @@ function TickerEntry({ item }: { item: TickerItem }) {
 
 export function TickerTape() {
   const { items } = useTickerWS()
+  const ref = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    if (ref.current) {
+      const w = ref.current.scrollWidth
+      ref.current.style.animationDuration = `${w / 2 / 100}s`
+    }
+  }, [items])
 
   const itemsArr = [...items.values()]
 
@@ -36,7 +45,7 @@ export function TickerTape() {
 
   return (
     <div className="overflow-hidden flex-1 min-w-0">
-      <div className="inline-flex animate-marquee hover:[animation-play-state:paused]">
+      <div ref={ref} className="inline-flex animate-marquee hover:[animation-play-state:paused]">
         {itemsArr.map(item => (
           <TickerEntry key={`${item.item_id}_${item.city}_${item.quality}`} item={item} />
         ))}

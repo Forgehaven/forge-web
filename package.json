@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "test:run": "vitest run",
+    "test:run": "tsc -b && vitest run",
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
