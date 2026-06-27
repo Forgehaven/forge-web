@@ -175,7 +175,7 @@ function CollapsibleSection({ title, count, children, defaultOpen }: { title: st
 }
 
 function CustomTooltip({ active, payload, label }: { active?: boolean; payload?: { name: string; value: number; color: string }[]; label?: number }) {
-  if (!active || !payload?.length) return null
+  if (!active || !payload?.length || label == null) return null
   const d = new Date(label)
   const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
   const timeStr = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
@@ -192,7 +192,7 @@ function CustomTooltip({ active, payload, label }: { active?: boolean; payload?:
 }
 
 function RsiTooltip({ active, payload, label }: { active?: boolean; payload?: { value: number }[]; label?: number }) {
-  if (!active || !payload?.length) return null
+  if (!active || !payload?.length || label == null) return null
   const d = new Date(label)
   const val = payload[0].value
   return (
