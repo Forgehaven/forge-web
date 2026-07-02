@@ -19,32 +19,90 @@ export interface RawItemPrice {
   buy_price_max: number
 }
 
-// GET /game/albion/items/recipes/{ids}  → payload: RecipeNode[] (one per requested id).
-// Recursive bill of materials down to raw resources. `count` is the quantity required as a
-// child ingredient (omitted on the root). Non-craftable / raw nodes have an empty recipe.
+// GET /game/albion/recipe/{id}  → payload: RecipeNode.
+// Recursive bill of materials down to raw resources, enchant-aware: an @n item's materials are
+// the _LEVELn@n market variants, and `upgrade` carries the transmute path from the enchant
+// level below. `count` is the quantity required as a child ingredient (1 on the root).
 export interface RecipeNode {
   item_id: string
+  name?: string       // localized display name (annotated by the endpoint)
   count?: number      // quantity when this node is an ingredient of its parent
   craftable: boolean
   recipe: RecipeNode[]
+  silver?: number     // flat crafting fee (resource transmutes); absent when 0
+  amount?: number     // units produced per craft (batch consumables); absent when 1
+  upgrade?: {
+    from: RecipeNode  // full tree of the item one enchant level below
+    materials: { item_id: string; name?: string; count: number }[] // runes/souls/relics at market
+  }
   item_value?: number // optional; for station-fee calc later
 }
 
-// One top-level material line in a craft breakdown, with the cheaper acquisition mode chosen.
+// One top-level material line in a craft breakdown, with the cheapest acquisition mode chosen.
 export interface CraftMaterial {
   id: string
+  name: string            // localized name; falls back to the id when unknown
   count: number
-  mode: 'buy' | 'craft'
+  mode: 'buy' | 'craft' | 'upgrade'
   unitCost: number | null // chosen per-unit acquisition cost
-  subtotal: number | null // unitCost × count × (1 − returnRate)
+  subtotal: number | null // unitCost × count × (1 − returnRate); upgrade mats skip the rate
 }
 
-// Craft-cost analysis for one item: cheapest path plus the two reference strategies.
+// Production-cost analysis for one item: cheapest path plus the two reference strategies.
 export interface CraftAnalysis {
-  optimal: number | null   // min over every buy-vs-craft choice in the tree
+  optimal: number | null   // min over every buy-vs-craft-vs-upgrade choice in the tree
   fullBuy: number | null   // craft the item, buy ALL direct materials at market
   fullCraft: number | null // refine every craftable material from raw
-  materials: CraftMaterial[] // top-level breakdown under the optimal path
+  materials: CraftMaterial[]     // top-level breakdown under the optimal path
+  baseMaterials: CraftMaterial[] // top-level materials all bought at market (fullBuy's breakdown)
+  silver: number           // flat crafting fee on the item's own recipe
+  amount: number           // units produced per craft
+}
+
+// GET /game/albion/prices/history/{id}?locations=&qualities=&time-scale=  → one series per
+// item × location × quality with hourly (time-scale 1) or daily (24) averaged points.
+export interface RawHistorySeries {
+  item_id: string
+  location: string
+  quality: number
+  data: { timestamp: string; avg_price: number; item_count: number }[]
+}
+
+// GET /game/albion/best-value?city=&quality=&tax=&return_rate=&limit=  → server-computed
+// top craft-and-resell returns for one city (materials at quality 1, resale at `quality`).
+export interface BestValueRow {
+  item_id: string
+  name: string
+  tier: number
+  enchant: number
+  city: string
+  quality: number
+  sell_price_min: number
+  craft_cost_base: number | null
+  craft_cost_optimized: number
+  profit: number
+  return_pct: number
+}
+
+export interface BestValuePayload {
+  computed_at: string
+  rows: BestValueRow[]
+}
+
+// GET/PUT /game/albion/craft-settings - community-shared flat per-station-type usage fees
+// (silver) per city. Sales tax is premium-based (4%/8%, a per-user toggle) and return rates
+// are fixed bonus-aware constants - both live server-side, not in this blob.
+export interface CityCraftSettings {
+  station_fees: Record<string, number> // keyed by station type, flat silver per craft
+}
+
+export interface CraftSettings {
+  cities: Record<string, CityCraftSettings>
+}
+
+export interface CraftSettingsPayload {
+  settings: CraftSettings
+  updated_at: string | null
 }
 
 // An item enriched with meta derived from its id (tier/enchant), its live price, and (when a

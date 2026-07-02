@@ -1,8 +1,15 @@
 import { useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { tierLabel } from './itemMeta'
 import type { CraftAnalysis } from './types'
 
 const CARD_WIDTH = 300
+
+const MODE_COLORS = {
+  buy: 'text-[#6b7280]',
+  craft: 'text-[#60a5fa]',
+  upgrade: 'text-[#a78bfa]',
+} as const
 
 function fmt(n: number | null | undefined): string {
   if (n == null) return '-'
@@ -46,21 +53,37 @@ export function CraftCell({ analysis, returnRate }: { analysis: CraftAnalysis | 
             style={{ position: 'fixed', top: pos.top, left: pos.left, width: CARD_WIDTH }}
             className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-3 shadow-xl z-[200] text-xs flex flex-col gap-1.5 pointer-events-none"
           >
-            <Row label="Full-buy" value={fmt(analysis.fullBuy)} />
+            <Row label="Base mats" value={fmt(analysis.fullBuy)} />
             <Row label="Full-craft" value={fmt(analysis.fullCraft)} />
-            <Row label="Optimal" value={fmt(analysis.optimal)} strong />
+            <Row label="Optimized" value={fmt(analysis.optimal)} strong />
             <div className="border-t border-[#2a2d3a] my-0.5" />
+            <p className="text-[10px] text-[#6b7280] uppercase tracking-wider">Base materials</p>
+            {analysis.baseMaterials.map(m => (
+              <div key={`base-${m.id}`} className="flex justify-between gap-3">
+                <span className="text-[#9ca3af] truncate">
+                  {m.count}× {tierLabel(m.id)} {m.name}
+                </span>
+                <span className="font-mono text-[#e2e4ed] text-right shrink-0">{fmt(m.subtotal)}</span>
+              </div>
+            ))}
+            <p className="text-[10px] text-[#6b7280] uppercase tracking-wider pt-1">Optimized materials</p>
             {analysis.materials.map(m => (
               <div key={m.id} className="flex justify-between gap-3">
                 <span className="text-[#9ca3af] truncate">
-                  {m.count}× {m.id}
+                  {m.count}× {tierLabel(m.id)} {m.name}
                 </span>
                 <span className="font-mono text-right shrink-0">
-                  <span className={m.mode === 'craft' ? 'text-[#60a5fa]' : 'text-[#6b7280]'}>{m.mode}</span>{' '}
+                  <span className={MODE_COLORS[m.mode]}>{m.mode}</span>{' '}
                   <span className="text-[#e2e4ed]">{fmt(m.subtotal)}</span>
                 </span>
               </div>
             ))}
+            {analysis.silver > 0 && (
+              <p className="text-[10px] text-[#6b7280] pt-0.5">+ {fmt(analysis.silver)} silver crafting fee</p>
+            )}
+            {analysis.amount > 1 && (
+              <p className="text-[10px] text-[#6b7280] pt-0.5">per unit · crafts {analysis.amount} at once</p>
+            )}
             {returnRate > 0 && (
               <p className="text-[10px] text-[#6b7280] pt-0.5">incl. {Math.round(returnRate * 100)}% return rate</p>
             )}

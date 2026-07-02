@@ -20,11 +20,14 @@ import { ItemIndexPage } from './albion/MarketManager/ItemIndex/ItemIndexPage'
 import { GuildDataPage } from './albion/MarketManager/GuildData/GuildDataPage'
 import { FavouritesPage } from './albion/MarketManager/FavouritesPage'
 import { BestValuePage } from './albion/MarketManager/BestValuePage'
+import { CraftSettingsPage } from './albion/MarketManager/CraftSettingsPage'
 import { XCityArbitragePage } from './albion/MarketManager/MarketFixing/XCityArbitragePage'
 import { VelocityFlipPage } from './albion/MarketManager/MarketFixing/VelocityFlipPage'
 import { RouteRiskRewardPage } from './albion/MarketManager/MarketFixing/RouteRiskRewardPage'
 import { BMVolumePredictPage } from './albion/MarketManager/MarketFixing/BMVolumePredictPage'
 import { CategoryPage } from './albion/MarketManager/CategoryPage'
+import { ItemDetailPage } from './albion/MarketManager/ItemDetail/ItemDetailPage'
+import { ComparePage } from './albion/MarketManager/ItemDetail/ComparePage'
 import { MARKET_CATEGORIES } from './albion/MarketManager/marketCategories'
 import { LayoutOverrideProvider } from '../../components/LayoutOverride'
 
@@ -57,10 +60,13 @@ export default function GamesLayout() {
           <Route path="albion/market-manager/guild-data" element={<GuildDataPage />} />
           <Route path="albion/market-manager/favourites" element={<FavouritesPage />} />
           <Route path="albion/market-manager/best-value" element={<BestValuePage />} />
+          <Route path="albion/market-manager/craft-settings" element={<CraftSettingsPage />} />
           <Route path="albion/market-manager/market-fixing/x-city-arbitrage" element={<XCityArbitragePage />} />
           <Route path="albion/market-manager/market-fixing/velocity-flip" element={<VelocityFlipPage />} />
           <Route path="albion/market-manager/market-fixing/route-risk-reward" element={<RouteRiskRewardPage />} />
           <Route path="albion/market-manager/market-fixing/bm-volume-predict" element={<BMVolumePredictPage />} />
+          <Route path="albion/market-manager/item/:itemId" element={<ItemDetailPage />} />
+          <Route path="albion/market-manager/compare" element={<ComparePage />} />
           {MARKET_CATEGORIES.map(c => (
             <Route
               key={c.slug}

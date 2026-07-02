@@ -3,6 +3,7 @@ import { useState, useMemo, type ReactNode } from 'react'
 export interface Column<T> {
   key: string
   label: string
+  title?: string // native tooltip on the header cell
   render: (row: T, i: number) => ReactNode
   sortKey?: (row: T) => number | string
   className?: string
@@ -52,6 +53,7 @@ export function DataTable<T>({ columns, data, rowKey, rowClass, defaultSort, def
             {columns.map(col => (
               <th
                 key={col.key}
+                title={col.title}
                 onClick={() => col.sortKey && toggleSort(col.key)}
                 className={`px-3 py-2.5 text-left text-xs text-[#6b7280] uppercase tracking-widest font-semibold select-none whitespace-nowrap ${col.sortKey ? 'cursor-pointer hover:text-[#e2e4ed]' : ''} ${col.sticky ? 'sticky left-0 z-10 bg-[#1a1d27] border-r border-[#2a2d3a]' : ''} ${col.className ?? ''}`}
               >

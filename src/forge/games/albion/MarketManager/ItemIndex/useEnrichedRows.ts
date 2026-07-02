@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useItemRecipes } from './useItemRecipes'
-import { useItemPrices, priceKey } from './useItemPrices'
+import { useLiveItemPrices, priceKey } from './useItemPrices'
 import { analyzeCraft, collectRecipeIds, type PriceOf } from './craftCost'
 import type { ItemRow } from './types'
 
@@ -37,11 +37,12 @@ export function useEnrichedRows(
   }, [ids, recipes])
 
   const qualities = useMemo(() => Array.from(new Set([quality, 1])), [quality])
-  const { prices, fetchedAt, error } = useItemPrices(allIds, location, qualities)
+  const { prices, fetchedAt, error } = useLiveItemPrices(allIds, location, qualities)
 
   const rows = useMemo<ItemRow[]>(() => {
     // Materials always priced at quality 1; the finished item at the selected quality.
-    const priceOf: PriceOf = id => prices.get(priceKey(id, location, 1))?.sell_price_min ?? null
+    // A 0 from the price API means "no sell orders", not free - treat as unknown.
+    const priceOf: PriceOf = id => prices.get(priceKey(id, location, 1))?.sell_price_min || null
     return items.map(b => ({
       ...b,
       price: prices.get(priceKey(b.id, location, quality)) ?? null,

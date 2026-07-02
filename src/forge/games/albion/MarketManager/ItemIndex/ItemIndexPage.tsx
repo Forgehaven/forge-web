@@ -59,8 +59,9 @@ export function ItemIndexPage() {
       showCraft: true,
       taxRate: taxPct / 100,
       returnRate: returnPct / 100,
+      linkTo: row => `/games/albion/market-manager/item/${encodeURIComponent(row.id)}?quality=${quality}&city=${encodeURIComponent(location)}`,
     }),
-    [isFavourite, toggle, quality, taxPct, returnPct],
+    [isFavourite, toggle, quality, taxPct, returnPct, location],
   )
 
   return (

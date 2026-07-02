@@ -20,6 +20,7 @@ function TickerEntry({ item }: { item: TickerItem }) {
     <span className="inline-flex items-center gap-1.5 mr-6 whitespace-nowrap text-xs">
       <span className="text-[#e2e4ed] font-medium">{shortName(item.name || item.item_id)}</span>
       <span className="text-[#e2e4ed]">({item.tier || '?'})</span>
+      {item.quality > 0 && <span className="text-[#8b8fa3]">Q{item.quality}</span>}
       <span className="text-[#6b7280]">{item.city}</span>
       <span className="text-[#9ca3af]">{fmtPrice(price)}</span>
       <span className={cls}>{arrow} {chg >= 0 ? '+' : ''}{fmtPrice(chg)}</span>

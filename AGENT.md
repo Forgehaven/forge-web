@@ -341,46 +341,45 @@ Gold timestamps come from the backend as UTC strings without `Z` suffix. Always 
 MarketManager/
   index.tsx                     ← re-exports MarketManager
   MarketManager.tsx             ← splash page, sets sidebar/bottom bar
-  MarketManagerSidebar.tsx      ← full nav: Guild Data, Gold, Favourites, Best Value, 7 collapsible sections
+  MarketManagerSidebar.tsx      ← full nav: top links + Market Fixing + sections generated from marketCategories.ts;
+                                 collapse state persisted via useSidebarCollapse(STORAGE_KEYS.albionMMCollapsed)
   MarketManagerBottomBar.tsx    ← <BottomBar><TickerTape /></BottomBar>
-  TickerTape.tsx                ← marquee ticker, dynamic animation speed
-  useTickerWS.ts               ← WebSocket hook for ticker data
-  CollapsibleSection.tsx        ← <CollapsibleSection title="..." defaultOpen={bool}>{children}</CollapsibleSection>
-                                 toggle arrow (▾ right-aligned), open/close state, wraps NavLinks
-  PlaceholderPage.tsx           ← <PlaceholderPage title="..." /> - centered title + "coming soon" text,
-                                 calls useAuth + useLayoutOverride to set sidebar/bottom bar
-  FavouritesPage.tsx
-  BestValuePage.tsx
-  GuildData/                    (existing)
-    GuildDataPage.tsx
-    GuildRoster.tsx
-  Gold/                         (existing)
-    GoldPricePage.tsx
-    useGoldPrice.ts
-    indicators.ts
-  MarketFixing/                     ← 4 placeholder pages
-  Refining/                     ← 5 placeholder pages
-  Consumables/                  ← 2 placeholder pages
-  Armor/                        ← 9 placeholder pages
-  MageWeapons/                  ← 6 placeholder pages
-  HunterWeapons/                ← 7 placeholder pages
-  WarriorWeapons/               ← 7 placeholder pages
+  TickerTape.tsx                ← marquee ticker (shows a Q{n} quality tag per entry)
+  useTickerWS.ts                ← WebSocket hook for ticker data
+  usePricesWS.ts                ← WebSocket hook for the live price feed (see Live prices below)
+  chartTicks.ts                 ← shared x-axis tick generator (gold + item detail charts)
+  marketCategories.ts           ← single source of truth for category sections/slugs (routes, sidebar, titles)
+  CategoryPage.tsx              ← REAL config-driven table page for every category slug
+  CollapsibleSection.tsx        ← collapsible sidebar section; uncontrolled or controlled (open + onToggle)
+  PlaceholderPage.tsx           ← centered title + "coming soon" (Market Fixing pages still use it)
+  FavouritesPage.tsx            ← favourites table (localStorage) via useEnrichedRows
+  BestValuePage.tsx             ← REAL top-50 craft-and-resell returns (server-computed)
+  GuildData/  Gold/             (as before; GoldPricePage imports chartTicks from ../chartTicks)
+  MarketFixing/                 ← 4 placeholder pages (still out of scope)
+  ItemIndex/                    ← search page + ALL shared item-table machinery:
+    ItemIndexPage, ItemTable, ItemFilters, PercentField, itemColumns (buildItemColumns),
+    CraftBreakdownCell, craftCost.ts (analyzeCraft/profit/shoppingList/collectRecipeIds),
+    itemMeta.ts (parseTier/parseEnchant/withTier/withEnchant), types.ts,
+    albionItemsApi.ts (searchItems/fetchCategoryItems/fetchItemPrices/fetchItemHistory/
+    fetchBestValue/fetchRecipes), useItemSearch, useCategoryItems, useItemPrices
+    (+ useLiveItemPrices), useItemRecipes, useEnrichedRows
+  ItemDetail/                   ← ItemDetailPanel (self-contained), ItemDetailPage, ComparePage,
+    useItemHistory, useItemName
 ```
 
 ### Routes (all in `src/forge/games/GamesLayout.tsx`)
 
 All under `/games/albion/market-manager/`:
 - `gold` - `GoldPricePage`
+- `item-index` - `ItemIndexPage`
 - `guild-data` - `GuildDataPage`
 - `favourites` - `FavouritesPage`
 - `best-value` - `BestValuePage`
-- `market-fixing/x-city-arbitrage`, `velocity-flip`, `route-risk-reward`, `bm-volume-predict`
-- `refining/fiber`, `hide`, `ore`, `wood`, `stone`
-- `consumables/food`, `potions`
-- `armor/helm-cloth`, `helm-leather`, `helm-plate`, `chest-cloth`, `chest-leather`, `chest-plate`, `boot-cloth`, `boot-leather`, `boot-plate`
-- `mage-weapons/fire-staff`, `holy-staff`, `arcane-staff`, `frost-staff`, `cursed-staff`, `tome-of-spells`
-- `hunter-weapons/bow`, `dagger`, `spear`, `quarterstaff`, `shapeshifter-staff`, `nature-staff`, `torch`
-- `warrior-weapons/axe`, `sword`, `mace`, `hammer`, `war-gloves`, `crossbow`, `shield`
+- `item/:itemId?quality=&city=` - `ItemDetailPage` (shareable per-item dashboard)
+- `compare?a=&qa=&b=&qb=&city=` - `ComparePage` (two ItemDetailPanels side by side, desktop only)
+- `market-fixing/x-city-arbitrage`, `velocity-flip`, `route-risk-reward`, `bm-volume-predict` (placeholders)
+- every category slug in `marketCategories.ts` → `<CategoryPage slug>` (routes generated in a loop; adding
+  a category is a one-line edit in `marketCategories.ts`)
 
 ### Tab titles (`src/config/sections.ts`)
 Every route listed above maps to `'AOMM - <Page Name>'`. Title is set via inline script in `vite.config.ts` `headScripts()` plugin. The full path prefix must match exactly.
@@ -419,7 +418,83 @@ Every route listed above maps to `'AOMM - <Page Name>'`. Title is set via inline
 - Display: CSS marquee (`@keyframes marquee`, `--animate-marquee` in `src/index.css`). Dynamic duration computed via `useLayoutEffect`: `animationDuration = scrollWidth / 2 / 100` (targets 100px/s visual speed)
 - Items shown in backend arrival order (no sort). Backend controls which/how many items
 - Item names shortened: strips `"'s "` prefix (e.g. "Adept's Bag" → "Bag")
+- Each entry shows a muted `Q{n}` quality tag after the tier (poller polls qualities 1-5)
 - Empty state: shows "waiting for ticker data" with animated typing dots (up to 8, resetting)
+
+### Category pages (`CategoryPage.tsx`)
+- One component behind every `marketCategories.ts` slug. Items from `GET /game/albion/items/by-category/{slug}`
+  via `useCategoryItems` (module-scope cache per slug - membership is static)
+- Client-side name filter over the loaded list (no server round-trip) + `ItemFilters`
+  (tier/enchant/quality/location) + Return%/Tax% `PercentField`s
+- Table pipeline identical to Item Index: `useEnrichedRows` → `buildItemColumns` → `ItemTable`;
+  item names link to the detail route
+
+### Craft cost columns (`itemColumns.tsx` / `craftCost.ts`)
+- Two columns when `showCraft`: **Craft (base)** = `fullBuy` (top-level mats at market, no
+  sub-crafting) and **Craft (optimized)** = `optimal` with the hover breakdown
+- Breakdowns show BOTH lists (base materials + optimized materials); every material line is
+  `{count}× {tierLabel(id)} {name}` - names ride the recipe payload (server-annotated), tier
+  labels via `tierLabel()` in itemMeta.ts. Detail header prefers `recipe.name` over the
+  search-based `useItemName` fallback
+- `craftCost.ts` acquisition is three-way per node: `min(buy, craft, upgrade)`. `upgrade` =
+  transmute from the enchant level below (RecipeNode.upgrade: `{ from, materials }`, materials
+  are runes/souls/relics at market, NOT return-rate adjusted). Breakdown modes: buy (gray),
+  craft (blue), upgrade (purple)
+- RecipeNode also carries `silver` (flat crafting fee - resource transmutes) and `amount`
+  (batch size - potions craft 5, meals 10); craft cost = `(silver + Σ children) / amount`
+- `shoppingList(node, priceOf, rr)` walks the optimal path and returns the market buys for ONE
+  unit (+ total silver fees); the detail page multiplies by quantity and ceils
+
+### Item Detail + Compare (`ItemDetail/`)
+- `ItemDetailPanel` is fully self-contained (props: itemId/quality/city/onItemId/onQuality) -
+  rendered one-up by `ItemDetailPage` (URL-driven) and two-up by `ComparePage`
+- Variant switchers: tier T1-T8 + enchant .0-.4 rewrite the item id via `withTier`/`withEnchant`
+  (`itemMeta.ts`; resources use the `_LEVELn@n` form, gear plain `@n`)
+- Per-quality price strip (5 clickable cards = current sell per quality; click selects the
+  quality the stat cards use)
+- History chart: `GET /prices/history/{id}?qualities=1,2,3,4,5` via `useItemHistory` (5-min
+  poll), Recharts LineChart with ONE LINE PER QUALITY, periods 24H/7D (time-scale 1) and 30D
+  (time-scale 24); window anchored to the newest data point, not the wall clock
+- **Crafting Tree card** (`RecipeTreeCard.tsx`, bottom of the panel - it owns the qty state and
+  replaced the old standalone Shopping List card): nested flowchart of the recipe with
+  per-node counts (return-rate amortized, ceil for display), icons, and mode badges (buy gray /
+  craft blue / upgrade purple / **transmute orange** - a recipe with a flat silver fee is the
+  transmutator, recognized via `isTransmute`, and NEVER expanded in full-tree mode). Toggle
+  **Optimized** (expands only nodes where craft/transmute/upgrade beats buying; buy leaves
+  collapse with market subtotals) vs **Full tree** (refines every refinable node down to raw).
+  To the right: the **aggregated shopping list** - duplicates across branches summed - from
+  `shoppingList` (optimized) or `shoppingListFullCraft` (full; transmutes stay buys), scaled by
+  qty with silver fees + grand total. Uses `bestMode()` (exported from craftCost.ts)
+
+### Best Value page (`BestValuePage.tsx`)
+- `GET /game/albion/best-value?premium=` via `fetchBestValue(loadPremium())` - no filters on the
+  page; rows are (item, city) pairs across EVERY city, top 50 overall by return %, with a City
+  column and `rowKey = item_id|city` (same item can appear once per city)
+- ALL math server-side: sales tax from the premium flag (4%/8%), flat station fees + bonus-aware
+  return rates from the shared craft settings/constants; mats priced at Normal quality per city
+- Refetches on every `price_changes` WS frame (cheap - server result is in-memory)
+
+### Craft Settings page (`CraftSettingsPage.tsx` + `premium.ts`)
+- Sidebar link below Best Value. Banner: station fees are GLOBAL (shared blob via
+  `GET/PUT /game/albion/craft-settings`, FFXI-conquest pattern) so the guild keeps them current
+- Station-fee grid: rows = `STATION_TYPES` (constants.ts: forge/hunters_lodge/mages_tower/
+  toolmaker/alchemists_lab/cook/refining), columns = cities, FLAT silver per craft
+- City bonus table is static display data (`CITY_BONUSES` in constants.ts) with the fixed
+  return rates in the headers: refining specialty 36.7%, crafting specialty 24.8%, base 15.2%
+- "I have premium" (gold crown SVG) + "I craft with focus" toggles are PER-USER (localStorage
+  `STORAGE_KEYS.albionPremium`/`albionFocus` via `premium.ts`) - premium drives Best Value's
+  4%/8% sales tax, focus the focus return rates (43.5/53.9/47.9 vs 15.2/36.7/24.8). Return
+  rates derive from production bonuses via `return = 1 − 1/(1 + bonus)` (the in-game "+40%"
+  is the bonus stat; the return rate the station tooltip shows is the converted value)
+- City order everywhere (constants.ts CITIES): 5 royal bonus cities, then Caerleon, then Brecilien
+
+### Live prices (`usePricesWS.ts` + `useLiveItemPrices`)
+- `WS {forgeAPI}/game/albion/ws/prices`: connect frame is `{type:'hello'}` (no snapshot), then
+  `price_changes` frames `{changes:[{item_id, city, quality, old_price, new_price, ...}]}` after
+  every poller cycle. Same 500ms-delay + exponential-backoff shape as useTickerWS
+- `useLiveItemPrices` (in `useItemPrices.ts`) = `useItemPrices` + WS: merges changed sell
+  prices instantly (optimistic) and bumps a refetch so buy prices catch up. `useEnrichedRows`
+  uses it, so Category pages, Item Index, Favourites, and detail panels all tick live
 
 ### Item icons (`src/utils/albionIcons.ts`)
 ```ts

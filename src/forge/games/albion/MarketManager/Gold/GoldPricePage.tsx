@@ -12,37 +12,10 @@ import { useGoldPrice } from './useGoldPrice'
 import { sma, rsi } from './indicators'
 import { utcDate } from '../../../../../utils/date'
 import { DataTable, type Column } from '../../../../../components/DataTable'
+import { chartTicks } from '../chartTicks'
 
 type Period = 24 | 168
 type Signal = 'bullish' | 'bearish' | 'neutral'
-
-function chartTicks(times: number[], period: number): number[] {
-  if (times.length < 2) return times
-  const min = Math.min(...times)
-  const max = Math.max(...times)
-  const ticks: number[] = []
-  if (period === 24) {
-    const start = new Date(min)
-    start.setMinutes(0, 0, 0)
-    const end = new Date(max)
-    const cursor = new Date(start)
-    while (cursor <= end) {
-      ticks.push(cursor.getTime())
-      cursor.setHours(cursor.getHours() + 6)
-    }
-    return ticks
-  }
-  const start = new Date(min)
-  start.setHours(0, 0, 0, 0)
-  const end = new Date(max)
-  end.setHours(0, 0, 0, 0)
-  const cursor = new Date(start)
-  while (cursor <= end) {
-    ticks.push(cursor.getTime())
-    cursor.setDate(cursor.getDate() + 1)
-  }
-  return ticks
-}
 
 const REC_MAP: Record<string, { label: string; color: string; bg: string; border: string }> = {
   buy_gold:      { label: 'Buy Gold',      color: 'text-green-400', bg: 'bg-green-900/20',   border: 'border-green-700/40' },

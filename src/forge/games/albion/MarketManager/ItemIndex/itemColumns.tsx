@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Link } from 'react-router-dom'
 import type { Column } from '../../../../../components/DataTable'
 import { ItemIcon } from '../../ItemIcon'
 import { profit } from './craftCost'
@@ -12,6 +13,7 @@ interface ColumnOpts {
   showCraft?: boolean
   taxRate?: number
   returnRate?: number
+  linkTo?: (row: ItemRow) => string // item name becomes a link (detail page)
 }
 
 // Shared column defs for the Item Index + Favourites tables. Craft/profit columns are appended
@@ -44,7 +46,13 @@ export function buildItemColumns(opts: ColumnOpts): Column<ItemRow>[] {
       render: row => (
         <span className="flex items-center gap-2">
           <ItemIcon uniqueName={row.id} size={32} quality={opts.quality} />
-          <span className="text-[#e2e4ed]">{row.name}</span>
+          {opts.linkTo ? (
+            <Link to={opts.linkTo(row)} className="text-[#e2e4ed] hover:text-[#c4af64] transition-colors">
+              {row.name}
+            </Link>
+          ) : (
+            <span className="text-[#e2e4ed]">{row.name}</span>
+          )}
         </span>
       ),
     },
@@ -76,8 +84,16 @@ export function buildItemColumns(opts: ColumnOpts): Column<ItemRow>[] {
   if (opts.showCraft) {
     cols.push(
       {
+        key: 'craft_base',
+        label: 'Craft (base)',
+        title: 'Top-level recipe materials bought at current market prices - no sub-crafting',
+        sortKey: r => r.craft?.fullBuy ?? Number.POSITIVE_INFINITY,
+        render: row => costCell(row.craft?.fullBuy),
+      },
+      {
         key: 'craft',
-        label: 'Craft',
+        label: 'Craft (optimized)',
+        title: 'Cheapest mix of buy / craft / upgrade across the whole recipe tree',
         sortKey: r => r.craft?.optimal ?? Number.POSITIVE_INFINITY,
         render: row => <CraftCell analysis={row.craft} returnRate={returnRate} />,
       },
@@ -107,6 +123,11 @@ function fmt(n: number | null | undefined): string {
 function priceCell(v: number | undefined): ReactNode {
   if (v == null || v === 0) return <span className="text-[#6b7280]">-</span>
   return <span className="text-[#c4af64] font-medium">{v.toLocaleString('en-US')}</span>
+}
+
+function costCell(v: number | null | undefined): ReactNode {
+  if (v == null) return <span className="text-[#6b7280]">-</span>
+  return <span className="text-[#9ca3af]">{fmt(v)}</span>
 }
 
 function profitCell(v: number | null): ReactNode {

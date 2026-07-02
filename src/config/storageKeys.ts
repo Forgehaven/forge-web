@@ -14,6 +14,8 @@ export const STORAGE_KEYS = {
   ffxiKeyItemsNoSync:      'forgegames_ffxi_keyitems_nosync_v1',
   albionItemFavourites:    'forgegames_albion_item_favourites_v1',
   albionMMCollapsed:       'forgegames_albion_mm_collapsed_v1',
+  albionPremium:           'forgegames_albion_premium_v1',
+  albionFocus:             'forgegames_albion_focus_v1',
   ffxiSelectedChar:        'forgegames_ffxi_selectedchar_v1',
   ffxiSpellNoSync:         'forgegames_ffxi_spelltracker_nosync_v1',
 } as const
