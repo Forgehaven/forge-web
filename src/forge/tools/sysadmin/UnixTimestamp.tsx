@@ -89,7 +89,7 @@ export function UnixTimestamp() {
               <Row {...rp} id="relative" label="Relative"  value={relativeTime(dateFromTs)} />
               <Row {...rp} id="weekday"  label="Day"       value={dateFromTs.toLocaleDateString(undefined, { weekday: 'long' })} />
               <Row {...rp} id="week"     label="Week"      value={`Week ${weekNumber(dateFromTs)} of ${dateFromTs.getFullYear()}`} />
-              {isMs && <p className="text-xs text-[#6b7280] pt-2 pb-1">Detected milliseconds — showing as seconds below</p>}
+              {isMs && <p className="text-xs text-[#6b7280] pt-2 pb-1">Detected milliseconds - showing as seconds below</p>}
               <Row {...rp} id="secs"  label="Seconds"    value={String(Math.floor((tsMs ?? 0) / 1000))} />
               <Row {...rp} id="ms"    label="Milliseconds" value={String(tsMs)} />
             </div>

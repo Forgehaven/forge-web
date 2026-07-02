@@ -1,6 +1,9 @@
 import { useMemo, useRef, useState } from 'react'
 import { API_URLS } from '../../../../config/apiUrls'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
+import { useAuth } from '../../../../auth/authContext'
+import { fetchChar, getUserData, putUserData } from '../api'
+import { useSyncedBlob } from '../hooks/useSyncedBlob'
 import { ConfirmButton } from '../../../../components/ConfirmButton'
 import { ImportPanel } from '../../../../components/ImportPanel'
 import bastokIcon from '../data/BastokIcon.png'
@@ -8,6 +11,8 @@ import windurstIcon from '../data/WindurstIcon.png'
 import sandoriaIcon from '../data/SandoriaIcon.png'
 
 const SK = STORAGE_KEYS.ffxiFriendViewer
+
+const getNow = () => Date.now()
 
 const JOB_ORDER = [
   'WAR', 'MNK', 'WHM', 'BLM', 'RDM', 'THF', 'PLD', 'DRK',
@@ -44,6 +49,8 @@ type FriendData = {
   nation?: number | null
   rank?: string | null
   avatar?: string | null
+  fetchedAt?: number   // when this job snapshot was actually captured
+  anon?: boolean       // latest fetch returned no levels (/anon) - snapshot kept
 }
 type FetchStatus = 'loading' | 'error' | null
 
@@ -82,9 +89,43 @@ export function FriendViewer() {
   const [importOpen, setImportOpen] = useState(false)
   const [diff, setDiff] = useState<Record<string, Record<string, number>>>({})
 
+  const { isAuthenticated } = useAuth()
+
+  // Account sync covers the curated list only (names, order, starred); the
+  // fetched job/rank snapshots stay in this browser and refetch on demand.
+  type FriendBlob = { names: string[]; starred: string | null }
+  const { scheduleSave } = useSyncedBlob<FriendBlob>({
+    key: isAuthenticated ? 'friend_viewer' : null,
+    load: isAuthenticated ? () => getUserData<FriendBlob>('friend_viewer') : null,
+    save: isAuthenticated ? data => putUserData('friend_viewer', data) : null,
+    onLoaded: data => {
+      // Runs outside any state updater (updaters must stay pure). Union merge:
+      // known limitation - a friend deleted on another device can be
+      // resurrected by this browser's stale local copy.
+      if (!data) {
+        // Server has nothing yet: push this browser's list up once.
+        if (saved.names.length) scheduleSave({ names: saved.names, starred: saved.starred })
+        return
+      }
+      const serverNames = data.names ?? []
+      const merged = [...serverNames]
+      for (const n of saved.names) {
+        if (!merged.some(m => m.toLowerCase() === n.toLowerCase())) merged.push(n)
+      }
+      const starred = data.starred ?? saved.starred
+      const next = { ...saved, names: merged, starred }
+      setSaved(next)
+      localStorage.setItem(SK, JSON.stringify(next))
+      if (merged.length !== serverNames.length || starred !== (data.starred ?? null)) {
+        scheduleSave({ names: merged, starred })
+      }
+    },
+  })
+
   function save(next: SavedState) {
     setSaved(next)
     localStorage.setItem(SK, JSON.stringify(next))
+    scheduleSave({ names: next.names, starred: next.starred })
   }
 
   function addName() {
@@ -201,9 +242,8 @@ export function FriendViewer() {
 
   function resetAll() {
     const empty: SavedState = { names: [], data: {}, starred: null }
-    setSaved(empty)
+    save(empty)
     setStatuses({})
-    localStorage.setItem(SK, JSON.stringify(empty))
   }
 
   async function fetchAll() {
@@ -215,16 +255,16 @@ export function FriendViewer() {
     const names = saved.names
     const results = await Promise.allSettled(
       names.map(async name => {
-        const res = await fetch(`${API_URLS.forgeAPI}/game/ffxi/char/${encodeURIComponent(name)}`)
-        if (!res.ok) throw new Error()
-        const json = await res.json()
-        const p = json.payload ?? json
+        // Error envelope (not found / renamed) rejects into the 'error'
+        // status below - it must NOT look like an /anon all-zero fetch.
+        const res = await fetchChar(name)
+        if (res.status !== 'ok') throw new Error()
         return {
           name,
-          jobs: p.jobs as Record<string, number>,
-          nation: p.nation ?? null,
-          rank: p.rank ?? null,
-          avatar: p.avatar ?? null,
+          jobs: res.payload.jobs ?? {},
+          nation: res.payload.nation ?? null,
+          rank: res.payload.rank ?? null,
+          avatar: res.payload.avatar ?? null,
         }
       })
     )
@@ -237,12 +277,31 @@ export function FriendViewer() {
       const r = results[i]
       const name = names[i]
       if (r.status === 'fulfilled') {
-        newData[name] = { jobs: r.value.jobs, nation: r.value.nation, rank: r.value.rank, avatar: r.value.avatar }
         newStatuses[name] = null
-        const prevJobs = snapshot[name]?.jobs
-        if (prevJobs && r.value.jobs) {
+        const jobs = r.value.jobs ?? {}
+        const hasLevels = Object.values(jobs).some(lvl => (lvl as number) > 0)
+        const prev = snapshot[name]
+        const prevHadLevels = !!prev && Object.values(prev.jobs ?? {}).some(lvl => lvl > 0)
+
+        if (!hasLevels && prevHadLevels) {
+          // All-zero fetch on a char we have data for = they went /anon.
+          // Keep the last good snapshot (and its fetchedAt), just flag it.
+          newData[name] = { ...prev, anon: true }
+          continue
+        }
+
+        newData[name] = {
+          jobs,
+          nation: r.value.nation,
+          rank: r.value.rank,
+          avatar: r.value.avatar,
+          fetchedAt: getNow(),
+          anon: !hasLevels,
+        }
+        const prevJobs = prev?.jobs
+        if (prevJobs && hasLevels) {
           const charDiff: Record<string, number> = {}
-          for (const [job, newLvl] of Object.entries(r.value.jobs)) {
+          for (const [job, newLvl] of Object.entries(jobs)) {
             const delta = (newLvl as number) - (prevJobs[job] ?? 0)
             if (delta !== 0) charDiff[job] = delta
           }
@@ -492,6 +551,16 @@ export function FriendViewer() {
                           )}
                           {status === 'loading' && <span className="text-xs text-[#6b7280] shrink-0">…</span>}
                           {status === 'error'   && <span className="text-xs text-[#ef4444] shrink-0" title="Character not found">!</span>}
+                          {d?.anon && status !== 'loading' && (
+                            <span
+                              className="text-[10px] text-[#6b7280] shrink-0 whitespace-nowrap"
+                              title={`This character is /anon - showing their last known jobs${d.fetchedAt ? `, fetched ${new Date(d.fetchedAt).toLocaleString()}` : ''}`}
+                            >
+                              anon · {d.fetchedAt
+                                ? new Date(d.fetchedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+                                : 'unknown'}
+                            </span>
+                          )}
                         </div>
                       </td>
                       <td className="px-2 py-2 text-center whitespace-nowrap align-middle">
@@ -503,15 +572,15 @@ export function FriendViewer() {
                               <img src={meta.icon} alt={meta.name} title={meta.name} className="w-4 h-4 object-contain" />
                               <span className="text-xs text-[#9ca3af] tabular-nums w-5 text-center">{rank ?? '?'}</span>
                             </span>
-                          ) : <span className="text-[#2a2d3a] select-none">—</span>
-                        })() : <span className="text-[#2a2d3a] select-none">—</span>}
+                          ) : <span className="text-[#2a2d3a] select-none">-</span>
+                        })() : <span className="text-[#2a2d3a] select-none">-</span>}
                       </td>
                       <td className="px-1 py-2 text-center border-r border-[#2a2d3a]">
                         {(() => {
                           const race = getRaceDisplay(d?.avatar)
                           return race
                             ? <span className="text-xs text-[#9ca3af]">{race}</span>
-                            : <span className="text-[#2a2d3a] select-none">—</span>
+                            : <span className="text-[#2a2d3a] select-none">-</span>
                         })()}
                       </td>
                       {activeJobs.map(job => {
@@ -535,7 +604,7 @@ export function FriendViewer() {
                                 )}
                               </span>
                             ) : (
-                              <span className="text-[#2a2d3a] select-none">—</span>
+                              <span className="text-[#2a2d3a] select-none">-</span>
                             )}
                           </td>
                         )

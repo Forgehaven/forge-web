@@ -2,12 +2,13 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, Outlet } from 'react-router-dom'
 import { HamburgerIcon } from './Icons'
 import { Modal } from './Modal'
+import { LoginModal } from '../auth/LoginModal'
 import { useLayoutOverrideValue } from './LayoutOverride'
 
 interface ForgeLayoutProps {
   title: string
   homePath: string
-  sidebar: React.ComponentType<{ isOpen: boolean; onClose: () => void; onOpenSettings: () => void }>
+  sidebar: React.ComponentType<{ isOpen: boolean; onClose: () => void; onOpenSettings: () => void; onOpenLogin: () => void }>
   settings: React.ComponentType
   bottomBar?: React.ComponentType
   headerExtra?: React.ReactNode
@@ -19,6 +20,7 @@ export function ForgeLayout({ title, homePath, sidebar: DefaultSidebar, settings
   const BottomBar = override.bottomBar ?? DefaultBottomBar
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [loginOpen, setLoginOpen] = useState(false)
   const touchStartX = useRef<number | null>(null)
   const touchStartY = useRef<number | null>(null)
   const sidebarOpenRef = useRef(sidebarOpen)
@@ -66,6 +68,7 @@ export function ForgeLayout({ title, homePath, sidebar: DefaultSidebar, settings
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
         onOpenSettings={() => { setSettingsOpen(true); setSidebarOpen(false) }}
+        onOpenLogin={() => { setLoginOpen(true); setSidebarOpen(false) }}
       />
 
       <div className="relative flex flex-col flex-1 overflow-hidden min-w-0">
@@ -96,6 +99,8 @@ export function ForgeLayout({ title, homePath, sidebar: DefaultSidebar, settings
       <Modal open={settingsOpen} onClose={() => setSettingsOpen(false)} title="Settings">
         <Settings />
       </Modal>
+
+      <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
     </div>
   )
 }

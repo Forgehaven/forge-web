@@ -48,9 +48,10 @@ export interface GamesSidebarProps {
   isOpen: boolean
   onClose: () => void
   onOpenSettings: () => void
+  onOpenLogin: () => void
 }
 
-export function GamesSidebar({ isOpen, onClose, onOpenSettings }: GamesSidebarProps) {
+export function GamesSidebar({ isOpen, onClose, onOpenSettings, onOpenLogin }: GamesSidebarProps) {
   const { collapsed, toggle } = useSidebarCollapse(STORAGE_KEYS.gamesCollapsedSections)
 
   return (
@@ -83,7 +84,7 @@ export function GamesSidebar({ isOpen, onClose, onOpenSettings }: GamesSidebarPr
         ))}
       </nav>
 
-      <SidebarFooter onOpenSettings={onOpenSettings} />
+      <SidebarFooter onOpenSettings={onOpenSettings} onOpenLogin={onOpenLogin} />
     </SidebarShell>
   )
 }

@@ -160,9 +160,10 @@ export interface ToolsSidebarProps {
   isOpen: boolean
   onClose: () => void
   onOpenSettings: () => void
+  onOpenLogin: () => void
 }
 
-export function ToolsSidebar({ isOpen, onClose, onOpenSettings }: ToolsSidebarProps) {
+export function ToolsSidebar({ isOpen, onClose, onOpenSettings, onOpenLogin }: ToolsSidebarProps) {
   const [query, setQuery] = useState('')
   const { collapsed, toggle: toggleSection } = useSidebarCollapse(STORAGE_KEYS.collapsedSections)
   const { toggle, isFavourite } = useFavourites()
@@ -223,7 +224,7 @@ export function ToolsSidebar({ isOpen, onClose, onOpenSettings }: ToolsSidebarPr
         )}
       </nav>
 
-      <SidebarFooter onOpenSettings={onOpenSettings} />
+      <SidebarFooter onOpenSettings={onOpenSettings} onOpenLogin={onOpenLogin} />
     </SidebarShell>
   )
 }

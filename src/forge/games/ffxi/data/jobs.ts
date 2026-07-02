@@ -7,7 +7,7 @@ export type Job =
   | 'PLD' | 'DRK' | 'BST' | 'BRD' | 'RNG' | 'SAM'
   | 'NIN' | 'DRG' | 'SMN'
 
-// 11 distinct ranks — no plain "A" or plain "B" exist in the FFXI rank system
+// 11 distinct ranks - no plain "A" or plain "B" exist in the FFXI rank system
 export type SkillRank = 'A+' | 'A-' | 'B+' | 'B' | 'B-' | 'C+' | 'C' | 'C-' | 'D' | 'E' | 'F'
 
 // Level 75 skill caps per rank

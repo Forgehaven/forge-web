@@ -149,7 +149,7 @@ const CB_CELL   = 16
 const CB_OFFSET = 56
 const CB_GRID   = 25
 
-// Anchor top-left corners and RGB colors (hues ~30°, ~90°, ~210°, ~330° — between data palette hues)
+// Anchor top-left corners and RGB colors (hues ~30°, ~90°, ~210°, ~330° - between data palette hues)
 const CB_ANCS = [
   { x: 8,   y: 8,   rgb: [255, 128,   0] as [number,number,number] }, // TL orange
   { x: 464, y: 8,   rgb: [128, 255,   0] as [number,number,number] }, // TR lime
@@ -160,7 +160,7 @@ const CB_ANCS = [
 const ANC_CTR = 28   // anchor center offset in barcode space (8 margin + 20 half-size)
 const ANC_FAR = CB_SIZE - ANC_CTR  // 484
 
-// 8 data colors — full 0/255 values for maximum camera-distinguishable contrast
+// 8 data colors - full 0/255 values for maximum camera-distinguishable contrast
 const CB_PAL: [number,number,number][] = [
   [  0,   0,   0],  // 0 black
   [255,   0,   0],  // 1 red
@@ -187,7 +187,7 @@ function cbRender(payload: string, canvas: HTMLCanvasElement) {
 
   const payBytes = new TextEncoder().encode(payload)
   const buf = new Uint8Array(2 + payBytes.length)
-  buf[0] = (payBytes.length >> 8) & 0xFF  // MSB first — decoder reads big-endian
+  buf[0] = (payBytes.length >> 8) & 0xFF  // MSB first - decoder reads big-endian
   buf[1] = payBytes.length & 0xFF
   buf.set(payBytes, 2)
 
@@ -229,7 +229,7 @@ type Pt2 = [number, number]
 // so wider hue ranges don't cause cross-anchor confusion.
 function findAnchors(data: Uint8ClampedArray, W: number, H: number): (Pt2 | null)[] {
   const hW = W / 2, hH = H / 2
-  // [xMin, xMax, yMin, yMax, hLo, hHi, hLo2?, hHi2?] — 2nd range handles hue wrap-around
+  // [xMin, xMax, yMin, yMax, hLo, hHi, hLo2?, hHi2?] - 2nd range handles hue wrap-around
   const specs: [number,number,number,number,number,number,number?,number?][] = [
     [0,  hW, 0,  hH, 0.0,  0.18],              // TL: orange  ~30°, wider window
     [hW, W,  0,  hH, 0.17, 0.37],              // TR: lime    ~90°, wider window
@@ -367,17 +367,17 @@ async function makeQR(data: string): Promise<string> {
 type Mode = 'qr' | 'cb'
 
 const CHUNK_OPTS_QR = [
-  { value: 100, label: '100 B — fastest scan' },
-  { value: 200, label: '200 B — fast scan'    },
-  { value: 300, label: '300 B — easy scan'    },
-  { value: 500, label: '500 B — balanced'     },
+  { value: 100, label: '100 B - fastest scan' },
+  { value: 200, label: '200 B - fast scan'    },
+  { value: 300, label: '300 B - easy scan'    },
+  { value: 500, label: '500 B - balanced'     },
 ] as const
 
 // CB max payload ~232 bytes. After ~18 chars protocol overhead + base64(3/4): ~140 B max chunk.
 const CHUNK_OPTS_CB = [
-  { value: 60,  label: '60 B — safest'  },
-  { value: 100, label: '100 B — medium' },
-  { value: 130, label: '130 B — max'    },
+  { value: 60,  label: '60 B - safest'  },
+  { value: 100, label: '100 B - medium' },
+  { value: 130, label: '130 B - max'    },
 ] as const
 
 const SPEED_OPTS = [
@@ -465,7 +465,7 @@ function OutputPanel({ mode }: { mode: Mode }) {
     cbRender(payload, cbCanvasRef.current)
   }, [mode, enc, packetNum])
 
-  // Auto-advance — fountain runs indefinitely
+  // Auto-advance - fountain runs indefinitely
   useEffect(() => {
     if (!running || speedMs === 0) return
     const t = setTimeout(() => setPacketNum(n => n + 1), speedMs)
@@ -540,7 +540,7 @@ function OutputPanel({ mode }: { mode: Mode }) {
             </div>
           )}
 
-          {/* CB mode display — no white elements above canvas so camera samples only barcode */}
+          {/* CB mode display - no white elements above canvas so camera samples only barcode */}
           {isCB && enc && (
             <div className="flex flex-col gap-1">
               <canvas ref={cbCanvasRef} className="block w-full rounded" style={{ imageRendering: 'pixelated' }} />
@@ -572,7 +572,7 @@ function OutputPanel({ mode }: { mode: Mode }) {
         <p className="text-sm text-[#6b7280]">
           {isCB
             ? 'Choose a file. The receiver needs to fill the guide rectangle with their camera. Anchors enable perspective correction automatically.'
-            : 'Choose a file to begin. Show the Header QR first, then stream fountain packets — the receiver decodes when it has enough unique packets, in any order.'}
+            : 'Choose a file to begin. Show the Header QR first, then stream fountain packets - the receiver decodes when it has enough unique packets, in any order.'}
         </p>
       )}
     </div>
@@ -741,7 +741,7 @@ function InputPanel({ mode }: { mode: Mode }) {
           <>
             <div className="absolute inset-0 border-2 border-dashed border-[#c4af64]/40 rounded-lg pointer-events-none" />
             <div className={`absolute top-2 left-2 text-xs font-mono px-2 py-1 rounded bg-black/70 ${anchorsFound === 4 ? 'text-[#4ade80]' : anchorsFound > 0 ? 'text-amber-400' : 'text-[#6b7280]'}`}>
-              anchors {anchorsFound < 0 ? '—' : `${anchorsFound}/4`}
+              anchors {anchorsFound < 0 ? '-' : `${anchorsFound}/4`}
               {cbDebugLen !== null && (
                 <span className={cbDebugLen > 0 && cbDebugLen <= 232 ? ' text-[#4ade80]' : ' text-red-400'}>
                   {' '}len={cbDebugLen}
@@ -815,7 +815,7 @@ function InputPanel({ mode }: { mode: Mode }) {
         <p className="text-sm text-[#6b7280]">
           {mode === 'cb'
             ? 'Fill the entire camera frame with the barcode. Anchor detection (shown top-left) enables perspective correction when all 4 are found.'
-            : 'Point your camera at the QR codes from the Output device. Any packet order works — the fountain decoder accumulates packets until it can reconstruct the file.'}
+            : 'Point your camera at the QR codes from the Output device. Any packet order works - the fountain decoder accumulates packets until it can reconstruct the file.'}
         </p>
       )}
     </div>

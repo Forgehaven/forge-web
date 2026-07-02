@@ -58,7 +58,7 @@ export function BottomBarLocation() {
       >
         {loading ? '···' : ip
           ? <>{ip.city}, {ip.country_code} <img src={flagUrl(ip.country_code)} alt={ip.country_code} className="w-4 inline-block align-middle ml-0.5" /></>
-          : '—'}
+          : '-'}
       </button>
       {open && ip && pos && (
         <Popup pos={pos} triggerRef={btnRef} onClose={() => setOpen(false)}>

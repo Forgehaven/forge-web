@@ -272,7 +272,7 @@ export function ToolsHome() {
       </h1>
       <p className="text-sm text-[#6b7280]">Pick a tool from the sidebar to get started.</p>
       <p className="text-xs text-[#3a3d4a] mt-4 leading-relaxed">
-        Everything runs locally in your browser — no data is sent to any server.
+        Everything runs locally in your browser - no data is sent to any server.
       </p>
       {cities.length === 0 && (
         <p className="text-xs text-[#3a3d4a] mt-2">

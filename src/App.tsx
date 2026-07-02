@@ -5,6 +5,7 @@ import { store } from './store'
 import { LandingPage } from './forge/LandingPage'
 import { NotFoundLanding } from './forge/NotFoundLanding'
 import AuthCallback from './pages/AuthCallback'
+import { AuthProvider } from './auth/AuthProvider'
 
 import './index.css'
 import { SECTION_TITLES } from './config/sections'
@@ -68,6 +69,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
+        <AuthProvider>
         <TitleSync />
         <ManifestSync />
         <Routes>
@@ -91,6 +93,7 @@ export default function App() {
           />
           <Route path="*" element={<NotFoundLanding />} />
         </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </Provider>
   )

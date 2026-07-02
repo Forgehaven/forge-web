@@ -39,7 +39,7 @@ function parseUA(ua: string): UAResult {
     os = { name: 'ChromeOS', version: '' }
   }
 
-  // Browser + engine (order matters — specialised tokens before generic ones)
+  // Browser + engine (order matters - specialised tokens before generic ones)
   let browser: UAResult['browser'] = null
   let engine: UAResult['engine'] = null
 

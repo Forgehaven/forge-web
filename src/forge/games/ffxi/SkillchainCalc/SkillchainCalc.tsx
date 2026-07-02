@@ -522,7 +522,7 @@ export function SkillchainCalc() {
           <p className="text-sm text-[#6b7280]">
             {filterElements.length > 0
               ? 'No skillchains match the selected burst elements.'
-              : 'No skillchains found — add more party members or try different weapons.'}
+              : 'No skillchains found - add more party members or try different weapons.'}
           </p>
         </div>
       )}

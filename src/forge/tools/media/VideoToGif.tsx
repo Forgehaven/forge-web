@@ -5,17 +5,17 @@ import { Select } from '../../../components/Select'
 import type { SelectOption } from '../../../components/Select'
 
 const fpsOptions: SelectOption[] = [
-  { value: '8',  label: '8 fps — smaller file' },
-  { value: '10', label: '10 fps — balanced' },
-  { value: '15', label: '15 fps — smoother' },
-  { value: '20', label: '20 fps — largest file' },
+  { value: '8',  label: '8 fps - smaller file' },
+  { value: '10', label: '10 fps - balanced' },
+  { value: '15', label: '15 fps - smoother' },
+  { value: '20', label: '20 fps - largest file' },
 ]
 
 const widthOptions: SelectOption[] = [
-  { value: '240', label: '240px — tiny' },
-  { value: '320', label: '320px — small' },
-  { value: '480', label: '480px — medium' },
-  { value: '640', label: '640px — large' },
+  { value: '240', label: '240px - tiny' },
+  { value: '320', label: '320px - small' },
+  { value: '480', label: '480px - medium' },
+  { value: '640', label: '640px - large' },
 ]
 
 const MAX_GIF_DURATION = 20
@@ -64,8 +64,8 @@ export function VideoToGif() {
   const [outputSize, setOutputSize] = useState(0)
 
   const fileRef = useRef<HTMLInputElement>(null)
-  const videoRef = useRef<HTMLVideoElement>(null)      // hidden — fires onLoadedMetadata
-  const playerRef = useRef<HTMLVideoElement>(null)     // visible player — used for currentTime
+  const videoRef = useRef<HTMLVideoElement>(null)      // hidden - fires onLoadedMetadata
+  const playerRef = useRef<HTMLVideoElement>(null)     // visible player - used for currentTime
 
   function acceptFile(f: File) {
     if (!f.type.startsWith('video/')) { setError('Please select a video file.'); return }

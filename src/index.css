@@ -92,7 +92,7 @@ textarea {
 
 @layer components {
 
-  /* Surface card — wraps grouped tool inputs/outputs */
+  /* Surface card - wraps grouped tool inputs/outputs */
   .forge-card {
     @apply bg-forge-surface border border-forge-border rounded-lg p-6;
   }
@@ -116,25 +116,25 @@ textarea {
            focus:outline-none focus:border-forge-accent;
   }
 
-  /* Pill / tab button — inactive state */
+  /* Pill / tab button - inactive state */
   .forge-btn {
     @apply px-3 py-1.5 rounded text-sm
            bg-forge-surface text-forge-muted border border-forge-border
            hover:text-forge-text hover:bg-forge-border;
   }
 
-  /* Pill / tab button — active / selected state */
+  /* Pill / tab button - active / selected state */
   .forge-btn-active {
     @apply px-3 py-1.5 rounded text-sm font-medium
            bg-forge-accent text-white border border-transparent;
   }
 
-  /* Result display block — sits below a divider inside a forge-card */
+  /* Result display block - sits below a divider inside a forge-card */
   .forge-result {
     @apply pt-2 pb-4 border-t border-forge-border;
   }
 
-  /* Result value — large mono number in accent color */
+  /* Result value - large mono number in accent color */
   .forge-result-value {
     @apply text-2xl font-mono text-forge-accent;
   }
@@ -167,7 +167,7 @@ textarea {
 
   /*
     The bottom bar is a shrink-0 flex sibling of <main> inside the content
-    column — it naturally stays fixed-height at the bottom without needing
+    column - it naturally stays fixed-height at the bottom without needing
     position:fixed or a z-index. This class codifies the visual weight only.
   */
   .forge-bottom-bar {

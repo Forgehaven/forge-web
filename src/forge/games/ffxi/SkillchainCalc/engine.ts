@@ -52,7 +52,7 @@ export interface ChainGroup {
   totalScore: number
 }
 
-// Best SC from explicit attr lists — used for both WS→WS and SC→WS
+// Best SC from explicit attr lists - used for both WS→WS and SC→WS
 function findBestSC(openerAttrs: SCAttr[], closerAttrs: SCAttr[]): SkillchainResult | null {
   let best: SkillchainResult | null = null
   for (const o of openerAttrs) {
@@ -237,7 +237,7 @@ export function findBestGroups(
     .sort((a, b) => b.score - a.score)
 
   // Keep best chain per (member set, final SC type) so every distinct SC outcome
-  // for a given pair survives — not just the single highest scorer. The old
+  // for a given pair survives - not just the single highest scorer. The old
   // members-only key caused valid alternatives to be silently dropped until a
   // resistance change flipped which one "won" the slot.
   const poolMap = new Map<string, SkillchainLink>()

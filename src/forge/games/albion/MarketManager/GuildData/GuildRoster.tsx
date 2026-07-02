@@ -39,7 +39,7 @@ const ZONES: { key: ZoneKey; label: string }[] = [
 
 function fmt(n: number | undefined): string { return (n ?? 0).toLocaleString('en-US') }
 function zoneCell(v: number | undefined) {
-  if (v === undefined) return <span className="text-[#2a2d3a] select-none">—</span>
+  if (v === undefined) return <span className="text-[#2a2d3a] select-none">-</span>
   return <>{fmt(v)}</>
 }
 

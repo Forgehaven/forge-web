@@ -132,7 +132,7 @@ export function HttpHeaderInspector() {
       </div>
 
       {raw.trim() && !parsed && (
-        <p className="text-sm text-red-400">Could not parse — paste a valid HTTP request or response starting with a request line or status line.</p>
+        <p className="text-sm text-red-400">Could not parse - paste a valid HTTP request or response starting with a request line or status line.</p>
       )}
 
       {parsed && (
@@ -166,7 +166,7 @@ export function HttpHeaderInspector() {
               >
                 <span className="font-mono text-xs text-[#c4af64] break-all">{h.name}</span>
                 <span className="font-mono text-xs text-[#e2e4ed] break-all">{h.value}</span>
-                <span className="text-xs text-[#6b7280]">{h.description ?? '—'}</span>
+                <span className="text-xs text-[#6b7280]">{h.description ?? '-'}</span>
               </div>
             ))}
           </div>

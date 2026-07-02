@@ -1,20 +1,31 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { renderHook, act, waitFor } from '@testing-library/react'
-import { useAuth } from './authContext'
-import { AuthProvider } from './useAuth'
+import { mmAccess, useAuth, type AuthUser } from './authContext'
+import { AuthProvider } from './AuthProvider'
 
 const fetchSpy = vi.fn()
 globalThis.fetch = fetchSpy
+
+function user(member = true, role = true): AuthUser {
+  return {
+    id: 'u1',
+    discord_id: 'd1',
+    username: 'Test#0001',
+    avatar: 'https://cdn.discordapp.com/avatars/d1/hash.png',
+    guilds: { running_dawn: { is_member: member, roles: { albion_guild: role } } },
+  }
+}
 
 const origLocation = window.location
 
 beforeEach(() => {
   fetchSpy.mockReset()
   sessionStorage.clear()
+  localStorage.clear()
 
   Object.defineProperty(window, 'location', {
     writable: true,
-    value: { ...origLocation, href: '', pathname: '/games/market-manager', origin: 'https://forgehaven.io' },
+    value: { ...origLocation, href: '', pathname: '/games/market-manager', origin: 'https://forgehaven.io', reload: vi.fn() },
   })
 })
 
@@ -30,7 +41,7 @@ describe('AuthProvider', () => {
   it('starts in loading state and checks /auth/me on mount', async () => {
     fetchSpy.mockResolvedValue(new Response(JSON.stringify({
       status: 'ok',
-      payload: { id: 'u1', discord_id: 'd1', username: 'Test#0001', avatar: 'hash', guild_member: true, has_role: true },
+      payload: user(),
     }), { status: 200 }))
 
     const { result } = renderAuthHook()
@@ -86,7 +97,7 @@ describe('AuthProvider', () => {
   it('clearAuth resets user to null', async () => {
     fetchSpy.mockResolvedValue(new Response(JSON.stringify({
       status: 'ok',
-      payload: { id: 'u1', discord_id: 'd1', username: 'Test#0001', avatar: 'hash', guild_member: true, has_role: true },
+      payload: user(),
     }), { status: 200 }))
 
     const { result } = renderAuthHook()
@@ -101,24 +112,71 @@ describe('AuthProvider', () => {
   it('logout calls backend and resets user', async () => {
     fetchSpy.mockResolvedValue(new Response(JSON.stringify({
       status: 'ok',
-      payload: { id: 'u1', discord_id: 'd1', username: 'Test#0001', avatar: 'hash', guild_member: true, has_role: true },
+      payload: user(),
     }), { status: 200 }))
 
     const { result } = renderAuthHook()
     await waitFor(() => expect(result.current.isAuthenticated).toBe(true))
 
-    fetchSpy.mockResolvedValueOnce(new Response(null, { status: 200 }))
     await act(async () => result.current.logout())
 
+    // The cookie is HttpOnly: only the backend route can actually delete it.
     expect(fetchSpy).toHaveBeenCalledWith('https://api.forgehaven.io/auth/logout', {
       method: 'POST',
       credentials: 'include',
     })
+    expect(localStorage.getItem('forge_logged_out')).toBe('true')
+    expect(window.location.reload).toHaveBeenCalled()
     expect(result.current.isAuthenticated).toBe(false)
     expect(result.current.user).toBeNull()
   })
 
+  it('logout still clears client state when the backend call fails', async () => {
+    fetchSpy.mockResolvedValueOnce(new Response(JSON.stringify({
+      status: 'ok',
+      payload: user(),
+    }), { status: 200 }))
+
+    const { result } = renderAuthHook()
+    await waitFor(() => expect(result.current.isAuthenticated).toBe(true))
+
+    fetchSpy.mockRejectedValueOnce(new Error('API down'))
+    await act(async () => result.current.logout())
+
+    expect(result.current.isAuthenticated).toBe(false)
+    expect(localStorage.getItem('forge_logged_out')).toBe('true')
+    expect(window.location.reload).toHaveBeenCalled()
+  })
+
+  it('login clears a stale logged-out flag before redirecting', async () => {
+    fetchSpy.mockResolvedValue(new Response(JSON.stringify({ status: 'error' }), { status: 401 }))
+
+    const { result } = renderAuthHook()
+    await waitFor(() => expect(result.current.loading).toBe(false))
+
+    localStorage.setItem('forge_logged_out', 'true')
+    act(() => result.current.login())
+
+    expect(localStorage.getItem('forge_logged_out')).toBeNull()
+    expect(window.location.href).toContain('discord.com/api/oauth2/authorize')
+  })
+
   it('throws if useAuth is used outside provider', () => {
     expect(() => renderHook(() => useAuth()).result.current).toThrow('useAuth must be used within an AuthProvider')
+  })
+})
+
+describe('mmAccess', () => {
+  it('reports member + role from the running_dawn guild status', () => {
+    expect(mmAccess(user(true, true))).toEqual({ member: true, role: true })
+    expect(mmAccess(user(true, false))).toEqual({ member: true, role: false })
+    expect(mmAccess(user(false, false))).toEqual({ member: false, role: false })
+  })
+
+  it('is all-false for null user or missing guild data', () => {
+    expect(mmAccess(null)).toEqual({ member: false, role: false })
+    expect(mmAccess({ ...user(), guilds: {} })).toEqual({ member: false, role: false })
+    expect(mmAccess({ ...user(), guilds: { running_dawn: { is_member: true, roles: {} } } }))
+      .toEqual({ member: true, role: false })
   })
 })

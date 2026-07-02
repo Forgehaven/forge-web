@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, type ReactNode } from 'react'
-import { API_URLS, DISCORD_CLIENT_ID } from '../../../config/apiUrls'
-import { setOnUnauthenticated } from './api'
+import { API_URLS, DISCORD_CLIENT_ID } from '../config/apiUrls'
+import { setOnUnauthenticated } from './unauthorized'
 import { AuthContext, type AuthUser } from './authContext'
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -13,9 +13,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setOnUnauthenticated(() => {
       setUser(null)
       localStorage.setItem('forge_logged_out', 'true')
-      ;['', '; domain=forgehaven.io', '; Secure'].forEach(suffix => {
-        document.cookie = `forge_session=; Max-Age=0; path=/${suffix}`
-      })
     })
   }, [])
 
@@ -42,6 +39,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const login = useCallback(() => {
+    // A stale logged-out flag (set by the 401 handler) would make the post-login
+    // /auth/me check discard the fresh session; clear it before leaving.
+    localStorage.removeItem('forge_logged_out')
     sessionStorage.setItem('auth_return_path', window.location.pathname)
     const redirectUri = `${window.location.origin}/auth/callback`
     const params = new URLSearchParams({
@@ -54,20 +54,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const logout = useCallback(async () => {
+    // The session cookie is HttpOnly, so only the backend can delete it. Best-effort:
+    // if the request fails, the logged-out flag still hides the session client-side.
     try {
       await fetch(`${API_URLS.forgeAPI}/auth/logout`, {
         method: 'POST',
         credentials: 'include',
       })
     } catch {
-      /* ignore */
+      /* offline or API down - proceed with the client-side logout */
     }
     setUser(null)
     localStorage.setItem('forge_logged_out', 'true')
-    ;['', '; domain=forgehaven.io', '; Secure'].forEach(suffix => {
-      document.cookie = `forge_session=; Max-Age=0; path=/${suffix}`
-    })
-    window.location.href = '/games'
+    window.location.reload()
   }, [])
 
   return (

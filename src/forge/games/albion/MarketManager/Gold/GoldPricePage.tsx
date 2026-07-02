@@ -3,7 +3,7 @@ import {
   AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer,
   LineChart, Line, ReferenceLine, CartesianGrid,
 } from 'recharts'
-import { useAuth } from '../../authContext'
+import { useAuth } from '../../../../../auth/authContext'
 import { useLayoutOverride } from '../../../../../components/LayoutOverride'
 import { Modal } from '../../../../../components/Modal'
 import { MarketManagerSidebar } from '../MarketManagerSidebar'
@@ -97,13 +97,13 @@ function HelpModal({ open, onClose }: { open: boolean; onClose: () => void }) {
         <div>
           <p className="font-semibold text-[#e2e4ed] mb-1">Bullish <span className="text-green-400 font-normal">▲</span> / Bearish <span className="text-red-400 font-normal">▼</span></p>
           <p className="text-[#9ca3af] text-xs leading-relaxed">
-            <strong className="text-green-400">Bullish</strong> means the market is expected to go up — like a bull thrusting its horns upward.
-            <strong className="text-red-400"> Bearish</strong> means the market is expected to go down — like a bear swiping its paw downward.
+            <strong className="text-green-400">Bullish</strong> means the market is expected to go up - like a bull thrusting its horns upward.
+            <strong className="text-red-400"> Bearish</strong> means the market is expected to go down - like a bear swiping its paw downward.
             These are the most basic terms in trading: <strong className="text-green-400">bulls</strong> want higher prices, <strong className="text-red-400">bears</strong> want lower prices.
           </p>
         </div>
         <div>
-          <p className="font-semibold text-[#e2e4ed] mb-1">SMA — Simple Moving Average</p>
+          <p className="font-semibold text-[#e2e4ed] mb-1">SMA - Simple Moving Average</p>
           <p className="text-[#9ca3af] text-xs leading-relaxed">
             The average price over a set number of hours. Smooths out short-term noise so you can see the real trend.
             <strong className="text-blue-400"> SMA(7)</strong> = average over the last <strong className="text-blue-400">7 hours</strong> (short-term trend).
@@ -114,20 +114,21 @@ function HelpModal({ open, onClose }: { open: boolean; onClose: () => void }) {
         <div>
           <p className="font-semibold text-[#e2e4ed] mb-1">Golden Cross / Death Cross</p>
           <p className="text-[#9ca3af] text-xs leading-relaxed">
-            When <span className="text-blue-400">SMA(7)</span> crosses <em>above</em> <span className="text-purple-400">SMA(25)</span>, that's a <strong className="text-green-400">Golden Cross</strong> — a strong bullish signal that the short-term trend is overtaking the medium-term trend to the upside.
-            When <span className="text-blue-400">SMA(7)</span> crosses <em>below</em> <span className="text-purple-400">SMA(25)</span>, that's a <strong className="text-red-400">Death Cross</strong> — a bearish signal that short-term momentum is breaking down.
+            When <span className="text-blue-400">SMA(7)</span> crosses <em>above</em> <span className="text-purple-400">SMA(25)</span>, that's a <strong className="text-green-400">Golden Cross</strong> - a strong bullish signal that the short-term trend is overtaking the medium-term trend to the upside.
+            When <span className="text-blue-400">SMA(7)</span> crosses <em>below</em> <span className="text-purple-400">SMA(25)</span>, that's a <strong className="text-red-400">Death Cross</strong> - a bearish signal that short-term momentum is breaking down.
           </p>
         </div>
         <div>
-          <p className="font-semibold text-[#e2e4ed] mb-1">RSI(14) — Relative Strength Index</p>
+          <p className="font-semibold text-[#e2e4ed] mb-1">RSI(14) - Relative Strength Index</p>
           <p className="text-[#9ca3af] text-xs leading-relaxed">
-            Measures how fast prices are rising vs falling on a 0–100 scale over the last 14 hours.
-            Think of it like a <em>speedometer</em> for price changes.
+            Measures how fast prices are rising vs falling on a 0–100 scale, smoothed over a
+            14-hour period (recent hours count the most). Think of it like a <em>speedometer</em> for
+            price changes. The Buy / Hold / Sell recommendation comes from this same value.
           </p>
           <ul className="text-xs text-[#9ca3af] mt-1 space-y-0.5 list-disc list-inside">
-            <li>The <span className="text-red-400">red dashed line at 70</span> = Overbought — price has risen too fast and may drop.</li>
-            <li>The <span className="text-green-400">green dashed line at 30</span> = Oversold — price has dropped too fast and may bounce.</li>
-            <li>The <span className="text-[#6b7280]">gray dashed line at 50</span> = neutral — balanced momentum.</li>
+            <li>The <span className="text-red-400">red dashed line at 70</span> = Overbought - price has risen too fast and may drop.</li>
+            <li>The <span className="text-green-400">green dashed line at 30</span> = Oversold - price has dropped too fast and may bounce.</li>
+            <li>The <span className="text-[#6b7280]">gray dashed line at 50</span> = neutral - balanced momentum.</li>
           </ul>
         </div>
         <div>
@@ -198,7 +199,7 @@ function RsiTooltip({ active, payload, label }: { active?: boolean; payload?: { 
   return (
     <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded px-3 py-2 text-xs shadow-lg">
       <p className="text-[#6b7280]">{d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })}</p>
-      <p className="text-[#22d3ee] font-medium">RSI: {val?.toFixed(1) ?? '—'}</p>
+      <p className="text-[#22d3ee] font-medium">RSI: {val?.toFixed(1) ?? '-'}</p>
     </div>
   )
 }
@@ -278,7 +279,7 @@ function RsiChartCard({ rsiData, latestRsi, period }: { rsiData: RsiPoint[]; lat
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-sm font-medium text-[#9ca3af] tracking-wide uppercase">RSI (14)</h3>
         <span className={`text-xs font-semibold ${latestRsi !== null && latestRsi > 70 ? 'text-red-400' : latestRsi !== null && latestRsi < 30 ? 'text-green-400' : 'text-[#22d3ee]'}`}>
-          {latestRsi !== null ? latestRsi.toFixed(1) : '—'}
+          {latestRsi !== null ? latestRsi.toFixed(1) : '-'}
         </span>
       </div>
       <ResponsiveContainer width="100%" height={160}>
@@ -417,7 +418,7 @@ export function GoldPricePage() {
     {
       key: 'change', label: '1h Δ', sortKey: p => p.delta ?? 0,
       render: p => {
-        if (p.delta === null) return <span className="text-[#6b7280]">—</span>
+        if (p.delta === null) return <span className="text-[#6b7280]">-</span>
         const cls = p.delta > 0 ? 'text-green-400' : p.delta < 0 ? 'text-red-400' : 'text-[#6b7280]'
         return <span className={cls}>{p.delta > 0 ? '+' : ''}{fmtPrice(p.delta)}</span>
       },
@@ -441,7 +442,7 @@ export function GoldPricePage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-4">
           <p className="text-xs text-[#6b7280] uppercase tracking-widest mb-1">Current</p>
-          <p className="text-2xl font-bold text-[#c4af64]">{currentPrice !== null ? fmtPrice(currentPrice) : '—'}</p>
+          <p className="text-2xl font-bold text-[#c4af64]">{currentPrice !== null ? fmtPrice(currentPrice) : '-'}</p>
         </div>
         <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-4">
           <p className="text-xs text-[#6b7280] uppercase tracking-widest mb-1">24h Change</p>
@@ -453,15 +454,15 @@ export function GoldPricePage() {
               )}
             </p>
           ) : (
-            <p className="text-lg text-[#6b7280]">—</p>
+            <p className="text-lg text-[#6b7280]">-</p>
           )}
         </div>
         <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-4">
           <p className="text-xs text-[#6b7280] uppercase tracking-widest mb-1">24h Range</p>
           <p className="text-sm">
-            <span className="text-green-400 font-semibold">{high24h !== null ? fmtPrice(high24h) : '—'}</span>
+            <span className="text-green-400 font-semibold">{high24h !== null ? fmtPrice(high24h) : '-'}</span>
             <span className="text-[#6b7280] mx-1">/</span>
-            <span className="text-red-400 font-semibold">{low24h !== null ? fmtPrice(low24h) : '—'}</span>
+            <span className="text-red-400 font-semibold">{low24h !== null ? fmtPrice(low24h) : '-'}</span>
           </p>
           {high24h !== null && low24h !== null && high24h > low24h && currentPrice !== null && (
             <div className="mt-1.5 h-1.5 bg-[#2a2d3a] rounded-full relative overflow-hidden">

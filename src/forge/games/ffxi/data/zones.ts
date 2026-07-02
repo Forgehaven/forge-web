@@ -1,4 +1,4 @@
-// FFXI Zone / Teleport Data — HorizonXI
+// FFXI Zone / Teleport Data - HorizonXI
 // Source: horizonffxi.wiki/Outpost_Teleportation, /Teleport_(Spell)
 
 // ---------------------------------------------------------------------------

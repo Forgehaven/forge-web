@@ -29,7 +29,7 @@ export function BottomBarWeather() {
         disabled={!weather}
         className={!weather ? bbDim : open ? `${bb} text-[#c4af64]` : `${bb} hover:text-[#c4af64] transition-colors cursor-pointer`}
       >
-        {loading ? '···' : (weather?.summary ?? '—')}
+        {loading ? '···' : (weather?.summary ?? '-')}
       </button>
       {open && weather && pos && (
         <Popup pos={pos} triggerRef={btnRef} onClose={() => setOpen(false)}>

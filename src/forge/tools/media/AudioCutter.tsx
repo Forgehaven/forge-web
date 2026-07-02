@@ -95,7 +95,7 @@ export function AudioCutter() {
   const fileRef = useRef<HTMLInputElement>(null)
   const rafRef = useRef(0)
 
-  // Stable refs for closures — avoids stale state in event handlers
+  // Stable refs for closures - avoids stale state in event handlers
   const audioBufRef = useRef<AudioBuffer | null>(null)
   const trimStartRef = useRef(0)
   const trimEndRef = useRef(0)

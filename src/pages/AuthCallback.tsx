@@ -15,7 +15,7 @@ export default function AuthCallback() {
     const errParam = searchParams.get('error')
 
     if (errParam) {
-      const returnPath = sessionStorage.getItem('auth_return_path') || '/games'
+      const returnPath = sessionStorage.getItem('auth_return_path') || '/'
       sessionStorage.removeItem('auth_return_path')
       window.location.href = returnPath
       return
@@ -28,24 +28,24 @@ export default function AuthCallback() {
 
     async function exchange() {
       try {
+        // The backend exchanges against its configured DISCORD_REDIRECT_URI;
+        // only the code goes in the body.
         const res = await fetch(`${API_URLS.forgeAPI}/auth/discord/callback`, {
           method: 'POST',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            code,
-            redirect_uri: `${window.location.origin}/auth/callback`,
-          }),
+          body: JSON.stringify({ code }),
         })
 
         const body = await res.json()
 
         if (body.status === 'error') {
-          setError(`${body.message || 'Authentication failed.'} (redirect_uri: ${window.location.origin}/auth/callback)`)
+          setError(body.message || 'Authentication failed.')
           return
         }
 
-        const returnPath = sessionStorage.getItem('auth_return_path') || '/games/albion/market-manager'
+        localStorage.removeItem('forge_logged_out')
+        const returnPath = sessionStorage.getItem('auth_return_path') || '/'
         sessionStorage.removeItem('auth_return_path')
         window.location.href = returnPath
       } catch {
@@ -60,8 +60,8 @@ export default function AuthCallback() {
     return (
       <div className="fixed inset-0 flex flex-col items-center justify-center bg-[#0f1117] text-center">
         <p className="text-red-400 mb-4 text-sm max-w-md px-4">{error}</p>
-        <a href="/games/albion/market-manager" className="text-[#c4af64] hover:underline text-sm">
-          Back to Market Manager
+        <a href="/" className="text-[#c4af64] hover:underline text-sm">
+          Back to ForgeHaven
         </a>
       </div>
     )

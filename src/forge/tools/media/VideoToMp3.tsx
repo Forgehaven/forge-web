@@ -6,9 +6,9 @@ import type { SelectOption } from '../../../components/Select'
 import { ProgressBar } from '../../../components/UI'
 
 const bitrateOptions: SelectOption[] = [
-  { value: '128', label: '128 kbps — standard' },
-  { value: '192', label: '192 kbps — high quality' },
-  { value: '320', label: '320 kbps — maximum' },
+  { value: '128', label: '128 kbps - standard' },
+  { value: '192', label: '192 kbps - high quality' },
+  { value: '320', label: '320 kbps - maximum' },
 ]
 
 let _ff: FFmpeg | null = null

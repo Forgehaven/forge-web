@@ -140,7 +140,7 @@ export function TextTranslate() {
 
       setResult(json.responseData.translatedText ?? '')
     } catch {
-      setError('Request failed — check your connection.')
+      setError('Request failed - check your connection.')
       setResult('')
     } finally {
       setLoading(false)
@@ -223,7 +223,7 @@ export function TextTranslate() {
           <div className="bg-yellow-400/5 border border-yellow-400/20 rounded-lg p-4">
             <p className="text-sm text-yellow-400 font-medium mb-1">Daily limit reached</p>
             <p className="text-xs text-[#9ca3af]">
-              MyMemory allows 1,000 words/day without an email address. Enter your email below to increase this to 10,000 words/day — it's free and just used for quota tracking.
+              MyMemory allows 1,000 words/day without an email address. Enter your email below to increase this to 10,000 words/day - it's free and just used for quota tracking.
             </p>
           </div>
         )}
@@ -249,7 +249,7 @@ export function TextTranslate() {
         {/* Email for higher quota */}
         <div className="border-t border-[#2a2d3a] pt-4">
           <label className="block text-xs text-[#6b7280] mb-1">
-            Email <span className="text-[#3a3d4a]">— optional, increases limit to 10,000 words/day</span>
+            Email <span className="text-[#3a3d4a]">- optional, increases limit to 10,000 words/day</span>
           </label>
           <input
             type="email"

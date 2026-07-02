@@ -16,6 +16,14 @@ export function FFxiSplash() {
       >
         HorizonXI Homepage →
       </a>
+      <a
+        href="https://horizonffxi.wiki"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-sm text-[#c4af64] hover:underline mt-2"
+      >
+        HorizonXI Wiki →
+      </a>
     </div>
   )
 }

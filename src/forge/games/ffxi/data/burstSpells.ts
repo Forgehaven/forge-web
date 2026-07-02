@@ -8,9 +8,9 @@ export interface BurstSpell {
   minLevel: number
 }
 
-// Elemental spells available for magic bursts — sourced from horizonffxi.wiki
+// Elemental spells available for magic bursts - sourced from horizonffxi.wiki
 export const BURST_SPELLS: BurstSpell[] = [
-  // Black Mage — tier I
+  // Black Mage - tier I
   { name: 'Stone',    job: 'BLM', element: 'Earth',     minLevel: 1  },
   { name: 'Water',    job: 'BLM', element: 'Water',     minLevel: 5  },
   { name: 'Aero',     job: 'BLM', element: 'Wind',      minLevel: 9  },
@@ -44,7 +44,7 @@ export const BURST_SPELLS: BurstSpell[] = [
   { name: 'Banish II', job: 'WHM', element: 'Light', minLevel: 30 },
   { name: 'Holy',      job: 'WHM', element: 'Light', minLevel: 50 },
 
-  // Ninja — elemental ninjutsu (can burst off skillchains; no :San tier on HorizonXI)
+  // Ninja - elemental ninjutsu (can burst off skillchains; no :San tier on HorizonXI)
   { name: 'Katon: Ichi',  job: 'NIN', element: 'Fire',      minLevel: 12 },
   { name: 'Hyoton: Ichi', job: 'NIN', element: 'Ice',       minLevel: 12 },
   { name: 'Huton: Ichi',  job: 'NIN', element: 'Wind',      minLevel: 12 },
@@ -58,7 +58,7 @@ export const BURST_SPELLS: BurstSpell[] = [
   { name: 'Doton: Ni',    job: 'NIN', element: 'Earth',     minLevel: 40 },
   { name: 'Suiton: Ni',   job: 'NIN', element: 'Water',     minLevel: 40 },
 
-  // Red Mage — tier I
+  // Red Mage - tier I
   { name: 'Stone',    job: 'RDM', element: 'Earth',     minLevel: 4  },
   { name: 'Water',    job: 'RDM', element: 'Water',     minLevel: 9  },
   { name: 'Aero',     job: 'RDM', element: 'Wind',      minLevel: 14 },

@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useCallback, useMemo, type ReactNode, type ComponentType } from 'react'
 
-type SidebarProps = { isOpen: boolean; onClose: () => void; onOpenSettings: () => void }
+type SidebarProps = { isOpen: boolean; onClose: () => void; onOpenSettings: () => void; onOpenLogin: () => void }
 type SidebarComp = ComponentType<SidebarProps>
 type BottomBarComp = ComponentType
 

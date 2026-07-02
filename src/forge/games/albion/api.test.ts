@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { albionFetch, setOnUnauthenticated } from './api'
+import { albionFetch } from './api'
+import { setOnUnauthenticated } from '../../../auth/unauthorized'
 
 const fetchSpy = vi.fn()
 globalThis.fetch = fetchSpy
@@ -43,6 +44,18 @@ describe('albionFetch', () => {
 
     expect(cb).not.toHaveBeenCalled()
     expect(result).toEqual({ status: 'error', message: 'Bad request' })
+  })
+
+  it('normalizes FastAPI {detail} bodies (e.g. 403 from require_guild) to the envelope', async () => {
+    fetchSpy.mockResolvedValue(new Response(JSON.stringify({ detail: 'Missing required role' }), { status: 403 }))
+
+    const cb = vi.fn()
+    setOnUnauthenticated(cb)
+
+    const result = await albionFetch('/albion/test')
+
+    expect(cb).not.toHaveBeenCalled()
+    expect(result).toEqual({ status: 'error', message: 'Missing required role' })
   })
 
   it('merges custom headers', async () => {

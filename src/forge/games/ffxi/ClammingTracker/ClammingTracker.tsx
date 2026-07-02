@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ITEMS, type ClammingItemDef } from '../data/items'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
+import { useAuth } from '../../../../auth/authContext'
+import { getUserData, putUserData } from '../api'
 import { ConfirmButton } from '../../../../components/ConfirmButton'
 import { ImportPanel } from '../../../../components/ImportPanel'
 
@@ -52,8 +54,8 @@ function calcBest(item: ClammingItemDef, ah: number, ahStack: number): BestSell 
 function effectivePrices(item: ClammingItemDef, overrides: Record<string, PriceOverride>) {
   const o = overrides[item.id]
   return {
-    ah: o?.ah ?? item.defaultAHPrice,
-    ahStack: o?.ahStack ?? item.defaultAHStackPrice,
+    ah: o?.ah ?? 0,
+    ahStack: o?.ahStack ?? 0,
   }
 }
 
@@ -132,7 +134,7 @@ function PriceInput({ value, onChange, highlight }: PriceInputProps) {
         const digits = e.target.value.replace(/\D/g, '')
         onChange(digits ? parseInt(digits, 10) : 0)
       }}
-      placeholder="—"
+      placeholder="-"
       className={[
         'w-20 px-1.5 py-0.5 text-right text-xs rounded border bg-[#0f1117]',
         'focus:outline-none',
@@ -199,7 +201,7 @@ function ItemRow({
       </td>
       <td className="py-1 pr-3 text-right">
         {noStack
-          ? <span className="text-xs text-[#374151] inline-block w-20 text-right" title="Item is not stackable on AH">—</span>
+          ? <span className="text-xs text-[#374151] inline-block w-20 text-right" title="Item is not stackable on AH">-</span>
           : <PriceInput value={ahStack} onChange={onAHStackChange} highlight={best.mode === 'stack'} />
         }
       </td>
@@ -220,8 +222,8 @@ function ItemRow({
           <label
             className="flex items-center gap-1.5 cursor-pointer"
             title={isRecDisabled
-              ? 'Dev recommendation disabled — using fee math'
-              : `Dev recommended: ${REC_LABEL[item.devRecommended]} — check to use fee math instead`
+              ? 'Dev recommendation disabled - using fee math'
+              : `Dev recommended: ${REC_LABEL[item.devRecommended]} - check to use fee math instead`
             }
           >
             <span className={`text-xs font-bold leading-none select-none ${isRecDisabled ? 'text-[#374151]' : 'text-red-400'}`}>!</span>
@@ -325,7 +327,7 @@ function DroppableSection({ label, count, isDragTarget, onDragOver, onDrop, onDr
   )
 }
 
-// HXICLAM export — maps HXICLAM item names to our item IDs (null = we don't track it, export 0)
+// HXICLAM export - maps HXICLAM item names to our item IDs (null = we don't track it, export 0)
 const HXICLAM_MAP: Record<string, string | null> = {
   'bibiki slug':                          'bibiki-slug',
   'bibiki urchin':                        'bibiki-urchin',
@@ -377,10 +379,10 @@ function hxiclamPrice(item: ClammingItemDef, ah: number, ahStack: number, disabl
   return item.stackSize > 0 ? Math.round(ahStack / item.stackSize) : ah
 }
 
-// Shared column widths — keeps both tables pixel-identical
+// Shared column widths - keeps both tables pixel-identical
 const itemTableCols = (
   <colgroup>
-    <col />                        {/* Item — fills remaining width */}
+    <col />                        {/* Item - fills remaining width */}
     <col className="w-28" />       {/* Recommendation */}
     <col className="w-20" />       {/* Vendor */}
     <col className="w-20" />       {/* AH/each */}
@@ -412,13 +414,58 @@ const itemTableHead = (
 
 export function ClammingTracker() {
   const [saved, setSaved] = useState<SavedState>(loadState)
-  // stableOverrides lags 2s behind price changes — drives section placement
+  // stableOverrides lags 2s behind price changes - drives section placement
   const [stableOverrides, setStableOverrides] = useState<Record<string, PriceOverride>>(() => loadState().overrides)
   const [draggingId, setDraggingId] = useState<string | null>(null)
   const [dragTarget, setDragTarget] = useState<'ah' | 'vendor' | null>(null)
   const [copied, setCopied] = useState(false)
   const [copiedHXI, setCopiedHXI] = useState(false)
   const [importOpen, setImportOpen] = useState(false)
+
+  const { isAuthenticated } = useAuth()
+  // Server baseline for the account; null = not synced. Prices are saved
+  // manually (the flashing Save button), unlike the auto-synced tools.
+  const [serverBlob, setServerBlob] = useState<SavedState | null>(null)
+  const [saving, setSaving] = useState(false)
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setServerBlob(null) // eslint-disable-line react-hooks/set-state-in-effect
+      return
+    }
+    let cancelled = false
+    getUserData<Partial<SavedState>>('clamming').then(res => {
+      if (cancelled || res.status !== 'ok') return
+      const data = res.payload.data
+      if (data && Object.keys(data).length > 0) {
+        const next: SavedState = { overrides: {}, exceptions: {}, disabledRec: {}, ...data }
+        setSaved(next)
+        setStableOverrides(next.overrides)
+        setServerBlob(next)
+      } else {
+        // No server data yet: keep the local view; it shows as unsaved so the
+        // first Save uploads this browser's prices to the account.
+        setServerBlob({ overrides: {}, exceptions: {}, disabledRec: {} })
+      }
+    }).catch(() => { /* offline - stay on local */ })
+    return () => { cancelled = true }
+  }, [isAuthenticated])
+
+  const dirty = useMemo(
+    () => serverBlob !== null && JSON.stringify(saved) !== JSON.stringify(serverBlob),
+    [saved, serverBlob],
+  )
+
+  async function saveToServer() {
+    if (!isAuthenticated || !dirty || saving) return
+    setSaving(true)
+    try {
+      const res = await putUserData('clamming', saved)
+      if (res.status === 'ok') setServerBlob(saved)
+    } finally {
+      setSaving(false)
+    }
+  }
 
   // Debounce category recalculation 2s after last price change.
   // Effect cleanup cancels the pending timer on each keystroke.
@@ -558,7 +605,7 @@ export function ClammingTracker() {
           <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
             Clamming <span className="text-[#c4af64]">Tracker</span>
           </h1>
-          <p className="text-sm text-[#6b7280] mt-0.5">FFXI · Horizon — Purgonorgo Isle</p>
+          <p className="text-sm text-[#6b7280] mt-0.5">FFXI · Horizon - Purgonorgo Isle</p>
         </div>
         <div className="flex items-center gap-3 mt-1 shrink-0">
           <button
@@ -585,6 +632,23 @@ export function ClammingTracker() {
         </div>
       </div>
 
+      {/* Account sync: prices save to the account with the manual Save button */}
+      {isAuthenticated && (
+        <div className="flex items-center justify-end">
+          <button
+            onClick={saveToServer}
+            disabled={!dirty || saving}
+            className={`text-xs px-4 py-1.5 rounded font-semibold transition-colors shrink-0 ${
+              dirty
+                ? 'bg-[#c4af64] text-[#0f1117] hover:bg-[#d4bf74] animate-pulse cursor-pointer'
+                : 'border border-[#2a2d3a] text-[#374151] cursor-default'
+            }`}
+          >
+            {saving ? 'Saving…' : dirty ? 'Save' : 'Saved'}
+          </button>
+        </div>
+      )}
+
       {importOpen && (
         <ImportPanel
           description="Paste an export code to load saved prices and settings from another source."
@@ -593,7 +657,7 @@ export function ClammingTracker() {
         />
       )}
 
-      {/* Exception Section — shown first so unsorted items are obvious */}
+      {/* Exception Section - shown first so unsorted items are obvious */}
       {exceptionItems.length > 0 && (
         <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 overflow-hidden">
           <div className="flex items-center gap-2 px-4 py-2 border-b border-amber-500/20">

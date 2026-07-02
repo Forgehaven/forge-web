@@ -27,7 +27,7 @@ export function CharacterHeader({
           <img
             src={`${API_URLS.horizonXiAvatarBase}/${avatar}.webp`}
             alt={charName}
-            className="w-16 h-16 rounded-lg object-cover border border-[#2a2d3a]"
+            className="w-16 h-16 object-contain"
             onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
           />
         )}

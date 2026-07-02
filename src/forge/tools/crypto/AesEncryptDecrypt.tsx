@@ -54,7 +54,7 @@ export function AesEncryptDecrypt() {
         : await aesDecrypt(password, input.trim())
       setOutput(result)
     } catch (e) {
-      setError(mode === 'decrypt' ? 'Decryption failed — wrong password or corrupted ciphertext' : (e as Error).message)
+      setError(mode === 'decrypt' ? 'Decryption failed - wrong password or corrupted ciphertext' : (e as Error).message)
     } finally {
       setLoading(false)
     }

@@ -236,7 +236,7 @@ export function HashGenerator() {
           </div>
 
           <p className="text-xs text-[#3a3d4a] px-1">
-            Dictionary attack against common passwords. Hashes are not reversible — only succeeds if the original input is in the wordlist.
+            Dictionary attack against common passwords. Hashes are not reversible - only succeeds if the original input is in the wordlist.
           </p>
         </div>
       )}

@@ -32,7 +32,7 @@ function allFinalSCs(groups: ChainGroup[]): Set<string> {
 
 describe('computeSkillchain', () => {
   it('returns null when no resonance', () => {
-    // Hard Slash (Scission) → Combo (Impaction): Scission closers are Liquefaction/Detonation/Reverberation — no Impaction
+    // Hard Slash (Scission) → Combo (Impaction): Scission closers are Liquefaction/Detonation/Reverberation - no Impaction
     const ws1 = WEAPON_SKILLS.find(w => w.name === 'Hard Slash')!
     const ws2 = WEAPON_SKILLS.find(w => w.name === 'Combo')!
     expect(computeSkillchain(ws1, ws2)).toBeNull()
@@ -58,7 +58,7 @@ describe('computeSkillchain', () => {
 
   it('picks highest level chain when multiple resonate', () => {
     // Avalanche Axe (Induration). Shoulder Tackle (Reverberation+Impaction).
-    // Induration→Impaction = Impaction L1, Induration→Reverberation = Fragmentation L2 — L2 wins.
+    // Induration→Impaction = Impaction L1, Induration→Reverberation = Fragmentation L2 - L2 wins.
     const ws1 = WEAPON_SKILLS.find(w => w.name === 'Avalanche Axe')!
     const ws2 = WEAPON_SKILLS.find(w => w.name === 'Shoulder Tackle')!
     const result = computeSkillchain(ws1, ws2)
@@ -121,7 +121,7 @@ describe('getAvailableWSes', () => {
 describe('findBestGroups', () => {
   // Regression: WAR/Sword at lv20 has Fast Blade (Scission) and Burning Blade (Liquefaction).
   // WAR/GS has Hard Slash and Power Slash (both Scission). The old poolByMembers key used
-  // member indices only, so only the highest-scoring SC from pair {0,1} survived — the other
+  // member indices only, so only the highest-scoring SC from pair {0,1} survived - the other
   // SC type was invisible until a resistance change flipped the winner.
   it('shows all distinct SC types from the same member pair (regression)', () => {
     const p = party(member('WAR', 'Sword'), member('WAR', 'Great Sword'))
@@ -132,7 +132,7 @@ describe('findBestGroups', () => {
   })
 
   // Two WAR/Sword at lv20: Fast Blade (Scission) and Burning Blade (Liquefaction) only.
-  // Power Slash (GS) is now Transfixion — pairing with GS introduces Distortion L2 which
+  // Power Slash (GS) is now Transfixion - pairing with GS introduces Distortion L2 which
   // dominates. Using Sword+Sword avoids that: only Scission and Liquefaction L1 chains exist.
   it('Earth resistance ranks Liquefaction above Scission', () => {
     const p = party(member('WAR', 'Sword'), member('WAR', 'Sword'))
@@ -185,7 +185,7 @@ describe('findBestGroups', () => {
 
   it('L3 stays top even when its burst elements are resistant', () => {
     const p = party(member('DRG', 'Polearm'), member('WAR', 'Great Sword'))
-    // Light bursts Fire/Light/Lightning/Wind — penalise several; should still beat L2/L1
+    // Light bursts Fire/Light/Lightning/Wind - penalise several; should still beat L2/L1
     const groups = findBestGroups(p, 75, { Fire: 'resistant', Ice: 'resistant', Wind: 'resistant' })
     const topFinal = groups[0]?.links[0]?.boundaries.at(-1)
     expect(topFinal?.level).toBe(3)
@@ -239,7 +239,7 @@ describe('findBestGroups', () => {
   })
 
   it('level 5 WAR/GS produces no chains (only Hard Slash/Scission available, Scission+Scission does not chain)', () => {
-    // At lv5 WAR GS cap ≈ 16 — only Hard Slash (Scission, req 5) is available.
+    // At lv5 WAR GS cap ≈ 16 - only Hard Slash (Scission, req 5) is available.
     // No valid opener+closer pair exists: Scission→Scission is not in the resonance table.
     const p = party(member('WAR', 'Great Sword'), member('WAR', 'Great Sword'))
     const groups = findBestGroups(p, 5, {})
@@ -268,7 +268,7 @@ describe('findBestGroups', () => {
     }
   })
 
-  it('forceOpener on specific members — only they can be step 0', () => {
+  it('forceOpener on specific members - only they can be step 0', () => {
     const m0 = member('WAR', 'Great Sword')
     m0.forceOpener = true
     const p = party(m0, member('WAR', 'Sword'), member('WAR', 'Sword'))
@@ -306,7 +306,7 @@ describe('findBestGroups', () => {
     }
   })
 
-  it('forceCloser on specific members — only they can be last step', () => {
+  it('forceCloser on specific members - only they can be last step', () => {
     const m0 = member('WAR', 'Great Sword')
     const p = party(m0, member('WAR', 'Sword'))
     p[1].forceCloser = true
@@ -330,7 +330,7 @@ describe('findBestGroups', () => {
 
   // ── Force Opener + Closer combo ──────────────────────────────────────────────
 
-  it('forceOpener and forceCloser together — both constraints satisfied', () => {
+  it('forceOpener and forceCloser together - both constraints satisfied', () => {
     const m0 = member('WAR', 'Great Sword')
     m0.forceOpener = true
     const m1 = member('WAR', 'Sword')
@@ -411,7 +411,7 @@ function base3(job: Job, weapon: WeaponType): PartyMember[] {
   return [member(job, weapon), member(job, weapon), member(job, weapon)]
 }
 
-describe('forceOpener — systematic', () => {
+describe('forceOpener - systematic', () => {
   const cases: ForceRoleCase[] = []
   for (const [job, weapon] of TEST_JOBS) {
     for (const level of TEST_LEVELS) {
@@ -443,7 +443,7 @@ describe('forceOpener — systematic', () => {
   })
 })
 
-describe('forceCloser — systematic', () => {
+describe('forceCloser - systematic', () => {
   const cases: ForceRoleCase[] = []
   for (const [job, weapon] of TEST_JOBS) {
     for (const level of TEST_LEVELS) {
@@ -478,7 +478,7 @@ type ForceBothCase = ForceRoleCase & {
   closerIdxs: number[]
 }
 
-describe('forceOpener + forceCloser — combined', () => {
+describe('forceOpener + forceCloser - combined', () => {
   const cases: ForceBothCase[] = []
   for (const [job, weapon] of TEST_JOBS) {
     for (const level of TEST_LEVELS) {
@@ -512,7 +512,7 @@ describe('forceOpener + forceCloser — combined', () => {
 
 // ── Preferred WS scoring tests ────────────────────────────────────────────────
 
-describe('preferred WS — score impact', () => {
+describe('preferred WS - score impact', () => {
   // Monotonicity: adding preferred WS never decreases a chain's score.
   // Score stays the same for chains that don't use preferred WS, and increases
   // by the number of steps that do use a preferred WS.
@@ -534,7 +534,7 @@ describe('preferred WS — score impact', () => {
     }
   })
 
-  // +1 per step using a preferred WS — verifiable at lv20 WAR/Sword where
+  // +1 per step using a preferred WS - verifiable at lv20 WAR/Sword where
   // only Fast Blade (Scission) and Burning Blade (Liquefaction) exist.
   // Scission chain: Fast Blade (m0) → Burning Blade (m1) = base 1
   it('exact +1 when only opener prefers a WS used in that chain', () => {
@@ -566,7 +566,7 @@ describe('preferred WS — score impact', () => {
   })
 
   it('+1 for each step with preferred WS in 3-person chain', () => {
-    // 3 WAR/GS at lv75 — many chains, at least some 3-step ones exist
+    // 3 WAR/GS at lv75 - many chains, at least some 3-step ones exist
     const p = party(member('WAR', 'Great Sword'), member('WAR', 'Great Sword'), member('WAR', 'Great Sword'))
     p[0].preferredWS = ['Ground Strike']
     const groups = findBestGroups(p, 75, {})
@@ -591,8 +591,8 @@ describe('preferred WS — score impact', () => {
     expect(scission!.links[0].score).toBe(2)
   })
 
-  // Multiple preferred WS per member — any matching WS counts
-  it('multiple preferred WS per member — any match adds bonus', () => {
+  // Multiple preferred WS per member - any matching WS counts
+  it('multiple preferred WS per member - any match adds bonus', () => {
     const p = party(member('WAR', 'Sword'), member('WAR', 'Sword'))
     p[0].preferredWS = ['Fast Blade', 'Burning Blade']
     const groups = findBestGroups(p, 20, {})
@@ -606,7 +606,7 @@ describe('preferred WS — score impact', () => {
 
 describe('force roles + preferred WS', () => {
   // Both features active: forceOpener + preferred WS on same member
-  it('forceOpener member with preferred WS — both constraints and bonus apply', () => {
+  it('forceOpener member with preferred WS - both constraints and bonus apply', () => {
     const p = party(member('WAR', 'Sword'), member('WAR', 'Sword'))
     p[0].forceOpener = true
     p[0].preferredWS = ['Fast Blade']
@@ -621,7 +621,7 @@ describe('force roles + preferred WS', () => {
     }
   })
 
-  it('forceCloser with preferred WS on closer step — bonus applied', () => {
+  it('forceCloser with preferred WS on closer step - bonus applied', () => {
     const p = party(member('WAR', 'Sword'), member('WAR', 'Sword'))
     p[1].forceCloser = true
     p[1].preferredWS = ['Burning Blade']
@@ -653,8 +653,8 @@ describe('force roles + preferred WS', () => {
 
 // ── Edge cases ────────────────────────────────────────────────────────────────
 
-describe('force roles — edge cases', () => {
-  it('forceOpener on member who cannot generate WS candidates — no chains', () => {
+describe('force roles - edge cases', () => {
+  it('forceOpener on member who cannot generate WS candidates - no chains', () => {
     const p = party(
       { job: 'WHM', weaponType: null, name: '', avatar: null, forceOpener: false, forceCloser: false, preferredWS: [] },
       { job: 'WHM', weaponType: null, name: '', avatar: null, forceOpener: true, forceCloser: false, preferredWS: [] },
@@ -662,7 +662,7 @@ describe('force roles — edge cases', () => {
     expect(findBestGroups(p, 75, {})).toHaveLength(0)
   })
 
-  it('forceCloser on a mage — no chains (mage cannot close with WS)', () => {
+  it('forceCloser on a mage - no chains (mage cannot close with WS)', () => {
     const p = party(
       member('WAR', 'Sword'),
       { job: 'BLM', weaponType: null, name: '', avatar: null, forceOpener: false, forceCloser: true, preferredWS: [] },
@@ -670,7 +670,7 @@ describe('force roles — edge cases', () => {
     expect(findBestGroups(p, 75, {})).toHaveLength(0)
   })
 
-  it('forceOpener on all 6 slots — any valid chain satisfies', () => {
+  it('forceOpener on all 6 slots - any valid chain satisfies', () => {
     const p = Array.from({ length: 6 }, () => {
       const m = member('WAR', 'Sword')
       m.forceOpener = true
@@ -688,17 +688,17 @@ describe('force roles — edge cases', () => {
     }
   })
 
-  it('forceOpener and forceCloser on same member — no valid chains (mutual exclusion)', () => {
+  it('forceOpener and forceCloser on same member - no valid chains (mutual exclusion)', () => {
     const p = party(member('WAR', 'Sword'), member('WAR', 'Sword'))
     p[0].forceOpener = true
     p[0].forceCloser = true
-    // Same member must be both step 0 and last step — impossible
+    // Same member must be both step 0 and last step - impossible
     const groups = findBestGroups(p, 75, {})
     expect(groups).toHaveLength(0)
   })
 
   it('forceOpener satisfied when opener is the forced member in 4-step chain', () => {
-    // 4 WAR/GS at lv75 — chains up to 4 steps exist
+    // 4 WAR/GS at lv75 - chains up to 4 steps exist
     const p = party(
       member('WAR', 'Great Sword'), member('WAR', 'Great Sword'),
       member('WAR', 'Great Sword'), member('WAR', 'Great Sword'),
@@ -714,7 +714,7 @@ describe('force roles — edge cases', () => {
     }
   })
 
-  it('force roles with resistances — both constraints and resistances apply', () => {
+  it('force roles with resistances - both constraints and resistances apply', () => {
     const p = party(member('WAR', 'Sword'), member('WAR', 'Sword'))
     p[0].forceOpener = true
     const groups = findBestGroups(p, 20, { Earth: 'resistant' })
@@ -728,7 +728,7 @@ describe('force roles — edge cases', () => {
 
 // ── Larger party force tests ──────────────────────────────────────────────────
 
-describe('force roles — 4-6 person parties', () => {
+describe('force roles - 4-6 person parties', () => {
   const cases: ForceRoleCase[] = []
   for (const level of [20, 75]) {
     // 4-person: force opener on single member
@@ -784,21 +784,21 @@ describe('force roles — 4-6 person parties', () => {
   })
 })
 
-// ── Preferred WS — diverse weapons ────────────────────────────────────────────
+// ── Preferred WS - diverse weapons ────────────────────────────────────────────
 
-describe('preferred WS — diverse weapons', () => {
+describe('preferred WS - diverse weapons', () => {
   const cases: { label: string; party: PartyMember[]; level: number; bonusPerStep: number }[] = []
   const diverse: [Job, WeaponType][] = [
     ['SAM', 'Great Katana'], ['DRG', 'Polearm'], ['MNK', 'Hand-to-Hand'], ['THF', 'Dagger'],
   ]
   for (const [job, weapon] of diverse) {
     for (const level of [30, 50, 75]) {
-      // Same weapon pair — pick a WS name that exists at that level
+      // Same weapon pair - pick a WS name that exists at that level
       const wses = getAvailableWSes(job, weapon, level)
       if (wses.length < 2) continue
       { const p = base2(job, weapon); p[0].preferredWS = [wses[0].name]; p[1].preferredWS = [wses[1].name]
         cases.push({ label: `${job}/${weapon} lv${level}`, party: gen2(p), level, bonusPerStep: 1 }) }
-      // Different weapons — only way to ensure chains exist
+      // Different weapons - only way to ensure chains exist
       const other = diverse.find(([j, w]) => j !== job && w !== weapon)
       if (other) {
         const wses2 = getAvailableWSes(other[0], other[1], level)
@@ -827,7 +827,7 @@ describe('preferred WS — diverse weapons', () => {
 // ── SMN avatar + force roles + preferred WS ──────────────────────────────────
 
 describe('SMN avatar with force roles and preferred', () => {
-  it('SMN with forceOpener — avatar blood pact appears as opener', () => {
+  it('SMN with forceOpener - avatar blood pact appears as opener', () => {
     const p = party(
       { job: 'SMN', weaponType: null, name: '', avatar: 'Leviathan', forceOpener: true, forceCloser: false, preferredWS: [] },
       member('WAR', 'Sword'),
@@ -840,7 +840,7 @@ describe('SMN avatar with force roles and preferred', () => {
     }
   })
 
-  it('SMN with forceCloser — avatar blood pact appears as closer', () => {
+  it('SMN with forceCloser - avatar blood pact appears as closer', () => {
     const p = party(
       member('WAR', 'Sword'),
       { job: 'SMN', weaponType: null, name: '', avatar: 'Shiva', forceOpener: false, forceCloser: true, preferredWS: [] },
@@ -856,8 +856,8 @@ describe('SMN avatar with force roles and preferred', () => {
 
 // ── Preferred WS + same WS across multiple members ──────────────────────────
 
-describe('preferred WS — same WS across members', () => {
-  it('all members prefer same WS — each step using it gets +1', () => {
+describe('preferred WS - same WS across members', () => {
+  it('all members prefer same WS - each step using it gets +1', () => {
     const p = party(member('WAR', 'Sword'), member('WAR', 'Sword'))
     p[0].preferredWS = ['Fast Blade']
     p[1].preferredWS = ['Fast Blade']
@@ -911,7 +911,7 @@ function buildAllValidPairs(): PairCase[] {
   return pairs
 }
 
-describe('computeSkillchain — all valid cross-weapon pairs', () => {
+describe('computeSkillchain - all valid cross-weapon pairs', () => {
   it.each(buildAllValidPairs())('$label', ({ ws1, ws2, name, level }) => {
     const result = computeSkillchain(ws1, ws2)
     expect(result).not.toBeNull()

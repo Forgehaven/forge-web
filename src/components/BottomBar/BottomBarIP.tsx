@@ -29,7 +29,7 @@ export function BottomBarIP() {
         disabled={!ip}
         className={!ip ? bbDim : open ? `${bb} text-[#c4af64]` : `${bb} hover:text-[#c4af64] transition-colors cursor-pointer`}
       >
-        {loading ? '···' : (ip?.ip ?? '—')}
+        {loading ? '···' : (ip?.ip ?? '-')}
       </button>
       {open && ip && pos && (
         <Popup pos={pos} triggerRef={btnRef} onClose={() => setOpen(false)}>

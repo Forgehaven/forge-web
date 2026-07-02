@@ -89,7 +89,7 @@ export function FileReader() {
 
       <div className="px-4 py-2.5 rounded-lg bg-[#1a1d27] border border-[#2a2d3a] text-center">
         <p className="text-sm font-bold text-[#c4af64]">
-          All processing happens entirely in your browser — no files or data are sent to any server.
+          All processing happens entirely in your browser - no files or data are sent to any server.
         </p>
       </div>
 
@@ -99,7 +99,7 @@ export function FileReader() {
         <p className="text-xs text-[#9ca3af] uppercase tracking-widest font-bold">Supported File Types</p>
         <div className="flex flex-wrap justify-center gap-2">
           <span className="px-3 py-1 rounded-full text-xs font-medium border border-[#2a2d3a] text-[#e2e4ed] bg-[#1a1d27]">
-            .msg — Outlook Email
+            .msg - Outlook Email
           </span>
         </div>
       </div>
@@ -129,7 +129,7 @@ export function FileReader() {
           <div className="rounded-lg border border-[#2a2d3a] overflow-hidden">
             {[
               { label: 'Subject', value: parsed.subject },
-              { label: 'From',    value: [parsed.senderName, parsed.senderEmail].filter(Boolean).join(' — ') },
+              { label: 'From',    value: [parsed.senderName, parsed.senderEmail].filter(Boolean).join(' - ') },
               { label: 'To',      value: parsed.to },
               { label: 'CC',      value: parsed.cc?.join(', ') },
               { label: 'BCC',     value: parsed.bcc?.join(', ') },

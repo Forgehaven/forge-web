@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useAuth } from '../authContext'
+import { mmAccess, useAuth } from '../../../../auth/authContext'
 import { useLayoutOverride } from '../../../../components/LayoutOverride'
 import { MarketManagerSidebar } from './MarketManagerSidebar'
 import { MarketManagerBottomBar } from './MarketManagerBottomBar'
@@ -51,9 +51,10 @@ export function MarketManager() {
     )
   }
 
+  const access = mmAccess(user)
   const denied: string[] = []
-  if (!user?.guild_member) denied.push('Not a Running Dawn guild member.')
-  if (!user?.has_role) denied.push("You don't have the needed discord role.")
+  if (!access.member) denied.push('Not a Running Dawn guild member.')
+  if (!access.role) denied.push("You don't have the needed discord role.")
 
   if (denied.length > 0) {
     return (

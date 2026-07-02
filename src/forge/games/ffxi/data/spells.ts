@@ -1,4 +1,4 @@
-// FFXI Spell Data — HorizonXI
+// FFXI Spell Data - HorizonXI
 // Source: horizonffxi.wiki (scraped May 2026)
 // Elements and skills sourced from individual spell pages on horizonffxi.wiki.
 // Jobs: WHM, BLM, RDM, PLD, DRK, BRD, SMN, NIN, BLU
@@ -236,7 +236,7 @@ export const blackMagic: Spell[] = [
 
 // ---------------------------------------------------------------------------
 // SONGS (Bard only)
-// Elements per horizonffxi.wiki — Threnodies/Carols take the element in their
+// Elements per horizonffxi.wiki - Threnodies/Carols take the element in their
 // name; all other song families have a fixed element by type.
 // ---------------------------------------------------------------------------
 export const songs: Spell[] = [
@@ -351,7 +351,7 @@ export const ninjutsu: Spell[] = [
 // Source: horizonffxi.wiki/Summoner, /Avatar pages
 // ---------------------------------------------------------------------------
 export const summoningMagic: Spell[] = [
-  // Prime avatars — obtained via Trial by <Element> quests
+  // Prime avatars - obtained via Trial by <Element> quests
   { name: 'Carbuncle',      jobs: { SMN: 1 }, skill: 'Summoning Magic', element: 'Light'     },
   { name: 'Ifrit',          jobs: { SMN: 1 }, skill: 'Summoning Magic', element: 'Fire'      },
   { name: 'Titan',          jobs: { SMN: 1 }, skill: 'Summoning Magic', element: 'Earth'     },
@@ -361,7 +361,7 @@ export const summoningMagic: Spell[] = [
   { name: 'Ramuh',          jobs: { SMN: 1 }, skill: 'Summoning Magic', element: 'Lightning' },
   { name: 'Fenrir',         jobs: { SMN: 1 }, skill: 'Summoning Magic', element: 'Dark'      },
   { name: 'Diabolos',       jobs: { SMN: 1 }, skill: 'Summoning Magic', element: 'Dark'      },
-  // Elemental spirits — purchased as scrolls
+  // Elemental spirits - purchased as scrolls
   { name: 'Fire Spirit',    jobs: { SMN: 1 }, skill: 'Summoning Magic', element: 'Fire'      },
   { name: 'Ice Spirit',     jobs: { SMN: 1 }, skill: 'Summoning Magic', element: 'Ice'       },
   { name: 'Air Spirit',     jobs: { SMN: 1 }, skill: 'Summoning Magic', element: 'Wind'      },
@@ -577,7 +577,7 @@ export const blueMagic: Spell[] = [
 ]
 
 // ---------------------------------------------------------------------------
-// Master export — all schools
+// Master export - all schools
 // ---------------------------------------------------------------------------
 export const allSpellSchools: SpellSchool[] = [
   { school: 'White Magic',     spells: whiteMagic     },
@@ -597,7 +597,7 @@ for (const { school, spells } of allSpellSchools) {
 }
 
 // Flat map of spell name → magic skill (Healing Magic, Elemental Magic, etc.)
-// Derived from spell.skill — retained for callers that need a name-keyed lookup.
+// Derived from spell.skill - retained for callers that need a name-keyed lookup.
 export const spellSkillMap: Record<string, string> = {}
 for (const { spells } of allSpellSchools) {
   for (const spell of spells) {

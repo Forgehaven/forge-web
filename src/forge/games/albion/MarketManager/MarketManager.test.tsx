@@ -2,12 +2,22 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
-import { AuthProvider } from '../useAuth'
+import { AuthProvider } from '../../../../auth/AuthProvider'
 import { LayoutOverrideProvider } from '../../../../components/LayoutOverride'
 import { MarketManager } from './MarketManager'
 
 const fetchSpy = vi.fn()
 globalThis.fetch = fetchSpy
+
+function testUser(member: boolean, role: boolean) {
+  return {
+    id: 'u1',
+    discord_id: 'd1',
+    username: 'TestUser#0001',
+    avatar: 'https://cdn.discordapp.com/avatars/d1/hash.png',
+    guilds: { running_dawn: { is_member: member, roles: { albion_guild: role } } },
+  }
+}
 
 const origLocation = window.location
 
@@ -71,7 +81,7 @@ describe('MarketManager', () => {
   it('shows welcome message when authenticated', async () => {
     fetchSpy.mockResolvedValue(new Response(JSON.stringify({
       status: 'ok',
-      payload: { id: 'u1', discord_id: 'd1', username: 'TestUser#0001', avatar: 'hash', guild_member: true, has_role: true },
+      payload: testUser(true, true),
     }), { status: 200 }))
 
     renderMM()
@@ -84,7 +94,7 @@ describe('MarketManager', () => {
   it('shows guild denied message when not a guild member', async () => {
     fetchSpy.mockResolvedValue(new Response(JSON.stringify({
       status: 'ok',
-      payload: { id: 'u1', discord_id: 'd1', username: 'TestUser#0001', avatar: 'hash', guild_member: false, has_role: true },
+      payload: testUser(false, true),
     }), { status: 200 }))
 
     renderMM()
@@ -97,7 +107,7 @@ describe('MarketManager', () => {
   it('shows role denied message when missing role', async () => {
     fetchSpy.mockResolvedValue(new Response(JSON.stringify({
       status: 'ok',
-      payload: { id: 'u1', discord_id: 'd1', username: 'TestUser#0001', avatar: 'hash', guild_member: true, has_role: false },
+      payload: testUser(true, false),
     }), { status: 200 }))
 
     renderMM()
@@ -110,7 +120,7 @@ describe('MarketManager', () => {
   it('shows both denied messages when missing both', async () => {
     fetchSpy.mockResolvedValue(new Response(JSON.stringify({
       status: 'ok',
-      payload: { id: 'u1', discord_id: 'd1', username: 'TestUser#0001', avatar: 'hash', guild_member: false, has_role: false },
+      payload: testUser(false, false),
     }), { status: 200 }))
 
     renderMM()

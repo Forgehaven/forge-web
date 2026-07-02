@@ -6,21 +6,21 @@ import type { SelectOption } from '../../../components/Select'
 import { ProgressBar } from '../../../components/UI'
 
 const imgFormatOptions: SelectOption[] = [
-  { value: 'webp-lossless', label: 'WebP — lossless' },
-  { value: 'webp-q',        label: 'WebP — quality' },
-  { value: 'jpeg',          label: 'JPEG — quality' },
+  { value: 'webp-lossless', label: 'WebP - lossless' },
+  { value: 'webp-q',        label: 'WebP - quality' },
+  { value: 'jpeg',          label: 'JPEG - quality' },
 ]
 
 const audioModeOptions: SelectOption[] = [
-  { value: 'flac', label: 'FLAC — lossless (best for WAV source)' },
-  { value: 'mp3',  label: 'MP3 — bitrate reduction (lossy)' },
+  { value: 'flac', label: 'FLAC - lossless (best for WAV source)' },
+  { value: 'mp3',  label: 'MP3 - bitrate reduction (lossy)' },
 ]
 
 const audioBitrateOptions: SelectOption[] = [
-  { value: '64',  label: '64 kbps — smallest' },
+  { value: '64',  label: '64 kbps - smallest' },
   { value: '96',  label: '96 kbps' },
-  { value: '128', label: '128 kbps — standard' },
-  { value: '192', label: '192 kbps — high quality' },
+  { value: '128', label: '128 kbps - standard' },
+  { value: '192', label: '192 kbps - high quality' },
 ]
 
 const videoScaleOptions: SelectOption[] = [

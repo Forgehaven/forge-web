@@ -28,7 +28,7 @@ export function ImportPanel({ description, onImport, onClose }: Props) {
         rows={3}
         className="w-full px-3 py-2 text-xs font-mono rounded border bg-[#0f1117] text-[#9ca3af] border-[#2a2d3a] focus:outline-none focus:border-[#4a5070] resize-none"
       />
-      {error && <p className="text-xs text-red-400">Invalid code — could not import.</p>}
+      {error && <p className="text-xs text-red-400">Invalid code - could not import.</p>}
       <div className="flex gap-2">
         <button
           onClick={handleLoad}

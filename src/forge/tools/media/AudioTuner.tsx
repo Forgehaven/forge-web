@@ -219,7 +219,7 @@ export function AudioTuner() {
           ) : active ? (
             <span className="text-sm text-[#4b5563]">Play a note…</span>
           ) : (
-            <span className="text-4xl font-bold text-[#2a2d3a]">—</span>
+            <span className="text-4xl font-bold text-[#2a2d3a]">-</span>
           )}
         </div>
 

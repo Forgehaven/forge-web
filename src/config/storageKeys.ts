@@ -9,4 +9,7 @@ export const STORAGE_KEYS = {
   ffxiTeleportCost:        'forgegames_ffxi_teleportcost_v1',
   ffxiClamming:            'forgegames_ffxi_clamming_v1',
   ffxiFriendViewer:        'forgegames_ffxi_friendviewer_v1',
+  albionItemFavourites:    'forgegames_albion_item_favourites_v1',
+  ffxiSelectedChar:        'forgegames_ffxi_selectedchar_v1',
+  ffxiSpellNoSync:         'forgegames_ffxi_spelltracker_nosync_v1',
 } as const

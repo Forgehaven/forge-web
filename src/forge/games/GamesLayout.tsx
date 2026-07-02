@@ -14,13 +14,20 @@ import { FriendViewer } from './ffxi/FriendViewer'
 import { AlbionSplash } from './albion/AlbionSplash'
 import { MarketManager } from './albion/MarketManager'
 import { GoldPricePage } from './albion/MarketManager/Gold/GoldPricePage'
+import { ItemIndexPage } from './albion/MarketManager/ItemIndex/ItemIndexPage'
 import { GuildDataPage } from './albion/MarketManager/GuildData/GuildDataPage'
-import { AuthProvider } from './albion/useAuth'
+import { FavouritesPage } from './albion/MarketManager/FavouritesPage'
+import { BestValuePage } from './albion/MarketManager/BestValuePage'
+import { XCityArbitragePage } from './albion/MarketManager/MarketFixing/XCityArbitragePage'
+import { VelocityFlipPage } from './albion/MarketManager/MarketFixing/VelocityFlipPage'
+import { RouteRiskRewardPage } from './albion/MarketManager/MarketFixing/RouteRiskRewardPage'
+import { BMVolumePredictPage } from './albion/MarketManager/MarketFixing/BMVolumePredictPage'
+import { CategoryPage } from './albion/MarketManager/CategoryPage'
+import { MARKET_CATEGORIES } from './albion/MarketManager/marketCategories'
 import { LayoutOverrideProvider } from '../../components/LayoutOverride'
 
 export default function GamesLayout() {
   return (
-    <AuthProvider>
       <LayoutOverrideProvider>
       <Routes>
         <Route element={
@@ -42,11 +49,24 @@ export default function GamesLayout() {
           <Route path="albion" element={<AlbionSplash />} />
           <Route path="albion/market-manager" element={<MarketManager />} />
           <Route path="albion/market-manager/gold" element={<GoldPricePage />} />
+          <Route path="albion/market-manager/item-index" element={<ItemIndexPage />} />
           <Route path="albion/market-manager/guild-data" element={<GuildDataPage />} />
+          <Route path="albion/market-manager/favourites" element={<FavouritesPage />} />
+          <Route path="albion/market-manager/best-value" element={<BestValuePage />} />
+          <Route path="albion/market-manager/market-fixing/x-city-arbitrage" element={<XCityArbitragePage />} />
+          <Route path="albion/market-manager/market-fixing/velocity-flip" element={<VelocityFlipPage />} />
+          <Route path="albion/market-manager/market-fixing/route-risk-reward" element={<RouteRiskRewardPage />} />
+          <Route path="albion/market-manager/market-fixing/bm-volume-predict" element={<BMVolumePredictPage />} />
+          {MARKET_CATEGORIES.map(c => (
+            <Route
+              key={c.slug}
+              path={`albion/market-manager/${c.slug}`}
+              element={<CategoryPage slug={c.slug} />}
+            />
+          ))}
           <Route path="*" element={<NotFound backTo="/games" backLabel="Back to games" />} />
         </Route>
       </Routes>
       </LayoutOverrideProvider>
-    </AuthProvider>
   )
 }

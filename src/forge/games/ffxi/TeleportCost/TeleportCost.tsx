@@ -1,7 +1,11 @@
-import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { OUTPOSTS, type Outpost } from '../data/zones'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
-import { API_URLS } from '../../../../config/apiUrls'
+import { useAuth } from '../../../../auth/authContext'
+import { fetchChar, getConquest, putConquest } from '../api'
+import { useFfxiCharacters } from '../hooks/useFfxiCharacters'
+import { SyncedCharacterHeader } from '../components/SyncedCharacterHeader'
+import { loadSelectedCharId } from '../selectedChar'
 import { CharacterHeader } from '../components/CharacterHeader'
 import type { NationMeta } from '../components/CharacterHeader'
 import { ConfirmButton } from '../../../../components/ConfirmButton'
@@ -29,12 +33,17 @@ const NATIONS: Record<NationId, NationMeta> = {
 }
 const NATION_IDS = [1, 2, 3, 4] as NationId[]
 
+// The char API encodes nation 0/1/2 (San d'Oria/Bastok/Windurst); this tool
+// uses 1-4 (Bastok/Windurst/San d'Oria/Beastmen). Map registered-character
+// nations into the local ids.
+const CHAR_NATION_TO_TC: Record<number, NationId> = { 0: 3, 1: 1, 2: 2 }
+
 function wikiZoneUrl(zone: string) {
   return `https://horizonffxi.wiki/${encodeURIComponent(zone.replace(/ /g, '_'))}`
 }
 
 // ---------------------------------------------------------------------------
-// Conquest reset — Sunday 23:59:59 JST = Sunday 14:59:59 UTC
+// Conquest reset - Sunday 23:59:59 JST = Sunday 14:59:59 UTC
 // ---------------------------------------------------------------------------
 
 function lastConquestReset(): number {
@@ -174,6 +183,68 @@ function OutpostRow({ outpost, mode, userNation, owner, onOwnerChange }: Outpost
 export function TeleportCost() {
   const [saved, setSaved]           = useState<SavedState>(loadState)
   const [mode, setMode]             = useState<'home' | 'jeuno'>('jeuno')
+  const { isAuthenticated } = useAuth()
+  const { characters } = useFfxiCharacters()
+  const [selectedCharId, setSelectedCharId] = useState<string | null>(loadSelectedCharId)
+  const [communityUpdatedAt, setCommunityUpdatedAt] = useState<string | null>(null)
+
+  const selectedChar = isAuthenticated
+    ? characters.find(c => c.id === selectedCharId) ?? null
+    : null
+  // Synced mode: the character's nation drives the owned/not-owned pricing
+  // highlight; the free-text header (and its Beastmen override) is replaced.
+  const charNationId: NationId | null =
+    selectedChar && selectedChar.nation !== null
+      ? CHAR_NATION_TO_TC[selectedChar.nation] ?? null
+      : null
+  const putTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const pendingOwners = useRef<Record<string, NationId | null> | null>(null)
+  // Edits may only push to the shared map once this week's map has loaded;
+  // a click before the GET resolves must not overwrite the community data
+  // with this browser's stale local map.
+  const conquestLoaded = useRef(false)
+
+  // The owners map is community-shared: everyone reads it (public GET); the
+  // backend blanks it once it predates the weekly tally. Local state is the
+  // offline fallback and gets replaced when the server has this week's map.
+  useEffect(() => {
+    let cancelled = false
+    getConquest().then(res => {
+      if (cancelled || res.status !== 'ok') return
+      conquestLoaded.current = true
+      const { owners, updated_at } = res.payload
+      if (!updated_at) return
+      setCommunityUpdatedAt(updated_at)
+      setSaved(prev => {
+        const next = {
+          ...prev,
+          owners: owners as Record<string, NationId | null>,
+          savedAt: getNow(),
+        }
+        localStorage.setItem(SK, JSON.stringify(next))
+        return next
+      })
+    }).catch(() => { /* offline - local fallback stands */ })
+    return () => { cancelled = true }
+  }, [])
+
+  // Logged-in edits push the shared map (debounced); flushed on unmount.
+  const syncOwners = useCallback((owners: Record<string, NationId | null>) => {
+    if (!isAuthenticated || !conquestLoaded.current) return
+    pendingOwners.current = owners
+    if (putTimer.current) clearTimeout(putTimer.current)
+    putTimer.current = setTimeout(() => {
+      putTimer.current = null
+      const toSave = pendingOwners.current
+      pendingOwners.current = null
+      if (toSave) putConquest(toSave)
+    }, 1000)
+  }, [isAuthenticated])
+
+  useEffect(() => () => {
+    if (putTimer.current) clearTimeout(putTimer.current)
+    if (pendingOwners.current) putConquest(pendingOwners.current)
+  }, [])
   const [fetchStatus, setFetchStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [importOpen, setImportOpen] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -218,10 +289,21 @@ export function TeleportCost() {
     if (!name) return
     setFetchStatus('loading')
     try {
-      const res = await fetch(`${API_URLS.forgeAPI}/game/ffxi/char/${encodeURIComponent(name)}`)
-      if (!res.ok) throw new Error()
-      const data = await res.json()
-      persist({ ...saved, nation: data.nation ?? null, avatar: data.avatar ?? null })
+      const res = await fetchChar(name)
+      if (res.status !== 'ok') {
+        setFetchStatus('error')
+        return
+      }
+      // Char API nations are 0/1/2; map into this tool's 1-4 ids (the old
+      // code stored the raw value, mis-highlighting fetched characters).
+      const apiNation = res.payload.nation
+      persist({
+        ...saved,
+        nation: apiNation !== null && apiNation !== undefined
+          ? CHAR_NATION_TO_TC[apiNation] ?? null
+          : null,
+        avatar: res.payload.avatar ?? null,
+      })
       setFetchStatus('success')
     } catch {
       setFetchStatus('error')
@@ -229,10 +311,14 @@ export function TeleportCost() {
   }
 
   function setOwner(zone: string, nation: NationId | null) {
-    persist({ ...saved, owners: { ...saved.owners, [zone]: nation } })
+    const owners = { ...saved.owners, [zone]: nation }
+    persist({ ...saved, owners })
+    syncOwners(owners)
   }
 
   function handleReset() {
+    // Local-only: the button rendering this is hidden when logged in, and the
+    // backend refuses an empty owners map anyway.
     persist({ ...saved, owners: {} })
   }
 
@@ -246,7 +332,9 @@ export function TeleportCost() {
   function importState(code: string): boolean {
     try {
       const parsed = JSON.parse(atob(code))
-      persist({ ...saved, owners: parsed.owners ?? {} })
+      const owners = parsed.owners ?? {}
+      persist({ ...saved, owners })
+      syncOwners(owners)
       return true
     } catch {
       return false
@@ -273,11 +361,23 @@ export function TeleportCost() {
   }, [sortCol, sortDir])
 
   const nation = saved.nation !== null ? NATIONS[saved.nation] : null
+  const synced = isAuthenticated && characters.length > 0
+  const userNation = synced ? charNationId : saved.nation
 
   return (
     <div className="flex flex-col gap-5 max-w-3xl mx-auto w-full">
 
       {/* Character / nation section */}
+      {synced ? (
+        <SyncedCharacterHeader
+          characters={characters}
+          selectedId={selectedCharId}
+          onSelect={setSelectedCharId}
+          avatar={selectedChar?.avatar}
+          name={selectedChar?.name}
+          nation={charNationId !== null ? NATIONS[charNationId] : null}
+        />
+      ) : (
       <CharacterHeader
         charName={saved.charName}
         avatar={saved.avatar}
@@ -309,6 +409,7 @@ export function TeleportCost() {
           </div>
         }
       />
+      )}
 
       {/* Title + controls */}
       <div className="flex items-start justify-between gap-4">
@@ -317,6 +418,13 @@ export function TeleportCost() {
             Teleport <span className="text-[#c4af64]">Cost</span>
           </h1>
           <p className="text-sm text-[#6b7280] mt-0.5">FFXI · Horizon</p>
+          {communityUpdatedAt && (
+            <p className="text-xs text-[#4b5563] mt-0.5">
+              Community conquest map · updated {new Date(communityUpdatedAt).toLocaleString(undefined, {
+                month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
+              })}
+            </p>
+          )}
         </div>
         <div className="flex items-center gap-3 mt-1 shrink-0">
           <div className="text-right">
@@ -336,8 +444,14 @@ export function TeleportCost() {
           >
             Import
           </button>
-          <span className="text-[#2a2d3a]">|</span>
-          <ConfirmButton label="Reset Conquest" onConfirm={handleReset} className="text-xs text-[#9ca3af] hover:text-[#e2e4ed] transition-colors cursor-pointer" />
+          {/* Hidden when logged in: the map is community-shared, so a reset
+              would blank this week's data for everyone. */}
+          {!isAuthenticated && (
+            <>
+              <span className="text-[#2a2d3a]">|</span>
+              <ConfirmButton label="Reset Conquest" onConfirm={handleReset} className="text-xs text-[#9ca3af] hover:text-[#e2e4ed] transition-colors cursor-pointer" />
+            </>
+          )}
         </div>
       </div>
 
@@ -416,7 +530,7 @@ export function TeleportCost() {
                   key={outpost.zone}
                   outpost={outpost}
                   mode={mode}
-                  userNation={saved.nation}
+                  userNation={userNation}
                   owner={saved.owners[outpost.zone] ?? null}
                   onOwnerChange={n => setOwner(outpost.zone, n)}
                 />

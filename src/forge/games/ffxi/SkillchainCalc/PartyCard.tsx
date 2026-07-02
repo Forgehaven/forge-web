@@ -16,7 +16,7 @@ export type { PartyMember }
 const JOB_OPTIONS: SelectOption[] = JOBS
   .slice()
   .sort((a, b) => a.name.localeCompare(b.name))
-  .map(j => ({ value: j.name, label: `${j.name} — ${j.fullName}` }))
+  .map(j => ({ value: j.name, label: `${j.name} - ${j.fullName}` }))
 
 function weaponOptions(jobInfo: JobInfo): SelectOption[] {
   const weapons = Object.keys(jobInfo.weapons) as WeaponType[]
@@ -85,7 +85,7 @@ export function PartyCard({ member, onChange, onReset, levelSync, index, isMe, o
           <span className="text-xs text-[#6b7280] uppercase tracking-widest shrink-0">Slot {index + 1}</span>
           {hasData && (
             <span className="text-xs text-[#6b7280] truncate">
-              {[member.name, member.job].filter(Boolean).join(' — ')}
+              {[member.name, member.job].filter(Boolean).join(' - ')}
             </span>
           )}
         </div>

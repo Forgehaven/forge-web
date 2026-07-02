@@ -104,7 +104,7 @@ export function JsonApiTester() {
       })
     } catch {
       setError(
-        `Request failed — the API likely blocks cross-origin requests (CORS). Try a local dev server or an API that allows browser requests.`
+        `Request failed - the API likely blocks cross-origin requests (CORS). Try a local dev server or an API that allows browser requests.`
       )
     } finally {
       setLoading(false)

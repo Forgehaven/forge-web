@@ -53,7 +53,7 @@ export function LandingPage() {
     if (locked.current) return
     locked.current = true
 
-    // Already showing an article — swap
+    // Already showing an article - swap
     if (articleBodyClass) {
       setArticleActive(false)
       setTimeout(() => {

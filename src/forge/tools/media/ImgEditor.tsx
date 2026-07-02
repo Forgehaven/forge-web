@@ -233,7 +233,7 @@ export function ImgEditor() {
 
     setCropAspect({ ratio, label, source })
 
-    // In circle mode: only store the preset for when the user returns to Square — don't
+    // In circle mode: only store the preset for when the user returns to Square - don't
     // replace the circle crop with a non-1:1 rectangle (that would distort the circle preview)
     if (!isCircle) {
       const auto = makeAutoCrop(rw, rh)
@@ -393,7 +393,7 @@ export function ImgEditor() {
                 <input type="number" inputMode="numeric" min={1} value={resizeH} onChange={e => onResizeH(e.target.value)} className={inputCls} />
                 <button
                   onClick={toggleLock}
-                  title={lockAspect ? 'Aspect locked — click to free' : 'Aspect free — click to lock'}
+                  title={lockAspect ? 'Aspect locked - click to free' : 'Aspect free - click to lock'}
                   className={`flex items-center gap-1 px-2 py-1 text-xs rounded border transition-colors cursor-pointer ${lockAspect ? 'bg-[#c4af64]/10 text-[#c4af64] border-[#c4af64]/30' : 'text-[#6b7280] border-[#2a2d3a] hover:text-[#9ca3af]'}`}
                 >
                   <LockIcon locked={lockAspect} />
@@ -449,7 +449,7 @@ export function ImgEditor() {
 
             {scaleOutput && (finalW > cropW || finalH > cropH) && (
               <p className="text-xs text-[#6b7280]">
-                Output ({finalW} × {finalH}px) is larger than the source crop area ({cropW} × {cropH}px) — the image will be upscaled.
+                Output ({finalW} × {finalH}px) is larger than the source crop area ({cropW} × {cropH}px) - the image will be upscaled.
               </p>
             )}
 

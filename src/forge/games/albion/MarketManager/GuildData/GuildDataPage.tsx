@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useAuth } from '../../authContext'
+import { useAuth } from '../../../../../auth/authContext'
 import { GuildRoster } from './GuildRoster'
 import { useLayoutOverride } from '../../../../../components/LayoutOverride'
 import { MarketManagerSidebar } from '../MarketManagerSidebar'

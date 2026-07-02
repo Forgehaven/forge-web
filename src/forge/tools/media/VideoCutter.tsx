@@ -9,7 +9,7 @@ function formatTime(s: number): string {
   return `${m}:${sec.toFixed(2).padStart(5, '0')}`
 }
 
-// Singleton — load once, reuse across exports
+// Singleton - load once, reuse across exports
 let _ff: FFmpeg | null = null
 let _ffmpeg: FFmpeg | null = null
 let _ffmpegReady: Promise<FFmpeg> | null = null

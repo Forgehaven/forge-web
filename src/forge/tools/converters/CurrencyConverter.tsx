@@ -58,7 +58,7 @@ export function CurrencyConverter() {
 
   const currencyOptions = currencyList.map(([code, name]) => ({
     value: code,
-    label: `${code} — ${name}`,
+    label: `${code} - ${name}`,
   }))
 
   return (

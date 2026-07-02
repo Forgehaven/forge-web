@@ -17,7 +17,7 @@ function DamageTypeBadge({ type, state, onClick }: {
   return (
     <button
       onClick={onClick}
-      title={`${type}: ${state} — click to cycle`}
+      title={`${type}: ${state} - click to cycle`}
       className="text-xs px-2 py-0.5 rounded font-medium cursor-pointer select-none"
       style={{ background: `${base}18`, color: base, border: `1px solid ${base}40` }}
     >

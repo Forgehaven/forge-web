@@ -307,7 +307,7 @@ export function PdfToEpub() {
 
         {status === 'done' && (
           <p className="text-xs text-[#6b7280]">
-            Done — {pageCount} pages converted, grouped into chapters of 10.
+            Done - {pageCount} pages converted, grouped into chapters of 10.
           </p>
         )}
       </div>

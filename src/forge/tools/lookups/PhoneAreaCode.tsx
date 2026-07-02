@@ -522,7 +522,7 @@ export function PhoneAreaCode() {
         </div>
 
         {input && !result && (
-          <p className="text-xs text-[#6b7280]">No match — try a 3-digit NANP area code or a full number with country code (e.g. +44...).</p>
+          <p className="text-xs text-[#6b7280]">No match - try a 3-digit NANP area code or a full number with country code (e.g. +44...).</p>
         )}
 
         {result && (

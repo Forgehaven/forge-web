@@ -75,8 +75,8 @@ export function IpGeoLocation() {
       const msg = e instanceof Error ? e.message : 'Lookup failed'
       const isRateLimit = msg.toLowerCase().includes('rate') || msg.toLowerCase().includes('throttl') || msg.toLowerCase().includes('limit')
       setError(isRateLimit
-        ? 'Lookup failed — you\'ve likely hit the 1,000/day free limit. Try again tomorrow.'
-        : `${msg} — you may have hit the daily free limit (1,000 lookups/day).`
+        ? 'Lookup failed - you\'ve likely hit the 1,000/day free limit. Try again tomorrow.'
+        : `${msg} - you may have hit the daily free limit (1,000 lookups/day).`
       )
     } finally {
       setLoading(false)
