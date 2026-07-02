@@ -13,6 +13,7 @@ export function SyncedCharacterHeader({
   avatar,
   name,
   nation,
+  rank,
 }: {
   characters: FfxiCharacter[]
   selectedId: string | null
@@ -20,6 +21,7 @@ export function SyncedCharacterHeader({
   avatar: string | null | undefined
   name: string | undefined
   nation: NationMeta | null
+  rank?: string | null
 }) {
   return (
     <div className="flex items-center gap-4">
@@ -44,6 +46,7 @@ export function SyncedCharacterHeader({
               : <span style={{ color: nation.color }}>{nation.symbol}</span>
             }
             <span style={{ color: nation.color }}>{nation.name}</span>
+            {rank && <span className="text-[#9ca3af]">· {rank}</span>}
           </p>
         )}
       </div>

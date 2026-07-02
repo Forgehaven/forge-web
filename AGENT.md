@@ -247,6 +247,14 @@ Login is only an upgrade (cross-device sync), never a gate.
     name merge on load. Job/rank snapshots stay localStorage-only, each stamped with `fetchedAt`;
     an all-zero jobs fetch (friend went `/anon`) keeps the last good snapshot and shows an
     "anon · <date>" tag with the last-fetched time.
+  - *QuestTracker*: per-character `{eco, highwind}` blob (`quest_tracker`) of completion
+    timestamps, auto-sync. Weekly state is DERIVED against `lastConquestReset()`
+    (`ffxi/conquest.ts`, shared with TeleportCost) - stale timestamps read as "not done", never
+    cleaned up by writes. Eco-Warrior rotation (all three nations before repeats, one per week)
+    restarts in-display once all three are done and stale. Wiki data from horizonffxi.wiki.
+- **Shared FFXI helpers**: `ffxi/conquest.ts` (tally clock), `ffxi/nations.ts` (char-API 0-2
+  `NationMeta` map; TeleportCost keeps its own 1-4 map with Beastmen), `ffxi/hooks/useCharRank.ts`
+  (live nation-rank lookup shown in the character headers).
 
 ## Albion Market Manager (AOMM)
 

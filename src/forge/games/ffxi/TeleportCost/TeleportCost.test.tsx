@@ -62,6 +62,9 @@ describe('TeleportCost conquest sync', () => {
       if (u.includes('/game/ffxi/conquest')) {
         return Promise.resolve(ok({ owners: {}, updated_at: null }))
       }
+      if (u.includes('/game/ffxi/char/')) {
+        return Promise.resolve(ok({ name: 'Mychar', nation: 0, rank: 'Rank 6', avatar: null }))
+      }
       if (u.includes('/game/ffxi/characters')) {
         // char-API nation 0 = San d'Oria (maps to this tool's id 3)
         return Promise.resolve(ok([{ id: 'c1', name: 'Mychar', nation: 0, avatar: null }]))
@@ -73,6 +76,8 @@ describe('TeleportCost conquest sync', () => {
 
     expect(await screen.findByText('Mychar')).toBeInTheDocument()
     expect(await screen.findByText("San d'Oria")).toBeInTheDocument()
+    // live nation rank from the public char lookup
+    expect(await screen.findByText('· Rank 6')).toBeInTheDocument()
     // free-text header replaced
     expect(screen.queryByPlaceholderText('Character name')).toBeNull()
     // logged in: resetting would blank the shared community map - button hidden

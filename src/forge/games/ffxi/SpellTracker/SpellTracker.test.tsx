@@ -32,6 +32,9 @@ function mockApi() {
     if (u.includes('/data/spell_tracker')) {
       return Promise.resolve(ok({ data: { jobLevels: { WHM: 42 }, learned: {} }, updated_at: null }))
     }
+    if (u.includes('/game/ffxi/char/')) {
+      return Promise.resolve(ok({ name: 'Mychar', nation: 2, rank: 'Rank 5', avatar: null }))
+    }
     if (u.includes('/game/ffxi/characters')) {
       return Promise.resolve(ok([{ id: 'c1', name: 'Mychar', nation: 2, avatar: null }]))
     }
@@ -72,5 +75,36 @@ describe('SpellTracker character selector', () => {
     await screen.findByText('Mychar')
     // WHM tab shows the synced job level from the server blob.
     expect(await screen.findByDisplayValue('42')).toBeInTheDocument()
+  })
+
+  it('shows the live nation rank for the selected character', async () => {
+    localStorage.setItem('forgegames_ffxi_selectedchar_v1', 'c1')
+    mockApi()
+
+    renderTracker()
+
+    expect(await screen.findByText('· Rank 5')).toBeInTheDocument()
+  })
+
+  it('shows the fetched rank when logged out', async () => {
+    const userEvent = (await import('@testing-library/user-event')).default
+    fetchSpy.mockImplementation((url: string | URL) => {
+      const u = String(url)
+      if (u.includes('/game/ffxi/char/')) {
+        return Promise.resolve(ok({
+          name: 'Solochar', nation: 1, rank: 'Rank 3', avatar: null, jobs: { WHM: 30 },
+        }))
+      }
+      return Promise.resolve(new Response(JSON.stringify({ status: 'error' }), { status: 401 }))
+    })
+
+    renderTracker()
+
+    const input = await screen.findByPlaceholderText('Character name')
+    await userEvent.type(input, 'Solochar')
+    await userEvent.click(screen.getByText('Fetch'))
+
+    expect(await screen.findByText('Bastok')).toBeInTheDocument()
+    expect(screen.getByText('· Rank 3')).toBeInTheDocument()
   })
 })

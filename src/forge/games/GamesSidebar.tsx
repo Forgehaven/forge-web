@@ -30,6 +30,7 @@ const sections: { section: string; games: GameEntry[] }[] = [
     section: 'FFXI - Horizon',
     games: [
       { path: `${G}/ffxi/skillchain-calc`, label: 'Skillchain Calc' },
+      { path: `${G}/ffxi/quest-tracker`,   label: 'Quest Tracker' },
       { path: `${G}/ffxi/clamming-tracker`, label: 'Clamming Tracker' },
       { path: `${G}/ffxi/spell-tracker`,    label: 'Spell Tracker' },
       { path: `${G}/ffxi/teleport-cost`,   label: 'Teleport Cost' },

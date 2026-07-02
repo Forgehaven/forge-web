@@ -8,6 +8,7 @@ import { GamesHome } from './GamesHome'
 import { FFxiSplash } from './ffxi/FFxiSplash'
 import { SkillchainCalc } from './ffxi/SkillchainCalc'
 import { ClammingTracker } from './ffxi/ClammingTracker'
+import { QuestTracker } from './ffxi/QuestTracker'
 import { SpellTracker } from './ffxi/SpellTracker'
 import { TeleportCost } from './ffxi/TeleportCost'
 import { FriendViewer } from './ffxi/FriendViewer'
@@ -42,6 +43,7 @@ export default function GamesLayout() {
           <Route index element={<GamesHome />} />
           <Route path="ffxi" element={<FFxiSplash />} />
           <Route path="ffxi/skillchain-calc" element={<SkillchainCalc />} />
+          <Route path="ffxi/quest-tracker" element={<QuestTracker />} />
           <Route path="ffxi/clamming-tracker" element={<ClammingTracker />} />
           <Route path="ffxi/spell-tracker" element={<SpellTracker />} />
           <Route path="ffxi/teleport-cost" element={<TeleportCost />} />

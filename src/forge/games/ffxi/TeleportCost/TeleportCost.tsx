@@ -3,7 +3,9 @@ import { OUTPOSTS, type Outpost } from '../data/zones'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import { useAuth } from '../../../../auth/authContext'
 import { fetchChar, getConquest, putConquest } from '../api'
+import { lastConquestReset, formatNextReset } from '../conquest'
 import { useFfxiCharacters } from '../hooks/useFfxiCharacters'
+import { useCharRank } from '../hooks/useCharRank'
 import { SyncedCharacterHeader } from '../components/SyncedCharacterHeader'
 import { loadSelectedCharId } from '../selectedChar'
 import { CharacterHeader } from '../components/CharacterHeader'
@@ -43,42 +45,19 @@ function wikiZoneUrl(zone: string) {
 }
 
 // ---------------------------------------------------------------------------
-// Conquest reset - Sunday 23:59:59 JST = Sunday 14:59:59 UTC
-// ---------------------------------------------------------------------------
-
-function lastConquestReset(): number {
-  const now = Date.now()
-  const d = new Date(now)
-  const sunday = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() - d.getUTCDay(), 14, 59, 59))
-  if (sunday.getTime() > now) sunday.setUTCDate(sunday.getUTCDate() - 7)
-  return sunday.getTime()
-}
-
-function formatNextReset(): string {
-  const next = lastConquestReset() + 7 * 24 * 60 * 60 * 1000
-  const ms = next - Date.now()
-  if (ms <= 0) return 'imminent'
-  const d = Math.floor(ms / 86400000)
-  const h = Math.floor((ms % 86400000) / 3600000)
-  const m = Math.floor((ms % 3600000) / 60000)
-  if (d > 0) return `${d}d ${h}h`
-  if (h > 0) return `${h}h ${m}m`
-  return `${m}m`
-}
-
-// ---------------------------------------------------------------------------
 // Saved state
 // ---------------------------------------------------------------------------
 
 type SavedState = {
   charName: string
   nation: NationId | null
+  rank: string | null
   avatar: string | null
   owners: Record<string, NationId | null>
   savedAt: number
 }
 
-const DEFAULT: SavedState = { charName: '', nation: null, avatar: null, owners: {}, savedAt: 0 }
+const DEFAULT: SavedState = { charName: '', nation: null, rank: null, avatar: null, owners: {}, savedAt: 0 }
 
 function loadState(): SavedState {
   try {
@@ -92,7 +71,8 @@ function loadState(): SavedState {
     const st = localStorage.getItem(ST_SK)
     if (st) {
       const p = JSON.parse(st)
-      return { ...DEFAULT, charName: p.charName ?? '', nation: p.nation ?? null, avatar: p.avatar ?? null, savedAt: Date.now() }
+      const seeded = p.nation !== null && p.nation !== undefined ? CHAR_NATION_TO_TC[p.nation] ?? null : null
+      return { ...DEFAULT, charName: p.charName ?? '', nation: seeded, rank: p.rank ?? null, avatar: p.avatar ?? null, savedAt: Date.now() }
     }
   } catch { /* ignore */ }
   return { ...DEFAULT, savedAt: Date.now() }
@@ -191,6 +171,7 @@ export function TeleportCost() {
   const selectedChar = isAuthenticated
     ? characters.find(c => c.id === selectedCharId) ?? null
     : null
+  const syncedRank = useCharRank(selectedChar?.name ?? null)
   // Synced mode: the character's nation drives the owned/not-owned pricing
   // highlight; the free-text header (and its Beastmen override) is replaced.
   const charNationId: NationId | null =
@@ -302,6 +283,7 @@ export function TeleportCost() {
         nation: apiNation !== null && apiNation !== undefined
           ? CHAR_NATION_TO_TC[apiNation] ?? null
           : null,
+        rank: res.payload.rank ?? null,
         avatar: res.payload.avatar ?? null,
       })
       setFetchStatus('success')
@@ -376,16 +358,18 @@ export function TeleportCost() {
           avatar={selectedChar?.avatar}
           name={selectedChar?.name}
           nation={charNationId !== null ? NATIONS[charNationId] : null}
+          rank={syncedRank}
         />
       ) : (
       <CharacterHeader
         charName={saved.charName}
         avatar={saved.avatar}
         nation={nation}
+        rank={saved.rank}
         fetchStatus={fetchStatus}
         onCharNameChange={setCharName}
         onFetch={fetchCharacter}
-        onClear={() => persist({ ...saved, nation: null, avatar: null })}
+        onClear={() => persist({ ...saved, nation: null, rank: null, avatar: null })}
         extra={
           <div className="flex items-center gap-2">
             <span className="text-xs text-[#374151]">or select nation:</span>
@@ -394,7 +378,7 @@ export function TeleportCost() {
               return (
                 <button
                   key={nid}
-                  onClick={() => persist({ ...saved, nation: nid, avatar: null })}
+                  onClick={() => persist({ ...saved, nation: nid, rank: null, avatar: null })}
                   className="text-xs px-2.5 py-1 rounded border transition-colors cursor-pointer flex items-center gap-1.5"
                   style={{ color: meta.color, borderColor: `${meta.color}50`, background: `${meta.color}10` }}
                 >

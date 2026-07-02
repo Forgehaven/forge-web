@@ -10,13 +10,11 @@ import { useAuth } from '../../../../auth/authContext'
 import { fetchChar, getCharData, putCharData } from '../api'
 import { useFfxiCharacters } from '../hooks/useFfxiCharacters'
 import { useSyncedBlob } from '../hooks/useSyncedBlob'
+import { useCharRank } from '../hooks/useCharRank'
 import { SyncedCharacterHeader } from '../components/SyncedCharacterHeader'
 import { loadSelectedCharId } from '../selectedChar'
 import { CharacterHeader } from '../components/CharacterHeader'
-import type { NationMeta } from '../components/CharacterHeader'
-import bastokIcon from '../data/BastokIcon.png'
-import windurstIcon from '../data/WindurstIcon.png'
-import sandoriaIcon from '../data/SandoriaIcon.png'
+import { CHAR_NATIONS } from '../nations'
 
 const SK = STORAGE_KEYS.ffxiSpellTracker
 const NOSYNC_KEY = STORAGE_KEYS.ffxiSpellNoSync
@@ -41,6 +39,7 @@ const JOBS: JobAbbr[] = [
 type SavedState = {
   charName: string
   nation: number | null
+  rank: string | null
   avatar: string | null
   jobLevels: Partial<Record<JobAbbr, number>>
   learned: Record<string, boolean>
@@ -58,10 +57,10 @@ function loadState(): SavedState {
     const raw = localStorage.getItem(SK)
     if (raw) {
       const parsed = JSON.parse(raw)
-      return { charName: '', nation: null, avatar: null, jobLevels: {}, learned: {}, ...parsed }
+      return { charName: '', nation: null, rank: null, avatar: null, jobLevels: {}, learned: {}, ...parsed }
     }
   } catch { /* ignore */ }
-  return { charName: '', nation: null, avatar: null, jobLevels: {}, learned: {} }
+  return { charName: '', nation: null, rank: null, avatar: null, jobLevels: {}, learned: {} }
 }
 
 const ALL_SPELLS = [...whiteMagic, ...blackMagic, ...songs, ...ninjutsu, ...summoningMagic, ...blueMagic]
@@ -72,12 +71,6 @@ const JOB_SPELLS: Record<JobAbbr, Spell[]> = Object.fromEntries(
     ALL_SPELLS.filter(s => job in s.jobs).sort((a, b) => a.jobs[job]! - b.jobs[job]!),
   ])
 ) as Record<JobAbbr, Spell[]>
-
-const NATIONS: Record<number, NationMeta> = {
-  0: { name: "San d'Oria", symbol: '⚔', color: '#c0453a', icon: sandoriaIcon },
-  1: { name: 'Bastok',     symbol: '⚙', color: '#5b8db8', icon: bastokIcon },
-  2: { name: 'Windurst',   symbol: '✦', color: '#8aab7e', icon: windurstIcon },
-}
 
 type SchoolMeta = { label: string; color: string }
 const SCHOOL_META: Record<string, SchoolMeta> = {
@@ -255,6 +248,8 @@ export function SpellTracker() {
     if (synced) wasSynced.current = true
   }, [synced])
 
+  const syncedRank = useCharRank(selectedChar?.name ?? null)
+
   const { scheduleSave } = useSyncedBlob<SpellBlob>({
     key: selectedChar?.id ?? null,
     load: selectedChar
@@ -361,6 +356,7 @@ export function SpellTracker() {
         ...saved,
         jobLevels,
         nation: res.payload.nation ?? null,
+        rank: res.payload.rank ?? null,
         avatar: res.payload.avatar ?? null,
       })
       setFetchStatus('success')
@@ -417,7 +413,7 @@ export function SpellTracker() {
   }
 
   function handleReset(target: ResetTarget) {
-    if (target === 'char') persist({ ...saved, charName: '', nation: null, avatar: null })
+    if (target === 'char') persist({ ...saved, charName: '', nation: null, rank: null, avatar: null })
     else if (target === 'levels') persist({ ...saved, jobLevels: {} })
     else persist({ ...saved, learned: {} })
     setConfirmReset(null)
@@ -442,7 +438,7 @@ export function SpellTracker() {
     reader.onload = ev => {
       try {
         const parsed = JSON.parse(ev.target?.result as string)
-        persist({ charName: '', nation: null, jobLevels: {}, learned: {}, ...parsed })
+        persist({ charName: '', nation: null, rank: null, avatar: null, jobLevels: {}, learned: {}, ...parsed })
       } catch { /* invalid JSON - ignore */ }
     }
     reader.readAsText(file)
@@ -466,7 +462,7 @@ export function SpellTracker() {
     [jobSpells, saved.learned]
   )
 
-  const nation = saved.nation !== null ? NATIONS[saved.nation] : null
+  const nation = saved.nation !== null ? CHAR_NATIONS[saved.nation] : null
 
   return (
     <div className="flex flex-col gap-5 max-w-3xl mx-auto w-full">
@@ -482,19 +478,21 @@ export function SpellTracker() {
             name={selectedChar?.name}
             nation={
               selectedChar && selectedChar.nation !== null
-                ? NATIONS[selectedChar.nation] ?? null
+                ? CHAR_NATIONS[selectedChar.nation] ?? null
                 : null
             }
+            rank={syncedRank}
           />
         ) : (
           <CharacterHeader
             charName={saved.charName}
             avatar={saved.avatar}
             nation={nation}
+            rank={saved.rank}
             fetchStatus={fetchStatus}
             onCharNameChange={setCharName}
             onFetch={fetchCharacter}
-            onClear={() => persist({ ...saved, nation: null, avatar: null })}
+            onClear={() => persist({ ...saved, nation: null, rank: null, avatar: null })}
           />
         )}
         <div className="flex items-center gap-3 shrink-0 mt-1">

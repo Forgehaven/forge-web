@@ -9,6 +9,7 @@ type Props = {
   charName: string
   avatar: string | null
   nation: NationMeta | null
+  rank?: string | null
   fetchStatus: FetchStatus
   onCharNameChange: (name: string) => void
   onFetch: () => void
@@ -17,7 +18,7 @@ type Props = {
 }
 
 export function CharacterHeader({
-  charName, avatar, nation, fetchStatus,
+  charName, avatar, nation, rank, fetchStatus,
   onCharNameChange, onFetch, onClear, extra,
 }: Props) {
   if (nation !== null) {
@@ -39,6 +40,7 @@ export function CharacterHeader({
               : <span style={{ color: nation.color }}>{nation.symbol}</span>
             }
             <span style={{ color: nation.color }}>{nation.name}</span>
+            {rank && <span className="text-[#9ca3af]">· {rank}</span>}
           </p>
           <button
             onClick={onClear}
