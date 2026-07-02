@@ -31,12 +31,16 @@ beforeEach(() => {
         { id: 'T4_MAIN_SWORD@1', name: 'Broadsword' },
       ]))
     }
-    if (u.includes('/game/albion/recipe/')) {
-      return Promise.resolve(ok({ item_id: 'T4_MAIN_SWORD', craftable: false, recipe: [] }))
+    if (u.includes('/game/albion/recipes/')) {
+      return Promise.resolve(ok([{
+        item_id: 'T4_MAIN_SWORD', craftable: true,
+        recipe: [{ item_id: 'T4_METALBAR', name: 'Metal Bar', count: 2, craftable: false, recipe: [] }],
+      }]))
     }
     if (u.includes('/game/albion/prices/')) {
       return Promise.resolve(ok([
-        { item_id: 'T4_MAIN_SWORD', city: 'Caerleon', quality: 1, sell_price_min: 4321, buy_price_max: 4000 },
+        { item_id: 'T4_MAIN_SWORD', city: 'Bridgewatch', quality: 1, sell_price_min: 4321, buy_price_max: 4000 },
+        { item_id: 'T4_METALBAR', city: 'Bridgewatch', quality: 1, sell_price_min: 100, buy_price_max: 80 },
       ]))
     }
     return Promise.resolve(new Response(JSON.stringify({ status: 'error' }), { status: 404 }))
@@ -64,6 +68,41 @@ describe('CategoryPage', () => {
     expect(await screen.findByText('4,321')).toBeInTheDocument()
     expect(screen.getByText('Craft (base)')).toBeInTheDocument()
     expect(screen.getByText('Craft (optimized)')).toBeInTheDocument()
+  })
+
+  it('mat-source toggle switches craft costs to buy-order prices and persists', async () => {
+    renderPage()
+    // instant buy: 2 × 100 × 0.848 = 169.6 → 170
+    expect(await screen.findAllByText('170')).not.toHaveLength(0)
+
+    await userEvent.click(screen.getByText('Buy orders'))
+    // buy orders: 2 × 80 × 0.848 = 135.68 → 136
+    expect(await screen.findAllByText('136')).not.toHaveLength(0)
+    expect(localStorage.getItem('forgegames_albion_mat_source_v1')).toBe('buy')
+  })
+
+  it('profit (sell) is clickable and lists the materials to buy', async () => {
+    renderPage()
+    // profit = 4321 × 0.96 − 169.6 = 3978.56 → +3,979
+    const profitButton = await screen.findByText('+3,979')
+
+    await userEvent.click(profitButton)
+    expect(screen.getByText(/materials to buy \(optimized\)/i)).toBeInTheDocument()
+    expect(screen.getByText(/2× T4 Metal Bar/)).toBeInTheDocument()
+    expect(screen.getByText('Craft cost')).toBeInTheDocument()
+
+    await userEvent.click(screen.getByText('Base mats'))
+    expect(localStorage.getItem('forgegames_albion_craft_strategy_v1')).toBe('base')
+  })
+
+  it('opens the column help modal', async () => {
+    renderPage()
+    await screen.findAllByText('Broadsword')
+
+    await userEvent.click(screen.getByLabelText(/explain the table columns/i))
+    expect(screen.getByText('Item Table Columns')).toBeInTheDocument()
+    expect(screen.getByText(/Sell\(min\) × \(1 − tax\) − Craft cost/)).toBeInTheDocument()
+    expect(screen.getByText(/cheapest sell order on the market/i)).toBeInTheDocument()
   })
 
   it('narrows rows with the tier filter and the name filter', async () => {

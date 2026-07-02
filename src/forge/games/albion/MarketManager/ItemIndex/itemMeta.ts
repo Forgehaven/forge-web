@@ -12,6 +12,11 @@ export function parseEnchant(id: string): number {
 // "_LEVELn@n" form (T5_ORE_LEVEL2@2) while gear uses a plain "@n" suffix.
 const RESOURCE_RE = /^T\d_(?:FIBER|CLOTH|HIDE|LEATHER|ORE|METALBAR|WOOD|PLANKS|ROCK|STONEBLOCK)(?:_LEVEL\d)?(?:@\d)?$/
 
+// Raw + refined resources have no quality tiers - only crafted gear does.
+export function isResource(id: string): boolean {
+  return RESOURCE_RE.test(id)
+}
+
 export function withTier(id: string, tier: number): string {
   return id.replace(/^T\d/, `T${tier}`)
 }

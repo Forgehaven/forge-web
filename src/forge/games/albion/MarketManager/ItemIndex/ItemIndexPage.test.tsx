@@ -23,12 +23,12 @@ beforeEach(() => {
         guilds: { running_dawn: { is_member: true, roles: { albion_guild: true } } },
       }))
     }
-    if (u.includes('/game/albion/recipe/')) {
-      return Promise.resolve(ok({ item_id: 'T4_BAG', craftable: false, recipe: [] }))
+    if (u.includes('/game/albion/recipes/')) {
+      return Promise.resolve(ok([{ item_id: 'T4_BAG', craftable: false, recipe: [] }]))
     }
     if (u.includes('/game/albion/prices/')) {
       return Promise.resolve(ok([
-        { item_id: 'T4_BAG', city: 'Caerleon', quality: 1, sell_price_min: 1234, buy_price_max: 1000 },
+        { item_id: 'T4_BAG', city: 'Bridgewatch', quality: 1, sell_price_min: 1234, buy_price_max: 1000 },
       ]))
     }
     if (u.includes('/game/albion/items')) {

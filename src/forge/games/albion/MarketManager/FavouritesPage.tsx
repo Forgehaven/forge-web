@@ -2,14 +2,19 @@ import { useEffect, useMemo, useState } from 'react'
 import { useAuth } from '../../../../auth/authContext'
 import { useLayoutOverride } from '../../../../components/LayoutOverride'
 import { useItemFavourites } from '../../../../hooks/useItemFavourites'
-import { DEFAULT_CITY, DEFAULT_QUALITY } from '../constants'
+import { DEFAULT_QUALITY } from '../constants'
+import {
+  loadCraftStrategy, loadDefaultCity, loadMatSource,
+  saveCraftStrategy, saveMatSource,
+} from './premium'
 import { MarketManagerSidebar } from './MarketManagerSidebar'
 import { MarketManagerBottomBar } from './MarketManagerBottomBar'
 import { useEnrichedRows, type BaseItem } from './ItemIndex/useEnrichedRows'
 import { buildItemColumns } from './ItemIndex/itemColumns'
 import { ItemTable } from './ItemIndex/ItemTable'
 import { ItemFilters } from './ItemIndex/ItemFilters'
-import { PercentField } from './ItemIndex/PercentField'
+import { ItemTableHelp } from './ItemIndex/ItemTableHelp'
+import { StrategyToggles } from './ItemIndex/StrategyToggles'
 
 export function FavouritesPage() {
   const { isAuthenticated } = useAuth()
@@ -17,9 +22,9 @@ export function FavouritesPage() {
   const { items: favourites, isFavourite, toggle } = useItemFavourites()
 
   const [quality, setQuality] = useState(DEFAULT_QUALITY)
-  const [location, setLocation] = useState(DEFAULT_CITY)
-  const [returnPct, setReturnPct] = useState(15)
-  const [taxPct, setTaxPct] = useState(6.5)
+  const [location, setLocation] = useState(loadDefaultCity)
+  const [matSource, setMatSource] = useState(loadMatSource)
+  const [strategy, setStrategy] = useState(loadCraftStrategy)
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -38,7 +43,7 @@ export function FavouritesPage() {
     [favourites],
   )
 
-  const { rows, fetchedAt, priceError } = useEnrichedRows(baseItems, location, quality, returnPct / 100)
+  const { rows, fetchedAt, priceError, taxRate } = useEnrichedRows(baseItems, location, quality, matSource)
 
   const columns = useMemo(
     () => buildItemColumns({
@@ -46,18 +51,21 @@ export function FavouritesPage() {
       onToggleFav: row => toggle({ id: row.id, name: row.name, tier: row.tier, enchant: row.enchant }),
       quality,
       showCraft: true,
-      taxRate: taxPct / 100,
-      returnRate: returnPct / 100,
+      taxRate,
+      strategy,
       linkTo: row => `/games/albion/market-manager/item/${encodeURIComponent(row.id)}?quality=${quality}&city=${encodeURIComponent(location)}`,
     }),
-    [isFavourite, toggle, quality, taxPct, returnPct, location],
+    [isFavourite, toggle, quality, taxRate, strategy, location],
   )
 
   return (
     <div className="p-6 max-w-7xl mx-auto w-full space-y-4 select-none">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
-        Albion Online <span className="text-[#c4af64]">Favourites</span>
-      </h1>
+      <div className="flex items-center gap-2">
+        <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
+          Albion Online <span className="text-[#c4af64]">Favourites</span>
+        </h1>
+        <ItemTableHelp />
+      </div>
 
       <div className="flex flex-wrap items-end gap-3">
         <ItemFilters
@@ -71,8 +79,15 @@ export function FavouritesPage() {
           location={location}
           onLocation={setLocation}
         />
-        <PercentField label="Return %" value={returnPct} onChange={setReturnPct} />
-        <PercentField label="Tax %" value={taxPct} onChange={setTaxPct} />
+        <StrategyToggles
+          matSource={matSource}
+          onMatSource={v => { setMatSource(v); saveMatSource(v) }}
+          strategy={strategy}
+          onStrategy={v => { setStrategy(v); saveCraftStrategy(v) }}
+        />
+        <span className="text-xs text-[#6b7280] pb-1.5">
+          tax {Math.round(taxRate * 100)}% · bonus-aware returns · fees from Craft Settings
+        </span>
       </div>
 
       {fetchedAt && (

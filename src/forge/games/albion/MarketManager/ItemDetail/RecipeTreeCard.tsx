@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react'
 import { ItemIcon } from '../../ItemIcon'
-import { bestMode, shoppingList, shoppingListFullCraft, type PriceOf } from '../ItemIndex/craftCost'
+import { bestMode, shoppingList, shoppingListBase, shoppingListFullCraft, type PriceOf, type ReturnRateOf } from '../ItemIndex/craftCost'
 import { tierLabel } from '../ItemIndex/itemMeta'
 import type { RecipeNode } from '../ItemIndex/types'
 
-type TreeMode = 'optimized' | 'full'
+type TreeMode = 'optimized' | 'base' | 'full'
 
 const MODE_BADGES: Record<string, { label: string; cls: string }> = {
   buy: { label: 'buy', cls: 'text-[#6b7280] border-[#2a2d3a]' },
@@ -33,7 +33,7 @@ function TreeRow({
   units,
   mode,
   priceOf,
-  rr,
+  rrOf,
   depth,
   isRoot,
 }: {
@@ -41,17 +41,18 @@ function TreeRow({
   units: number
   mode: TreeMode
   priceOf: PriceOf
-  rr: number
+  rrOf: ReturnRateOf
   depth: number
   isRoot?: boolean
 }) {
-  const acquire = isRoot ? null : bestMode(node, priceOf, rr)
+  const acquire = isRoot ? null : bestMode(node, priceOf, rrOf)
   const craftable = node.craftable && node.recipe.length > 0
   const transmute = isTransmute(node)
   // Optimized: only expand nodes the optimizer would actually craft/transmute/upgrade.
+  // Base: never expand below the root - every direct material is a market buy.
   // Full: expand every REFINABLE node to raw - transmutes stay buy-leaves (the full tree is
   // the refining chain, not the transmutator).
-  const expand = isRoot || (craftable && (
+  const expand = isRoot || (craftable && mode !== 'base' && (
     mode === 'full' ? !transmute : acquire?.mode === 'craft'
   ))
   const viaUpgrade = !isRoot && mode === 'optimized' && acquire?.mode === 'upgrade' && node.upgrade
@@ -88,7 +89,7 @@ function TreeRow({
             units={units}
             mode={mode}
             priceOf={priceOf}
-            rr={rr}
+            rrOf={rrOf}
             depth={depth + 1}
           />
           {node.upgrade.materials.map(mat => (
@@ -113,10 +114,10 @@ function TreeRow({
         <TreeRow
           key={child.item_id}
           node={child}
-          units={(child.count ?? 1) * (1 - rr) * crafts}
+          units={(child.count ?? 1) * (1 - rrOf(node.item_id)) * crafts}
           mode={mode}
           priceOf={priceOf}
-          rr={rr}
+          rrOf={rrOf}
           depth={depth + 1}
         />
       ))}
@@ -131,21 +132,20 @@ function TreeRow({
 export function RecipeTreeCard({
   recipe,
   priceOf,
-  rr,
+  rrOf,
 }: {
   recipe: RecipeNode
   priceOf: PriceOf
-  rr: number
+  rrOf: ReturnRateOf
 }) {
   const [mode, setMode] = useState<TreeMode>('optimized')
   const [qty, setQty] = useState(1)
 
-  const aggregate = useMemo(
-    () => mode === 'optimized'
-      ? shoppingList(recipe, priceOf, rr)
-      : shoppingListFullCraft(recipe, priceOf, rr),
-    [mode, recipe, priceOf, rr],
-  )
+  const aggregate = useMemo(() => {
+    if (mode === 'base') return shoppingListBase(recipe, priceOf, rrOf)
+    if (mode === 'full') return shoppingListFullCraft(recipe, priceOf, rrOf)
+    return shoppingList(recipe, priceOf, rrOf)
+  }, [mode, recipe, priceOf, rrOf])
 
   const lines = useMemo(() => aggregate.lines.map(line => {
     const count = Math.ceil(line.count * qty)
@@ -166,7 +166,7 @@ export function RecipeTreeCard({
         <h3 className="text-sm font-medium text-[#9ca3af] tracking-wide uppercase">Crafting Tree</h3>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1.5">
-            {([['optimized', 'Optimized'], ['full', 'Full tree']] as const).map(([value, label]) => (
+            {([['optimized', 'Optimized'], ['base', 'Base mats'], ['full', 'Full tree']] as const).map(([value, label]) => (
               <button
                 key={value}
                 onClick={() => setMode(value)}
@@ -196,7 +196,7 @@ export function RecipeTreeCard({
 
       <div className="grid lg:grid-cols-[minmax(0,1fr)_260px] gap-4">
         <div>
-          <TreeRow node={recipe} units={qty} mode={mode} priceOf={priceOf} rr={rr} depth={0} isRoot />
+          <TreeRow node={recipe} units={qty} mode={mode} priceOf={priceOf} rrOf={rrOf} depth={0} isRoot />
         </div>
         {/* Aggregated buys across every branch of the tree */}
         <div className="lg:border-l lg:border-[#2a2d3a] lg:pl-4 space-y-1 text-xs self-start">
@@ -222,11 +222,9 @@ export function RecipeTreeCard({
         </div>
       </div>
 
-      {rr > 0 && (
-        <p className="text-[10px] text-[#6b7280] pt-1">
-          counts include the {rr * 100 % 1 === 0 ? rr * 100 : (rr * 100).toFixed(1)}% resource return rate, rounded up
-        </p>
-      )}
+      <p className="text-[10px] text-[#6b7280] pt-1">
+        counts include bonus-aware resource return rates (Craft Settings), rounded up
+      </p>
     </div>
   )
 }

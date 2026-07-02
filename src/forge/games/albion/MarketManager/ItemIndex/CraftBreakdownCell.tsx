@@ -19,7 +19,7 @@ function fmt(n: number | null | undefined): string {
 // Craft-cost cell: shows the optimal cost; hovering (or focusing) reveals the full breakdown in
 // a portal card (portal avoids the table's overflow-x clipping). Lives in its own file so the
 // react-refresh rule is satisfied (itemColumns exports a non-component factory).
-export function CraftCell({ analysis, returnRate }: { analysis: CraftAnalysis | null | undefined; returnRate: number }) {
+export function CraftCell({ analysis }: { analysis: CraftAnalysis | null | undefined }) {
   const ref = useRef<HTMLButtonElement>(null)
   const [pos, setPos] = useState<{ top: number; left: number } | null>(null)
 
@@ -81,12 +81,13 @@ export function CraftCell({ analysis, returnRate }: { analysis: CraftAnalysis | 
             {analysis.silver > 0 && (
               <p className="text-[10px] text-[#6b7280] pt-0.5">+ {fmt(analysis.silver)} silver crafting fee</p>
             )}
+            {analysis.stationFee > 0 && (
+              <p className="text-[10px] text-[#6b7280] pt-0.5">+ {fmt(analysis.stationFee)} station fee (Craft Settings)</p>
+            )}
             {analysis.amount > 1 && (
               <p className="text-[10px] text-[#6b7280] pt-0.5">per unit · crafts {analysis.amount} at once</p>
             )}
-            {returnRate > 0 && (
-              <p className="text-[10px] text-[#6b7280] pt-0.5">incl. {Math.round(returnRate * 100)}% return rate</p>
-            )}
+            <p className="text-[10px] text-[#6b7280] pt-0.5">bonus-aware return rates applied</p>
           </div>,
           document.body,
         )}

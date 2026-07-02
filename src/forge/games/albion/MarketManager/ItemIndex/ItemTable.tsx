@@ -18,13 +18,16 @@ export function ItemTable({
   if (rows.length === 0) {
     return <p className="text-sm text-[#6b7280] text-center py-10 select-none">{empty}</p>
   }
+  // Best margin first when craft columns are shown; rows without prices sort last
+  // (profit sortKey falls back to -Infinity).
+  const hasProfit = columns.some(c => c.key === 'profit_sell')
   return (
     <DataTable
       columns={columns}
       data={rows}
       rowKey={r => r.id}
-      defaultSort="name"
-      defaultSortDir="asc"
+      defaultSort={hasProfit ? 'profit_sell' : 'name'}
+      defaultSortDir={hasProfit ? 'desc' : 'asc'}
       footer={footer}
     />
   )

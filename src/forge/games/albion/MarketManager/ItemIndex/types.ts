@@ -55,8 +55,12 @@ export interface CraftAnalysis {
   fullCraft: number | null // refine every craftable material from raw
   materials: CraftMaterial[]     // top-level breakdown under the optimal path
   baseMaterials: CraftMaterial[] // top-level materials all bought at market (fullBuy's breakdown)
+  shopping: { id: string; name: string; count: number; unitCost: number | null }[]
+  // ^ aggregated market buys along the optimal path (per finished unit)
+  shoppingSilver: number   // flat crafting fees accumulated along the optimal path
   silver: number           // flat crafting fee on the item's own recipe
   amount: number           // units produced per craft
+  stationFee: number       // flat station usage fee (Craft Settings) folded into the costs
 }
 
 // GET /game/albion/prices/history/{id}?locations=&qualities=&time-scale=  → one series per

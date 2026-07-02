@@ -4,7 +4,11 @@ import { useLayoutOverride } from '../../../../components/LayoutOverride'
 import { CITIES, CITY_BONUSES, STATION_TYPES } from '../constants'
 import { MarketManagerSidebar } from './MarketManagerSidebar'
 import { MarketManagerBottomBar } from './MarketManagerBottomBar'
-import { loadFocus, loadPremium, saveFocus, savePremium } from './premium'
+import {
+  loadCraftStrategy, loadDefaultCity, loadFocus, loadMatSource, loadPremium,
+  saveCraftStrategy, saveDefaultCity, saveFocus, saveMatSource, savePremium,
+} from './premium'
+import { StrategyToggles } from './ItemIndex/StrategyToggles'
 import { fetchCraftSettings, putCraftSettings } from './ItemIndex/albionItemsApi'
 import type { CraftSettings } from './ItemIndex/types'
 
@@ -38,6 +42,9 @@ export function CraftSettingsPage() {
   const [saved, setSaved] = useState(false)
   const [premium, setPremium] = useState(loadPremium)
   const [focus, setFocus] = useState(loadFocus)
+  const [defaultCity, setDefaultCity] = useState(loadDefaultCity)
+  const [matSource, setMatSource] = useState(loadMatSource)
+  const [strategy, setStrategy] = useState(loadCraftStrategy)
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -153,6 +160,25 @@ export function CraftSettingsPage() {
         <span className="text-xs text-[#6b7280] -ml-3">
           {focus ? 'returns 43.5% base · 53.9% refining bonus · 47.9% crafting bonus' : 'returns 15.2% base · 36.7% refining bonus · 24.8% crafting bonus'}
         </span>
+        <label className="flex items-center gap-2 text-sm text-[#e2e4ed]">
+          Default town
+          <select
+            value={defaultCity}
+            onChange={e => {
+              setDefaultCity(e.target.value)
+              saveDefaultCity(e.target.value)
+            }}
+            className="bg-[#0f1117] border border-[#2a2d3a] rounded px-2 py-1.5 text-xs text-[#e2e4ed] focus:outline-none focus:border-[#c4af64] cursor-pointer"
+          >
+            {CITIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
+          </select>
+        </label>
+        <StrategyToggles
+          matSource={matSource}
+          onMatSource={v => { setMatSource(v); saveMatSource(v) }}
+          strategy={strategy}
+          onStrategy={v => { setStrategy(v); saveCraftStrategy(v) }}
+        />
         <span className="text-xs text-[#4a4d5a] w-full sm:w-auto">saved on this device only</span>
       </div>
 

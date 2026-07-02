@@ -357,7 +357,8 @@ MarketManager/
   GuildData/  Gold/             (as before; GoldPricePage imports chartTicks from ../chartTicks)
   MarketFixing/                 ← 4 placeholder pages (still out of scope)
   ItemIndex/                    ← search page + ALL shared item-table machinery:
-    ItemIndexPage, ItemTable, ItemFilters, PercentField, itemColumns (buildItemColumns),
+    ItemIndexPage, ItemTable (default sort: Profit (sell) desc when craft columns shown,
+    else name asc), ItemFilters, PercentField, itemColumns (buildItemColumns),
     CraftBreakdownCell, craftCost.ts (analyzeCraft/profit/shoppingList/collectRecipeIds),
     itemMeta.ts (parseTier/parseEnchant/withTier/withEnchant), types.ts,
     albionItemsApi.ts (searchItems/fetchCategoryItems/fetchItemPrices/fetchItemHistory/
@@ -379,7 +380,12 @@ All under `/games/albion/market-manager/`:
 - `compare?a=&qa=&b=&qb=&city=` - `ComparePage` (two ItemDetailPanels side by side, desktop only)
 - `market-fixing/x-city-arbitrage`, `velocity-flip`, `route-risk-reward`, `bm-volume-predict` (placeholders)
 - every category slug in `marketCategories.ts` → `<CategoryPage slug>` (routes generated in a loop; adding
-  a category is a one-line edit in `marketCategories.ts`)
+  a category is a one-line edit in `marketCategories.ts`). Last section **Other**: Journals,
+  Scrolls, Artifacts (incl. sigils/runes/relics), Animals (mounts + farm), Vanity (placeable),
+  Uncategorized (named tradeables no slug matches - seeds, lootbags, fish, ...). One flat
+  top-level link at the bottom: **Prototype/Unreleased** (`prototype/unreleased`) - nameless
+  `_PROTOTYPE` gear from the dump, listed by id. Item detail header has a wiki button
+  (`wiki.albiononline.com` Special:Search go-link on the item name)
 
 ### Tab titles (`src/config/sections.ts`)
 Every route listed above maps to `'AOMM - <Page Name>'`. Title is set via inline script in `vite.config.ts` `headScripts()` plugin. The full path prefix must match exactly.
@@ -429,6 +435,48 @@ Every route listed above maps to `'AOMM - <Page Name>'`. Title is set via inline
 - Table pipeline identical to Item Index: `useEnrichedRows` → `buildItemColumns` → `ItemTable`;
   item names link to the detail route
 
+### Trading strategy toggles (`ItemIndex/StrategyToggles.tsx`)
+- Two per-user toggles (localStorage `albionMatSource`/`albionCraftStrategy` via premium.ts,
+  typed `MatSource`/`CraftStrategy`), rendered on Item Index / category pages / Favourites /
+  detail panel:
+  - **Mats: Instant buy | Buy orders** - `useEnrichedRows(..., matSource)` and the detail
+    panel's `priceOf` switch material prices between `sell_price_min` and `buy_price_max`
+    (patient buy-order acquisition). Changes every craft cost on the page incl. trees/lists
+  - **Craft: Optimized | Base mats** - which craft cost the PROFIT columns use
+    (`craft.optimal` vs `craft.fullBuy`); both craft columns stay visible
+- **Profit (sell) is the bold primary column** and is CLICKABLE →
+  `ProfitMaterialsCell.tsx` portal card: "Materials to buy" under the current strategy
+  (base → `analysis.baseMaterials`; optimized → `analysis.shopping`, the aggregated
+  shoppingList now stored on CraftAnalysis with `shoppingSilver`), fees line, and the
+  revenue−tax−cost math. Click-toggled, closes on outside mousedown
+- Detail panel: Profit stat card is bold/gold-bordered and labeled with the strategy
+- Best Value shows the same toggles and forwards them as `mats`/`strategy` query params
+  (server-side math); Craft Settings also displays them in the per-user card. Because all
+  render from the same localStorage keys, flipping a toggle anywhere applies everywhere
+
+### Item-table help + default town
+- `ItemIndex/ItemTableHelp.tsx`: "?" button next to the h1 on Item Index / category pages /
+  Favourites opens a Modal glossary explaining all six columns (Sell min, Buy max, Craft base,
+  Craft optimized, Profit sell, Profit buy) with the exact formulas
+- Default market town is PER-USER: `loadDefaultCity()`/`saveDefaultCity()` in `premium.ts`
+  (localStorage `albionDefaultCity`, fallback **Bridgewatch**); selectable on Craft Settings.
+  All pages init their location from it; `constants.DEFAULT_CITY` is only the fallback
+
+### Craft economics (`craftEconomics.ts`) - Craft Settings applied EVERYWHERE
+- The manual Return%/Tax% PercentFields are GONE (component deleted). Every table
+  (Item Index, category pages, Favourites) and the detail panel/tree computes with:
+  - **Bonus-aware return rates per item+city** via `returnRateFor(id, city, focus)` -
+    `itemEcon(id)` classifies the archetype from the UniqueName (weapon family regexes,
+    armor slot×material, offhands, tools/bags/capes, food/potions, resources) to its
+    crafting station + specialty city; unmatched ids fall back to base rates (conservative)
+  - **Premium sales tax** (4%/8%) via `salesTaxRate(loadPremium())` - `useEnrichedRows`
+    returns `taxRate` for the profit columns
+  - **Flat station fees** from the shared settings via `stationFeeFor(id, city, settings)` +
+    `useCraftSettings()` (module-cached GET /craft-settings), folded into
+    `analyzeCraft(..., stationFee)` → `CraftAnalysis.stationFee`
+- `craftCost.ts` takes a `ReturnRateOf` callable (`rrOf(id)`) instead of a flat number, so
+  bonus rates hit exactly their specialty craft lines (like the server's `rr_of`)
+
 ### Craft cost columns (`itemColumns.tsx` / `craftCost.ts`)
 - Two columns when `showCraft`: **Craft (base)** = `fullBuy` (top-level mats at market, no
   sub-crafting) and **Craft (optimized)** = `optimal` with the hover breakdown
@@ -451,7 +499,9 @@ Every route listed above maps to `'AOMM - <Page Name>'`. Title is set via inline
 - Variant switchers: tier T1-T8 + enchant .0-.4 rewrite the item id via `withTier`/`withEnchant`
   (`itemMeta.ts`; resources use the `_LEVELn@n` form, gear plain `@n`)
 - Per-quality price strip (5 clickable cards = current sell per quality; click selects the
-  quality the stat cards use)
+  quality the stat cards use). **Resources have no quality** (`isResource()` in itemMeta.ts):
+  the strip is hidden, lookups pin to quality 1, the chart draws a single gold "Price" line,
+  and the subtitle drops the quality label
 - History chart: `GET /prices/history/{id}?qualities=1,2,3,4,5` via `useItemHistory` (5-min
   poll), Recharts LineChart with ONE LINE PER QUALITY, periods 24H/7D (time-scale 1) and 30D
   (time-scale 24); window anchored to the newest data point, not the wall clock
@@ -461,9 +511,12 @@ Every route listed above maps to `'AOMM - <Page Name>'`. Title is set via inline
   craft blue / upgrade purple / **transmute orange** - a recipe with a flat silver fee is the
   transmutator, recognized via `isTransmute`, and NEVER expanded in full-tree mode). Toggle
   **Optimized** (expands only nodes where craft/transmute/upgrade beats buying; buy leaves
-  collapse with market subtotals) vs **Full tree** (refines every refinable node down to raw).
+  collapse with market subtotals) vs **Base mats** (never expands below the root - every direct
+  material is a market buy, for crafters skipping the extra margin) vs **Full tree** (refines
+  every refinable node down to raw).
   To the right: the **aggregated shopping list** - duplicates across branches summed - from
-  `shoppingList` (optimized) or `shoppingListFullCraft` (full; transmutes stay buys), scaled by
+  `shoppingList` (optimized), `shoppingListBase` (base) or `shoppingListFullCraft` (full;
+  transmutes stay buys), scaled by
   qty with silver fees + grand total. Uses `bestMode()` (exported from craftCost.ts)
 
 ### Best Value page (`BestValuePage.tsx`)
@@ -498,15 +551,21 @@ Every route listed above maps to `'AOMM - <Page Name>'`. Title is set via inline
 
 ### Item icons (`src/utils/albionIcons.ts`)
 ```ts
-itemIconUrl(uniqueName: string, size = 64, quality?: number): string
+itemIconUrl(uniqueName: string, displaySize = 32, quality?: number): string
 ```
-Constructs URL: `https://render.albiononline.com/v1/item/{UniqueName}.png?size={size}&quality={quality}`
+Builds `{forgeAPI}/game/albion/icon/{id}?size=...` - forge-api's caching proxy (7-day
+immutable browser cache), NOT render.albiononline.com directly. Fetch sizes are normalized to
+two canonical variants (display ≤32 → 64px, larger → 128px) so one cached URL serves every
+table/tree usage. TABLE icons omit the `quality` param on purpose (a quality-filter flip must
+not re-download 200 icons); only the detail-page header icon passes quality.
 
-Component in `src/forge/games/albion/ItemIcon.tsx`:
-```tsx
-<ItemIcon uniqueName="T4_OFF_SHIELD" size={24} />
-// Renders <img> loading=lazy with srcset-size doubled for sharpness
-```
+Component in `src/forge/games/albion/ItemIcon.tsx`: `<ItemIcon uniqueName size quality? />`,
+`loading="lazy"`.
+
+### Recipes are fetched in BATCH
+`fetchRecipes` (albionItemsApi.ts) chunks ids 50-per-request against
+`GET /game/albion/recipes/{ids}` - a 200-variant category page = 4 requests (was 200).
+`useItemRecipes`' module cache still dedupes across pages.
 
 ### Adding a new MM page
 1. Create page component in appropriate section folder (or PlaceholderPage for stubs)

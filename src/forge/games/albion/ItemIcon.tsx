@@ -8,7 +8,7 @@ export function ItemIcon({ uniqueName, size = 24, quality, className }: {
 }) {
   return (
     <img
-      src={itemIconUrl(uniqueName, size * 2, quality)}
+      src={itemIconUrl(uniqueName, size, quality)}
       alt=""
       width={size}
       height={size}

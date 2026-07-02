@@ -47,13 +47,15 @@ export async function fetchItemHistory(
 
 // GET /game/albion/best-value - server-side sweep across every city, cached 120s. Rows are
 // (item, city) pairs ranked overall. `premium` drives the sales tax (4% vs 8%), `focus` the
-// focus return rates; both bonus-aware server-side.
+// focus return rates, `mats`/`strategy` mirror the trading-strategy toggles.
 export async function fetchBestValue(
   premium: boolean,
   focus: boolean,
+  mats: string,
+  strategy: string,
 ): Promise<Envelope<BestValuePayload>> {
   return albionFetch<BestValuePayload>(
-    `/game/albion/best-value?premium=${premium}&focus=${focus}`,
+    `/game/albion/best-value?premium=${premium}&focus=${focus}&mats=${mats}&strategy=${strategy}`,
   )
 }
 
@@ -69,22 +71,25 @@ export async function putCraftSettings(settings: CraftSettings): Promise<Envelop
   })
 }
 
-// No batch recipe endpoint yet - fan out to the singular GET /game/albion/recipe/{item_id}
-// with a concurrency cap. Per-item failures are tolerated (that item just gets no recipe).
+// Batch GET /game/albion/recipes/{ids} - chunked at 50 ids per request (URL-length safe,
+// server caps at 100). Per-chunk failures are tolerated (those items just get no recipe).
 // useItemRecipes caches results by id, so each is fetched at most once per session.
-const RECIPE_FANOUT = 8
+const RECIPE_CHUNK = 50
 
 export async function fetchRecipes(itemIds: string[]): Promise<Envelope<RecipeNode[]>> {
   if (itemIds.length === 0) return { status: 'ok', payload: [] }
-  const nodes: RecipeNode[] = []
-  let next = 0
-  async function worker() {
-    while (next < itemIds.length) {
-      const id = itemIds[next++]
-      const res = await albionFetch<RecipeNode>(`/game/albion/recipe/${encodeURIComponent(id)}`)
-      if (res.status === 'ok') nodes.push(res.payload)
-    }
+  const chunks: string[][] = []
+  for (let i = 0; i < itemIds.length; i += RECIPE_CHUNK) {
+    chunks.push(itemIds.slice(i, i + RECIPE_CHUNK))
   }
-  await Promise.all(Array.from({ length: Math.min(RECIPE_FANOUT, itemIds.length) }, worker))
+  const results = await Promise.all(chunks.map(chunk =>
+    albionFetch<RecipeNode[]>(
+      `/game/albion/recipes/${chunk.map(encodeURIComponent).join(',')}`,
+    ),
+  ))
+  const nodes: RecipeNode[] = []
+  for (const res of results) {
+    if (res.status === 'ok') nodes.push(...res.payload)
+  }
   return { status: 'ok', payload: nodes }
 }

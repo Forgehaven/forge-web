@@ -2,7 +2,8 @@ import { useEffect } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../../../../../auth/authContext'
 import { useLayoutOverride } from '../../../../../components/LayoutOverride'
-import { DEFAULT_CITY, DEFAULT_QUALITY, CITIES } from '../../constants'
+import { DEFAULT_QUALITY, CITIES } from '../../constants'
+import { loadDefaultCity } from '../premium'
 import { MarketManagerSidebar } from '../MarketManagerSidebar'
 import { MarketManagerBottomBar } from '../MarketManagerBottomBar'
 import { ItemDetailPanel } from './ItemDetailPanel'
@@ -17,7 +18,7 @@ export function ItemDetailPage() {
   const { setSidebar, setBottomBar } = useLayoutOverride()
 
   const quality = Number(params.get('quality')) || DEFAULT_QUALITY
-  const city = params.get('city') || DEFAULT_CITY
+  const city = params.get('city') || loadDefaultCity()
 
   useEffect(() => {
     if (isAuthenticated) {

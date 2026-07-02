@@ -96,7 +96,23 @@ export const MARKET_CATEGORY_SECTIONS: MarketCategorySection[] = [
       { slug: 'warrior-weapons/shield', label: 'Shield' },
     ],
   },
+  {
+    title: 'Other',
+    items: [
+      { slug: 'other/journals', label: 'Journals' },
+      { slug: 'other/scrolls', label: 'Scrolls' },
+      { slug: 'other/artifacts', label: 'Artifacts' },
+      { slug: 'other/animals', label: 'Animals' },
+      { slug: 'other/vanity', label: 'Vanity' },
+      { slug: 'uncategorized', label: 'Uncategorized' },
+    ],
+  },
 ]
 
-// Flattened, for route generation + label lookup.
-export const MARKET_CATEGORIES: MarketCategory[] = MARKET_CATEGORY_SECTIONS.flatMap(s => s.items)
+// Flattened, for route generation + label lookup. Prototype/Unreleased is a flat
+// top-level sidebar link (not a collapsible section) but still routes via
+// CategoryPage.
+export const MARKET_CATEGORIES: MarketCategory[] = [
+  ...MARKET_CATEGORY_SECTIONS.flatMap(s => s.items),
+  { slug: 'prototype/unreleased', label: 'Prototype/Unreleased' },
+]

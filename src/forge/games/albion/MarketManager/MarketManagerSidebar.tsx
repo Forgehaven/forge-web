@@ -163,6 +163,20 @@ export function MarketManagerSidebar({ isOpen, onClose, onOpenSettings, onOpenLo
               </CollapsibleSection>
             ))}
           </div>
+
+          <NavLink
+            to="/games/albion/market-manager/prototype/unreleased"
+            onClick={onClose}
+            className={({ isActive }) =>
+              `block pl-4 pr-8 py-2 md:py-0 text-sm leading-5 transition-colors ${
+                isActive
+                  ? 'bg-[#c4af64]/10 text-[#c4af64] border-r-2 border-[#c4af64]'
+                  : 'text-[#9ca3af] hover:text-[#e2e4ed] hover:bg-[#2a2d3a]'
+              }`
+            }
+          >
+            Prototype/Unreleased
+          </NavLink>
           </>
         )}
       </nav>

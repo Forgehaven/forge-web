@@ -8,7 +8,11 @@ import { ItemIcon } from '../ItemIcon'
 import { MarketManagerSidebar } from './MarketManagerSidebar'
 import { MarketManagerBottomBar } from './MarketManagerBottomBar'
 import { usePricesWS } from './usePricesWS'
-import { loadFocus, loadPremium } from './premium'
+import {
+  loadCraftStrategy, loadFocus, loadMatSource, loadPremium,
+  saveCraftStrategy, saveMatSource,
+} from './premium'
+import { StrategyToggles } from './ItemIndex/StrategyToggles'
 import { fetchBestValue } from './ItemIndex/albionItemsApi'
 import type { BestValuePayload, BestValueRow } from './ItemIndex/types'
 
@@ -32,6 +36,8 @@ export function BestValuePage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [tick, setTick] = useState(0)
+  const [matSource, setMatSource] = useState(loadMatSource)
+  const [strategy, setStrategy] = useState(loadCraftStrategy)
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -49,7 +55,7 @@ export function BestValuePage() {
     let cancelled = false
 
     async function load() {
-      const result = await fetchBestValue(loadPremium(), loadFocus())
+      const result = await fetchBestValue(loadPremium(), loadFocus(), matSource, strategy)
       if (cancelled) return
       if (result.status === 'ok') {
         setPayload(result.payload)
@@ -62,7 +68,7 @@ export function BestValuePage() {
 
     load()
     return () => { cancelled = true }
-  }, [tick])
+  }, [tick, matSource, strategy])
 
   // Server result is TTL-cached in memory - refetching on every poller cycle is cheap.
   usePricesWS(useCallback(() => setTick(t => t + 1), []))
@@ -74,7 +80,7 @@ export function BestValuePage() {
       sortKey: r => r.name,
       render: row => (
         <span className="flex items-center gap-2">
-          <ItemIcon uniqueName={row.item_id} size={32} quality={row.quality} />
+          <ItemIcon uniqueName={row.item_id} size={32} />
           <Link
             to={`/games/albion/market-manager/item/${encodeURIComponent(row.item_id)}?quality=${row.quality}&city=${encodeURIComponent(row.city)}`}
             className="text-[#e2e4ed] hover:text-[#c4af64] transition-colors"
@@ -149,11 +155,19 @@ export function BestValuePage() {
             Top 50 returns across every city: buy mats, craft (or transmute up), resell in the same city.
           </p>
         </div>
-        {payload && (
-          <span className="text-xs text-[#6b7280]">
-            computed {new Date(payload.computed_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
-          </span>
-        )}
+        <div className="flex items-center gap-4 flex-wrap">
+          <StrategyToggles
+            matSource={matSource}
+            onMatSource={v => { setMatSource(v); saveMatSource(v) }}
+            strategy={strategy}
+            onStrategy={v => { setStrategy(v); saveCraftStrategy(v) }}
+          />
+          {payload && (
+            <span className="text-xs text-[#6b7280]">
+              computed {new Date(payload.computed_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
+            </span>
+          )}
+        </div>
       </div>
 
       {error ? (
@@ -169,7 +183,7 @@ export function BestValuePage() {
           columns={columns}
           data={payload.rows}
           rowKey={r => `${r.item_id}|${r.city}`}
-          footer={`${payload.rows.length} rows · materials priced at Normal quality in each row's city`}
+          footer={`${payload.rows.length} rows · mats at ${matSource === 'buy' ? 'buy-order' : 'instant-buy'} prices, ${strategy} craft cost, Normal quality, per row's city`}
         />
       ) : null}
     </div>

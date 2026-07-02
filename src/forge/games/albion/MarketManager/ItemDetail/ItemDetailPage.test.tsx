@@ -39,9 +39,10 @@ beforeEach(() => {
         },
       ]))
     }
-    if (u.includes('/game/albion/recipe/')) {
-      return Promise.resolve(ok({
-        item_id: 'T5_MAIN_SWORD', name: "Expert's Broadsword", count: 1, craftable: true,
+    if (u.includes('/game/albion/recipes/')) {
+      const requestedId = decodeURIComponent(u.split('/recipes/')[1].split(',')[0])
+      return Promise.resolve(ok([{
+        item_id: requestedId, name: "Expert's Broadsword", count: 1, craftable: true,
         recipe: [
           {
             item_id: 'T5_METALBAR', name: 'Metal Bar', count: 16, craftable: true,
@@ -49,7 +50,7 @@ beforeEach(() => {
           },
           { item_id: 'T5_LEATHER', name: 'Leather', count: 8, craftable: false, recipe: [] },
         ],
-      }))
+      }]))
     }
     if (u.includes('/game/albion/prices/')) {
       return Promise.resolve(ok([
@@ -92,22 +93,22 @@ describe('ItemDetailPage', () => {
     // variant switchers
     expect(screen.getByText('T8')).toBeInTheDocument()
     expect(screen.getByText('.4')).toBeInTheDocument()
-    // craft: base = optimized = 16×100 + 8×50 = 2000 at return 15% → 1700
-    expect(await screen.findAllByText('1,700')).not.toHaveLength(0)
+    // craft: base = optimized = 16×100 + 8×50 = 2000 at 15.2% base return → 1696
+    expect(await screen.findAllByText('1,696')).not.toHaveLength(0)
   })
 
   it('scales the aggregated shopping list by quantity', async () => {
     renderPage()
     expect(await screen.findByText("Expert's Broadsword")).toBeInTheDocument()
-    await screen.findAllByText('1,700')
+    await screen.findAllByText('1,696')
 
-    // rr 15%: 16×0.85 = 13.6 → ceil 14 metalbars for qty 1; label carries tier + name
+    // rr 15.2%: 16×0.848 = 13.57 → ceil 14 metalbars for qty 1; label carries tier + name
     expect(await screen.findByText(/14× T5 Metal Bar/)).toBeInTheDocument()
 
     const qtyInput = screen.getByLabelText('Crafting tree quantity')
     fireEvent.change(qtyInput, { target: { value: '10' } })
 
-    // 13.6 × 10 = 136
+    // 13.57 × 10 = 135.7 → 136
     await waitFor(() => {
       expect(screen.getByText(/136× T5 Metal Bar/)).toBeInTheDocument()
     })
@@ -123,16 +124,48 @@ describe('ItemDetailPage', () => {
     expect(screen.queryByText(/Iron Ore/)).toBeNull()
 
     await userEvent.click(screen.getByText('Full tree'))
-    // Full tree refines from raw: 16×0.85 = 13.6 metalbars → 2×0.85×13.6 = 23.12 → 24 ore.
+    // Full tree refines from raw: 16×0.848 = 13.57 metalbars → 2×0.848×13.57 = 23.01 → 24 ore.
     // Ore appears in the tree AND the aggregated list beside it.
     expect(await screen.findAllByText(/Iron Ore/)).toHaveLength(2)
     expect(screen.getByText('24×')).toBeInTheDocument()
 
     fireEvent.change(screen.getByLabelText('Crafting tree quantity'), { target: { value: '10' } })
     await waitFor(() => {
-      // 2×0.85×136 = 231.2 → 232 ore for 10 swords.
-      expect(screen.getByText('232×')).toBeInTheDocument()
+      // 2×0.848×135.68 = 230.1 → 231 ore for 10 swords.
+      expect(screen.getByText('231×')).toBeInTheDocument()
     })
+  })
+
+  it('strategy toggles reconfigure the profit card and mat prices', async () => {
+    renderPage()
+    expect(await screen.findByText("Expert's Broadsword")).toBeInTheDocument()
+    await screen.findAllByText('1,696')
+    expect(screen.getByText(/profit \(sell, optimized\)/i)).toBeInTheDocument()
+
+    // Two "Base mats" buttons on the page: StrategyToggles (first) and the
+    // crafting-tree mode switch. The strategy one drives the profit card.
+    await userEvent.click(screen.getAllByText('Base mats')[0])
+    expect(screen.getByText(/profit \(sell, base mats\)/i)).toBeInTheDocument()
+
+    // Buy orders: metalbar min(buy 90, craft 2×50×0.848=84.8)=84.8; leather 40
+    // → 13.568×84.8 + 6.784×40 = 1421.9 → 1,422
+    await userEvent.click(screen.getByText('Buy orders'))
+    expect(await screen.findAllByText('1,422')).not.toHaveLength(0)
+  })
+
+  it('resources have no quality strip or quality label', async () => {
+    renderPage('/games/albion/market-manager/item/T5_PLANKS?city=Caerleon')
+
+    expect(await screen.findByText('Crafting Tree')).toBeInTheDocument()
+    // gear pages show the per-quality strip; resources hide it entirely
+    expect(screen.queryByText('Masterpiece')).toBeNull()
+    expect(screen.queryByText('Outstanding')).toBeNull()
+  })
+
+  it('gear pages keep the quality strip', async () => {
+    renderPage()
+    expect(await screen.findByText("Expert's Broadsword")).toBeInTheDocument()
+    expect(screen.getByText('Masterpiece')).toBeInTheDocument()
   })
 
   it('switching enchant navigates to the @n variant', async () => {

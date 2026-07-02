@@ -4,6 +4,8 @@ import type { Column } from '../../../../../components/DataTable'
 import { ItemIcon } from '../../ItemIcon'
 import { profit } from './craftCost'
 import { CraftCell } from './CraftBreakdownCell'
+import { ProfitMaterialsCell } from './ProfitMaterialsCell'
+import type { CraftStrategy } from '../premium'
 import type { ItemRow } from './types'
 
 interface ColumnOpts {
@@ -11,8 +13,8 @@ interface ColumnOpts {
   onToggleFav: (row: ItemRow) => void
   quality: number
   showCraft?: boolean
-  taxRate?: number
-  returnRate?: number
+  taxRate?: number // premium-driven sales tax (salesTaxRate)
+  strategy?: CraftStrategy // which craft cost the profit columns use
   linkTo?: (row: ItemRow) => string // item name becomes a link (detail page)
 }
 
@@ -20,7 +22,8 @@ interface ColumnOpts {
 // only when showCraft is set (and a recipe-derived analysis is present on the row).
 export function buildItemColumns(opts: ColumnOpts): Column<ItemRow>[] {
   const taxRate = opts.taxRate ?? 0
-  const returnRate = opts.returnRate ?? 0
+  const strategy = opts.strategy ?? 'optimized'
+  const costOf = (r: ItemRow) => (strategy === 'base' ? r.craft?.fullBuy : r.craft?.optimal)
 
   const cols: Column<ItemRow>[] = [
     {
@@ -45,7 +48,8 @@ export function buildItemColumns(opts: ColumnOpts): Column<ItemRow>[] {
       sortKey: r => r.name,
       render: row => (
         <span className="flex items-center gap-2">
-          <ItemIcon uniqueName={row.id} size={32} quality={opts.quality} />
+          {/* No quality param: keeps one cached icon URL per item across quality flips. */}
+          <ItemIcon uniqueName={row.id} size={32} />
           {opts.linkTo ? (
             <Link to={opts.linkTo(row)} className="text-[#e2e4ed] hover:text-[#c4af64] transition-colors">
               {row.name}
@@ -95,19 +99,29 @@ export function buildItemColumns(opts: ColumnOpts): Column<ItemRow>[] {
         label: 'Craft (optimized)',
         title: 'Cheapest mix of buy / craft / upgrade across the whole recipe tree',
         sortKey: r => r.craft?.optimal ?? Number.POSITIVE_INFINITY,
-        render: row => <CraftCell analysis={row.craft} returnRate={returnRate} />,
+        render: row => <CraftCell analysis={row.craft} />,
       },
       {
         key: 'profit_sell',
         label: 'Profit (sell)',
-        sortKey: r => profit(r.price?.sell_price_min, r.craft?.optimal, taxRate) ?? Number.NEGATIVE_INFINITY,
-        render: row => profitCell(profit(row.price?.sell_price_min, row.craft?.optimal, taxRate)),
+        title: 'Craft it, list just under the cheapest sell order, pay sales tax. Click a value for the materials to buy.',
+        className: 'font-bold text-[#e2e4ed]',
+        sortKey: r => profit(r.price?.sell_price_min, costOf(r), taxRate) ?? Number.NEGATIVE_INFINITY,
+        render: row => (
+          <ProfitMaterialsCell
+            analysis={row.craft}
+            revenue={row.price?.sell_price_min}
+            taxRate={taxRate}
+            strategy={strategy}
+          />
+        ),
       },
       {
         key: 'profit_buy',
         label: 'Profit (buy)',
-        sortKey: r => profit(r.price?.buy_price_max, r.craft?.optimal, taxRate) ?? Number.NEGATIVE_INFINITY,
-        render: row => profitCell(profit(row.price?.buy_price_max, row.craft?.optimal, taxRate)),
+        title: 'Craft it and dump it instantly into the best buy order - the pessimistic floor.',
+        sortKey: r => profit(r.price?.buy_price_max, costOf(r), taxRate) ?? Number.NEGATIVE_INFINITY,
+        render: row => profitCell(profit(row.price?.buy_price_max, costOf(row), taxRate)),
       },
     )
   }

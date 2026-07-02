@@ -105,6 +105,15 @@ describe('CraftSettingsPage', () => {
     expect(localStorage.getItem('forgegames_albion_focus_v1')).toBe('true')
   })
 
+  it('default town selector persists to localStorage', async () => {
+    renderPage()
+    const select = await screen.findByLabelText(/default town/i)
+    expect(select).toHaveValue('Bridgewatch')
+
+    await userEvent.selectOptions(select, 'Martlock')
+    expect(localStorage.getItem('forgegames_albion_default_city_v1')).toBe('Martlock')
+  })
+
   it('renders a fee input for every station type', async () => {
     renderPage()
     await screen.findByLabelText("Martlock Warrior's Forge fee")

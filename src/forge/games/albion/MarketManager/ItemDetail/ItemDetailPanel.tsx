@@ -8,9 +8,14 @@ import { chartTicks, tickLabel } from '../chartTicks'
 import { utcDate } from '../../../../../utils/date'
 import { useLiveItemPrices, priceKey } from '../ItemIndex/useItemPrices'
 import { useItemRecipes } from '../ItemIndex/useItemRecipes'
-import { parseTier, parseEnchant, withTier, withEnchant, tierLabel } from '../ItemIndex/itemMeta'
-import { analyzeCraft, collectRecipeIds, profit, type PriceOf } from '../ItemIndex/craftCost'
-import { PercentField } from '../ItemIndex/PercentField'
+import { parseTier, parseEnchant, withTier, withEnchant, tierLabel, isResource } from '../ItemIndex/itemMeta'
+import { analyzeCraft, collectRecipeIds, profit, type PriceOf, type ReturnRateOf } from '../ItemIndex/craftCost'
+import { returnRateFor, salesTaxRate, stationFeeFor, useCraftSettings } from '../craftEconomics'
+import {
+  loadCraftStrategy, loadFocus, loadMatSource, loadPremium,
+  saveCraftStrategy, saveMatSource,
+} from '../premium'
+import { StrategyToggles } from '../ItemIndex/StrategyToggles'
 import { useItemHistory } from './useItemHistory'
 import { useItemName } from './useItemName'
 import { RecipeTreeCard } from './RecipeTreeCard'
@@ -101,12 +106,17 @@ export function ItemDetailPanel({
   actions?: ReactNode
 }) {
   const [period, setPeriod] = useState(PERIODS[1])
-  const [returnPct, setReturnPct] = useState(15)
-  const [taxPct, setTaxPct] = useState(6.5)
+  const [matSource, setMatSource] = useState(loadMatSource)
+  const [strategy, setStrategy] = useState(loadCraftStrategy)
+  const settings = useCraftSettings()
+  const taxRate = salesTaxRate(loadPremium())
 
   const fetchedName = useItemName(itemId)
   const tier = parseTier(itemId)
   const enchant = parseEnchant(itemId)
+  // Resources have no quality tiers - pin lookups to quality 1 and drop the quality UI.
+  const resource = isResource(itemId)
+  const effQuality = resource ? 1 : quality
 
   const { recipes } = useItemRecipes([itemId])
   const recipe = recipes.get(itemId)
@@ -123,15 +133,25 @@ export function ItemDetailPanel({
   const { prices, fetchedAt } = useLiveItemPrices(allIds, city, ALL_QUALITIES)
   const { series, loading: historyLoading, error: historyError } = useItemHistory(itemId, city, period.timeScale)
 
-  // Materials price at quality 1; a 0 from the price API means "no data", not free.
+  // Materials price at quality 1; matSource picks instant-buy vs buy-order prices.
+  // A 0 from the price API means "no data", not free.
   const priceOf: PriceOf = useMemo(
-    () => id => prices.get(priceKey(id, city, 1))?.sell_price_min || null,
-    [prices, city],
+    () => id => {
+      const row = prices.get(priceKey(id, city, 1))
+      return (matSource === 'buy' ? row?.buy_price_max : row?.sell_price_min) || null
+    },
+    [prices, city, matSource],
   )
 
+  // Craft Settings applied: bonus-aware return rates per craft line (+focus), station fee.
+  const rrOf: ReturnRateOf = useMemo(() => {
+    const focus = loadFocus()
+    return id => returnRateFor(id, city, focus)
+  }, [city])
+
   const analysis = useMemo(
-    () => analyzeCraft(recipe, priceOf, returnPct / 100),
-    [recipe, priceOf, returnPct],
+    () => analyzeCraft(recipe, priceOf, rrOf, stationFeeFor(itemId, city, settings)),
+    [recipe, priceOf, rrOf, itemId, city, settings],
   )
 
   const chartData = useMemo<ChartPoint[]>(() => {
@@ -158,24 +178,42 @@ export function ItemDetailPanel({
   }, [series, period])
 
   const ticks = useMemo(() => chartTicks(chartData.map(p => p.time), period.hours), [chartData, period])
-  const chartedQualities = useMemo(
-    () => ALL_QUALITIES.filter(q => series.some(s => s.quality === q && s.data.length > 0)),
-    [series],
-  )
+  const chartedQualities = useMemo(() => {
+    const withData = ALL_QUALITIES.filter(q => series.some(s => s.quality === q && s.data.length > 0))
+    // Resource "qualities" are duplicates of the same data - chart a single line.
+    if (resource) return withData.length ? [withData.includes(1) ? 1 : withData[0]] : []
+    return withData
+  }, [series, resource])
 
-  const sell = prices.get(priceKey(itemId, city, quality))?.sell_price_min || null
-  const buy = prices.get(priceKey(itemId, city, quality))?.buy_price_max || null
-  const profitSell = profit(sell, analysis?.optimal, taxPct / 100)
+  const sell = prices.get(priceKey(itemId, city, effQuality))?.sell_price_min || null
+  const buy = prices.get(priceKey(itemId, city, effQuality))?.buy_price_max || null
+  const strategyCost = strategy === 'base' ? analysis?.fullBuy : analysis?.optimal
+  const profitSell = profit(sell, strategyCost, taxRate)
 
   return (
     <div className="space-y-4 min-w-0">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <ItemIcon uniqueName={itemId} size={56} quality={quality} />
+        <ItemIcon uniqueName={itemId} size={56} quality={resource ? undefined : quality} />
         <div className="min-w-0 flex-1">
-          <h2 className="text-lg font-semibold text-[#e2e4ed] truncate">{name || itemId}</h2>
+          <div className="flex items-center gap-2 min-w-0">
+            <h2 className="text-lg font-semibold text-[#e2e4ed] truncate">{name || itemId}</h2>
+            <a
+              href={`https://wiki.albiononline.com/wiki/Special:Search?search=${encodeURIComponent(name || itemId)}&go=Go`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Open official wiki page"
+              className="shrink-0 text-[#6b7280] hover:text-[#c4af64] transition-colors"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-label="Wiki">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+            </a>
+          </div>
           <p className="text-xs text-[#6b7280]">
-            T{tier}{enchant > 0 ? `.${enchant}` : ''} · {QUALITIES.find(q => q.value === quality)?.label} · {city}
+            T{tier}{enchant > 0 ? `.${enchant}` : ''}{resource ? '' : ` · ${QUALITIES.find(q => q.value === quality)?.label}`} · {city}
           </p>
         </div>
         {actions}
@@ -201,7 +239,9 @@ export function ItemDetailPanel({
         </div>
       </div>
 
-      {/* Per-quality market prices; click selects the quality the stats below use */}
+      {/* Per-quality market prices; click selects the quality the stats below use.
+          Resources have no quality tiers - the strip is hidden for them. */}
+      {!resource && (
       <div className="grid grid-cols-5 gap-2">
         {QUALITIES.map(q => {
           const p = prices.get(priceKey(itemId, city, q.value))?.sell_price_min || null
@@ -222,8 +262,9 @@ export function ItemDetailPanel({
           )
         })}
       </div>
+      )}
 
-      {/* History chart - one line per quality */}
+      {/* History chart - one line per quality (single line for resources) */}
       <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-4">
         <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
           <h3 className="text-sm font-medium text-[#9ca3af] tracking-wide uppercase">Price History</h3>
@@ -239,7 +280,7 @@ export function ItemDetailPanel({
           {chartedQualities.map(q => (
             <span key={q} className="flex items-center gap-1">
               <span className="w-3 h-0.5 rounded" style={{ background: QUALITY_COLORS[q] }} />
-              {QUALITIES.find(x => x.value === q)?.label}
+              {resource ? 'Price' : QUALITIES.find(x => x.value === q)?.label}
             </span>
           ))}
         </div>
@@ -278,10 +319,10 @@ export function ItemDetailPanel({
                   key={q}
                   type="monotone"
                   dataKey={`q${q}`}
-                  stroke={QUALITY_COLORS[q]}
-                  strokeWidth={q === quality ? 2 : 1.25}
+                  stroke={resource ? '#c4af64' : QUALITY_COLORS[q]}
+                  strokeWidth={q === effQuality ? 2 : 1.25}
                   dot={false}
-                  name={QUALITIES.find(x => x.value === q)?.label}
+                  name={resource ? 'Price' : QUALITIES.find(x => x.value === q)?.label}
                   connectNulls
                 />
               ))}
@@ -290,12 +331,19 @@ export function ItemDetailPanel({
         )}
       </div>
 
-      {/* Economics */}
-      <div className="flex flex-wrap items-end gap-3">
-        <PercentField label="Return %" value={returnPct} onChange={setReturnPct} />
-        <PercentField label="Tax %" value={taxPct} onChange={setTaxPct} />
+      {/* Economics - all values from Craft Settings (premium tax, focus, station fees) */}
+      <div className="flex flex-wrap items-center gap-4">
+        <StrategyToggles
+          matSource={matSource}
+          onMatSource={v => { setMatSource(v); saveMatSource(v) }}
+          strategy={strategy}
+          onStrategy={v => { setStrategy(v); saveCraftStrategy(v) }}
+        />
+        <span className="text-xs text-[#6b7280]">
+          tax {Math.round(taxRate * 100)}% · mats at {matSource === 'buy' ? 'buy-order' : 'instant-buy'} prices · bonus-aware returns · fees from Craft Settings
+        </span>
         {fetchedAt && (
-          <span className="text-xs text-[#6b7280] pb-1.5">
+          <span className="text-xs text-[#6b7280]">
             prices updated {fetchedAt.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
           </span>
         )}
@@ -306,9 +354,10 @@ export function ItemDetailPanel({
         <StatCard label="Craft (base)" value={fmt(analysis?.fullBuy)} title="Top-level recipe materials bought at current market prices - no sub-crafting" />
         <StatCard label="Craft (optimized)" value={fmt(analysis?.optimal)} title="Cheapest mix of buy / craft / upgrade across the whole recipe tree" gold />
         <StatCard
-          label="Profit (sell)"
+          label={`Profit (sell, ${strategy === 'base' ? 'base mats' : 'optimized'})`}
           value={profitSell == null ? '-' : `${profitSell > 0 ? '+' : ''}${fmt(profitSell)}`}
           tone={profitSell == null ? undefined : profitSell > 0 ? 'green' : 'red'}
+          bold
         />
       </div>
 
@@ -345,6 +394,9 @@ export function ItemDetailPanel({
             {analysis.silver > 0 && (
               <p className="text-[10px] text-[#6b7280] pt-0.5">+ {fmt(analysis.silver)} silver crafting fee</p>
             )}
+            {analysis.stationFee > 0 && (
+              <p className="text-[10px] text-[#6b7280] pt-0.5">+ {fmt(analysis.stationFee)} station fee (Craft Settings)</p>
+            )}
             {analysis.amount > 1 && (
               <p className="text-[10px] text-[#6b7280] pt-0.5">per unit · crafts {analysis.amount} at once</p>
             )}
@@ -357,19 +409,19 @@ export function ItemDetailPanel({
         <RecipeTreeCard
           recipe={recipe}
           priceOf={priceOf}
-          rr={returnPct / 100}
+          rrOf={rrOf}
         />
       )}
     </div>
   )
 }
 
-function StatCard({ label, value, title, gold, tone }: { label: string; value: string; title?: string; gold?: boolean; tone?: 'green' | 'red' }) {
+function StatCard({ label, value, title, gold, tone, bold }: { label: string; value: string; title?: string; gold?: boolean; tone?: 'green' | 'red'; bold?: boolean }) {
   const color = tone === 'green' ? 'text-green-400' : tone === 'red' ? 'text-red-400' : gold ? 'text-[#c4af64]' : 'text-[#e2e4ed]'
   return (
-    <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-3" title={title}>
-      <p className="text-[10px] text-[#6b7280] uppercase tracking-widest mb-1">{label}</p>
-      <p className={`text-base font-semibold ${color}`}>{value}</p>
+    <div className={`bg-[#1a1d27] border rounded-lg p-3 ${bold ? 'border-[#c4af64]/50' : 'border-[#2a2d3a]'}`} title={title}>
+      <p className={`text-[10px] uppercase tracking-widest mb-1 ${bold ? 'text-[#c4af64] font-semibold' : 'text-[#6b7280]'}`}>{label}</p>
+      <p className={`text-base ${bold ? 'font-bold' : 'font-semibold'} ${color}`}>{value}</p>
     </div>
   )
 }

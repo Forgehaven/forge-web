@@ -4,6 +4,10 @@ import type { CraftAnalysis, CraftMaterial, RecipeNode } from './types'
 // Returns null when no price is known (can't buy / can't craft through it).
 export type PriceOf = (id: string) => number | null
 
+// Resource return rate (fraction) for CRAFTING a given item - resolved per node so bonus
+// cities apply to exactly their specialty lines (see craftEconomics.returnRateFor).
+export type ReturnRateOf = (id: string) => number
+
 // Effective quantity after the crafting resource-return rate (you get some materials back).
 function adj(count: number, returnRate: number): number {
   return count * (1 - returnRate)
@@ -14,15 +18,15 @@ export type AcquireMode = 'buy' | 'craft' | 'upgrade'
 // Cheapest of buy-at-market / craft-from-children / transmute-from-the-level-below, with the
 // winning mode. Cost is null when no route has known prices. Exported for the recipe-tree
 // card, which expands or collapses nodes based on the winning mode.
-export function bestMode(node: RecipeNode, priceOf: PriceOf, rr: number): { mode: AcquireMode; cost: number | null } {
+export function bestMode(node: RecipeNode, priceOf: PriceOf, rrOf: ReturnRateOf): { mode: AcquireMode; cost: number | null } {
   let mode: AcquireMode = 'buy'
   let cost = priceOf(node.item_id)
-  const craft = craftOptimal(node, priceOf, rr)
+  const craft = craftOptimal(node, priceOf, rrOf)
   if (craft != null && (cost == null || craft < cost)) {
     mode = 'craft'
     cost = craft
   }
-  const up = upgradeOptimal(node, priceOf, rr)
+  const up = upgradeOptimal(node, priceOf, rrOf)
   if (up != null && (cost == null || up < cost)) {
     mode = 'upgrade'
     cost = up
@@ -30,17 +34,18 @@ export function bestMode(node: RecipeNode, priceOf: PriceOf, rr: number): { mode
   return { mode, cost }
 }
 
-function acquireOptimal(node: RecipeNode, priceOf: PriceOf, rr: number): number | null {
-  return bestMode(node, priceOf, rr).cost
+function acquireOptimal(node: RecipeNode, priceOf: PriceOf, rrOf: ReturnRateOf): number | null {
+  return bestMode(node, priceOf, rrOf).cost
 }
 
 // Craft one unit from optimally-acquired materials: flat silver fee + children, divided by the
 // batch size for recipes that produce several units per craft.
-function craftOptimal(node: RecipeNode, priceOf: PriceOf, rr: number): number | null {
+function craftOptimal(node: RecipeNode, priceOf: PriceOf, rrOf: ReturnRateOf): number | null {
   if (!node.craftable || node.recipe.length === 0) return null
+  const rr = rrOf(node.item_id)
   let sum = node.silver ?? 0
   for (const child of node.recipe) {
-    const c = acquireOptimal(child, priceOf, rr)
+    const c = acquireOptimal(child, priceOf, rrOf)
     if (c == null) return null
     sum += c * adj(child.count ?? 1, rr)
   }
@@ -49,10 +54,10 @@ function craftOptimal(node: RecipeNode, priceOf: PriceOf, rr: number): number | 
 
 // Produce one unit by transmuting the enchant level below: acquire it, then pay the upgrade
 // materials at market. No crafting station involved, so no return rate on the materials.
-function upgradeOptimal(node: RecipeNode, priceOf: PriceOf, rr: number): number | null {
+function upgradeOptimal(node: RecipeNode, priceOf: PriceOf, rrOf: ReturnRateOf): number | null {
   const up = node.upgrade
   if (!up) return null
-  let sum = acquireOptimal(up.from, priceOf, rr)
+  let sum = acquireOptimal(up.from, priceOf, rrOf)
   if (sum == null) return null
   for (const mat of up.materials) {
     const p = priceOf(mat.item_id)
@@ -63,8 +68,9 @@ function upgradeOptimal(node: RecipeNode, priceOf: PriceOf, rr: number): number 
 }
 
 // Craft the node buying ALL direct children at market (no sub-crafting).
-function craftFullBuy(node: RecipeNode, priceOf: PriceOf, rr: number): number | null {
+function craftFullBuy(node: RecipeNode, priceOf: PriceOf, rrOf: ReturnRateOf): number | null {
   if (!node.craftable || node.recipe.length === 0) return null
+  const rr = rrOf(node.item_id)
   let sum = node.silver ?? 0
   for (const child of node.recipe) {
     const c = priceOf(child.item_id)
@@ -75,20 +81,22 @@ function craftFullBuy(node: RecipeNode, priceOf: PriceOf, rr: number): number | 
 }
 
 // Acquire a node by refining everything craftable from raw (never buy an intermediate).
-function acquireFullCraft(node: RecipeNode, priceOf: PriceOf, rr: number): number | null {
+function acquireFullCraft(node: RecipeNode, priceOf: PriceOf, rrOf: ReturnRateOf): number | null {
   if (!node.craftable || node.recipe.length === 0) return priceOf(node.item_id)
+  const rr = rrOf(node.item_id)
   let sum = node.silver ?? 0
   for (const child of node.recipe) {
-    const c = acquireFullCraft(child, priceOf, rr)
+    const c = acquireFullCraft(child, priceOf, rrOf)
     if (c == null) return null
     sum += c * adj(child.count ?? 1, rr)
   }
   return sum / (node.amount ?? 1)
 }
 
-function craftMaterials(node: RecipeNode, priceOf: PriceOf, rr: number): CraftMaterial[] {
+function craftMaterials(node: RecipeNode, priceOf: PriceOf, rrOf: ReturnRateOf): CraftMaterial[] {
+  const rr = rrOf(node.item_id)
   return node.recipe.map(child => {
-    const { mode, cost } = bestMode(child, priceOf, rr)
+    const { mode, cost } = bestMode(child, priceOf, rrOf)
     return {
       id: child.item_id,
       name: child.name || child.item_id,
@@ -100,7 +108,8 @@ function craftMaterials(node: RecipeNode, priceOf: PriceOf, rr: number): CraftMa
   })
 }
 
-function baseMaterials(node: RecipeNode, priceOf: PriceOf, rr: number): CraftMaterial[] {
+function baseMaterials(node: RecipeNode, priceOf: PriceOf, rrOf: ReturnRateOf): CraftMaterial[] {
+  const rr = rrOf(node.item_id)
   return node.recipe.map(child => {
     const p = priceOf(child.item_id)
     return {
@@ -114,9 +123,9 @@ function baseMaterials(node: RecipeNode, priceOf: PriceOf, rr: number): CraftMat
   })
 }
 
-function upgradeMaterials(node: RecipeNode, priceOf: PriceOf, rr: number): CraftMaterial[] {
+function upgradeMaterials(node: RecipeNode, priceOf: PriceOf, rrOf: ReturnRateOf): CraftMaterial[] {
   const up = node.upgrade!
-  const from = bestMode(up.from, priceOf, rr)
+  const from = bestMode(up.from, priceOf, rrOf)
   const lines: CraftMaterial[] = [{
     id: up.from.item_id,
     name: up.from.name || up.from.item_id,
@@ -140,31 +149,40 @@ function upgradeMaterials(node: RecipeNode, priceOf: PriceOf, rr: number): Craft
 }
 
 // Full production-cost analysis for an item we intend to MAKE (craft or transmute up - never
-// plain buy; only its materials are buy-vs-craft-vs-upgrade). Returns null if the item has
-// neither a recipe nor an upgrade path.
+// plain buy; only its materials are buy-vs-craft-vs-upgrade). `stationFee` is the flat silver
+// the station owner charges, added to every strategy. Returns null if the item has neither a
+// recipe nor an upgrade path.
 export function analyzeCraft(
   node: RecipeNode | undefined,
   priceOf: PriceOf,
-  returnRate: number,
+  rrOf: ReturnRateOf,
+  stationFee = 0,
 ): CraftAnalysis | null {
   if (!node) return null
   const hasRecipe = node.craftable && node.recipe.length > 0
   if (!hasRecipe && !node.upgrade) return null
 
-  const craft = craftOptimal(node, priceOf, returnRate)
-  const upgrade = upgradeOptimal(node, priceOf, returnRate)
+  const craft = craftOptimal(node, priceOf, rrOf)
+  const upgrade = upgradeOptimal(node, priceOf, rrOf)
   const viaUpgrade = upgrade != null && (craft == null || upgrade < craft)
+  const optimal = viaUpgrade ? upgrade : craft
+  const fullBuy = craftFullBuy(node, priceOf, rrOf)
+  const fullCraft = acquireFullCraft(node, priceOf, rrOf)
+  const shopping = shoppingList(node, priceOf, rrOf)
 
   return {
-    optimal: viaUpgrade ? upgrade : craft,
-    fullBuy: craftFullBuy(node, priceOf, returnRate),
-    fullCraft: acquireFullCraft(node, priceOf, returnRate),
+    optimal: optimal == null ? null : optimal + stationFee,
+    fullBuy: fullBuy == null ? null : fullBuy + stationFee,
+    fullCraft: fullCraft == null ? null : fullCraft + stationFee,
     materials: viaUpgrade
-      ? upgradeMaterials(node, priceOf, returnRate)
-      : craftMaterials(node, priceOf, returnRate),
-    baseMaterials: baseMaterials(node, priceOf, returnRate),
+      ? upgradeMaterials(node, priceOf, rrOf)
+      : craftMaterials(node, priceOf, rrOf),
+    baseMaterials: baseMaterials(node, priceOf, rrOf),
+    shopping: shopping.lines,
+    shoppingSilver: shopping.silver,
     silver: node.silver ?? 0,
     amount: node.amount ?? 1,
+    stationFee,
   }
 }
 
@@ -197,7 +215,7 @@ export interface ShoppingLine {
 export function shoppingList(
   node: RecipeNode,
   priceOf: PriceOf,
-  rr: number,
+  rrOf: ReturnRateOf,
 ): { lines: ShoppingLine[]; silver: number } {
   const acc = new Map<string, ShoppingLine>()
   let silver = 0
@@ -209,8 +227,8 @@ export function shoppingList(
   }
 
   function produce(n: RecipeNode, units: number) {
-    const craft = craftOptimal(n, priceOf, rr)
-    const up = upgradeOptimal(n, priceOf, rr)
+    const craft = craftOptimal(n, priceOf, rrOf)
+    const up = upgradeOptimal(n, priceOf, rrOf)
     if (up != null && (craft == null || up < craft)) {
       visit(n.upgrade!.from, units)
       for (const mat of n.upgrade!.materials) {
@@ -218,6 +236,7 @@ export function shoppingList(
       }
       return
     }
+    const rr = rrOf(n.item_id)
     const crafts = units / (n.amount ?? 1)
     silver += (n.silver ?? 0) * crafts
     for (const child of n.recipe) {
@@ -226,13 +245,31 @@ export function shoppingList(
   }
 
   function visit(n: RecipeNode, units: number) {
-    const { mode } = bestMode(n, priceOf, rr)
+    const { mode } = bestMode(n, priceOf, rrOf)
     if (mode === 'buy') buyLine(n.item_id, n.name || n.item_id, units, priceOf(n.item_id))
     else produce(n, units)
   }
 
   produce(node, 1)
   return { lines: [...acc.values()], silver }
+}
+
+// Same shape as shoppingList, but along the BASE path: buy every direct material at market
+// and craft once - no sub-crafting, no upgrades. For crafters who skip the extra margin.
+export function shoppingListBase(
+  node: RecipeNode,
+  priceOf: PriceOf,
+  rrOf: ReturnRateOf,
+): { lines: ShoppingLine[]; silver: number } {
+  const rr = rrOf(node.item_id)
+  const crafts = 1 / (node.amount ?? 1)
+  const lines = node.recipe.map(child => ({
+    id: child.item_id,
+    name: child.name || child.item_id,
+    count: adj(child.count ?? 1, rr) * crafts,
+    unitCost: priceOf(child.item_id),
+  }))
+  return { lines, silver: (node.silver ?? 0) * crafts }
 }
 
 // Same shape as shoppingList, but along the FULL-CRAFT path: every refinable node is refined
@@ -242,7 +279,7 @@ export function shoppingList(
 export function shoppingListFullCraft(
   node: RecipeNode,
   priceOf: PriceOf,
-  rr: number,
+  rrOf: ReturnRateOf,
 ): { lines: ShoppingLine[]; silver: number } {
   const acc = new Map<string, ShoppingLine>()
   let silver = 0
@@ -254,6 +291,7 @@ export function shoppingListFullCraft(
       else acc.set(n.item_id, { id: n.item_id, name: n.name || n.item_id, count: units, unitCost: priceOf(n.item_id) })
       return
     }
+    const rr = rrOf(n.item_id)
     const crafts = units / (n.amount ?? 1)
     silver += (n.silver ?? 0) * crafts
     for (const child of n.recipe) {
@@ -261,6 +299,7 @@ export function shoppingListFullCraft(
     }
   }
 
+  const rr = rrOf(node.item_id)
   const crafts = 1 / (node.amount ?? 1)
   silver += (node.silver ?? 0) * crafts
   for (const child of node.recipe) {

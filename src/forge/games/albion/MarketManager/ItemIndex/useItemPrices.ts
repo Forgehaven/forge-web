@@ -41,7 +41,8 @@ export function useItemPrices(
       let touched = false
       const next = new Map(prev)
       for (const c of changes) {
-        const k = priceKey(c.item_id, c.city, c.quality)
+        // WS frames carry the lake's city spelling ('Fort Sterling'); keys use the token.
+        const k = priceKey(c.item_id, c.city.replace(' ', ''), c.quality)
         const row = next.get(k)
         if (row) {
           next.set(k, { ...row, sell_price_min: c.new_price })

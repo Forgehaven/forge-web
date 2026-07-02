@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { AuthProvider } from '../../../../auth/AuthProvider'
 import { LayoutOverrideProvider } from '../../../../components/LayoutOverride'
@@ -59,6 +60,25 @@ function renderPage() {
 }
 
 describe('BestValuePage', () => {
+  it('strategy toggles refetch with new params and persist to localStorage', async () => {
+    renderPage()
+    expect(await screen.findAllByText('Broadsword')).toHaveLength(2)
+
+    await userEvent.click(screen.getByText('Buy orders'))
+    await waitFor(() => {
+      const urls = fetchSpy.mock.calls.map(c => String(c[0])).filter(u => u.includes('best-value'))
+      expect(urls.some(u => u.includes('mats=buy'))).toBe(true)
+    })
+    expect(localStorage.getItem('forgegames_albion_mat_source_v1')).toBe('buy')
+
+    await userEvent.click(screen.getByText('Base mats'))
+    await waitFor(() => {
+      const urls = fetchSpy.mock.calls.map(c => String(c[0])).filter(u => u.includes('best-value'))
+      expect(urls.some(u => u.includes('strategy=base'))).toBe(true)
+    })
+    expect(localStorage.getItem('forgegames_albion_craft_strategy_v1')).toBe('base')
+  })
+
   it('renders (item, city) rows across cities with returns and detail links', async () => {
     renderPage()
 
@@ -72,9 +92,9 @@ describe('BestValuePage', () => {
     const links = screen.getAllByText('Broadsword').map(el => el.closest('a')!.getAttribute('href'))
     expect(links).toContain('/games/albion/market-manager/item/T4_MAIN_SWORD?quality=1&city=Martlock')
 
-    // no filter controls - only the per-user premium flag rides the request
+    // no filter controls - the per-user flags + strategy toggles ride the request
     expect(screen.queryByLabelText(/city/i)).toBeNull()
     const url = fetchSpy.mock.calls.map(c => String(c[0])).find(u => u.includes('best-value'))!
-    expect(url).toContain('/game/albion/best-value?premium=true&focus=false')
+    expect(url).toContain('/game/albion/best-value?premium=true&focus=false&mats=sell&strategy=optimized')
   })
 })
