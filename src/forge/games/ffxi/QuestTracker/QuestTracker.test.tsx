@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { AuthProvider } from '../../../../auth/AuthProvider'
@@ -119,7 +119,7 @@ describe('QuestTracker synced', () => {
 
     expect(await screen.findByText('Mychar')).toBeInTheDocument()
     expect(await screen.findByText('· Rank 4')).toBeInTheDocument()
-    expect(screen.getByLabelText('Eco-Warrior Windurst')).toBeChecked()
+    await waitFor(() => expect(screen.getByLabelText('Eco-Warrior Windurst')).toBeChecked())
     expect(screen.getByText('Done this week')).toBeInTheDocument()
   })
 
@@ -130,7 +130,8 @@ describe('QuestTracker synced', () => {
     const { unmount } = renderTracker()
 
     await screen.findByText('Mychar')
-    expect(screen.getByLabelText('Eco-Warrior Windurst')).toBeChecked()
+    // Wait for the server blob to load (the save gate opens with it).
+    await waitFor(() => expect(screen.getByLabelText('Eco-Warrior Windurst')).toBeChecked())
     await userEvent.click(screen.getByLabelText('Eco-Warrior Bastok'))
     // Unmount flushes the debounced save immediately.
     unmount()

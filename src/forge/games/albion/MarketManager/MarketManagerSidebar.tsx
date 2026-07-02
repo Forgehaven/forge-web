@@ -4,6 +4,8 @@ import { SidebarHeader } from '../../../../components/Sidebar/SidebarHeader'
 import { SidebarDivider } from '../../../../components/Sidebar/SidebarDivider'
 import { SidebarFooter } from '../../../../components/Sidebar/SidebarFooter'
 import { mmAccess, useAuth } from '../../../../auth/authContext'
+import { useSidebarCollapse } from '../../../../hooks/useSidebarCollapse'
+import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import { CollapsibleSection } from './CollapsibleSection'
 import { MARKET_CATEGORY_SECTIONS } from './marketCategories'
 
@@ -35,6 +37,7 @@ interface MarketManagerSidebarProps {
 export function MarketManagerSidebar({ isOpen, onClose, onOpenSettings, onOpenLogin }: MarketManagerSidebarProps) {
   const { isAuthenticated, user } = useAuth()
   const access = mmAccess(user)
+  const { collapsed, toggle } = useSidebarCollapse(STORAGE_KEYS.albionMMCollapsed)
 
   return (
     <SidebarShell isOpen={isOpen}>
@@ -120,7 +123,11 @@ export function MarketManagerSidebar({ isOpen, onClose, onOpenSettings, onOpenLo
           </NavLink>
 
           <div className="mt-0.5 mb-0.5">
-            <CollapsibleSection title="Market Fixing">
+            <CollapsibleSection
+              title="Market Fixing"
+              open={!collapsed['Market Fixing']}
+              onToggle={() => toggle('Market Fixing')}
+            >
               <MMNavLink to="/games/albion/market-manager/market-fixing/x-city-arbitrage" onClick={onClose}>X-City Arbitrage</MMNavLink>
               <MMNavLink to="/games/albion/market-manager/market-fixing/velocity-flip" onClick={onClose}>Velocity Flip</MMNavLink>
               <MMNavLink to="/games/albion/market-manager/market-fixing/route-risk-reward" onClick={onClose}>Route Risk/Reward</MMNavLink>
@@ -128,7 +135,12 @@ export function MarketManagerSidebar({ isOpen, onClose, onOpenSettings, onOpenLo
             </CollapsibleSection>
 
             {MARKET_CATEGORY_SECTIONS.map(section => (
-              <CollapsibleSection key={section.title} title={section.title}>
+              <CollapsibleSection
+                key={section.title}
+                title={section.title}
+                open={!collapsed[section.title]}
+                onToggle={() => toggle(section.title)}
+              >
                 {section.items.map(item => (
                   <MMNavLink key={item.slug} to={`/games/albion/market-manager/${item.slug}`} onClick={onClose}>
                     {item.label}

@@ -1,15 +1,20 @@
 import { useState, type ReactNode } from 'react'
 
-export function CollapsibleSection({ title, defaultOpen = true, children }: {
+// Uncontrolled by default; pass open + onToggle to control it (the MM sidebar
+// does, to persist collapse state in localStorage via useSidebarCollapse).
+export function CollapsibleSection({ title, defaultOpen = true, open: controlledOpen, onToggle, children }: {
   title: string
   defaultOpen?: boolean
+  open?: boolean
+  onToggle?: () => void
   children: ReactNode
 }) {
-  const [open, setOpen] = useState(defaultOpen)
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen)
+  const open = controlledOpen ?? uncontrolledOpen
   return (
     <div>
       <button
-        onClick={() => setOpen(o => !o)}
+        onClick={onToggle ?? (() => setUncontrolledOpen(o => !o))}
         className="w-full flex items-center justify-between pl-[11px] pr-3 pt-1 pb-0 text-xs font-medium text-[#6b7280] uppercase tracking-wider hover:text-[#9ca3af] transition-colors cursor-pointer"
       >
         {title}

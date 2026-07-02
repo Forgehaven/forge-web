@@ -11,6 +11,7 @@ export const STORAGE_KEYS = {
   ffxiFriendViewer:        'forgegames_ffxi_friendviewer_v1',
   ffxiQuestTracker:        'forgegames_ffxi_questtracker_v1',
   albionItemFavourites:    'forgegames_albion_item_favourites_v1',
+  albionMMCollapsed:       'forgegames_albion_mm_collapsed_v1',
   ffxiSelectedChar:        'forgegames_ffxi_selectedchar_v1',
   ffxiSpellNoSync:         'forgegames_ffxi_spelltracker_nosync_v1',
 } as const

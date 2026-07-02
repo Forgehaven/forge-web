@@ -26,6 +26,21 @@ export const MARKET_CATEGORY_SECTIONS: MarketCategorySection[] = [
     ],
   },
   {
+    title: 'Toolmaker',
+    items: [
+      { slug: 'toolmaker/siege-equipment', label: 'Siege Equipment' },
+      { slug: 'toolmaker/bags', label: 'Bags' },
+      { slug: 'toolmaker/capes', label: 'Capes' },
+      { slug: 'toolmaker/fisherman', label: 'Fisherman' },
+      { slug: 'toolmaker/lumberjack', label: 'Lumberjack' },
+      { slug: 'toolmaker/quarrier', label: 'Quarrier' },
+      { slug: 'toolmaker/miner', label: 'Miner' },
+      { slug: 'toolmaker/skinner', label: 'Skinner' },
+      { slug: 'toolmaker/harvester', label: 'Harvester' },
+      { slug: 'toolmaker/tracking', label: 'Tracking' },
+    ],
+  },
+  {
     title: 'Consumables',
     items: [
       { slug: 'consumables/food', label: 'Food' },
