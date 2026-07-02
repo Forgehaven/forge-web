@@ -10,6 +10,7 @@ import { SkillchainCalc } from './ffxi/SkillchainCalc'
 import { ClammingTracker } from './ffxi/ClammingTracker'
 import { QuestTracker } from './ffxi/QuestTracker'
 import { SpellTracker } from './ffxi/SpellTracker'
+import { KeyItemTracker } from './ffxi/KeyItemTracker'
 import { TeleportCost } from './ffxi/TeleportCost'
 import { FriendViewer } from './ffxi/FriendViewer'
 import { AlbionSplash } from './albion/AlbionSplash'
@@ -46,6 +47,7 @@ export default function GamesLayout() {
           <Route path="ffxi/quest-tracker" element={<QuestTracker />} />
           <Route path="ffxi/clamming-tracker" element={<ClammingTracker />} />
           <Route path="ffxi/spell-tracker" element={<SpellTracker />} />
+          <Route path="ffxi/key-item-tracker" element={<KeyItemTracker />} />
           <Route path="ffxi/teleport-cost" element={<TeleportCost />} />
           <Route path="ffxi/friend-viewer" element={<FriendViewer />} />
           <Route path="albion" element={<AlbionSplash />} />

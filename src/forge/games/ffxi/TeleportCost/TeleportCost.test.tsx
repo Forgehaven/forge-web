@@ -84,16 +84,10 @@ describe('TeleportCost conquest sync', () => {
     expect(screen.queryByText('Reset Conquest')).toBeNull()
   })
 
-  it('char fetch error envelope shows Not found instead of success', async () => {
+  it('logged out shows the home-nation picker instead of a character fetch', async () => {
     const userEvent = (await import('@testing-library/user-event')).default
     fetchSpy.mockImplementation((url: string | URL) => {
       const u = String(url)
-      if (u.includes('/game/ffxi/char/')) {
-        // 200 with an error envelope - must NOT be treated as character data
-        return Promise.resolve(new Response(JSON.stringify({
-          status: 'error', message: 'Character not found', payload: null,
-        }), { status: 200 }))
-      }
       if (u.includes('/game/ffxi/conquest')) {
         return Promise.resolve(ok({ owners: {}, updated_at: null }))
       }
@@ -102,12 +96,13 @@ describe('TeleportCost conquest sync', () => {
 
     renderTool()
 
-    const input = await screen.findByPlaceholderText('Character name')
-    await userEvent.type(input, 'Typoname')
-    await userEvent.click(screen.getByText('Fetch'))
+    expect(await screen.findByText('Home Nation:')).toBeInTheDocument()
+    expect(screen.queryByPlaceholderText('Character name')).toBeNull()
+    // Beastmen own outposts but are not a pickable home nation.
+    expect(screen.queryByText('Beastmen')).toBeNull()
 
-    expect(await screen.findByText('Not found')).toBeInTheDocument()
-    expect(screen.queryByText('Loaded')).toBeNull()
+    await userEvent.click(screen.getByText('Bastok'))
+    expect(JSON.parse(localStorage.getItem('forgegames_ffxi_teleportcost_v1')!).nation).toBe(1)
   })
 
   it('shows no community note when the week is blank', async () => {

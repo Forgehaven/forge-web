@@ -1,7 +1,8 @@
-import type { NationMeta } from './components/CharacterHeader'
 import bastokIcon from './data/BastokIcon.png'
 import windurstIcon from './data/WindurstIcon.png'
 import sandoriaIcon from './data/SandoriaIcon.png'
+
+export type NationMeta = { name: string; symbol: string; color: string; icon?: string }
 
 // Char-API nation id space (0 San d'Oria, 1 Bastok, 2 Windurst) - used by
 // tools keyed to registered characters. TeleportCost keeps its own 1-4 map

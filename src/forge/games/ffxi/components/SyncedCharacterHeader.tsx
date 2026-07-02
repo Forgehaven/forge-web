@@ -1,6 +1,6 @@
 import { API_URLS } from '../../../../config/apiUrls'
 import { CharacterSelect } from './CharacterSelect'
-import type { NationMeta } from './CharacterHeader'
+import type { NationMeta } from '../nations'
 import type { FfxiCharacter } from '../api'
 
 // Logged-in replacement for CharacterHeader: round avatar + registered

@@ -86,25 +86,13 @@ describe('SpellTracker character selector', () => {
     expect(await screen.findByText('· Rank 5')).toBeInTheDocument()
   })
 
-  it('shows the fetched rank when logged out', async () => {
-    const userEvent = (await import('@testing-library/user-event')).default
-    fetchSpy.mockImplementation((url: string | URL) => {
-      const u = String(url)
-      if (u.includes('/game/ffxi/char/')) {
-        return Promise.resolve(ok({
-          name: 'Solochar', nation: 1, rank: 'Rank 3', avatar: null, jobs: { WHM: 30 },
-        }))
-      }
-      return Promise.resolve(new Response(JSON.stringify({ status: 'error' }), { status: 401 }))
-    })
+  it('logged out has no character fetch header, just the local tracker', async () => {
+    fetchSpy.mockResolvedValue(new Response(JSON.stringify({ status: 'error' }), { status: 401 }))
 
     renderTracker()
 
-    const input = await screen.findByPlaceholderText('Character name')
-    await userEvent.type(input, 'Solochar')
-    await userEvent.click(screen.getByText('Fetch'))
-
-    expect(await screen.findByText('Bastok')).toBeInTheDocument()
-    expect(screen.getByText('· Rank 3')).toBeInTheDocument()
+    expect(await screen.findByText('Tracker')).toBeInTheDocument()
+    expect(screen.queryByPlaceholderText('Character name')).toBeNull()
+    expect(screen.queryByText('Fetch')).toBeNull()
   })
 })

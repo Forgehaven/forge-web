@@ -2,14 +2,13 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import { OUTPOSTS, type Outpost } from '../data/zones'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import { useAuth } from '../../../../auth/authContext'
-import { fetchChar, getConquest, putConquest } from '../api'
+import { getConquest, putConquest } from '../api'
 import { lastConquestReset, formatNextReset } from '../conquest'
 import { useFfxiCharacters } from '../hooks/useFfxiCharacters'
 import { useCharRank } from '../hooks/useCharRank'
 import { SyncedCharacterHeader } from '../components/SyncedCharacterHeader'
 import { loadSelectedCharId } from '../selectedChar'
-import { CharacterHeader } from '../components/CharacterHeader'
-import type { NationMeta } from '../components/CharacterHeader'
+import type { NationMeta } from '../nations'
 import { ConfirmButton } from '../../../../components/ConfirmButton'
 import { ImportPanel } from '../../../../components/ImportPanel'
 import bastokIcon from '../data/BastokIcon.png'
@@ -20,7 +19,6 @@ import beastmenIcon from '../data/BeastmenIcon.png'
 const getNow = () => Date.now()
 
 const SK    = STORAGE_KEYS.ffxiTeleportCost
-const ST_SK = STORAGE_KEYS.ffxiSpellTracker
 
 // ---------------------------------------------------------------------------
 // Nations
@@ -34,6 +32,8 @@ const NATIONS: Record<NationId, NationMeta> = {
   4: { name: 'Beastmen',   symbol: '☠', color: '#9333ea', icon: beastmenIcon },
 }
 const NATION_IDS = [1, 2, 3, 4] as NationId[]
+// Beastmen own outposts but are not a selectable home nation.
+const HOME_NATION_IDS = [1, 2, 3] as NationId[]
 
 // The char API encodes nation 0/1/2 (San d'Oria/Bastok/Windurst); this tool
 // uses 1-4 (Bastok/Windurst/San d'Oria/Beastmen). Map registered-character
@@ -49,15 +49,12 @@ function wikiZoneUrl(zone: string) {
 // ---------------------------------------------------------------------------
 
 type SavedState = {
-  charName: string
   nation: NationId | null
-  rank: string | null
-  avatar: string | null
   owners: Record<string, NationId | null>
   savedAt: number
 }
 
-const DEFAULT: SavedState = { charName: '', nation: null, rank: null, avatar: null, owners: {}, savedAt: 0 }
+const DEFAULT: SavedState = { nation: null, owners: {}, savedAt: 0 }
 
 function loadState(): SavedState {
   try {
@@ -65,14 +62,7 @@ function loadState(): SavedState {
     if (own) {
       const p = JSON.parse(own) as Partial<SavedState>
       const owners = (p.savedAt ?? 0) < lastConquestReset() ? {} : (p.owners ?? {})
-      return { ...DEFAULT, ...p, owners }
-    }
-    // Seed charName / nation / avatar from SpellTracker if present
-    const st = localStorage.getItem(ST_SK)
-    if (st) {
-      const p = JSON.parse(st)
-      const seeded = p.nation !== null && p.nation !== undefined ? CHAR_NATION_TO_TC[p.nation] ?? null : null
-      return { ...DEFAULT, charName: p.charName ?? '', nation: seeded, rank: p.rank ?? null, avatar: p.avatar ?? null, savedAt: Date.now() }
+      return { nation: p.nation ?? null, owners, savedAt: p.savedAt ?? 0 }
     }
   } catch { /* ignore */ }
   return { ...DEFAULT, savedAt: Date.now() }
@@ -226,7 +216,6 @@ export function TeleportCost() {
     if (putTimer.current) clearTimeout(putTimer.current)
     if (pendingOwners.current) putConquest(pendingOwners.current)
   }, [])
-  const [fetchStatus, setFetchStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [importOpen, setImportOpen] = useState(false)
   const [copied, setCopied] = useState(false)
   const [sortCol, setSortCol] = useState<'zone' | 'region' | null>(null)
@@ -258,38 +247,6 @@ export function TeleportCost() {
     const withTs = { ...next, savedAt: getNow() }
     setSaved(withTs)
     localStorage.setItem(SK, JSON.stringify(withTs))
-  }
-
-  function setCharName(name: string) {
-    persist({ ...saved, charName: name })
-    setFetchStatus('idle')
-  }
-
-  async function fetchCharacter() {
-    const name = saved.charName.trim()
-    if (!name) return
-    setFetchStatus('loading')
-    try {
-      const res = await fetchChar(name)
-      if (res.status !== 'ok') {
-        setFetchStatus('error')
-        return
-      }
-      // Char API nations are 0/1/2; map into this tool's 1-4 ids (the old
-      // code stored the raw value, mis-highlighting fetched characters).
-      const apiNation = res.payload.nation
-      persist({
-        ...saved,
-        nation: apiNation !== null && apiNation !== undefined
-          ? CHAR_NATION_TO_TC[apiNation] ?? null
-          : null,
-        rank: res.payload.rank ?? null,
-        avatar: res.payload.avatar ?? null,
-      })
-      setFetchStatus('success')
-    } catch {
-      setFetchStatus('error')
-    }
   }
 
   function setOwner(zone: string, nation: NationId | null) {
@@ -342,7 +299,6 @@ export function TeleportCost() {
     })
   }, [sortCol, sortDir])
 
-  const nation = saved.nation !== null ? NATIONS[saved.nation] : null
   const synced = isAuthenticated && characters.length > 0
   const userNation = synced ? charNationId : saved.nation
 
@@ -361,38 +317,32 @@ export function TeleportCost() {
           rank={syncedRank}
         />
       ) : (
-      <CharacterHeader
-        charName={saved.charName}
-        avatar={saved.avatar}
-        nation={nation}
-        rank={saved.rank}
-        fetchStatus={fetchStatus}
-        onCharNameChange={setCharName}
-        onFetch={fetchCharacter}
-        onClear={() => persist({ ...saved, nation: null, rank: null, avatar: null })}
-        extra={
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-[#374151]">or select nation:</span>
-            {NATION_IDS.map(nid => {
-              const meta = NATIONS[nid]
-              return (
-                <button
-                  key={nid}
-                  onClick={() => persist({ ...saved, nation: nid, rank: null, avatar: null })}
-                  className="text-xs px-2.5 py-1 rounded border transition-colors cursor-pointer flex items-center gap-1.5"
-                  style={{ color: meta.color, borderColor: `${meta.color}50`, background: `${meta.color}10` }}
-                >
-                  {meta.icon
-                    ? <img src={meta.icon} alt="" className="w-3.5 h-3.5 object-contain shrink-0" />
-                    : meta.symbol
-                  }
-                  {meta.name}
-                </button>
-              )
-            })}
-          </div>
-        }
-      />
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-xs text-[#6b7280]">Home Nation:</span>
+          {HOME_NATION_IDS.map(nid => {
+            const meta = NATIONS[nid]
+            const active = saved.nation === nid
+            const dimmed = saved.nation !== null && !active
+            return (
+              <button
+                key={nid}
+                onClick={() => persist({ ...saved, nation: active ? null : nid })}
+                className="text-xs px-2.5 py-1 rounded border transition-colors cursor-pointer flex items-center gap-1.5"
+                style={active
+                  ? { color: meta.color, borderColor: meta.color, background: `${meta.color}25` }
+                  : dimmed
+                    ? { color: '#4b5563', borderColor: '#2a2d3a', background: 'transparent' }
+                    : { color: meta.color, borderColor: `${meta.color}50`, background: `${meta.color}10` }}
+              >
+                {meta.icon
+                  ? <img src={meta.icon} alt="" className="w-3.5 h-3.5 object-contain shrink-0" style={{ opacity: dimmed ? 0.25 : 1 }} />
+                  : meta.symbol
+                }
+                {meta.name}
+              </button>
+            )
+          })}
+        </div>
       )}
 
       {/* Title + controls */}

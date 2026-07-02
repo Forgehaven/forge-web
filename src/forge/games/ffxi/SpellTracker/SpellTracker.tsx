@@ -7,13 +7,13 @@ import {
 import { ELEMENT_COLORS } from '../data/elements'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import { useAuth } from '../../../../auth/authContext'
-import { fetchChar, getCharData, putCharData } from '../api'
+import { getCharData, putCharData } from '../api'
 import { useFfxiCharacters } from '../hooks/useFfxiCharacters'
 import { useSyncedBlob } from '../hooks/useSyncedBlob'
 import { useCharRank } from '../hooks/useCharRank'
 import { SyncedCharacterHeader } from '../components/SyncedCharacterHeader'
 import { loadSelectedCharId } from '../selectedChar'
-import { CharacterHeader } from '../components/CharacterHeader'
+import { ResetButton } from '../components/ResetButton'
 import { CHAR_NATIONS } from '../nations'
 
 const SK = STORAGE_KEYS.ffxiSpellTracker
@@ -36,31 +36,25 @@ const JOBS: JobAbbr[] = [
   // 'BLU', // not yet implemented
 ]
 
+// Tracked progress only. Logged out this lives in localStorage; logged in it
+// mirrors the selected character's server blob (name/nation/avatar/rank come
+// from the registered character row, not from here).
 type SavedState = {
-  charName: string
-  nation: number | null
-  rank: string | null
-  avatar: string | null
   jobLevels: Partial<Record<JobAbbr, number>>
   learned: Record<string, boolean>
 }
 
-// The per-character server blob: only the tracked progress. Name/nation/avatar
-// come from the registered character row.
-type SpellBlob = {
-  jobLevels: Partial<Record<JobAbbr, number>>
-  learned: Record<string, boolean>
-}
+type SpellBlob = SavedState
 
 function loadState(): SavedState {
   try {
     const raw = localStorage.getItem(SK)
     if (raw) {
       const parsed = JSON.parse(raw)
-      return { charName: '', nation: null, rank: null, avatar: null, jobLevels: {}, learned: {}, ...parsed }
+      return { jobLevels: parsed.jobLevels ?? {}, learned: parsed.learned ?? {} }
     }
   } catch { /* ignore */ }
-  return { charName: '', nation: null, rank: null, avatar: null, jobLevels: {}, learned: {} }
+  return { jobLevels: {}, learned: {} }
 }
 
 const ALL_SPELLS = [...whiteMagic, ...blackMagic, ...songs, ...ninjutsu, ...summoningMagic, ...blueMagic]
@@ -193,35 +187,7 @@ function SpellRow({ spell, job, jobLevel, learned, isAnimating, onToggle }: Spel
   )
 }
 
-type ResetTarget = 'char' | 'levels' | 'spells'
-
-type ResetButtonProps = {
-  label: string
-  target: ResetTarget
-  confirm: ResetTarget | null
-  onRequest: (t: ResetTarget) => void
-  onConfirm: () => void
-  onCancel: () => void
-}
-
-function ResetButton({ label, target, confirm, onRequest, onConfirm, onCancel }: ResetButtonProps) {
-  if (confirm === target) {
-    return (
-      <span className="flex items-center gap-1.5 text-xs">
-        <button onClick={onConfirm} className="text-red-400 hover:text-red-300 cursor-pointer transition-colors">Yes</button>
-        <button onClick={onCancel} className="text-[#6b7280] hover:text-[#e2e4ed] cursor-pointer transition-colors">No</button>
-      </span>
-    )
-  }
-  return (
-    <button
-      onClick={() => onRequest(target)}
-      className="text-xs text-[#374151] hover:text-[#6b7280] transition-colors cursor-pointer"
-    >
-      {label}
-    </button>
-  )
-}
+type ResetTarget = 'levels' | 'spells'
 
 // --- Main component ---
 
@@ -269,7 +235,6 @@ export function SpellTracker() {
   })
   const [search, setSearch] = useState('')
   const [hideMode, setHideMode] = useState(true)
-  const [fetchStatus, setFetchStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [countdown, setCountdown] = useState<Set<string>>(new Set())
   const [animating, setAnimating] = useState<Set<string>>(new Set())
   const [confirmReset, setConfirmReset] = useState<ResetTarget | null>(null)
@@ -296,7 +261,7 @@ export function SpellTracker() {
   }, [updateTableHeight])
 
   // Re-measure when the character section changes height (portrait appears/disappears)
-  const charLoaded = saved.nation !== null
+  const charLoaded = selectedChar !== null
   useLayoutEffect(() => {
     updateTableHeight()
   }, [charLoaded, updateTableHeight])
@@ -331,39 +296,6 @@ export function SpellTracker() {
 
   const showMigration =
     localHasData && selectedChar !== null && !noSync.includes(selectedChar.id)
-
-  function setCharName(name: string) {
-    persist({ ...saved, charName: name })
-    setFetchStatus('idle')
-  }
-
-  async function fetchCharacter() {
-    const name = saved.charName.trim()
-    if (!name) return
-    setFetchStatus('loading')
-    try {
-      const res = await fetchChar(name)
-      if (res.status !== 'ok') {
-        setFetchStatus('error')
-        return
-      }
-      const fetched = res.payload.jobs ?? {}
-      const jobLevels: Partial<Record<JobAbbr, number>> = { ...saved.jobLevels }
-      for (const job of JOBS) {
-        if (fetched[job] !== undefined) jobLevels[job] = fetched[job]
-      }
-      persist({
-        ...saved,
-        jobLevels,
-        nation: res.payload.nation ?? null,
-        rank: res.payload.rank ?? null,
-        avatar: res.payload.avatar ?? null,
-      })
-      setFetchStatus('success')
-    } catch {
-      setFetchStatus('error')
-    }
-  }
 
   function setJobLevel(job: JobAbbr, level: number) {
     persist({ ...saved, jobLevels: { ...saved.jobLevels, [job]: Math.max(1, Math.min(99, level)) } })
@@ -413,8 +345,7 @@ export function SpellTracker() {
   }
 
   function handleReset(target: ResetTarget) {
-    if (target === 'char') persist({ ...saved, charName: '', nation: null, rank: null, avatar: null })
-    else if (target === 'levels') persist({ ...saved, jobLevels: {} })
+    if (target === 'levels') persist({ ...saved, jobLevels: {} })
     else persist({ ...saved, learned: {} })
     setConfirmReset(null)
   }
@@ -426,7 +357,7 @@ export function SpellTracker() {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `spells-${saved.charName || 'export'}-${dateStr}.json`
+    a.download = `spells-${selectedChar?.name ?? 'export'}-${dateStr}.json`
     a.click()
     URL.revokeObjectURL(url)
   }
@@ -438,7 +369,7 @@ export function SpellTracker() {
     reader.onload = ev => {
       try {
         const parsed = JSON.parse(ev.target?.result as string)
-        persist({ charName: '', nation: null, rank: null, avatar: null, jobLevels: {}, learned: {}, ...parsed })
+        persist({ jobLevels: parsed.jobLevels ?? {}, learned: parsed.learned ?? {} })
       } catch { /* invalid JSON - ignore */ }
     }
     reader.readAsText(file)
@@ -462,45 +393,25 @@ export function SpellTracker() {
     [jobSpells, saved.learned]
   )
 
-  const nation = saved.nation !== null ? CHAR_NATIONS[saved.nation] : null
-
   return (
     <div className="flex flex-col gap-5 max-w-3xl mx-auto w-full">
 
-      {/* Character section - top */}
-      <div className="flex items-start justify-between gap-4">
-        {isAuthenticated && characters.length > 0 ? (
-          <SyncedCharacterHeader
-            characters={characters}
-            selectedId={selectedCharId}
-            onSelect={setSelectedCharId}
-            avatar={selectedChar?.avatar}
-            name={selectedChar?.name}
-            nation={
-              selectedChar && selectedChar.nation !== null
-                ? CHAR_NATIONS[selectedChar.nation] ?? null
-                : null
-            }
-            rank={syncedRank}
-          />
-        ) : (
-          <CharacterHeader
-            charName={saved.charName}
-            avatar={saved.avatar}
-            nation={nation}
-            rank={saved.rank}
-            fetchStatus={fetchStatus}
-            onCharNameChange={setCharName}
-            onFetch={fetchCharacter}
-            onClear={() => persist({ ...saved, nation: null, rank: null, avatar: null })}
-          />
-        )}
-        <div className="flex items-center gap-3 shrink-0 mt-1">
-          <button onClick={exportJSON} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">Export</button>
-          <button onClick={() => fileInputRef.current?.click()} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">Import</button>
-          <input ref={fileInputRef} type="file" accept=".json" onChange={handleImportFile} className="hidden" />
-        </div>
-      </div>
+      {/* Character section - top (logged in only; logged out is pure localStorage) */}
+      {isAuthenticated && characters.length > 0 && (
+        <SyncedCharacterHeader
+          characters={characters}
+          selectedId={selectedCharId}
+          onSelect={setSelectedCharId}
+          avatar={selectedChar?.avatar}
+          name={selectedChar?.name}
+          nation={
+            selectedChar && selectedChar.nation !== null
+              ? CHAR_NATIONS[selectedChar.nation] ?? null
+              : null
+          }
+          rank={syncedRank}
+        />
+      )}
 
       {/* First-sync migration: browser has data, the selected char has none.
           Declining is remembered per character. */}
@@ -522,7 +433,7 @@ export function SpellTracker() {
         </div>
       )}
 
-      {/* Title + reset */}
+      {/* Title + export/import + reset */}
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
@@ -530,14 +441,16 @@ export function SpellTracker() {
           </h1>
           <p className="text-sm text-[#6b7280] mt-0.5">FFXI · Horizon</p>
         </div>
+        <div className="flex items-center gap-3 shrink-0 mt-1.5">
+          <button onClick={exportJSON} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">Export</button>
+          <button onClick={() => fileInputRef.current?.click()} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">Import</button>
+          <input ref={fileInputRef} type="file" accept=".json" onChange={handleImportFile} className="hidden" />
+        </div>
         <div className="flex items-center gap-2 mt-1">
           <span className="text-[10px] text-[#c4af64] uppercase tracking-wider">Reset</span>
           <div className="flex flex-col gap-0.5">
-            {!synced && (
-              <ResetButton label="Character" target="char" confirm={confirmReset} onRequest={setConfirmReset} onConfirm={() => handleReset('char')} onCancel={() => setConfirmReset(null)} />
-            )}
-            <ResetButton label="Levels"    target="levels" confirm={confirmReset} onRequest={setConfirmReset} onConfirm={() => handleReset('levels')} onCancel={() => setConfirmReset(null)} />
-            <ResetButton label="Spells"    target="spells" confirm={confirmReset} onRequest={setConfirmReset} onConfirm={() => handleReset('spells')} onCancel={() => setConfirmReset(null)} />
+            <ResetButton label="Levels" target="levels" confirm={confirmReset} onRequest={setConfirmReset} onConfirm={() => handleReset('levels')} onCancel={() => setConfirmReset(null)} />
+            <ResetButton label="Spells" target="spells" confirm={confirmReset} onRequest={setConfirmReset} onConfirm={() => handleReset('spells')} onCancel={() => setConfirmReset(null)} />
           </div>
         </div>
       </div>

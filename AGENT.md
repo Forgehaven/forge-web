@@ -231,14 +231,19 @@ Login is only an upgrade (cross-device sync), never a gate.
   load/save when logged out.
 - **Per-tool behavior** (logged in):
   - *SpellTracker*: per-character `{jobLevels, learned}` blob (`spell_tracker`), auto-sync;
-    CharacterSelect replaces the free-text header; migration banner offers a one-click upload of
-    this browser's data when the character's server blob is empty - declining ("No thanks") is
-    remembered per character in `forgegames_ffxi_spelltracker_nosync_v1`.
+    logged in shows the CharacterSelect header, logged out has NO character header at all (the
+    old free-text fetch header was removed once accounts landed - local mode is checkboxes +
+    localStorage only). Migration banner offers a one-click upload of this browser's data when
+    the character's server blob is empty - declining ("No thanks") is remembered per character
+    in `forgegames_ffxi_spelltracker_nosync_v1`.
   - *TeleportCost*: the conquest `owners` map is **community-shared** - public `GET /conquest`
     for everyone (even logged out), debounced `PUT` for logged-in edits. The backend blanks it
     weekly at Sunday 14:59:59 UTC. Logged in: CharacterSelect header, nation mapped from the char
     API's 0/1/2 to the tool's 1-4 ids, and the Reset Conquest button is HIDDEN (it would blank the
-    shared map for everyone). Logged out keeps the free-text header + reset.
+    shared map for everyone). Logged out: a Home Nation picker (Bastok/Windurst/San d'Oria only -
+    Beastmen own outposts but are not pickable; unselected nations grey out) + reset. The old
+    free-text fetch header (CharacterHeader component) was deleted app-wide; NationMeta now
+    lives in `ffxi/nations.ts`.
   - *ClammingTracker*: **account-wide** `{overrides, exceptions, disabledRec}` blob via
     `/user-data/clamming` (per user, NO character dropdown), **manual save** - a gold flashing
     Save button appears when local state differs from the server baseline. Default AH prices were
@@ -247,6 +252,12 @@ Login is only an upgrade (cross-device sync), never a gate.
     name merge on load. Job/rank snapshots stay localStorage-only, each stamped with `fetchedAt`;
     an all-zero jobs fetch (friend went `/anon`) keeps the last good snapshot and shows an
     "anon · <date>" tag with the last-fetched time.
+  - *KeyItemTracker*: per-character `{collected}` blob (`key_item_tracker`), auto-sync,
+    SpellTracker-style shell (category tabs Maps/Gate Crystals/Transportation/Other, search
+    spans ALL categories, hide-collected default on, migration banner with
+    `forgegames_ffxi_keyitems_nosync_v1`). Data: `data/keyItems.ts`, GENERATED from the
+    horizonffxi.wiki MediaWiki API (Category:Key_Items, one call, no pagination) unioned with
+    the /Maps page (category tagging misses ~23 maps); name doubles as id + wiki slug.
   - *QuestTracker*: per-character `{eco, highwind}` blob (`quest_tracker`) of completion
     timestamps, auto-sync. Weekly state is DERIVED against `lastConquestReset()`
     (`ffxi/conquest.ts`, shared with TeleportCost) - stale timestamps read as "not done", never

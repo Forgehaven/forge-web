@@ -33,6 +33,7 @@ const sections: { section: string; games: GameEntry[] }[] = [
       { path: `${G}/ffxi/quest-tracker`,   label: 'Quest Tracker' },
       { path: `${G}/ffxi/clamming-tracker`, label: 'Clamming Tracker' },
       { path: `${G}/ffxi/spell-tracker`,    label: 'Spell Tracker' },
+      { path: `${G}/ffxi/key-item-tracker`, label: 'Key Item Tracker' },
       { path: `${G}/ffxi/teleport-cost`,   label: 'Teleport Cost' },
       { path: `${G}/ffxi/friend-viewer`,  label: 'Friend Viewer' },
     ],

@@ -8,8 +8,7 @@ import { useCharRank } from '../hooks/useCharRank'
 import { SyncedCharacterHeader } from '../components/SyncedCharacterHeader'
 import { loadSelectedCharId } from '../selectedChar'
 import { lastConquestReset, formatNextReset } from '../conquest'
-import { CHAR_NATIONS } from '../nations'
-import type { NationMeta } from '../components/CharacterHeader'
+import { CHAR_NATIONS, type NationMeta } from '../nations'
 
 const getNow = () => Date.now()
 
