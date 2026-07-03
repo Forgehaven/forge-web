@@ -3,16 +3,18 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../../../../auth/authContext'
 import { useLayoutOverride } from '../../../../components/LayoutOverride'
 import { DataTable, type Column } from '../../../../components/DataTable'
-import { CITIES } from '../constants'
+import { CITIES, QUALITIES } from '../constants'
 import { ItemIcon } from '../ItemIcon'
 import { MarketManagerSidebar } from './MarketManagerSidebar'
 import { MarketManagerBottomBar } from './MarketManagerBottomBar'
 import { usePricesWS } from './usePricesWS'
 import {
-  loadCraftStrategy, loadFocus, loadMatSource, loadPremium,
-  saveCraftStrategy, saveMatSource,
+  loadBvScope, loadCraftStrategy, loadFocus, loadMatSource, loadPremium,
+  saveBvScope, saveCraftStrategy, saveMatSource, usePref, usePrefsVersion,
+  type BvScope,
 } from './premium'
-import { StrategyToggles } from './ItemIndex/StrategyToggles'
+import { DataFreshness, ScanDot } from './DataFreshness'
+import { StrategyToggles, ToggleGroup } from './ItemIndex/StrategyToggles'
 import { fetchBestValue } from './ItemIndex/albionItemsApi'
 import type { BestValuePayload, BestValueRow } from './ItemIndex/types'
 
@@ -36,8 +38,12 @@ export function BestValuePage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [tick, setTick] = useState(0)
-  const [matSource, setMatSource] = useState(loadMatSource)
-  const [strategy, setStrategy] = useState(loadCraftStrategy)
+  // Live prefs: the Craft Settings modal (or another page's toggles) updates these too.
+  const matSource = usePref(loadMatSource)
+  const strategy = usePref(loadCraftStrategy)
+  const scope = usePref(loadBvScope)
+  // premium/focus are read inside the fetch - refetch when the modal flips them.
+  const prefsVersion = usePrefsVersion()
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -55,7 +61,7 @@ export function BestValuePage() {
     let cancelled = false
 
     async function load() {
-      const result = await fetchBestValue(loadPremium(), loadFocus(), matSource, strategy)
+      const result = await fetchBestValue(loadPremium(), loadFocus(), matSource, strategy, scope)
       if (cancelled) return
       if (result.status === 'ok') {
         setPayload(result.payload)
@@ -68,7 +74,7 @@ export function BestValuePage() {
 
     load()
     return () => { cancelled = true }
-  }, [tick, matSource, strategy])
+  }, [tick, matSource, strategy, scope, prefsVersion])
 
   // Server result is TTL-cached in memory - refetching on every poller cycle is cheap.
   usePricesWS(useCallback(() => setTick(t => t + 1), []))
@@ -99,6 +105,16 @@ export function BestValuePage() {
       ),
     },
     {
+      key: 'quality',
+      label: 'Quality',
+      sortKey: r => r.quality,
+      render: row => (
+        <span className="text-[#9ca3af]">
+          Q{row.quality} · {QUALITIES.find(q => q.value === row.quality)?.label ?? ''}
+        </span>
+      ),
+    },
+    {
       key: 'city',
       label: 'City',
       sortKey: r => r.city,
@@ -107,8 +123,17 @@ export function BestValuePage() {
     {
       key: 'sell',
       label: 'Sell (min)',
+      title: 'Dot = when a player last scanned this market in game (per item + town)',
       sortKey: r => r.sell_price_min,
-      render: row => <span className="text-[#c4af64] font-medium">{fmt(row.sell_price_min)}</span>,
+      render: row => (
+        <span className="flex items-center gap-1.5">
+          <ScanDot
+            dataAt={row.data_at ? new Date(row.data_at) : null}
+            fetchedAt={payload ? new Date(payload.computed_at) : null}
+          />
+          <span className="text-[#c4af64] font-medium">{fmt(row.sell_price_min)}</span>
+        </span>
+      ),
     },
     {
       key: 'base',
@@ -145,7 +170,7 @@ export function BestValuePage() {
   ]
 
   return (
-    <div className="p-6 max-w-7xl mx-auto w-full space-y-4 select-none">
+    <div className="p-6 max-w-7xl mx-auto w-full h-full flex flex-col gap-4 select-none">
       <div className="flex items-end justify-between gap-3 flex-wrap">
         <div>
           <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
@@ -156,36 +181,51 @@ export function BestValuePage() {
           </p>
         </div>
         <div className="flex items-center gap-4 flex-wrap">
+          <ToggleGroup<BvScope>
+            label="Items"
+            value={scope}
+            options={[['craftable', 'Craftable Items'], ['all', 'All Items']]}
+            onChange={saveBvScope}
+          />
           <StrategyToggles
             matSource={matSource}
-            onMatSource={v => { setMatSource(v); saveMatSource(v) }}
+            onMatSource={saveMatSource}
             strategy={strategy}
-            onStrategy={v => { setStrategy(v); saveCraftStrategy(v) }}
+            onStrategy={saveCraftStrategy}
           />
           {payload && (
             <span className="text-xs text-[#6b7280]">
               computed {new Date(payload.computed_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
+              <DataFreshness
+                dataAt={payload.data_updated_at ? new Date(payload.data_updated_at) : null}
+                fetchedAt={new Date(payload.computed_at)}
+              />
             </span>
           )}
         </div>
       </div>
 
-      {error ? (
-        <p className="text-sm text-red-400 text-center py-10">Failed to load best value: {error}</p>
-      ) : loading && !payload ? (
-        <div className="flex justify-center py-16">
-          <div className="w-8 h-8 border-2 border-[#c4af64] border-t-transparent rounded-full animate-spin" />
-        </div>
-      ) : payload && payload.rows.length === 0 ? (
-        <p className="text-sm text-[#6b7280] text-center py-10">No craftable items with market data yet.</p>
-      ) : payload ? (
-        <DataTable
-          columns={columns}
-          data={payload.rows}
-          rowKey={r => `${r.item_id}|${r.city}`}
-          footer={`${payload.rows.length} rows · mats at ${matSource === 'buy' ? 'buy-order' : 'instant-buy'} prices, ${strategy} craft cost, Normal quality, per row's city`}
-        />
-      ) : null}
+      <div className="flex-1 min-h-0">
+        {error ? (
+          <p className="text-sm text-red-400 text-center py-10">Failed to load best value: {error}</p>
+        ) : loading && !payload ? (
+          <div className="flex justify-center py-16">
+            <div className="w-8 h-8 border-2 border-[#c4af64] border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : payload && payload.rows.length === 0 ? (
+          <p className="text-sm text-[#6b7280] text-center py-10">No craftable items with market data yet.</p>
+        ) : payload ? (
+          <DataTable
+            columns={columns}
+            data={payload.rows}
+            rowKey={r => `${r.item_id}|${r.city}`}
+            defaultSort="return"
+            defaultSortDir="desc"
+            footer={`${payload.rows.length} rows · ${scope === 'craftable' ? 'station-crafted items only' : 'all items'} · mats at ${matSource === 'buy' ? 'buy-order' : 'instant-buy'} prices, ${strategy} craft cost, Normal quality, per row's city`}
+            fill
+          />
+        ) : null}
+      </div>
     </div>
   )
 }

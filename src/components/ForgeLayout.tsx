@@ -88,7 +88,9 @@ export function ForgeLayout({ title, homePath, sidebar: DefaultSidebar, settings
         {headerExtra}
 
         <main className="flex-1 overflow-y-auto bg-[#0f1117]">
-          <div className="px-5 py-6 md:px-8 md:py-8">
+          {/* h-full lets pages opt into internal scrolling (h-full flex column +
+              a fill DataTable); auto-height pages still overflow main as before. */}
+          <div className="px-5 py-6 md:px-8 md:py-8 h-full">
             <Outlet />
           </div>
         </main>

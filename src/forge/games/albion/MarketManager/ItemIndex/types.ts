@@ -17,6 +17,7 @@ export interface RawItemPrice {
   quality: number
   sell_price_min: number
   buy_price_max: number
+  timestamp?: string | null // when ADP last observed this price in game
 }
 
 // GET /game/albion/recipe/{id}  → payload: RecipeNode.
@@ -82,6 +83,7 @@ export interface BestValueRow {
   city: string
   quality: number
   sell_price_min: number
+  data_at?: string | null // when ADP last scanned this row's market
   craft_cost_base: number | null
   craft_cost_optimized: number
   profit: number
@@ -90,6 +92,7 @@ export interface BestValueRow {
 
 export interface BestValuePayload {
   computed_at: string
+  data_updated_at?: string | null // newest lake observation the sweep used
   rows: BestValueRow[]
 }
 

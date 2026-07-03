@@ -1,6 +1,6 @@
 import type { CraftStrategy, MatSource } from '../premium'
 
-function Group<T extends string>({
+export function ToggleGroup<T extends string>({
   label,
   value,
   options,
@@ -47,13 +47,13 @@ export function StrategyToggles({
 }) {
   return (
     <div className="flex items-center gap-4 flex-wrap">
-      <Group<MatSource>
+      <ToggleGroup<MatSource>
         label="Mats"
         value={matSource}
         options={[['sell', 'Instant buy'], ['buy', 'Buy orders']]}
         onChange={onMatSource}
       />
-      <Group<CraftStrategy>
+      <ToggleGroup<CraftStrategy>
         label="Craft"
         value={strategy}
         options={[['optimized', 'Optimized'], ['base', 'Base mats']]}

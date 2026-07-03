@@ -13,8 +13,10 @@ import { analyzeCraft, collectRecipeIds, profit, type PriceOf, type ReturnRateOf
 import { returnRateFor, salesTaxRate, stationFeeFor, useCraftSettings } from '../craftEconomics'
 import {
   loadCraftStrategy, loadFocus, loadMatSource, loadPremium,
-  saveCraftStrategy, saveMatSource,
+  saveCraftStrategy, saveMatSource, usePref,
 } from '../premium'
+import { DataFreshness } from '../DataFreshness'
+import { freshnessClass } from '../freshness'
 import { StrategyToggles } from '../ItemIndex/StrategyToggles'
 import { useItemHistory } from './useItemHistory'
 import { useItemName } from './useItemName'
@@ -106,8 +108,9 @@ export function ItemDetailPanel({
   actions?: ReactNode
 }) {
   const [period, setPeriod] = useState(PERIODS[1])
-  const [matSource, setMatSource] = useState(loadMatSource)
-  const [strategy, setStrategy] = useState(loadCraftStrategy)
+  // Live prefs: the Craft Settings modal (or another page's toggles) updates these too.
+  const matSource = usePref(loadMatSource)
+  const strategy = usePref(loadCraftStrategy)
   const settings = useCraftSettings()
   const taxRate = salesTaxRate(loadPremium())
 
@@ -130,7 +133,7 @@ export function ItemDetailPanel({
     return [...set]
   }, [itemId, recipe])
 
-  const { prices, fetchedAt } = useLiveItemPrices(allIds, city, ALL_QUALITIES)
+  const { prices, fetchedAt, dataAt } = useLiveItemPrices(allIds, city, ALL_QUALITIES)
   const { series, loading: historyLoading, error: historyError } = useItemHistory(itemId, city, period.timeScale)
 
   // Materials price at quality 1; matSource picks instant-buy vs buy-order prices.
@@ -185,8 +188,10 @@ export function ItemDetailPanel({
     return withData
   }, [series, resource])
 
-  const sell = prices.get(priceKey(itemId, city, effQuality))?.sell_price_min || null
-  const buy = prices.get(priceKey(itemId, city, effQuality))?.buy_price_max || null
+  const selectedRow = prices.get(priceKey(itemId, city, effQuality))
+  const sell = selectedRow?.sell_price_min || null
+  const buy = selectedRow?.buy_price_max || null
+  const scannedAt = selectedRow?.timestamp ? new Date(selectedRow.timestamp) : null
   const strategyCost = strategy === 'base' ? analysis?.fullBuy : analysis?.optimal
   const profitSell = profit(sell, strategyCost, taxRate)
 
@@ -335,9 +340,9 @@ export function ItemDetailPanel({
       <div className="flex flex-wrap items-center gap-4">
         <StrategyToggles
           matSource={matSource}
-          onMatSource={v => { setMatSource(v); saveMatSource(v) }}
+          onMatSource={saveMatSource}
           strategy={strategy}
-          onStrategy={v => { setStrategy(v); saveCraftStrategy(v) }}
+          onStrategy={saveCraftStrategy}
         />
         <span className="text-xs text-[#6b7280]">
           tax {Math.round(taxRate * 100)}% · mats at {matSource === 'buy' ? 'buy-order' : 'instant-buy'} prices · bonus-aware returns · fees from Craft Settings
@@ -345,6 +350,7 @@ export function ItemDetailPanel({
         {fetchedAt && (
           <span className="text-xs text-[#6b7280]">
             prices updated {fetchedAt.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
+            <DataFreshness dataAt={dataAt} fetchedAt={fetchedAt} />
           </span>
         )}
       </div>
@@ -360,6 +366,12 @@ export function ItemDetailPanel({
           bold
         />
       </div>
+
+      {scannedAt && fetchedAt && (
+        <p className={`text-xs ${freshnessClass(Math.max(0, fetchedAt.getTime() - scannedAt.getTime()))}`}>
+          this market (town + quality) last scanned in game {scannedAt.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })}
+        </p>
+      )}
 
       {/* Craft breakdown: base (all bought) vs optimized (buy/craft/upgrade mix) */}
       {analysis && (

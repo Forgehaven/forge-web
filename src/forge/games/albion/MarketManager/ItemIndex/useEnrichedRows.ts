@@ -3,7 +3,7 @@ import { useItemRecipes } from './useItemRecipes'
 import { useLiveItemPrices, priceKey } from './useItemPrices'
 import { analyzeCraft, collectRecipeIds, type PriceOf } from './craftCost'
 import { returnRateFor, salesTaxRate, stationFeeFor, useCraftSettings } from '../craftEconomics'
-import { loadFocus, loadPremium, type MatSource } from '../premium'
+import { loadFocus, loadPremium, usePrefsVersion, type MatSource } from '../premium'
 import type { ItemRow } from './types'
 
 export interface BaseItem {
@@ -16,6 +16,7 @@ export interface BaseItem {
 interface EnrichedResult {
   rows: ItemRow[]
   fetchedAt: Date | null
+  dataAt: Date | null
   priceError: string | null
   taxRate: number // premium-driven sales tax, for the profit columns
 }
@@ -34,6 +35,8 @@ export function useEnrichedRows(
   const ids = useMemo(() => items.map(i => i.id), [items])
   const { recipes } = useItemRecipes(ids)
   const settings = useCraftSettings()
+  // Re-run the analysis when the Craft Settings modal flips focus/premium.
+  const prefsVersion = usePrefsVersion()
 
   const allIds = useMemo(() => {
     const set = new Set<string>(ids)
@@ -42,7 +45,7 @@ export function useEnrichedRows(
   }, [ids, recipes])
 
   const qualities = useMemo(() => Array.from(new Set([quality, 1])), [quality])
-  const { prices, fetchedAt, error } = useLiveItemPrices(allIds, location, qualities)
+  const { prices, fetchedAt, dataAt, error } = useLiveItemPrices(allIds, location, qualities)
 
   const rows = useMemo<ItemRow[]>(() => {
     // Materials always priced at quality 1; the finished item at the selected quality.
@@ -61,7 +64,8 @@ export function useEnrichedRows(
         recipes.get(b.id), priceOf, rrOf, stationFeeFor(b.id, location, settings),
       ),
     }))
-  }, [items, recipes, prices, location, quality, settings, matSource])
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- prefsVersion re-reads loadFocus()
+  }, [items, recipes, prices, location, quality, settings, matSource, prefsVersion])
 
-  return { rows, fetchedAt, priceError: error, taxRate: salesTaxRate(loadPremium()) }
+  return { rows, fetchedAt, dataAt, priceError: error, taxRate: salesTaxRate(loadPremium()) }
 }

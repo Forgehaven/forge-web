@@ -520,9 +520,33 @@ Every route listed above maps to `'AOMM - <Page Name>'`. Title is set via inline
   qty with silver fees + grand total. Uses `bestMode()` (exported from craftCost.ts)
 
 ### Best Value page (`BestValuePage.tsx`)
-- `GET /game/albion/best-value?premium=` via `fetchBestValue(loadPremium())` - no filters on the
-  page; rows are (item, city) pairs across EVERY city, top 50 overall by return %, with a City
-  column and `rowKey = item_id|city` (same item can appear once per city)
+- `GET /game/albion/best-value?premium=&focus=&mats=&strategy=&scope=` via `fetchBestValue` -
+  rows are (item, city) pairs across EVERY city, top 50 overall by return %, with Quality and
+  City columns and `rowKey = item_id|city` (same item can appear once per city)
+- Scope toggle at the top: **Craftable Items** (default; server keeps only items made at a real
+  station - drops the stationless 10,000%-return outliers) vs **All Items**; persisted per user
+  (`albionBvScope` via `premium.ts` loadBvScope/saveBvScope), reuses `ToggleGroup` exported from
+  `StrategyToggles.tsx`
+
+### Live prefs + Craft Settings modal
+- Every `premium.ts` saver calls `emitPrefsChanged()`; `usePref(loadX)` /
+  `usePrefsVersion()` (useSyncExternalStore over the `albion-prefs-changed` window event)
+  give pages LIVE pref values - no local useState mirrors. `useEnrichedRows` takes
+  `prefsVersion` as a memo dep (re-reads focus/premium); Best Value refetches on it.
+- **Craft Settings is a modal**: `CraftSettingsPanel.tsx` holds the whole settings UI
+  (per-user toggles via usePref, shared station-fee table); the sidebar's "Craft Settings"
+  button opens it in the shared `Modal` so tables reprice live behind it. The
+  `/craft-settings` route still renders the same panel (deep links). Saving fees calls
+  `updateCachedSettings()` (craftEconomics) which busts the module cache + emits.
+- **DataFreshness / ScanDot** (`DataFreshness.tsx`, ladder in `freshness.ts` - separate
+  file for react-refresh): ADP is CROWDSOURCED - each (item, city, quality) record only
+  updates when a player running the data client opens that market tab, so rows age
+  independently and `timestamp` = the in-game scan time (the poller stores ADP's
+  sell/buy `*_date`, NULL = never scanned). Colors: green <1h, white <1d, yellow <3d,
+  red ≥3d; age measured against fetchedAt (no Date.now in render). Table-level badge
+  "· data from <dt>" = newest scan in batch; per-row `ScanDot` on every Sell (min) cell
+  (gray = never scanned) via `buildItemColumns` opts.fetchedAt / Best Value row `data_at`;
+  detail panel shows "this market last scanned" line for the selected town+quality.
 - ALL math server-side: sales tax from the premium flag (4%/8%), flat station fees + bonus-aware
   return rates from the shared craft settings/constants; mats priced at Normal quality per city
 - Refetches on every `price_changes` WS frame (cheap - server result is in-memory)
@@ -553,14 +577,22 @@ Every route listed above maps to `'AOMM - <Page Name>'`. Title is set via inline
 ```ts
 itemIconUrl(uniqueName: string, displaySize = 32, quality?: number): string
 ```
-Builds `{forgeAPI}/game/albion/icon/{id}?size=...` - forge-api's caching proxy (7-day
-immutable browser cache), NOT render.albiononline.com directly. Fetch sizes are normalized to
-two canonical variants (display ≤32 → 64px, larger → 128px) so one cached URL serves every
-table/tree usage. TABLE icons omit the `quality` param on purpose (a quality-filter flip must
-not re-download 200 icons); only the detail-page header icon passes quality.
+Builds `{forgeAPI}/game/albion/icon/{id}?size=...` (forge-api proxy, 7-day immutable HTTP
+cache) and the **icon service worker** (`public/icon-sw.js`, registered in `main.tsx`) then
+pins each icon in the Cache API FOREVER (cache-first, `albion-icons-v1`, 4000-entry cap →
+clear + lazy refill): an icon downloads once per browser, then all repeat loads are
+zero-network. Why not the render CDN directly: it sends NO CORS headers, so cross-origin
+Cache API entries would be opaque responses (Chromium quota-pads those ~7MB each). The
+proxy is same-origin-cacheable because forge-api's CORSMiddleware answers the
+`crossOrigin="anonymous"` img requests. Fetch sizes are normalized to two canonical
+variants (display ≤32 → 64px, larger → 128px) so one cached URL serves every table/tree
+usage. TABLE icons omit the `quality` param on purpose (a quality-filter flip must not
+re-download 200 icons); only the detail-page header icon passes quality.
 
 Component in `src/forge/games/albion/ItemIcon.tsx`: `<ItemIcon uniqueName size quality? />`,
-`loading="lazy"`.
+`loading="lazy" decoding="async" fetchPriority="low" crossOrigin="anonymous"` - off-screen
+rows fetch nothing, visible icons yield network priority to data requests, and responses
+stay non-opaque for the service worker.
 
 ### Recipes are fetched in BATCH
 `fetchRecipes` (albionItemsApi.ts) chunks ids 50-per-request against
@@ -581,3 +613,6 @@ Generic sortable table with sticky headers, footer, row class, index passed to `
   { key: 'name', label: 'Name', render: (row, i) => <span>{row.name}</span> },
 ]} data={items} />
 ```
+`fill` prop: the table scrolls inside itself instead of the page - `max-h-full overflow-auto`
+container + `sticky top-0` header cells. The parent must bound the height (pattern: page div
+`h-full flex flex-col gap-4`, table wrapped in `flex-1 min-h-0`). ItemTable and Best Value use it.

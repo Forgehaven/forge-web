@@ -114,5 +114,5 @@ export const MARKET_CATEGORY_SECTIONS: MarketCategorySection[] = [
 // CategoryPage.
 export const MARKET_CATEGORIES: MarketCategory[] = [
   ...MARKET_CATEGORY_SECTIONS.flatMap(s => s.items),
-  { slug: 'prototype/unreleased', label: 'Prototype/Unreleased' },
+  { slug: 'prototype/unreleased', label: 'Unreleased' },
 ]

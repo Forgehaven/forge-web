@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useSyncExternalStore } from 'react'
 import { fetchCraftSettings } from './ItemIndex/albionItemsApi'
+import { emitPrefsChanged, subscribePrefs } from './premium'
 import { isResource } from './ItemIndex/itemMeta'
 import type { CraftSettings } from './ItemIndex/types'
 
@@ -123,19 +124,24 @@ export function stationFeeFor(id: string, city: string, settings: CraftSettings 
 }
 
 // Shared craft settings, fetched once per session (module cache) - station fees change
-// rarely and the backend caches for 10s anyway.
+// rarely and the backend caches for 10s anyway. Saving from the Craft Settings modal calls
+// updateCachedSettings so every open table repriced immediately.
 let cachedSettings: CraftSettings | null = null
 
+export function updateCachedSettings(settings: CraftSettings): void {
+  cachedSettings = settings
+  emitPrefsChanged()
+}
+
 export function useCraftSettings(): CraftSettings | null {
-  const [settings, setSettings] = useState<CraftSettings | null>(cachedSettings)
+  const settings = useSyncExternalStore(subscribePrefs, () => cachedSettings)
 
   useEffect(() => {
     if (cachedSettings) return
     let cancelled = false
     fetchCraftSettings().then(result => {
       if (cancelled || result.status !== 'ok') return
-      cachedSettings = result.payload.settings
-      setSettings(cachedSettings)
+      updateCachedSettings(result.payload.settings)
     })
     return () => {
       cancelled = true

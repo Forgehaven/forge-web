@@ -14,6 +14,9 @@ export function ItemIcon({ uniqueName, size = 24, quality, className }: {
       height={size}
       className={className}
       loading="lazy"
+      decoding="async"
+      fetchPriority="low"
+      crossOrigin="anonymous"
     />
   )
 }

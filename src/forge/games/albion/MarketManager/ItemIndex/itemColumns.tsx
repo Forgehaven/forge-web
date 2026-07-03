@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import type { Column } from '../../../../../components/DataTable'
+import { ScanDot } from '../DataFreshness'
 import { ItemIcon } from '../../ItemIcon'
 import { profit } from './craftCost'
 import { CraftCell } from './CraftBreakdownCell'
@@ -16,6 +17,7 @@ interface ColumnOpts {
   taxRate?: number // premium-driven sales tax (salesTaxRate)
   strategy?: CraftStrategy // which craft cost the profit columns use
   linkTo?: (row: ItemRow) => string // item name becomes a link (detail page)
+  fetchedAt?: Date | null // anchor for the per-row scan-age dots (no Date.now in render)
 }
 
 // Shared column defs for the Item Index + Favourites tables. Craft/profit columns are appended
@@ -74,8 +76,17 @@ export function buildItemColumns(opts: ColumnOpts): Column<ItemRow>[] {
     {
       key: 'sell',
       label: 'Sell (min)',
+      title: 'Dot = when a player last scanned this market in game (per item + town)',
       sortKey: r => r.price?.sell_price_min ?? -1,
-      render: row => priceCell(row.price?.sell_price_min),
+      render: row => (
+        <span className="flex items-center gap-1.5">
+          <ScanDot
+            dataAt={row.price?.timestamp ? new Date(row.price.timestamp) : null}
+            fetchedAt={opts.fetchedAt ?? null}
+          />
+          {priceCell(row.price?.sell_price_min)}
+        </span>
+      ),
     },
     {
       key: 'buy',

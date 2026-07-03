@@ -13,6 +13,7 @@ export function priceKey(itemId: string, city: string, quality: number): string 
 interface UseItemPricesResult {
   prices: Map<string, RawItemPrice> // keyed by priceKey(item_id, city, quality)
   fetchedAt: Date | null
+  dataAt: Date | null // newest ADP observation in the batch (data age, not fetch age)
   loading: boolean
   error: string | null
   refresh: () => void // re-run the batch fetch now (live-update trigger)
@@ -30,6 +31,7 @@ export function useItemPrices(
 ): UseItemPricesResult {
   const [prices, setPrices] = useState<Map<string, RawItemPrice>>(new Map())
   const [fetchedAt, setFetchedAt] = useState<Date | null>(null)
+  const [dataAt, setDataAt] = useState<Date | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [tick, setTick] = useState(0)
@@ -72,9 +74,14 @@ export function useItemPrices(
       if (cancelled) return
       if (result.status === 'ok') {
         const map = new Map<string, RawItemPrice>()
-        for (const p of result.payload) map.set(priceKey(p.item_id, p.city, p.quality), p)
+        let newest = ''
+        for (const p of result.payload) {
+          map.set(priceKey(p.item_id, p.city, p.quality), p)
+          if (p.timestamp && p.timestamp > newest) newest = p.timestamp
+        }
         setPrices(map)
         setFetchedAt(new Date())
+        setDataAt(newest ? new Date(newest) : null)
         setError(null)
       } else {
         setError(result.message)
@@ -91,7 +98,7 @@ export function useItemPrices(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idsKey, location, qualKey, tick])
 
-  return { prices, fetchedAt, loading, error, refresh, applyChanges }
+  return { prices, fetchedAt, dataAt, loading, error, refresh, applyChanges }
 }
 
 // useItemPrices + the /ws/prices feed: every poller cycle merges the changed sell prices for

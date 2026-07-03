@@ -28,7 +28,7 @@ beforeEach(() => {
     }
     if (u.includes('/game/albion/prices/')) {
       return Promise.resolve(ok([
-        { item_id: 'T4_BAG', city: 'Bridgewatch', quality: 1, sell_price_min: 1234, buy_price_max: 1000 },
+        { item_id: 'T4_BAG', city: 'Bridgewatch', quality: 1, sell_price_min: 1234, buy_price_max: 1000, timestamp: '2020-01-01T00:00:00' },
       ]))
     }
     if (u.includes('/game/albion/items')) {
@@ -58,5 +58,8 @@ describe('ItemIndexPage', () => {
     expect(await screen.findByText("Adept's Bag")).toBeInTheDocument()
     // live price merged into the row
     expect(await screen.findByText('1,234')).toBeInTheDocument()
+    // per-row scan dot: 2020 scan date vs a fresh fetch = red (3+ days stale)
+    const dot = screen.getByTitle(/scanned in game jan 1/i)
+    expect(dot.className).toContain('text-[#f87171]')
   })
 })

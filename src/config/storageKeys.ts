@@ -19,6 +19,7 @@ export const STORAGE_KEYS = {
   albionDefaultCity:       'forgegames_albion_default_city_v1',
   albionMatSource:         'forgegames_albion_mat_source_v1',
   albionCraftStrategy:     'forgegames_albion_craft_strategy_v1',
+  albionBvScope:           'forgegames_albion_bv_scope_v1',
   ffxiSelectedChar:        'forgegames_ffxi_selectedchar_v1',
   ffxiSpellNoSync:         'forgegames_ffxi_spelltracker_nosync_v1',
 } as const

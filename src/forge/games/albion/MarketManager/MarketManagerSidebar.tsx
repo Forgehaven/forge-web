@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import { Modal } from '../../../../components/Modal'
 import { SidebarShell } from '../../../../components/Sidebar/SidebarShell'
 import { SidebarHeader } from '../../../../components/Sidebar/SidebarHeader'
 import { SidebarDivider } from '../../../../components/Sidebar/SidebarDivider'
@@ -7,6 +9,7 @@ import { mmAccess, useAuth } from '../../../../auth/authContext'
 import { useSidebarCollapse } from '../../../../hooks/useSidebarCollapse'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import { CollapsibleSection } from './CollapsibleSection'
+import { CraftSettingsPanel } from './CraftSettingsPanel'
 import { MARKET_CATEGORY_SECTIONS } from './marketCategories'
 
 function MMNavLink({ to, children, onClick }: { to: string; children: React.ReactNode; onClick: () => void }) {
@@ -38,6 +41,7 @@ export function MarketManagerSidebar({ isOpen, onClose, onOpenSettings, onOpenLo
   const { isAuthenticated, user } = useAuth()
   const access = mmAccess(user)
   const { collapsed, toggle } = useSidebarCollapse(STORAGE_KEYS.albionMMCollapsed)
+  const [craftSettingsOpen, setCraftSettingsOpen] = useState(false)
 
   return (
     <SidebarShell isOpen={isOpen}>
@@ -122,19 +126,14 @@ export function MarketManagerSidebar({ isOpen, onClose, onOpenSettings, onOpenLo
             Best Value
           </NavLink>
 
-          <NavLink
-            to="/games/albion/market-manager/craft-settings"
-            onClick={onClose}
-            className={({ isActive }) =>
-              `block pl-4 pr-8 py-2 md:py-0 text-sm leading-5 transition-colors ${
-                isActive
-                  ? 'bg-[#c4af64]/10 text-[#c4af64] border-r-2 border-[#c4af64]'
-                  : 'text-[#9ca3af] hover:text-[#e2e4ed] hover:bg-[#2a2d3a]'
-              }`
-            }
+          {/* Modal, not a route: settings change without leaving the current table
+              (the /craft-settings route still exists for deep links). */}
+          <button
+            onClick={() => setCraftSettingsOpen(true)}
+            className="block w-full text-left pl-4 pr-8 py-2 md:py-0 text-sm leading-5 transition-colors text-[#9ca3af] hover:text-[#e2e4ed] hover:bg-[#2a2d3a] cursor-pointer"
           >
             Craft Settings
-          </NavLink>
+          </button>
 
           <div className="mt-0.5 mb-0.5">
             <CollapsibleSection
@@ -175,7 +174,7 @@ export function MarketManagerSidebar({ isOpen, onClose, onOpenSettings, onOpenLo
               }`
             }
           >
-            Prototype/Unreleased
+            Unreleased
           </NavLink>
           </>
         )}
@@ -192,6 +191,17 @@ export function MarketManagerSidebar({ isOpen, onClose, onOpenSettings, onOpenLo
       </div>
 
       <SidebarFooter onOpenSettings={onOpenSettings} onOpenLogin={onOpenLogin} />
+
+      <Modal
+        open={craftSettingsOpen}
+        onClose={() => setCraftSettingsOpen(false)}
+        title="Craft Settings"
+        maxWidth="max-w-6xl"
+      >
+        <div className="px-5 py-4 max-h-[80vh] overflow-y-auto">
+          <CraftSettingsPanel />
+        </div>
+      </Modal>
     </SidebarShell>
   )
 }

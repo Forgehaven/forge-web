@@ -29,6 +29,7 @@ export function ItemTable({
       defaultSort={hasProfit ? 'profit_sell' : 'name'}
       defaultSortDir={hasProfit ? 'desc' : 'asc'}
       footer={footer}
+      fill
     />
   )
 }

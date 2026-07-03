@@ -47,15 +47,17 @@ export async function fetchItemHistory(
 
 // GET /game/albion/best-value - server-side sweep across every city, cached 120s. Rows are
 // (item, city) pairs ranked overall. `premium` drives the sales tax (4% vs 8%), `focus` the
-// focus return rates, `mats`/`strategy` mirror the trading-strategy toggles.
+// focus return rates, `mats`/`strategy` mirror the trading-strategy toggles, `scope`
+// all|craftable (craftable = made at a real station, drops stationless outliers).
 export async function fetchBestValue(
   premium: boolean,
   focus: boolean,
   mats: string,
   strategy: string,
+  scope: string,
 ): Promise<Envelope<BestValuePayload>> {
   return albionFetch<BestValuePayload>(
-    `/game/albion/best-value?premium=${premium}&focus=${focus}&mats=${mats}&strategy=${strategy}`,
+    `/game/albion/best-value?premium=${premium}&focus=${focus}&mats=${mats}&strategy=${strategy}&scope=${scope}`,
   )
 }
 

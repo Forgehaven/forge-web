@@ -18,9 +18,12 @@ interface DataTableProps<T> {
   defaultSort?: string
   defaultSortDir?: 'asc' | 'desc'
   footer?: ReactNode
+  // Scroll inside the table instead of the page: caps at the parent's height
+  // (parent needs a bounded height, e.g. flex-1 min-h-0) and sticks the header.
+  fill?: boolean
 }
 
-export function DataTable<T>({ columns, data, rowKey, rowClass, defaultSort, defaultSortDir = 'desc', footer }: DataTableProps<T>) {
+export function DataTable<T>({ columns, data, rowKey, rowClass, defaultSort, defaultSortDir = 'desc', footer, fill }: DataTableProps<T>) {
   const [sortCol, setSortCol] = useState(defaultSort ?? '')
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>(defaultSortDir)
 
@@ -46,7 +49,7 @@ export function DataTable<T>({ columns, data, rowKey, rowClass, defaultSort, def
   if (data.length === 0) return null
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-[#2a2d3a]">
+    <div className={`${fill ? 'max-h-full overflow-auto' : 'overflow-x-auto'} rounded-lg border border-[#2a2d3a]`}>
       <table className="w-full text-sm border-collapse">
         <thead>
           <tr className="bg-[#1a1d27] border-b border-[#2a2d3a]">
@@ -55,7 +58,7 @@ export function DataTable<T>({ columns, data, rowKey, rowClass, defaultSort, def
                 key={col.key}
                 title={col.title}
                 onClick={() => col.sortKey && toggleSort(col.key)}
-                className={`px-3 py-2.5 text-left text-xs text-[#6b7280] uppercase tracking-widest font-semibold select-none whitespace-nowrap ${col.sortKey ? 'cursor-pointer hover:text-[#e2e4ed]' : ''} ${col.sticky ? 'sticky left-0 z-10 bg-[#1a1d27] border-r border-[#2a2d3a]' : ''} ${col.className ?? ''}`}
+                className={`px-3 py-2.5 text-left text-xs text-[#6b7280] uppercase tracking-widest font-semibold select-none whitespace-nowrap ${col.sortKey ? 'cursor-pointer hover:text-[#e2e4ed]' : ''} ${fill ? 'sticky top-0 z-20 bg-[#1a1d27] shadow-[inset_0_-1px_0_#2a2d3a]' : ''} ${col.sticky ? `sticky left-0 bg-[#1a1d27] border-r border-[#2a2d3a] ${fill ? 'z-30' : 'z-10'}` : ''} ${col.className ?? ''}`}
               >
                 {col.label}
                 {sortCol === col.key && col.sortKey && (
