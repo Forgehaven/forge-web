@@ -28,6 +28,26 @@ export function usePrefsVersion(): number {
   return useSyncExternalStore(subscribePrefs, () => prefsVersion)
 }
 
+// Shared manual price overrides live on the server; saving/clearing one bumps this
+// so open price hooks (item tables, Best Value) refetch and pick up the new value.
+export const OVERRIDES_EVENT = 'albion-overrides-changed'
+let overridesVersion = 0
+
+export function emitOverridesChanged(): void {
+  overridesVersion++
+  window.dispatchEvent(new Event(OVERRIDES_EVENT))
+}
+
+export function useOverridesVersion(): number {
+  return useSyncExternalStore(
+    cb => {
+      window.addEventListener(OVERRIDES_EVENT, cb)
+      return () => window.removeEventListener(OVERRIDES_EVENT, cb)
+    },
+    () => overridesVersion,
+  )
+}
+
 // Per-user flags (local-only - unlike station fees, these are per player).
 // Premium (defaults to true) drives the 4%/8% sales tax; focus (defaults to
 // false) switches Best Value to the focus return rates (43.5/53.9/47.9%).

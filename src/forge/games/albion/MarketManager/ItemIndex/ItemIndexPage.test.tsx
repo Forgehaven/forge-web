@@ -26,9 +26,14 @@ beforeEach(() => {
     if (u.includes('/game/albion/recipes/')) {
       return Promise.resolve(ok([{ item_id: 'T4_BAG', craftable: false, recipe: [] }]))
     }
+    if (u.includes('/game/albion/prices/volumes/')) {
+      return Promise.resolve(ok([
+        { item_id: 'T4_BAG', city: 'Bridgewatch', quality: 1, sold_1h: 2, sold_24h: 37, avg_price_24h: 1100 },
+      ]))
+    }
     if (u.includes('/game/albion/prices/')) {
       return Promise.resolve(ok([
-        { item_id: 'T4_BAG', city: 'Bridgewatch', quality: 1, sell_price_min: 1234, buy_price_max: 1000, timestamp: '2020-01-01T00:00:00' },
+        { item_id: 'T4_BAG', city: 'Bridgewatch', quality: 1, sell_price_min: 1234, buy_price_max: 1000, timestamp: '2020-01-01T12:00:00' },
       ]))
     }
     if (u.includes('/game/albion/items')) {

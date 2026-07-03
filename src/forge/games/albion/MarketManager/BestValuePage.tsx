@@ -11,9 +11,10 @@ import { usePricesWS } from './usePricesWS'
 import {
   loadBvScope, loadCraftStrategy, loadFocus, loadMatSource, loadPremium,
   saveBvScope, saveCraftStrategy, saveMatSource, usePref, usePrefsVersion,
-  type BvScope,
+  useOverridesVersion, type BvScope,
 } from './premium'
-import { DataFreshness, ScanDot } from './DataFreshness'
+import { DataFreshness, ScanIndicator } from './DataFreshness'
+import { utcDate } from '../../../../utils/date'
 import { StrategyToggles, ToggleGroup } from './ItemIndex/StrategyToggles'
 import { fetchBestValue } from './ItemIndex/albionItemsApi'
 import type { BestValuePayload, BestValueRow } from './ItemIndex/types'
@@ -44,6 +45,7 @@ export function BestValuePage() {
   const scope = usePref(loadBvScope)
   // premium/focus are read inside the fetch - refetch when the modal flips them.
   const prefsVersion = usePrefsVersion()
+  const overridesVersion = useOverridesVersion()
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -74,7 +76,7 @@ export function BestValuePage() {
 
     load()
     return () => { cancelled = true }
-  }, [tick, matSource, strategy, scope, prefsVersion])
+  }, [tick, matSource, strategy, scope, prefsVersion, overridesVersion])
 
   // Server result is TTL-cached in memory - refetching on every poller cycle is cheap.
   usePricesWS(useCallback(() => setTick(t => t + 1), []))
@@ -123,15 +125,48 @@ export function BestValuePage() {
     {
       key: 'sell',
       label: 'Sell (min)',
-      title: 'Dot = when a player last scanned this market in game (per item + town)',
+      title: 'Lowest ask, or a shared manual override (dotted underline). See the Scanned column for how fresh it is.',
       sortKey: r => r.sell_price_min,
       render: row => (
-        <span className="flex items-center gap-1.5">
-          <ScanDot
-            dataAt={row.data_at ? new Date(row.data_at) : null}
-            fetchedAt={payload ? new Date(payload.computed_at) : null}
-          />
-          <span className="text-[#c4af64] font-medium">{fmt(row.sell_price_min)}</span>
+        <span
+          className={`font-medium ${row.price_source === 'user'
+            ? 'text-[#c4af64] underline decoration-dotted decoration-[#c4af64]/50'
+            : 'text-[#c4af64]'}`}
+          title={row.price_source === 'user' ? 'Manual override (not scanned)' : undefined}
+        >
+          {fmt(row.sell_price_min)}
+        </span>
+      ),
+    },
+    {
+      key: 'scanned',
+      label: 'Scanned',
+      title: 'When this market was last scanned in game (per item + town), colored by age. A person icon marks a shared manual override; sort to pull the stalest to the top.',
+      sortKey: r => {
+        if (!r.data_at) return Number.POSITIVE_INFINITY
+        const anchor = payload ? utcDate(payload.computed_at).getTime() : utcDate(r.data_at).getTime()
+        return anchor - utcDate(r.data_at).getTime()
+      },
+      render: row => (
+        <ScanIndicator
+          dataAt={row.data_at ? utcDate(row.data_at) : null}
+          fetchedAt={payload ? utcDate(payload.computed_at) : null}
+          source={row.price_source}
+          by={row.entered_by}
+        />
+      ),
+    },
+    {
+      key: 'sold',
+      label: 'Sold/day',
+      title: 'Units traded in this town over the last 24h. Profit is valued at min(current ask, 24h traded average) so a lone troll listing cannot fake a return.',
+      sortKey: r => r.sold_24h,
+      render: row => (
+        <span className="text-[#9ca3af]">
+          {row.sold_24h.toLocaleString('en-US')}
+          {row.avg_price_24h != null && row.revenue < row.sell_price_min && (
+            <span className="text-[#facc15]" title={`Ask ${fmt(row.sell_price_min)} but trades at ~${fmt(row.avg_price_24h)} - profit uses the traded price`}> *</span>
+          )}
         </span>
       ),
     },
@@ -152,6 +187,7 @@ export function BestValuePage() {
     {
       key: 'profit',
       label: 'Profit',
+      title: 'Revenue x (1 - tax) - craft cost, where revenue = min(current lowest ask, 24h traded average)',
       sortKey: r => r.profit,
       render: row => {
         const cls = row.profit > 0 ? 'text-green-400' : row.profit < 0 ? 'text-red-400' : 'text-[#6b7280]'
@@ -170,7 +206,7 @@ export function BestValuePage() {
   ]
 
   return (
-    <div className="p-6 max-w-7xl mx-auto w-full h-full flex flex-col gap-4 select-none">
+    <div className="p-6 max-w-[1600px] mx-auto w-full h-full flex flex-col gap-4">
       <div className="flex items-end justify-between gap-3 flex-wrap">
         <div>
           <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
@@ -195,10 +231,10 @@ export function BestValuePage() {
           />
           {payload && (
             <span className="text-xs text-[#6b7280]">
-              computed {new Date(payload.computed_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
+              computed {utcDate(payload.computed_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
               <DataFreshness
-                dataAt={payload.data_updated_at ? new Date(payload.data_updated_at) : null}
-                fetchedAt={new Date(payload.computed_at)}
+                dataAt={payload.data_updated_at ? utcDate(payload.data_updated_at) : null}
+                fetchedAt={utcDate(payload.computed_at)}
               />
             </span>
           )}

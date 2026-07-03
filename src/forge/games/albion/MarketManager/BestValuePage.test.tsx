@@ -19,11 +19,13 @@ const PAYLOAD = {
     {
       item_id: 'T4_MAIN_SWORD', name: 'Broadsword', tier: 4, enchant: 0,
       city: 'Martlock', quality: 1, sell_price_min: 5000,
+      revenue: 4800, sold_24h: 25, avg_price_24h: 4800,
       craft_cost_base: 300, craft_cost_optimized: 200, profit: 4475, return_pct: 2237.5,
     },
     {
       item_id: 'T4_MAIN_SWORD', name: 'Broadsword', tier: 4, enchant: 0,
       city: 'Caerleon', quality: 1, sell_price_min: 1000,
+      revenue: 1000, sold_24h: 0, avg_price_24h: null,
       craft_cost_base: null, craft_cost_optimized: 200, profit: 735, return_pct: 367.5,
     },
   ],

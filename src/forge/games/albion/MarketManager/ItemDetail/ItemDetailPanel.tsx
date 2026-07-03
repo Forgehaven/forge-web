@@ -8,18 +8,22 @@ import { chartTicks, tickLabel } from '../chartTicks'
 import { utcDate } from '../../../../../utils/date'
 import { useLiveItemPrices, priceKey } from '../ItemIndex/useItemPrices'
 import { useItemRecipes } from '../ItemIndex/useItemRecipes'
-import { parseTier, parseEnchant, withTier, withEnchant, tierLabel, isResource } from '../ItemIndex/itemMeta'
-import { analyzeCraft, collectRecipeIds, profit, type PriceOf, type ReturnRateOf } from '../ItemIndex/craftCost'
+import { parseTier, parseEnchant, withTier, withEnchant, isResource } from '../ItemIndex/itemMeta'
+import { analyzeCraft, collectRecipeIds, profit, strategyCost, type CraftStrategy3, type PriceOf, type ReturnRateOf } from '../ItemIndex/craftCost'
 import { returnRateFor, salesTaxRate, stationFeeFor, useCraftSettings } from '../craftEconomics'
 import {
-  loadCraftStrategy, loadFocus, loadMatSource, loadPremium,
-  saveCraftStrategy, saveMatSource, usePref,
+  loadFocus, loadMatSource, loadPremium,
+  saveCraftStrategy, saveMatSource, usePref, type MatSource,
 } from '../premium'
-import { DataFreshness } from '../DataFreshness'
+import { DataFreshness, ScanIndicator } from '../DataFreshness'
 import { freshnessClass } from '../freshness'
-import { StrategyToggles } from '../ItemIndex/StrategyToggles'
+import { ToggleGroup } from '../ItemIndex/StrategyToggles'
+import { InfoTip } from '../../../../../components/InfoTip'
 import { useItemHistory } from './useItemHistory'
+import { useVolumes } from '../ItemIndex/useVolumes'
+import { PriceOverrideEditor } from '../ItemIndex/PriceOverrideEditor'
 import { useItemName } from './useItemName'
+import { useAvailableTiers } from './useAvailableTiers'
 import { RecipeTreeCard } from './RecipeTreeCard'
 
 const QUALITY_COLORS: Record<number, string> = {
@@ -30,11 +34,28 @@ const QUALITY_COLORS: Record<number, string> = {
   5: '#c4af64',
 }
 
-const MODE_COLORS: Record<string, string> = {
-  buy: 'text-[#6b7280]',
-  craft: 'text-[#60a5fa]',
-  upgrade: 'text-[#a78bfa]',
-}
+// The three craft strategies shown as selectable cards; the active one drives the tree +
+// shopping list. 'full' has no Best Value counterpart (client-only planning view).
+const STRATEGIES: { key: CraftStrategy3; label: string; note: string; tip: string }[] = [
+  {
+    key: 'base',
+    label: 'Base mats',
+    note: 'buy every material at market',
+    tip: 'Buy every top-level recipe material at market and craft the item once. Simplest path - no sub-refining or transmuting.',
+  },
+  {
+    key: 'optimized',
+    label: 'Optimized',
+    note: 'cheapest buy / craft / upgrade mix',
+    tip: 'For each material, take the cheapest of buy / craft-from-parts / transmute-up across the whole recipe tree. Usually the lowest total cost, and what the Best Value page uses.',
+  },
+  {
+    key: 'full',
+    label: 'Full craft',
+    note: 'refine everything from raw',
+    tip: 'Refine every craftable material down from raw resources. Most hands-on; best when raw mats are cheap. Planning view only - no Best Value counterpart.',
+  },
+]
 
 const PERIODS = [
   { hours: 24, label: '24H', timeScale: 1 },
@@ -110,19 +131,35 @@ export function ItemDetailPanel({
   const [period, setPeriod] = useState(PERIODS[1])
   // Live prefs: the Craft Settings modal (or another page's toggles) updates these too.
   const matSource = usePref(loadMatSource)
-  const strategy = usePref(loadCraftStrategy)
+  const [strategy, setStrategy] = useState<CraftStrategy3>('optimized')
+  const [qty, setQty] = useState(1)
+  // 'full' is a detail-only planning view; only the 2-value base/optimized pref is shared.
+  const selectStrategy = (s: CraftStrategy3) => {
+    setStrategy(s)
+    if (s !== 'full') saveCraftStrategy(s)
+  }
   const settings = useCraftSettings()
   const taxRate = salesTaxRate(loadPremium())
 
   const fetchedName = useItemName(itemId)
   const tier = parseTier(itemId)
   const enchant = parseEnchant(itemId)
-  // Resources have no quality tiers - pin lookups to quality 1 and drop the quality UI.
-  const resource = isResource(itemId)
-  const effQuality = resource ? 1 : quality
-
   const { recipes } = useItemRecipes([itemId])
   const recipe = recipes.get(itemId)
+  // Only equippable gear has quality tiers; resources, crests, artefacts, consumables, etc. pin to
+  // Normal and drop the quality UI. has_quality comes from the recipe payload; fall back to the
+  // resource check until it loads (no flicker).
+  const hasQuality = recipe?.has_quality ?? !isResource(itemId)
+  const effQuality = hasQuality ? quality : 1
+
+  // Only offer tiers this item family actually has (falls back to all while the catalog loads,
+  // and always keeps the tier being viewed). Enchantment only exists at T4+.
+  const availableTiers = useAvailableTiers(itemId)
+  const tierOptions = useMemo(() => {
+    const base = availableTiers.length ? availableTiers : TIERS
+    return base.includes(tier) ? base : [...base, tier].sort((a, b) => a - b)
+  }, [availableTiers, tier])
+
   // The recipe payload carries the server-annotated localized name - prefer it, fall back to
   // the search lookup, then the raw id while both load.
   const name = recipe?.name || fetchedName
@@ -134,6 +171,8 @@ export function ItemDetailPanel({
   }, [itemId, recipe])
 
   const { prices, fetchedAt, dataAt } = useLiveItemPrices(allIds, city, ALL_QUALITIES)
+  const volumeIds = useMemo(() => [itemId], [itemId])
+  const itemVolumes = useVolumes(volumeIds, city, effQuality)
   const { series, loading: historyLoading, error: historyError } = useItemHistory(itemId, city, period.timeScale)
 
   // Materials price at quality 1; matSource picks instant-buy vs buy-order prices.
@@ -153,7 +192,7 @@ export function ItemDetailPanel({
   }, [city])
 
   const analysis = useMemo(
-    () => analyzeCraft(recipe, priceOf, rrOf, stationFeeFor(itemId, city, settings)),
+    () => analyzeCraft(recipe, priceOf, rrOf, stationFeeFor(itemId, city, settings, recipe?.item_value)),
     [recipe, priceOf, rrOf, itemId, city, settings],
   )
 
@@ -184,22 +223,21 @@ export function ItemDetailPanel({
   const chartedQualities = useMemo(() => {
     const withData = ALL_QUALITIES.filter(q => series.some(s => s.quality === q && s.data.length > 0))
     // Resource "qualities" are duplicates of the same data - chart a single line.
-    if (resource) return withData.length ? [withData.includes(1) ? 1 : withData[0]] : []
+    if (!hasQuality) return withData.length ? [withData.includes(1) ? 1 : withData[0]] : []
     return withData
-  }, [series, resource])
+  }, [series, hasQuality])
 
   const selectedRow = prices.get(priceKey(itemId, city, effQuality))
   const sell = selectedRow?.sell_price_min || null
   const buy = selectedRow?.buy_price_max || null
-  const scannedAt = selectedRow?.timestamp ? new Date(selectedRow.timestamp) : null
-  const strategyCost = strategy === 'base' ? analysis?.fullBuy : analysis?.optimal
-  const profitSell = profit(sell, strategyCost, taxRate)
+  const scannedAt = selectedRow?.timestamp ? utcDate(selectedRow.timestamp) : null
+  const cost = analysis ? strategyCost(analysis, strategy) : null
 
   return (
     <div className="space-y-4 min-w-0">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <ItemIcon uniqueName={itemId} size={56} quality={resource ? undefined : quality} />
+        <ItemIcon uniqueName={itemId} size={56} quality={hasQuality ? quality : undefined} />
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 min-w-0">
             <h2 className="text-lg font-semibold text-[#e2e4ed] truncate">{name || itemId}</h2>
@@ -218,35 +256,54 @@ export function ItemDetailPanel({
             </a>
           </div>
           <p className="text-xs text-[#6b7280]">
-            T{tier}{enchant > 0 ? `.${enchant}` : ''}{resource ? '' : ` · ${QUALITIES.find(q => q.value === quality)?.label}`} · {city}
+            T{tier}{enchant > 0 ? `.${enchant}` : ''}{hasQuality ? ` · ${QUALITIES.find(q => q.value === quality)?.label}` : ''} · {city}
           </p>
         </div>
         {actions}
       </div>
 
-      {/* Variant switchers */}
-      <div className="space-y-2">
-        <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="text-[10px] text-[#6b7280] uppercase tracking-widest w-14">Tier</span>
-          {TIERS.map(t => (
-            <VariantButton key={t} active={t === tier} onClick={() => onItemId(withTier(itemId, t))}>
-              T{t}
-            </VariantButton>
-          ))}
+      {/* Variant switchers, with the manual-price override on the right of the box */}
+      <div className="flex items-center justify-between gap-3">
+        <div className="space-y-2">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <span className="text-[10px] text-[#6b7280] uppercase tracking-widest w-14">Tier</span>
+            {tierOptions.map(t => (
+              <VariantButton
+                key={t}
+                active={t === tier}
+                onClick={() => onItemId(t >= 4 ? withTier(itemId, t) : withEnchant(withTier(itemId, t), 0))}
+              >
+                T{t}
+              </VariantButton>
+            ))}
+          </div>
+          {/* Enchantment only exists at T4+ */}
+          {tier >= 4 && (
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="text-[10px] text-[#6b7280] uppercase tracking-widest w-14">Enchant</span>
+              {ENCHANTS.map(e => (
+                <VariantButton key={e} active={e === enchant} onClick={() => onItemId(withEnchant(itemId, e))}>
+                  .{e}
+                </VariantButton>
+              ))}
+            </div>
+          )}
         </div>
-        <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="text-[10px] text-[#6b7280] uppercase tracking-widest w-14">Enchant</span>
-          {ENCHANTS.map(e => (
-            <VariantButton key={e} active={e === enchant} onClick={() => onItemId(withEnchant(itemId, e))}>
-              .{e}
-            </VariantButton>
-          ))}
+        <div className="shrink-0">
+          <PriceOverrideEditor
+            itemId={itemId}
+            city={city}
+            quality={effQuality}
+            current={sell}
+            isOverride={selectedRow?.source === 'user'}
+            label="Set Manual Price Override"
+          />
         </div>
       </div>
 
       {/* Per-quality market prices; click selects the quality the stats below use.
           Resources have no quality tiers - the strip is hidden for them. */}
-      {!resource && (
+      {hasQuality && (
       <div className="grid grid-cols-5 gap-2">
         {QUALITIES.map(q => {
           const p = prices.get(priceKey(itemId, city, q.value))?.sell_price_min || null
@@ -255,7 +312,7 @@ export function ItemDetailPanel({
             <button
               key={q.value}
               onClick={() => onQuality(q.value)}
-              className={`rounded-lg border p-2 text-left cursor-pointer transition-colors ${
+              className={`rounded-lg border p-2 text-center cursor-pointer transition-colors ${
                 active ? 'border-[#c4af64] bg-[#c4af64]/10' : 'border-[#2a2d3a] bg-[#1a1d27] hover:border-[#3a3d4a]'
               }`}
             >
@@ -285,15 +342,17 @@ export function ItemDetailPanel({
           {chartedQualities.map(q => (
             <span key={q} className="flex items-center gap-1">
               <span className="w-3 h-0.5 rounded" style={{ background: QUALITY_COLORS[q] }} />
-              {resource ? 'Price' : QUALITIES.find(x => x.value === q)?.label}
+              {hasQuality ? QUALITIES.find(x => x.value === q)?.label : 'Price'}
             </span>
           ))}
         </div>
         {historyError ? (
           <p className="text-sm text-red-400 text-center py-10">Failed to load history: {historyError}</p>
         ) : chartData.length === 0 ? (
-          <p className="text-sm text-[#6b7280] text-center py-10">
-            {historyLoading ? 'Loading history…' : 'No price history for this window.'}
+          <p className="text-sm text-[#6b7280] text-center py-10 max-w-md mx-auto">
+            {historyLoading
+              ? 'Loading history…'
+              : 'No completed sales recorded for this market and window. An item can have a listed price with no trade history - the chart only plots buckets where something actually sold.'}
           </p>
         ) : (
           <ResponsiveContainer width="100%" height={280}>
@@ -324,10 +383,10 @@ export function ItemDetailPanel({
                   key={q}
                   type="monotone"
                   dataKey={`q${q}`}
-                  stroke={resource ? '#c4af64' : QUALITY_COLORS[q]}
+                  stroke={hasQuality ? QUALITY_COLORS[q] : '#c4af64'}
                   strokeWidth={q === effQuality ? 2 : 1.25}
-                  dot={false}
-                  name={resource ? 'Price' : QUALITIES.find(x => x.value === q)?.label}
+                  dot={chartData.length <= 2 ? { r: 2 } : false}
+                  name={hasQuality ? QUALITIES.find(x => x.value === q)?.label : 'Price'}
                   connectNulls
                 />
               ))}
@@ -338,81 +397,82 @@ export function ItemDetailPanel({
 
       {/* Economics - all values from Craft Settings (premium tax, focus, station fees) */}
       <div className="flex flex-wrap items-center gap-4">
-        <StrategyToggles
-          matSource={matSource}
-          onMatSource={saveMatSource}
-          strategy={strategy}
-          onStrategy={saveCraftStrategy}
+        <ToggleGroup<MatSource>
+          label="Mats"
+          value={matSource}
+          options={[['sell', 'Instant buy'], ['buy', 'Buy orders']]}
+          onChange={saveMatSource}
         />
         <span className="text-xs text-[#6b7280]">
           tax {Math.round(taxRate * 100)}% · mats at {matSource === 'buy' ? 'buy-order' : 'instant-buy'} prices · bonus-aware returns · fees from Craft Settings
         </span>
         {fetchedAt && (
-          <span className="text-xs text-[#6b7280]">
+          <span className="flex items-center gap-1.5 text-xs text-[#6b7280]">
             prices updated {fetchedAt.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
             <DataFreshness dataAt={dataAt} fetchedAt={fetchedAt} />
+            <span className="text-[#3a3d4a]">·</span>
+            this item
+            <ScanIndicator dataAt={scannedAt} fetchedAt={fetchedAt} source={selectedRow?.source} by={selectedRow?.entered_by} />
           </span>
         )}
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-        <StatCard label="Sell (min)" value={fmt(sell)} />
-        <StatCard label="Buy (max)" value={fmt(buy)} />
-        <StatCard label="Craft (base)" value={fmt(analysis?.fullBuy)} title="Top-level recipe materials bought at current market prices - no sub-crafting" />
-        <StatCard label="Craft (optimized)" value={fmt(analysis?.optimal)} title="Cheapest mix of buy / craft / upgrade across the whole recipe tree" gold />
-        <StatCard
-          label={`Profit (sell, ${strategy === 'base' ? 'base mats' : 'optimized'})`}
-          value={profitSell == null ? '-' : `${profitSell > 0 ? '+' : ''}${fmt(profitSell)}`}
-          tone={profitSell == null ? undefined : profitSell > 0 ? 'green' : 'red'}
-          bold
-        />
+      <div className="mx-auto w-full max-w-sm">
+        <div className="mb-1.5 flex items-center justify-between">
+          <span className="text-[10px] uppercase tracking-widest text-[#6b7280]">Market price</span>
+          <InfoTip text="Sell (min) is the lowest sell order: what you pay to buy instantly, or the ask you undercut when you place your own sell order and wait for a buyer. Buy (max) is the highest buy order: sell into it for instant (lower) silver, or place your own buy order and wait for a cheaper fill." />
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+          <StatCard
+            label="Sell (min)"
+            value={fmt(sell)}
+            gold={selectedRow?.source === 'user'}
+            title={selectedRow?.source === 'user' ? 'Manual override (not scanned)' : undefined}
+          />
+          <StatCard label="Buy (max)" value={fmt(buy)} />
+        </div>
       </div>
 
-      {scannedAt && fetchedAt && (
-        <p className={`text-xs ${freshnessClass(Math.max(0, fetchedAt.getTime() - scannedAt.getTime()))}`}>
-          this market (town + quality) last scanned in game {scannedAt.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })}
+      {(scannedAt || itemVolumes.get(itemId)) && (
+        <p className="text-xs text-[#6b7280]">
+          {scannedAt && fetchedAt && (
+            <span className={freshnessClass(Math.max(0, fetchedAt.getTime() - scannedAt.getTime()))}>
+              {selectedRow?.source === 'user'
+                ? `custom price${selectedRow.entered_by ? ` by ${selectedRow.entered_by}` : ''}, entered ${scannedAt.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })}`
+                : `this market (town + quality) last scanned in game ${scannedAt.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })}`}
+            </span>
+          )}
+          {itemVolumes.get(itemId) && (
+            <span>
+              {scannedAt ? ' · ' : ''}
+              sold {itemVolumes.get(itemId)!.sold_24h.toLocaleString('en-US')} in 24h
+              {' / '}{itemVolumes.get(itemId)!.sold_1h.toLocaleString('en-US')} last hour
+              {itemVolumes.get(itemId)!.avg_daily_sold != null && (
+                <> · ~{itemVolumes.get(itemId)!.avg_daily_sold!.toLocaleString('en-US')}/day avg (30d)</>
+              )}
+              {' · avg '}{fmt(itemVolumes.get(itemId)!.avg_price_24h)}
+            </span>
+          )}
         </p>
       )}
 
-      {/* Craft breakdown: base (all bought) vs optimized (buy/craft/upgrade mix) */}
+      {/* Craft strategy: pick one; the tree + shopping list below both follow it */}
       {analysis && (
-        <div className="grid sm:grid-cols-2 gap-3">
-          <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-4 space-y-1.5 text-xs">
-            <div className="flex items-center justify-between mb-1">
-              <h3 className="text-sm font-medium text-[#9ca3af] tracking-wide uppercase">Base Materials</h3>
-              <span className="font-mono text-[#9ca3af]">{fmt(analysis.fullBuy)}</span>
-            </div>
-            {analysis.baseMaterials.map(m => (
-              <div key={m.id} className="flex justify-between gap-3">
-                <span className="text-[#9ca3af] truncate">{m.count}× {tierLabel(m.id)} {m.name}</span>
-                <span className="font-mono text-[#e2e4ed] shrink-0">{fmt(m.subtotal)}</span>
-              </div>
-            ))}
-            <p className="text-[10px] text-[#6b7280] pt-0.5">top-level recipe materials bought at market</p>
-          </div>
-          <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-4 space-y-1.5 text-xs">
-            <div className="flex items-center justify-between mb-1">
-              <h3 className="text-sm font-medium text-[#9ca3af] tracking-wide uppercase">Optimized Materials</h3>
-              <span className="font-mono text-[#c4af64]">{fmt(analysis.optimal)}</span>
-            </div>
-            {analysis.materials.map(m => (
-              <div key={m.id} className="flex justify-between gap-3">
-                <span className="text-[#9ca3af] truncate">{m.count}× {tierLabel(m.id)} {m.name}</span>
-                <span className="font-mono text-right shrink-0">
-                  <span className={MODE_COLORS[m.mode]}>{m.mode}</span>{' '}
-                  <span className="text-[#e2e4ed]">{fmt(m.subtotal)}</span>
-                </span>
-              </div>
-            ))}
-            {analysis.silver > 0 && (
-              <p className="text-[10px] text-[#6b7280] pt-0.5">+ {fmt(analysis.silver)} silver crafting fee</p>
-            )}
-            {analysis.stationFee > 0 && (
-              <p className="text-[10px] text-[#6b7280] pt-0.5">+ {fmt(analysis.stationFee)} station fee (Craft Settings)</p>
-            )}
-            {analysis.amount > 1 && (
-              <p className="text-[10px] text-[#6b7280] pt-0.5">per unit · crafts {analysis.amount} at once</p>
-            )}
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          {STRATEGIES.map(s => {
+            const c = strategyCost(analysis, s.key)
+            return (
+              <StrategyCard
+                key={s.key}
+                label={s.label}
+                note={s.note}
+                tip={s.tip}
+                cost={c}
+                profit={profit(sell, c, taxRate)}
+                selected={s.key === strategy}
+                onSelect={() => selectStrategy(s.key)}
+              />
+            )
+          })}
         </div>
       )}
 
@@ -422,6 +482,11 @@ export function ItemDetailPanel({
           recipe={recipe}
           priceOf={priceOf}
           rrOf={rrOf}
+          strategy={strategy}
+          qty={qty}
+          onQty={setQty}
+          stationFee={analysis?.stationFee ?? 0}
+          cost={cost}
         />
       )}
     </div>
@@ -431,9 +496,55 @@ export function ItemDetailPanel({
 function StatCard({ label, value, title, gold, tone, bold }: { label: string; value: string; title?: string; gold?: boolean; tone?: 'green' | 'red'; bold?: boolean }) {
   const color = tone === 'green' ? 'text-green-400' : tone === 'red' ? 'text-red-400' : gold ? 'text-[#c4af64]' : 'text-[#e2e4ed]'
   return (
-    <div className={`bg-[#1a1d27] border rounded-lg p-3 ${bold ? 'border-[#c4af64]/50' : 'border-[#2a2d3a]'}`} title={title}>
+    <div className={`bg-[#1a1d27] border rounded-lg p-3 text-center ${bold ? 'border-[#c4af64]/50' : 'border-[#2a2d3a]'}`} title={title}>
       <p className={`text-[10px] uppercase tracking-widest mb-1 ${bold ? 'text-[#c4af64] font-semibold' : 'text-[#6b7280]'}`}>{label}</p>
       <p className={`text-base ${bold ? 'font-bold' : 'font-semibold'} ${color}`}>{value}</p>
+    </div>
+  )
+}
+
+// One selectable craft strategy: its all-in per-unit cost (silver + station fee folded in,
+// return rate applied) and the profit + return% it yields at the current sell. Selecting it
+// drives the crafting tree + shopping list below. Profit uses the same cost, so the numbers
+// reconcile end to end and match the Best Value page (for base / optimized).
+function StrategyCard({ label, note, tip, cost, profit: p, selected, onSelect }: {
+  label: string
+  note: string
+  tip: string
+  cost: number | null
+  profit: number | null
+  selected: boolean
+  onSelect: () => void
+}) {
+  const returnPct = cost && cost > 0 && p != null ? (p / cost) * 100 : null
+  const tone = p == null ? 'text-[#6b7280]' : p > 0 ? 'text-green-400' : 'text-red-400'
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={onSelect}
+      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelect() } }}
+      aria-pressed={selected}
+      className={`relative rounded-lg border p-3 text-center transition-colors cursor-pointer focus:outline-none focus:border-[#c4af64] ${
+        selected ? 'border-[#c4af64] bg-[#c4af64]/10' : 'border-[#2a2d3a] bg-[#1a1d27] hover:border-[#3a3d4a]'
+      }`}
+    >
+      <span className="absolute right-1.5 top-1.5" onClick={e => e.stopPropagation()}>
+        <InfoTip text={tip} />
+      </span>
+      <span className={`block text-[11px] font-semibold uppercase tracking-wider ${selected ? 'text-[#c4af64]' : 'text-[#9ca3af]'}`}>{label}</span>
+      <p className="mt-1 text-lg font-bold text-[#e2e4ed]">{fmt(cost)}</p>
+      <div className="mt-0.5 flex items-center justify-center gap-2">
+        <span className={`text-sm font-semibold ${tone}`}>
+          {p == null ? '-' : `${p > 0 ? '+' : ''}${fmt(p)}`}
+        </span>
+        {returnPct != null && (
+          <span className={`text-xs ${returnPct > 0 ? 'text-green-400' : 'text-red-400'}`}>
+            {returnPct > 0 ? '+' : ''}{returnPct.toFixed(1)}%
+          </span>
+        )}
+      </div>
+      <p className="mt-1 text-[10px] text-[#6b7280]">{selected ? `● selected · ${note}` : note}</p>
     </div>
   )
 }

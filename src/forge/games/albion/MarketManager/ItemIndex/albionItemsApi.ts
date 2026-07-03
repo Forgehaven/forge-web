@@ -1,7 +1,7 @@
 import { albionFetch } from '../../api'
 import type {
   AlbionItem, BestValuePayload, CraftSettings, CraftSettingsPayload,
-  RawHistorySeries, RawItemPrice, RecipeNode,
+  RawHistorySeries, RawItemPrice, RecipeNode, VolumeRow,
 } from './types'
 
 // Single data-access layer for the Item Index. Every hook calls only these three functions.
@@ -29,6 +29,32 @@ export async function fetchItemPrices(
   const loc = encodeURIComponent(locations.join(','))
   const qual = encodeURIComponent(qualities.join(','))
   return albionFetch<RawItemPrice[]>(`/game/albion/prices/${ids}?locations=${loc}&qualities=${qual}`)
+}
+
+// GET /game/albion/prices/volumes/{ids} - 24h throughput, chunked like recipes (server
+// caps at 100 ids). Per-chunk failures are tolerated (those markets just show no volume).
+export async function fetchVolumes(
+  itemIds: string[],
+  locations: string[],
+  qualities: number[],
+): Promise<Envelope<VolumeRow[]>> {
+  if (itemIds.length === 0) return { status: 'ok', payload: [] }
+  const loc = encodeURIComponent(locations.join(','))
+  const qual = encodeURIComponent(qualities.join(','))
+  const chunks: string[][] = []
+  for (let i = 0; i < itemIds.length; i += RECIPE_CHUNK) {
+    chunks.push(itemIds.slice(i, i + RECIPE_CHUNK))
+  }
+  const results = await Promise.all(chunks.map(chunk =>
+    albionFetch<VolumeRow[]>(
+      `/game/albion/prices/volumes/${chunk.map(encodeURIComponent).join(',')}?locations=${loc}&qualities=${qual}`,
+    ),
+  ))
+  const rows: VolumeRow[] = []
+  for (const res of results) {
+    if (res.status === 'ok') rows.push(...res.payload)
+  }
+  return { status: 'ok', payload: rows }
 }
 
 // GET /game/albion/prices/history/{id}?locations=&qualities=&time-scale=
@@ -71,6 +97,41 @@ export async function putCraftSettings(settings: CraftSettings): Promise<Envelop
     method: 'PUT',
     body: JSON.stringify(settings),
   })
+}
+
+// GET/PUT/DELETE /game/albion/price-overrides - community-shared MANUAL price overrides.
+// A guild member types the real in-game ask when the crowdsourced ADP price is stale/wrong;
+// it replaces the ADP price everywhere (item tables + Best Value). Keyed 'item|city|quality'.
+export interface PriceOverrideEntry {
+  sell_price_min: number
+  by?: string | null
+  at?: string | null
+}
+
+export interface PriceOverridesPayload {
+  overrides: Record<string, PriceOverrideEntry>
+  updated_at: string | null
+}
+
+export async function fetchPriceOverrides(): Promise<Envelope<PriceOverridesPayload>> {
+  return albionFetch<PriceOverridesPayload>('/game/albion/price-overrides')
+}
+
+export async function savePriceOverride(
+  itemId: string, city: string, quality: number, sellPriceMin: number,
+): Promise<Envelope<PriceOverrideEntry>> {
+  return albionFetch<PriceOverrideEntry>('/game/albion/price-overrides', {
+    method: 'PUT',
+    body: JSON.stringify(
+      { item_id: itemId, city, quality, sell_price_min: sellPriceMin }),
+  })
+}
+
+export async function clearPriceOverride(
+  itemId: string, city: string, quality: number,
+): Promise<Envelope<null>> {
+  const path = [itemId, city, String(quality)].map(encodeURIComponent).join('/')
+  return albionFetch<null>(`/game/albion/price-overrides/${path}`, { method: 'DELETE' })
 }
 
 // Batch GET /game/albion/recipes/{ids} - chunked at 50 ids per request (URL-length safe,

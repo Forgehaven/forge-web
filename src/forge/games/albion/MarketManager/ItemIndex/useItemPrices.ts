@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import { fetchItemPrices } from './albionItemsApi'
 import { usePricesWS, type PriceChange } from '../usePricesWS'
+import { useOverridesVersion } from '../premium'
+import { utcDate } from '../../../../../utils/date'
 import type { RawItemPrice } from './types'
 
 // Backend caches prices for 120s, so polling faster gains nothing.
@@ -58,6 +60,8 @@ export function useItemPrices(
   // Stable, order-independent keys for the deps.
   const idsKey = [...itemIds].sort().join(',')
   const qualKey = [...qualities].sort().join(',')
+  // A saved/cleared manual override changes the server-side prices; refetch on it.
+  const overridesVersion = useOverridesVersion()
 
   useEffect(() => {
     let cancelled = false
@@ -81,7 +85,7 @@ export function useItemPrices(
         }
         setPrices(map)
         setFetchedAt(new Date())
-        setDataAt(newest ? new Date(newest) : null)
+        setDataAt(newest ? utcDate(newest) : null)
         setError(null)
       } else {
         setError(result.message)
@@ -96,7 +100,7 @@ export function useItemPrices(
       clearInterval(interval)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [idsKey, location, qualKey, tick])
+  }, [idsKey, location, qualKey, tick, overridesVersion])
 
   return { prices, fetchedAt, dataAt, loading, error, refresh, applyChanges }
 }

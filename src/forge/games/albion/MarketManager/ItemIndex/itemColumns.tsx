@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import type { Column } from '../../../../../components/DataTable'
-import { ScanDot } from '../DataFreshness'
+import { utcDate } from '../../../../../utils/date'
+import { ScanIndicator } from '../DataFreshness'
 import { ItemIcon } from '../../ItemIcon'
 import { profit } from './craftCost'
 import { CraftCell } from './CraftBreakdownCell'
 import { ProfitMaterialsCell } from './ProfitMaterialsCell'
+import { PriceOverrideEditor } from './PriceOverrideEditor'
 import type { CraftStrategy } from '../premium'
 import type { ItemRow } from './types'
 
@@ -18,6 +20,7 @@ interface ColumnOpts {
   strategy?: CraftStrategy // which craft cost the profit columns use
   linkTo?: (row: ItemRow) => string // item name becomes a link (detail page)
   fetchedAt?: Date | null // anchor for the per-row scan-age dots (no Date.now in render)
+  location?: string // the table's single town - enables the manual price-override pencil
 }
 
 // Shared column defs for the Item Index + Favourites tables. Craft/profit columns are appended
@@ -76,17 +79,50 @@ export function buildItemColumns(opts: ColumnOpts): Column<ItemRow>[] {
     {
       key: 'sell',
       label: 'Sell (min)',
-      title: 'Dot = when a player last scanned this market in game (per item + town)',
+      title: 'Lowest current ask, or a shared manual override. Use the pencil to set a manual price when the scanned data is stale.',
       sortKey: r => r.price?.sell_price_min ?? -1,
       render: row => (
         <span className="flex items-center gap-1.5">
-          <ScanDot
-            dataAt={row.price?.timestamp ? new Date(row.price.timestamp) : null}
-            fetchedAt={opts.fetchedAt ?? null}
-          />
-          {priceCell(row.price?.sell_price_min)}
+          {priceCell(row.price?.sell_price_min, row.price?.source === 'user')}
+          {opts.location && (
+            <PriceOverrideEditor
+              itemId={row.id}
+              city={opts.location}
+              quality={opts.quality}
+              current={row.price?.sell_price_min ?? null}
+              isOverride={row.price?.source === 'user'}
+            />
+          )}
         </span>
       ),
+    },
+    {
+      key: 'scanned',
+      label: 'Scanned',
+      title: 'When this market was last scanned in game (per item + town), colored by age. A person icon marks a shared manual override; sort to pull the stalest to the top.',
+      sortKey: r => {
+        const ts = r.price?.timestamp
+        if (!ts) return Number.POSITIVE_INFINITY
+        const anchor = opts.fetchedAt?.getTime() ?? utcDate(ts).getTime()
+        return anchor - utcDate(ts).getTime()
+      },
+      render: row => (
+        <ScanIndicator
+          dataAt={row.price?.timestamp ? utcDate(row.price.timestamp) : null}
+          fetchedAt={opts.fetchedAt ?? null}
+          source={row.price?.source}
+          by={row.price?.entered_by}
+        />
+      ),
+    },
+    {
+      key: 'sold',
+      label: 'Sold/day',
+      title: 'Units traded in this town over the last 24h (from ADP hourly candles). 0 or blank = nothing traded - distrust the prices.',
+      sortKey: r => r.volume?.sold_24h ?? -1,
+      render: row => row.volume
+        ? <span className="text-[#9ca3af]">{row.volume.sold_24h.toLocaleString('en-US')}</span>
+        : <span className="text-[#4a4d5a]">-</span>,
     },
     {
       key: 'buy',
@@ -145,9 +181,16 @@ function fmt(n: number | null | undefined): string {
   return Math.round(n).toLocaleString('en-US')
 }
 
-function priceCell(v: number | undefined): ReactNode {
+function priceCell(v: number | undefined, custom = false): ReactNode {
   if (v == null || v === 0) return <span className="text-[#6b7280]">-</span>
-  return <span className="text-[#c4af64] font-medium">{v.toLocaleString('en-US')}</span>
+  const cls = custom
+    ? 'text-[#c4af64] font-medium underline decoration-dotted decoration-[#c4af64]/50'
+    : 'text-[#c4af64] font-medium'
+  return (
+    <span className={cls} title={custom ? 'Manual override (not scanned)' : undefined}>
+      {v.toLocaleString('en-US')}
+    </span>
+  )
 }
 
 function costCell(v: number | null | undefined): ReactNode {

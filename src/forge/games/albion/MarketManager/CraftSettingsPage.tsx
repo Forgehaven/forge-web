@@ -24,7 +24,7 @@ export function CraftSettingsPage() {
   }, [isAuthenticated])
 
   return (
-    <div className="p-6 max-w-6xl mx-auto w-full space-y-4 select-none">
+    <div className="p-6 max-w-6xl mx-auto w-full space-y-4">
       <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
         Albion Online <span className="text-[#c4af64]">Craft Settings</span>
       </h1>

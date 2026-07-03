@@ -56,13 +56,14 @@ export function FavouritesPage() {
       taxRate,
       strategy,
       fetchedAt,
+      location,
       linkTo: row => `/games/albion/market-manager/item/${encodeURIComponent(row.id)}?quality=${quality}&city=${encodeURIComponent(location)}`,
     }),
     [isFavourite, toggle, quality, taxRate, strategy, location, fetchedAt],
   )
 
   return (
-    <div className="p-6 max-w-7xl mx-auto w-full h-full flex flex-col gap-4 select-none">
+    <div className="p-6 max-w-[1600px] mx-auto w-full h-full flex flex-col gap-4">
       <div className="flex items-center gap-2">
         <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
           Albion Online <span className="text-[#c4af64]">Favourites</span>

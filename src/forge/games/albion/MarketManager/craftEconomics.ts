@@ -115,12 +115,25 @@ export function returnRateFor(id: string, city: string, focus: boolean): number 
   return pct / 100
 }
 
-// Flat station usage fee (silver) for crafting `id` in `city`, from the shared settings.
-export function stationFeeFor(id: string, city: string, settings: CraftSettings | null): number {
-  if (!settings) return 0
+// Station usage fees are set by owners as silver PER 100 NUTRITION (the number on the
+// station sign); one craft consumes ItemValue x 0.1125 nutrition. T1/T2 crafts are
+// fee-exempt in game, and without a known item value we charge nothing. Mirrors the
+// server's station_fee_silver in craft_settings.py.
+export const NUTRITION_PER_ITEM_VALUE = 0.1125
+
+export function stationFeeFor(
+  id: string,
+  city: string,
+  settings: CraftSettings | null,
+  itemValue?: number | null,
+): number {
+  if (!settings || !itemValue) return 0
   const econ = itemEcon(id)
   if (!econ) return 0
-  return settings.cities[city]?.station_fees?.[econ.station] ?? 0
+  const tier = parseInt(id.match(/^T(\d)/)?.[1] ?? '0', 10)
+  if (tier <= 2) return 0
+  const setting = settings.cities[city]?.station_fees?.[econ.station] ?? 0
+  return setting * itemValue * NUTRITION_PER_ITEM_VALUE / 100
 }
 
 // Shared craft settings, fetched once per session (module cache) - station fees change

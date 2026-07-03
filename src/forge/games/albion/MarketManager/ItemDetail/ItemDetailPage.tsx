@@ -39,7 +39,7 @@ export function ItemDetailPage() {
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto w-full select-none">
+    <div className="p-6 max-w-4xl mx-auto w-full">
       <div className="flex items-center justify-between gap-3 mb-4 flex-wrap">
         <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
           Albion Online <span className="text-[#c4af64]">Item Detail</span>

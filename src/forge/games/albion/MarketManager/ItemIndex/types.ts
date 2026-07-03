@@ -17,7 +17,9 @@ export interface RawItemPrice {
   quality: number
   sell_price_min: number
   buy_price_max: number
-  timestamp?: string | null // when ADP last observed this price in game
+  timestamp?: string | null // when ADP last observed this price in game (or the override's entered-at)
+  source?: 'adp' | 'user'   // 'user' = a shared manual override replaced the ADP price
+  entered_by?: string | null // who entered the override (source === 'user')
 }
 
 // GET /game/albion/recipe/{id}  → payload: RecipeNode.
@@ -37,6 +39,7 @@ export interface RecipeNode {
     materials: { item_id: string; name?: string; count: number }[] // runes/souls/relics at market
   }
   item_value?: number // optional; for station-fee calc later
+  has_quality?: boolean // root only: whether the item supports quality tiers (equippable gear)
 }
 
 // One top-level material line in a craft breakdown, with the cheapest acquisition mode chosen.
@@ -64,6 +67,22 @@ export interface CraftAnalysis {
   stationFee: number       // flat station usage fee (Craft Settings) folded into the costs
 }
 
+// GET /game/albion/prices/volumes/{ids}?locations=&qualities= - 24h market throughput per
+// (item, city, quality) from ADP's hourly candles. Markets with no trades are omitted.
+export interface VolumeRow {
+  item_id: string
+  city: string
+  quality: number
+  sold_1h: number       // units traded in the newest hourly bucket
+  sold_24h: number      // units traded over the last 24h
+  avg_price_24h: number // volume-weighted traded price over the last 24h
+  sold_7d?: number      // units traded over the last 7 days (daily candles)
+  sold_30d?: number     // units traded over the last 30 days (daily candles)
+  avg_daily_sold?: number  // 30d mean daily units - stable "typical" volume
+  avg_price_7d?: number    // volume-weighted traded price over 7 days
+  avg_price_30d?: number   // volume-weighted traded price over 30 days
+}
+
 // GET /game/albion/prices/history/{id}?locations=&qualities=&time-scale=  → one series per
 // item × location × quality with hourly (time-scale 1) or daily (24) averaged points.
 export interface RawHistorySeries {
@@ -83,7 +102,15 @@ export interface BestValueRow {
   city: string
   quality: number
   sell_price_min: number
-  data_at?: string | null // when ADP last scanned this row's market
+  revenue: number         // conservative resale basis: min(ask, best-window avg traded)
+  sold_24h: number        // units traded in this market over the last 24h
+  sold_7d?: number        // units traded over the last 7 days
+  sold_30d?: number       // units traded over the last 30 days
+  avg_daily_sold?: number // 30d mean daily units - stable "typical" volume
+  avg_price_24h: number | null
+  data_at?: string | null // when ADP last scanned this row's market (or the override's entered-at)
+  price_source?: 'adp' | 'user' // 'user' = a shared manual override set the sell price
+  entered_by?: string | null // who entered the override (price_source === 'user')
   craft_cost_base: number | null
   craft_cost_optimized: number
   profit: number
@@ -120,5 +147,6 @@ export interface ItemRow {
   tier: number    // derived from the id (T4_… → 4)
   enchant: number // derived from the id (…@1 → 1)
   price: RawItemPrice | null
+  volume?: VolumeRow | null // 24h throughput for this market, when it traded
   craft?: CraftAnalysis | null
 }

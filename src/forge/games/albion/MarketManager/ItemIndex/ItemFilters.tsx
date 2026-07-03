@@ -16,11 +16,13 @@ export interface ItemFiltersProps {
   onLocation: (v: string) => void
   showCatalogFilters?: boolean
   showQuality?: boolean
+  availableTiers?: number[] // when set, the Tier dropdown lists only these (tiers with items)
 }
 
 const ALL: SelectOption = { value: '', label: 'All' }
 
-const TIER_OPTIONS: SelectOption[] = [ALL, ...[1, 2, 3, 4, 5, 6, 7, 8].map(t => ({ value: String(t), label: `T${t}` }))]
+const ALL_TIERS = [1, 2, 3, 4, 5, 6, 7, 8]
+const TIER_OPTIONS: SelectOption[] = [ALL, ...ALL_TIERS.map(t => ({ value: String(t), label: `T${t}` }))]
 const ENCHANT_OPTIONS: SelectOption[] = [ALL, ...[0, 1, 2, 3, 4].map(e => ({ value: String(e), label: `.${e}` }))]
 const QUALITY_OPTIONS: SelectOption[] = QUALITIES.map(q => ({ value: String(q.value), label: q.label }))
 const LOCATION_OPTIONS: SelectOption[] = CITIES.map(c => ({ value: c.value, label: c.label }))
@@ -40,13 +42,21 @@ export function ItemFilters({
   onLocation,
   showCatalogFilters = true,
   showQuality = true,
+  availableTiers,
 }: ItemFiltersProps) {
+  // Gate the Tier dropdown to tiers that actually have items (fall back to full 1-8 while the
+  // list is empty/loading), mirroring the item-detail tier switcher. Keep the selected tier so
+  // an active filter never vanishes from its own list.
+  const tierOptions = availableTiers && availableTiers.length
+    ? [ALL, ...ALL_TIERS.filter(t => availableTiers.includes(t) || String(t) === tier)
+        .map(t => ({ value: String(t), label: `T${t}` }))]
+    : TIER_OPTIONS
   return (
     <div className="flex flex-wrap items-end gap-3">
       {showCatalogFilters && (
         <>
           <Field label="Tier">
-            <Select options={TIER_OPTIONS} value={find(TIER_OPTIONS, tier)} onChange={o => onTier(o?.value ?? '')} />
+            <Select options={tierOptions} value={find(tierOptions, tier)} onChange={o => onTier(o?.value ?? '')} />
           </Field>
           <Field label="Enchant">
             <Select options={ENCHANT_OPTIONS} value={find(ENCHANT_OPTIONS, enchant)} onChange={o => onEnchant(o?.value ?? '')} />

@@ -399,7 +399,7 @@ export function GoldPricePage() {
   ]
 
   return (
-    <div className="p-6 max-w-7xl mx-auto w-full space-y-4 select-none">
+    <div className="p-6 max-w-7xl mx-auto w-full space-y-4">
       <div className="flex items-center gap-2 mb-1">
         <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
           Albion Online <span className="text-[#c4af64]">Gold Price</span>

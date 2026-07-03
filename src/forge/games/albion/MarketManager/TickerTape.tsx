@@ -1,4 +1,5 @@
 import { useRef, useLayoutEffect, useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { useTickerWS, type TickerItem } from './useTickerWS'
 
 function fmtPrice(n: number): string {
@@ -16,8 +17,14 @@ function TickerEntry({ item }: { item: TickerItem }) {
   const chgPct = item.change_pct ?? 0
   const cls = chg >= 0 ? 'text-green-400' : 'text-red-400'
   const arrow = chg >= 0 ? '▲' : '▼'
+  // Compact city token (no spaces) matches the price-endpoint keys; quality 0 (resources) → 1.
+  const city = (item.city || '').replace(/\s+/g, '')
+  const to = `/games/albion/market-manager/item/${encodeURIComponent(item.item_id)}?quality=${item.quality || 1}&city=${encodeURIComponent(city)}`
   return (
-    <span className="inline-flex items-center gap-1.5 mr-6 whitespace-nowrap text-xs">
+    <Link
+      to={to}
+      className="inline-flex items-center gap-1.5 mr-6 whitespace-nowrap text-xs transition-colors hover:bg-[#2a2d3a] rounded px-1"
+    >
       <span className="text-[#e2e4ed] font-medium">{shortName(item.name || item.item_id)}</span>
       <span className="text-[#e2e4ed]">({item.tier || '?'})</span>
       {item.quality > 0 && <span className="text-[#8b8fa3]">Q{item.quality}</span>}
@@ -25,7 +32,7 @@ function TickerEntry({ item }: { item: TickerItem }) {
       <span className="text-[#9ca3af]">{fmtPrice(price)}</span>
       <span className={cls}>{arrow} {chg >= 0 ? '+' : ''}{fmtPrice(chg)}</span>
       <span className={cls}>({chg >= 0 ? '+' : ''}{chgPct.toFixed(1)}%)</span>
-    </span>
+    </Link>
   )
 }
 

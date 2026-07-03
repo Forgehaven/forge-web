@@ -1,28 +1,43 @@
-import { freshnessClass, SCAN_TIME_FMT } from './freshness'
+import { freshnessClass, relativeAge, SCAN_TIME_FMT } from './freshness'
 
-// Per-row scan-age dot: ADP records age independently per (item, city, quality) -
-// one fresh row says nothing about its neighbours. Gray = never scanned in game.
-export function ScanDot({ dataAt, fetchedAt }: {
+// Per-row freshness for a table cell: the scan-age dot + a readable relative age
+// ("2d7h"), plus a person glyph when the price is a shared manual override (so a stale
+// CUSTOM value is spottable too). source='user' rows carry their entered-at as dataAt.
+export function ScanIndicator({ dataAt, fetchedAt, source, by }: {
   dataAt: Date | null
   fetchedAt: Date | null
+  source?: 'adp' | 'user'
+  by?: string | null
 }) {
+  const isUser = source === 'user'
+  const when = dataAt ? dataAt.toLocaleString('en-US', SCAN_TIME_FMT) : null
+  const person = isUser ? (
+    <span
+      className="text-[#c4af64] select-none"
+      title={`Custom price${by ? ` by ${by}` : ''}${when ? ` - ${when}` : ''}`}
+    >
+      {'\u{1F464}'}
+    </span>
+  ) : null
   if (!dataAt || !fetchedAt) {
     return (
-      <span
-        className="text-[#4a4d5a] select-none"
-        title="Never scanned in game - no player has opened this market with the data client"
-      >
-        ●
+      <span className="inline-flex items-center gap-1 text-[#4a4d5a]">
+        <span className="select-none" title="Never scanned in game">●</span>
+        <span className="text-xs">never</span>
+        {person}
       </span>
     )
   }
   const age = Math.max(0, fetchedAt.getTime() - dataAt.getTime())
+  const cls = freshnessClass(age)
+  const title = isUser
+    ? `Custom price${by ? ` by ${by}` : ''} - ${when}`
+    : `Scanned in game ${when}`
   return (
-    <span
-      className={`${freshnessClass(age)} select-none`}
-      title={`Scanned in game ${dataAt.toLocaleString('en-US', SCAN_TIME_FMT)}`}
-    >
-      ●
+    <span className={`inline-flex items-center gap-1 ${cls}`} title={title}>
+      <span className="select-none">●</span>
+      <span className="text-xs">{relativeAge(age)}</span>
+      {person}
     </span>
   )
 }
@@ -40,7 +55,7 @@ export function DataFreshness({ dataAt, fetchedAt }: {
   return (
     <span
       className={freshnessClass(age)}
-      title="Newest in-game scan in this batch - individual rows can be much older (see their dots)"
+      title="Newest in-game scan in this batch - individual rows can be much older (see the Scanned column)"
     >
       · data from {dataAt.toLocaleString('en-US', SCAN_TIME_FMT)}
     </span>

@@ -35,6 +35,30 @@ export function ItemTableHelp() {
             The highest buy order. Selling into it moves your item instantly, at a worse price
             than listing a sell order and waiting.
           </Entry>
+          <Entry title="Scanned">
+            When this exact market (item + town + quality) was last scanned in game. ADP data is
+            crowdsourced, so every row ages on its own - the dot and age are{' '}
+            <span className="text-[#4ade80]">green</span> under an hour,{' '}
+            <span className="text-[#e2e4ed]">white</span> under a day,{' '}
+            <span className="text-[#facc15]">yellow</span> under three, and{' '}
+            <span className="text-[#f87171]">red</span> beyond; a gray “never” means no player has
+            ever scanned it. Sort the column to pull the stalest rows to the top.
+          </Entry>
+          <Entry title="Sold/day">
+            Units that actually traded over the last 24h at this town and quality, from ADP's
+            hourly history. Low or zero means a thin market - distrust its prices however fresh
+            they look. On Best Value a yellow <span className="text-[#facc15]">*</span> flags that
+            the lowest ask sat above the 24h traded average, so profit used the lower traded price
+            instead of the ask.
+          </Entry>
+          <Entry title="Manual price (✎)">
+            When the scan is stale or wrong, click the <span className="text-[#c4af64]">✎</span> by a
+            Sell price to enter the real in-game ask. It is{' '}
+            <strong className="text-[#e2e4ed]">shared with the whole guild</strong> and replaces the
+            scanned price everywhere - these tables and Best Value - shown with a{' '}
+            <span className="text-[#c4af64]">👤</span> and a dotted underline. Clear it to fall back
+            to live scanned data.
+          </Entry>
           <Entry title="Craft (base)">
             The cost to craft one, buying every <strong className="text-[#e2e4ed]">top-level recipe material</strong> at
             its current market price - no sub-crafting. Includes the resource return rate and the

@@ -43,6 +43,7 @@ beforeEach(() => {
       const requestedId = decodeURIComponent(u.split('/recipes/')[1].split(',')[0])
       return Promise.resolve(ok([{
         item_id: requestedId, name: "Expert's Broadsword", count: 1, craftable: true,
+        has_quality: requestedId.includes('MAIN_SWORD'), // gear -> quality; a crest -> none
         recipe: [
           {
             item_id: 'T5_METALBAR', name: 'Metal Bar', count: 16, craftable: true,
@@ -51,6 +52,11 @@ beforeEach(() => {
           { item_id: 'T5_LEATHER', name: 'Leather', count: 8, craftable: false, recipe: [] },
         ],
       }]))
+    }
+    if (u.includes('/game/albion/prices/volumes/')) {
+      return Promise.resolve(ok([
+        { item_id: 'T5_MAIN_SWORD', city: 'Caerleon', quality: 1, sold_1h: 3, sold_24h: 55, avg_price_24h: 5050 },
+      ]))
     }
     if (u.includes('/game/albion/prices/')) {
       return Promise.resolve(ok([
@@ -62,7 +68,8 @@ beforeEach(() => {
       ]))
     }
     if (u.includes('/game/albion/items')) {
-      return Promise.resolve(ok([{ id: 'T5_MAIN_SWORD', name: 'Broadsword' }]))
+      // Sword family exists T3-T8 (no T1/T2) - drives the tier-gating switcher.
+      return Promise.resolve(ok([3, 4, 5, 6, 7, 8].map(t => ({ id: `T${t}_MAIN_SWORD`, name: 'Broadsword' }))))
     }
     return Promise.resolve(new Response(JSON.stringify({ status: 'error' }), { status: 404 }))
   })
@@ -93,8 +100,22 @@ describe('ItemDetailPage', () => {
     // variant switchers
     expect(screen.getByText('T8')).toBeInTheDocument()
     expect(screen.getByText('.4')).toBeInTheDocument()
+    // tier gating: sword family is T3-T8, so T3 shows but T1/T2 do not
+    expect(screen.getByText('T3')).toBeInTheDocument()
+    await waitFor(() => expect(screen.queryByText('T1')).toBeNull())
+    expect(screen.queryByText('T2')).toBeNull()
     // craft: base = optimized = 16×100 + 8×50 = 2000 at 15.2% base return → 1696
     expect(await screen.findAllByText('1,696')).not.toHaveLength(0)
+  })
+
+  it('hides the quality strip for items that do not support quality (has_quality=false)', async () => {
+    // a crest (shopcategory "other") has no quality -> only Normal, no Q1-5 strip
+    renderPage('/games/albion/market-manager/item/T4_CAPEITEM_UNDEAD_BP?quality=1&city=Caerleon')
+    expect(await screen.findByText("Expert's Broadsword")).toBeInTheDocument()
+    // the non-Normal quality labels live only in the strip - they must be gone
+    await waitFor(() => expect(screen.queryByText('Good')).toBeNull())
+    expect(screen.queryByText('Outstanding')).toBeNull()
+    expect(screen.queryByText('Masterpiece')).toBeNull()
   })
 
   it('scales the aggregated shopping list by quantity', async () => {
@@ -123,8 +144,8 @@ describe('ItemDetailPage', () => {
     // Optimized: metalbar craft (2×60×0.85 = 102) loses to buy (100) → ore stays hidden.
     expect(screen.queryByText(/Iron Ore/)).toBeNull()
 
-    await userEvent.click(screen.getByText('Full tree'))
-    // Full tree refines from raw: 16×0.848 = 13.57 metalbars → 2×0.848×13.57 = 23.01 → 24 ore.
+    await userEvent.click(screen.getByText('Full craft'))
+    // Full craft refines from raw: 16×0.848 = 13.57 metalbars → 2×0.848×13.57 = 23.01 → 24 ore.
     // Ore appears in the tree AND the aggregated list beside it.
     expect(await screen.findAllByText(/Iron Ore/)).toHaveLength(2)
     expect(screen.getByText('24×')).toBeInTheDocument()
@@ -136,21 +157,32 @@ describe('ItemDetailPage', () => {
     })
   })
 
-  it('strategy toggles reconfigure the profit card and mat prices', async () => {
+  it('renders the three strategy cards, selects one, and recomputes cost for buy orders', async () => {
     renderPage()
     expect(await screen.findByText("Expert's Broadsword")).toBeInTheDocument()
     await screen.findAllByText('1,696')
-    expect(screen.getByText(/profit \(sell, optimized\)/i)).toBeInTheDocument()
 
-    // Two "Base mats" buttons on the page: StrategyToggles (first) and the
-    // crafting-tree mode switch. The strategy one drives the profit card.
-    await userEvent.click(screen.getAllByText('Base mats')[0])
-    expect(screen.getByText(/profit \(sell, base mats\)/i)).toBeInTheDocument()
+    // base / optimized / full-craft are the single strategy control now (one label each)
+    expect(screen.getByText('Optimized')).toBeInTheDocument()
+    expect(screen.getByText('Full craft')).toBeInTheDocument()
+    const baseCard = screen.getByText('Base mats').closest('[role="button"]')!
+    await userEvent.click(baseCard)
+    expect(baseCard).toHaveAttribute('aria-pressed', 'true')
 
-    // Buy orders: metalbar min(buy 90, craft 2×50×0.848=84.8)=84.8; leather 40
-    // → 13.568×84.8 + 6.784×40 = 1421.9 → 1,422
+    // Buy orders on the always-visible Optimized card: metalbar min(buy 90, craft
+    // 2×50×0.848=84.8)=84.8; leather 40 → 13.568×84.8 + 6.784×40 = 1421.9 → 1,422
     await userEvent.click(screen.getByText('Buy orders'))
     expect(await screen.findAllByText('1,422')).not.toHaveLength(0)
+  })
+
+  it('reconciles the shopping-list total to the strategy cost via a resource-return credit', async () => {
+    renderPage()
+    expect(await screen.findByText("Expert's Broadsword")).toBeInTheDocument()
+    await screen.findAllByText('1,696')
+    // Whole-unit buys (14×100 + 7×50 = 1,750) minus the return credit foot to the amortized
+    // cost the cards + profit use (1,696), shown as the shopping-list total.
+    expect(screen.getByText('Resource return')).toBeInTheDocument()
+    expect(screen.getByText('Total for 1')).toBeInTheDocument()
   })
 
   it('resources have no quality strip or quality label', async () => {

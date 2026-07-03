@@ -6,6 +6,7 @@ import {
   usePref,
 } from './premium'
 import { updateCachedSettings } from './craftEconomics'
+import { utcDate } from '../../../../utils/date'
 import { StrategyToggles } from './ItemIndex/StrategyToggles'
 import { fetchCraftSettings, putCraftSettings } from './ItemIndex/albionItemsApi'
 import type { CraftSettings } from './ItemIndex/types'
@@ -88,16 +89,18 @@ export function CraftSettingsPanel() {
   const inputClass = 'w-20 bg-[#0f1117] border border-[#2a2d3a] rounded px-2 py-1 text-sm text-[#e2e4ed] focus:outline-none focus:border-[#c4af64]'
 
   return (
-    <div className="space-y-4 select-none">
+    <div className="space-y-4">
       <div className="rounded-lg border border-[#c4af64]/40 bg-[#c4af64]/10 px-4 py-3 text-sm text-[#e2e4ed]">
         <p className="font-medium text-[#c4af64]">Station fees are global.</p>
         <p className="text-xs text-[#9ca3af] mt-1">
           The fee table below is shared with everyone in the guild - editing here updates it for
-          all of us, so the numbers stay current. Only the premium toggle is yours. Best Value
-          uses all of it: your premium picks the sales tax (4% vs 8%), station fees are the flat
-          silver each station owner charges per craft, and return rates come from the game's
-          production bonuses (return = 1 − 1/(1 + bonus)): base 18% bonus = 15.2% return,
-          refining specialty +40% = 36.7% return, crafting specialty +15% = 24.8% return.
+          all of us, so the numbers stay current. Only the premium toggle is yours. Enter the
+          station's fee exactly as it reads on the station sign: silver PER 100 NUTRITION. A
+          craft consumes Item Value × 0.1125 nutrition, so the actual fee scales with the item
+          (T1/T2 crafts are exempt). Return rates come from the game's production bonuses
+          (return = 1 − 1/(1 + bonus)): base 18% bonus = 15.2% return, refining specialty
+          +40% = 36.7% return, crafting specialty +15% = 24.8% return. Transmute silver costs
+          scale with the gold price automatically.
         </p>
       </div>
 
@@ -187,7 +190,7 @@ export function CraftSettingsPanel() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-[#1a1d27] border-b border-[#2a2d3a] text-xs text-[#6b7280] uppercase tracking-widest">
-                  <th className="text-left px-4 py-2.5">Station fee (silver)</th>
+                  <th className="text-left px-4 py-2.5">Station fee (silver / 100 nutrition)</th>
                   {CITIES.map(city => (
                     <th key={city.value} className="text-left px-3 py-2.5 whitespace-nowrap">{city.label}</th>
                   ))}
@@ -208,6 +211,7 @@ export function CraftSettingsPanel() {
                             step={50}
                             value={values.station_fees[station.value] ?? 0}
                             onChange={e => setFee(city.value, station.value, Number(e.target.value))}
+                            onFocus={e => e.target.select()}
                             aria-label={`${city.label} ${station.label} fee`}
                             className={inputClass}
                           />
@@ -231,7 +235,7 @@ export function CraftSettingsPanel() {
             {saved && <span className="text-xs text-green-400">Saved - shared with everyone.</span>}
             {updatedAt && !saved && (
               <span className="text-xs text-[#6b7280]">
-                last updated {new Date(updatedAt).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })}
+                last updated {utcDate(updatedAt).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })}
               </span>
             )}
           </div>

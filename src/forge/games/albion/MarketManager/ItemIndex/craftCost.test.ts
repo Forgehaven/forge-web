@@ -1,5 +1,8 @@
 import { describe, it, expect } from 'vitest'
-import { analyzeCraft, profit, collectRecipeIds, shoppingList, shoppingListFullCraft, type PriceOf } from './craftCost'
+import {
+  analyzeCraft, profit, collectRecipeIds, shoppingList, shoppingListBase,
+  shoppingListFullCraft, shoppingListFor, strategyCost, type PriceOf,
+} from './craftCost'
 import type { RecipeNode } from './types'
 
 // X ← 2× M ; M ← 3× R (raw). Lets buy-vs-craft of M diverge.
@@ -172,5 +175,25 @@ describe('collectRecipeIds', () => {
     const set = new Set<string>()
     collectRecipeIds(U1, set)
     expect([...set].sort()).toEqual(['M', 'M1', 'R', 'RUNE', 'U', 'U@1'])
+  })
+})
+
+describe('strategyCost', () => {
+  it('maps each strategy to its cost figure', () => {
+    // {M:50} → buy M (100) beats fullCraft (120); base === optimized, full is dearer.
+    const a = analyzeCraft(X, priceOfWith({ M: 50, R: 20 }), rr0)!
+    expect(strategyCost(a, 'base')).toBe(a.fullBuy)
+    expect(strategyCost(a, 'optimized')).toBe(a.optimal)
+    expect(strategyCost(a, 'full')).toBe(a.fullCraft)
+    expect(strategyCost(a, 'full')).toBe(120)
+  })
+})
+
+describe('shoppingListFor', () => {
+  it('dispatches to the generator matching each strategy', () => {
+    const p = priceOfWith({ M: 100, R: 20 })
+    expect(shoppingListFor('base', X, p, rr0)).toEqual(shoppingListBase(X, p, rr0))
+    expect(shoppingListFor('optimized', X, p, rr0)).toEqual(shoppingList(X, p, rr0))
+    expect(shoppingListFor('full', X, p, rr0)).toEqual(shoppingListFullCraft(X, p, rr0))
   })
 })

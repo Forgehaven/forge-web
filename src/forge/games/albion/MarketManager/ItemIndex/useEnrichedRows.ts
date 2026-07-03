@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { useItemRecipes } from './useItemRecipes'
 import { useLiveItemPrices, priceKey } from './useItemPrices'
+import { useVolumes } from './useVolumes'
 import { analyzeCraft, collectRecipeIds, type PriceOf } from './craftCost'
 import { returnRateFor, salesTaxRate, stationFeeFor, useCraftSettings } from '../craftEconomics'
 import { loadFocus, loadPremium, usePrefsVersion, type MatSource } from '../premium'
@@ -46,6 +47,7 @@ export function useEnrichedRows(
 
   const qualities = useMemo(() => Array.from(new Set([quality, 1])), [quality])
   const { prices, fetchedAt, dataAt, error } = useLiveItemPrices(allIds, location, qualities)
+  const volumes = useVolumes(ids, location, quality)
 
   const rows = useMemo<ItemRow[]>(() => {
     // Materials always priced at quality 1; the finished item at the selected quality.
@@ -60,12 +62,14 @@ export function useEnrichedRows(
     return items.map(b => ({
       ...b,
       price: prices.get(priceKey(b.id, location, quality)) ?? null,
+      volume: volumes.get(b.id) ?? null,
       craft: analyzeCraft(
-        recipes.get(b.id), priceOf, rrOf, stationFeeFor(b.id, location, settings),
+        recipes.get(b.id), priceOf, rrOf,
+        stationFeeFor(b.id, location, settings, recipes.get(b.id)?.item_value),
       ),
     }))
   // eslint-disable-next-line react-hooks/exhaustive-deps -- prefsVersion re-reads loadFocus()
-  }, [items, recipes, prices, location, quality, settings, matSource, prefsVersion])
+  }, [items, recipes, prices, volumes, location, quality, settings, matSource, prefsVersion])
 
   return { rows, fetchedAt, dataAt, priceError: error, taxRate: salesTaxRate(loadPremium()) }
 }

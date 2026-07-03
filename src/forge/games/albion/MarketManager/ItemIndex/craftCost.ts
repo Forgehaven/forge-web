@@ -272,6 +272,33 @@ export function shoppingListBase(
   return { lines, silver: (node.silver ?? 0) * crafts }
 }
 
+// The three craft strategies surfaced on the item detail page. Superset of premium.ts's
+// 2-value CraftStrategy ('base' | 'optimized'); 'full' (refine everything from raw) is a
+// detail-only planning view with no Best Value counterpart.
+export type CraftStrategy3 = 'base' | 'optimized' | 'full'
+
+// The single per-unit cost (silver + station fee already folded in, amortized counts) for a
+// strategy. Cards, tree, and shopping list all read cost through here - one mapping, no
+// re-derivation. Matches the server Best Value math for 'base'/'optimized'.
+export function strategyCost(a: CraftAnalysis, s: CraftStrategy3): number | null {
+  return s === 'base' ? a.fullBuy : s === 'full' ? a.fullCraft : a.optimal
+}
+
+// The buy list matching a strategy's cost. Each generator's fractional material spend plus
+// its silver equals strategyCost - stationFee, so a station-fee line reconciles the total.
+export function shoppingListFor(
+  s: CraftStrategy3,
+  node: RecipeNode,
+  priceOf: PriceOf,
+  rrOf: ReturnRateOf,
+): { lines: ShoppingLine[]; silver: number } {
+  return s === 'base'
+    ? shoppingListBase(node, priceOf, rrOf)
+    : s === 'full'
+      ? shoppingListFullCraft(node, priceOf, rrOf)
+      : shoppingList(node, priceOf, rrOf)
+}
+
 // Same shape as shoppingList, but along the FULL-CRAFT path: every refinable node is refined
 // from raw, so the buys are the raw leaves only (plus accumulated silver fees). Transmute
 // recipes (flat silver fee on the recipe - raw/refined resource tier-ups) stay buys: the

@@ -56,6 +56,12 @@ export function ItemIndexPage() {
       .filter(r => (t === null || r.tier === t) && (e === null || r.enchant === e))
   }, [items, tier, enchant])
 
+  // Search-driven page: gate the Tier dropdown to tiers present in the current results.
+  const availableTiers = useMemo(
+    () => [...new Set(items.map(i => parseTier(i.id)))].filter(t => t > 0).sort((a, b) => a - b),
+    [items],
+  )
+
   const { rows, fetchedAt, dataAt, priceError, taxRate } = useEnrichedRows(baseItems, location, quality, matSource)
 
   const columns = useMemo(
@@ -67,13 +73,14 @@ export function ItemIndexPage() {
       taxRate,
       strategy,
       fetchedAt,
+      location,
       linkTo: row => `/games/albion/market-manager/item/${encodeURIComponent(row.id)}?quality=${quality}&city=${encodeURIComponent(location)}`,
     }),
     [isFavourite, toggle, quality, taxRate, strategy, location, fetchedAt],
   )
 
   return (
-    <div className="p-6 max-w-7xl mx-auto w-full h-full flex flex-col gap-4 select-none">
+    <div className="p-6 max-w-[1600px] mx-auto w-full h-full flex flex-col gap-4">
       <div className="flex items-center gap-2">
         <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
           Albion Online <span className="text-[#c4af64]">Item Index</span>
@@ -99,6 +106,7 @@ export function ItemIndexPage() {
           onQuality={setQuality}
           location={location}
           onLocation={setLocation}
+          availableTiers={availableTiers}
         />
         <StrategyToggles
           matSource={matSource}

@@ -528,6 +528,21 @@ Every route listed above maps to `'AOMM - <Page Name>'`. Title is set via inline
   (`albionBvScope` via `premium.ts` loadBvScope/saveBvScope), reuses `ToggleGroup` exported from
   `StrategyToggles.tsx`
 
+### Throughput + pricing-accuracy guards
+- **Sold/day column** on every item table (`itemColumns` 'sold') and Best Value; item detail
+  shows "sold 24h / 1h · avg". Data: `useVolumes` hook → `fetchVolumes` (chunked
+  `GET /prices/volumes/{ids}`, 24h ADP hourly candles; untraded markets have no entry).
+  0/blank sold = distrust the prices.
+- **Station fees are per-100-nutrition**: `stationFeeFor(id, city, settings, itemValue)` =
+  setting x IV x 0.1125 / 100, T1/T2 + unknown-IV exempt (mirrors server
+  `station_fee_silver`). Recipe nodes carry `item_value` (server-annotated). Craft Settings
+  banner/table header say "silver per 100 nutrition".
+- **Transmute silver arrives pre-scaled** by the gold price (server multiplies recipe
+  `silver` by gold_price/5000) - the client mirrors need NO gold logic.
+- Best Value rows carry `revenue` (= min(ask, 24h traded avg), what profit uses),
+  `sold_24h`, `avg_price_24h`; a yellow `*` next to Sold/day flags rows where the ask was
+  capped to the traded price.
+
 ### Live prefs + Craft Settings modal
 - Every `premium.ts` saver calls `emitPrefsChanged()`; `usePref(loadX)` /
   `usePrefsVersion()` (useSyncExternalStore over the `albion-prefs-changed` window event)

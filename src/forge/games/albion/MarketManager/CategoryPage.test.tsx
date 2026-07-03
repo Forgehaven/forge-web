@@ -37,6 +37,11 @@ beforeEach(() => {
         recipe: [{ item_id: 'T4_METALBAR', name: 'Metal Bar', count: 2, craftable: false, recipe: [] }],
       }]))
     }
+    if (u.includes('/game/albion/prices/volumes/')) {
+      return Promise.resolve(ok([
+        { item_id: 'T4_MAIN_SWORD', city: 'Bridgewatch', quality: 1, sold_1h: 1, sold_24h: 12, avg_price_24h: 4200 },
+      ]))
+    }
     if (u.includes('/game/albion/prices/')) {
       return Promise.resolve(ok([
         { item_id: 'T4_MAIN_SWORD', city: 'Bridgewatch', quality: 1, sell_price_min: 4321, buy_price_max: 4000 },
@@ -115,5 +120,17 @@ describe('CategoryPage', () => {
 
     await userEvent.clear(screen.getByPlaceholderText(/filter sword items/i))
     expect(screen.getAllByText('Broadsword')).toHaveLength(3)
+  })
+
+  it('lists only tiers that have items in the Tier dropdown', async () => {
+    renderPage()
+    await screen.findAllByText('Broadsword')
+    // this sword category holds T4 + T5 only - the Tier dropdown must not offer T1-3/T6-8
+    await userEvent.click(screen.getAllByRole('combobox')[0])
+    expect(screen.getByRole('option', { name: 'All' })).toBeInTheDocument()
+    expect(screen.getByRole('option', { name: 'T4' })).toBeInTheDocument()
+    expect(screen.getByRole('option', { name: 'T5' })).toBeInTheDocument()
+    expect(screen.queryByRole('option', { name: 'T3' })).toBeNull()
+    expect(screen.queryByRole('option', { name: 'T6' })).toBeNull()
   })
 })
