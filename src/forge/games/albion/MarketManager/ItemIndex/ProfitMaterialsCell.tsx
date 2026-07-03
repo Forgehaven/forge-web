@@ -71,7 +71,7 @@ export function ProfitMaterialsCell({
       <button
         ref={ref}
         onClick={toggle}
-        className={`${cls} font-semibold underline decoration-dotted decoration-[#6b7280] underline-offset-2 cursor-pointer`}
+        className={`${cls} font-semibold underline decoration-dotted decoration-[#6b7280] underline-offset-2 cursor-pointer select-text`}
       >
         {value > 0 ? '+' : ''}{fmt(value)}
       </button>

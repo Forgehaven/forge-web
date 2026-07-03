@@ -124,17 +124,19 @@ export function BestValuePage() {
     },
     {
       key: 'sell',
-      label: 'Sell (min)',
-      title: 'Lowest ask, or a shared manual override (dotted underline). See the Scanned column for how fresh it is.',
-      sortKey: r => r.sell_price_min,
+      label: 'Sell',
+      title: 'Realistic resale basis: min(lowest current ask, recent traded average) - the same value profit uses, so a lone troll ask (e.g. 799,999) cannot inflate it. Hover for the raw lowest ask. A shared manual override is dotted-underlined.',
+      sortKey: r => r.revenue,
       render: row => (
         <span
           className={`font-medium ${row.price_source === 'user'
             ? 'text-[#c4af64] underline decoration-dotted decoration-[#c4af64]/50'
             : 'text-[#c4af64]'}`}
-          title={row.price_source === 'user' ? 'Manual override (not scanned)' : undefined}
+          title={row.price_source === 'user'
+            ? 'Manual override (not scanned)'
+            : `Lowest current ask: ${fmt(row.sell_price_min)}`}
         >
-          {fmt(row.sell_price_min)}
+          {fmt(row.revenue)}
         </span>
       ),
     },

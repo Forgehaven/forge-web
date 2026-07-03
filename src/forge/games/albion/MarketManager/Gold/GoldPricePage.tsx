@@ -10,24 +10,13 @@ import { MarketManagerSidebar } from '../MarketManagerSidebar'
 import { MarketManagerBottomBar } from '../MarketManagerBottomBar'
 import { useGoldPrice } from './useGoldPrice'
 import { sma, rsi } from './indicators'
+import { recStyle } from './recommendation'
 import { utcDate } from '../../../../../utils/date'
 import { DataTable, type Column } from '../../../../../components/DataTable'
 import { chartTicks } from '../chartTicks'
 
 type Period = 24 | 168
 type Signal = 'bullish' | 'bearish' | 'neutral'
-
-const REC_MAP: Record<string, { label: string; color: string; bg: string; border: string }> = {
-  buy_gold:      { label: 'Buy Gold',      color: 'text-green-400', bg: 'bg-green-900/20',   border: 'border-green-700/40' },
-  accumulate:    { label: 'Accumulate',     color: 'text-blue-400',  bg: 'bg-blue-900/20',    border: 'border-blue-700/40' },
-  hold:          { label: 'Hold',           color: 'text-[#6b7280]', bg: 'bg-[#1a1d27]',      border: 'border-[#2a2d3a]' },
-  take_profits:  { label: 'Take Profits',   color: 'text-yellow-400',bg: 'bg-yellow-900/20',  border: 'border-yellow-700/40' },
-  sell_gold:     { label: 'Sell Gold',      color: 'text-red-400',   bg: 'bg-red-900/20',     border: 'border-red-700/40' },
-}
-
-function recStyle(key: string) {
-  return REC_MAP[key] ?? REC_MAP.hold
-}
 
 interface ChartPoint {
   time: number

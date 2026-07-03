@@ -312,7 +312,7 @@ export function ItemDetailPanel({
             <button
               key={q.value}
               onClick={() => onQuality(q.value)}
-              className={`rounded-lg border p-2 text-center cursor-pointer transition-colors ${
+              className={`rounded-lg border p-2 text-center cursor-pointer transition-colors select-text ${
                 active ? 'border-[#c4af64] bg-[#c4af64]/10' : 'border-[#2a2d3a] bg-[#1a1d27] hover:border-[#3a3d4a]'
               }`}
             >
@@ -525,7 +525,7 @@ function StrategyCard({ label, note, tip, cost, profit: p, selected, onSelect }:
       onClick={onSelect}
       onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelect() } }}
       aria-pressed={selected}
-      className={`relative rounded-lg border p-3 text-center transition-colors cursor-pointer focus:outline-none focus:border-[#c4af64] ${
+      className={`relative rounded-lg border p-3 text-center transition-colors cursor-pointer select-text focus:outline-none focus:border-[#c4af64] ${
         selected ? 'border-[#c4af64] bg-[#c4af64]/10' : 'border-[#2a2d3a] bg-[#1a1d27] hover:border-[#3a3d4a]'
       }`}
     >

@@ -43,7 +43,7 @@ export function CraftCell({ analysis }: { analysis: CraftAnalysis | null | undef
         onMouseLeave={hide}
         onFocus={show}
         onBlur={hide}
-        className="text-[#c4af64] font-medium underline decoration-dotted decoration-[#6b7280] underline-offset-2 cursor-help"
+        className="text-[#c4af64] font-medium underline decoration-dotted decoration-[#6b7280] underline-offset-2 cursor-help select-text"
       >
         {fmt(analysis.optimal)}
       </button>

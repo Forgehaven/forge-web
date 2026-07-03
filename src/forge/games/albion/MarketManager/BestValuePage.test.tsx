@@ -90,6 +90,9 @@ describe('BestValuePage', () => {
     expect(screen.getByText('Caerleon')).toBeInTheDocument()
     expect(screen.getByText('+2237.5%')).toBeInTheDocument()
     expect(screen.getByText('+4,475')).toBeInTheDocument()
+    // Sell shows the realistic resale basis (revenue 4,800), not the raw lowest ask (5,000)
+    expect(screen.getByText('4,800')).toBeInTheDocument()
+    expect(screen.queryByText('5,000')).toBeNull()
 
     const links = screen.getAllByText('Broadsword').map(el => el.closest('a')!.getAttribute('href'))
     expect(links).toContain('/games/albion/market-manager/item/T4_MAIN_SWORD?quality=1&city=Martlock')
