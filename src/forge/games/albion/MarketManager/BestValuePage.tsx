@@ -20,6 +20,7 @@ import { fetchBestValue } from './ItemIndex/albionItemsApi'
 import type { BestValuePayload, BestValueRow } from './ItemIndex/types'
 
 import { fmt } from './marketFormat'
+import { SuspectFlag } from './SuspectFlag'
 
 function cityLabel(city: string): string {
   return CITIES.find(c => c.value === city)?.label ?? city
@@ -164,7 +165,7 @@ export function BestValuePage() {
         <span className="text-[#9ca3af]">
           {row.sold_24h.toLocaleString('en-US')}
           {row.avg_price_24h != null && row.revenue < row.sell_price_min && (
-            <span className="text-[#facc15]" title={`Ask ${fmt(row.sell_price_min)} but trades at ~${fmt(row.avg_price_24h)} - profit uses the traded price`}> *</span>
+            <SuspectFlag rawAsk={row.sell_price_min} />
           )}
         </span>
       ),

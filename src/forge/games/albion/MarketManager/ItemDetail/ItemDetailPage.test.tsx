@@ -200,6 +200,61 @@ describe('ItemDetailPage', () => {
     expect(screen.getByText('Masterpiece')).toBeInTheDocument()
   })
 
+  it('shows the traded average with a suspect flag when the live ask is a lone troll', async () => {
+    fetchSpy.mockImplementation((url: string | URL) => {
+      const u = String(url)
+      if (u.includes('/auth/me')) {
+        return Promise.resolve(ok({
+          id: 'u1', discord_id: 'd1', username: 'Tester#0001', avatar: 'h',
+          guilds: { running_dawn: { is_member: true, roles: { albion_guild: true } } },
+        }))
+      }
+      if (u.includes('/game/albion/prices/history/')) {
+        return Promise.resolve(ok([{
+          item_id: 'T5_MAIN_SWORD', location: 'Caerleon', quality: 1,
+          data: [{ timestamp: new Date().toISOString().replace('Z', ''), avg_price: 5050, item_count: 2 }],
+        }]))
+      }
+      if (u.includes('/game/albion/recipes/')) {
+        const requestedId = decodeURIComponent(u.split('/recipes/')[1].split(',')[0])
+        return Promise.resolve(ok([{
+          item_id: requestedId, name: "Expert's Broadsword", count: 1, craftable: true,
+          has_quality: true,
+          recipe: [{ item_id: 'T5_METALBAR', name: 'Metal Bar', count: 16, craftable: false, recipe: [] }],
+        }]))
+      }
+      if (u.includes('/game/albion/prices/volumes/')) {
+        return Promise.resolve(ok([
+          {
+            item_id: 'T5_MAIN_SWORD', city: 'Caerleon', quality: 1,
+            sold_1h: 3, sold_24h: 55, sold_7d: 300, sold_30d: 1200,
+            avg_price_24h: 5050, avg_price_7d: 5000, avg_price_30d: 4900,
+            avg_daily_sold: 40,
+          },
+        ]))
+      }
+      if (u.includes('/game/albion/prices/')) {
+        // A lone troll ask; the server capped effective_sell to the traded average.
+        return Promise.resolve(ok([
+          { item_id: 'T5_MAIN_SWORD', city: 'Caerleon', quality: 1, sell_price_min: 799999, effective_sell: 5050, sell_suspect: true, buy_price_max: 4500 },
+          { item_id: 'T5_METALBAR', city: 'Caerleon', quality: 1, sell_price_min: 100, buy_price_max: 90 },
+        ]))
+      }
+      if (u.includes('/game/albion/items')) {
+        return Promise.resolve(ok([3, 4, 5, 6, 7, 8].map(t => ({ id: `T${t}_MAIN_SWORD`, name: 'Broadsword' }))))
+      }
+      return Promise.resolve(new Response(JSON.stringify({ status: 'error' }), { status: 404 }))
+    })
+
+    renderPage()
+    expect(await screen.findByText("Expert's Broadsword")).toBeInTheDocument()
+    // the troll 799,999 never renders; the traded average shows instead
+    await waitFor(() => expect(screen.queryByText('799,999')).toBeNull())
+    expect(screen.getAllByText(/5,050/).length).toBeGreaterThan(0)
+    // the raw ask is preserved on the suspect marker's tooltip
+    expect(screen.getAllByTitle(/799,999 looks like a lone troll listing/).length).toBeGreaterThan(0)
+  })
+
   it('switching enchant navigates to the @n variant', async () => {
     renderPage()
     expect(await screen.findByText("Expert's Broadsword")).toBeInTheDocument()

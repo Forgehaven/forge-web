@@ -26,6 +26,7 @@ import { useItemName } from './useItemName'
 import { useAvailableTiers } from './useAvailableTiers'
 import { RecipeTreeCard } from './RecipeTreeCard'
 import { fmt } from '../marketFormat'
+import { SuspectFlag } from '../SuspectFlag'
 
 const QUALITY_COLORS: Record<number, string> = {
   1: '#9ca3af',
@@ -228,7 +229,9 @@ export function ItemDetailPanel({
   }, [series, hasQuality])
 
   const selectedRow = prices.get(priceKey(itemId, city, effQuality))
-  const sell = selectedRow?.sell_price_min || null
+  const rawSell = selectedRow?.sell_price_min || null
+  const sell = (selectedRow?.effective_sell ?? selectedRow?.sell_price_min) || null
+  const sellSuspect = !!selectedRow?.sell_suspect
   const buy = selectedRow?.buy_price_max || null
   const scannedAt = selectedRow?.timestamp ? utcDate(selectedRow.timestamp) : null
   const cost = analysis ? strategyCost(analysis, strategy) : null
@@ -294,7 +297,7 @@ export function ItemDetailPanel({
             itemId={itemId}
             city={city}
             quality={effQuality}
-            current={sell}
+            current={rawSell}
             isOverride={selectedRow?.source === 'user'}
             label="Set Manual Price Override"
           />
@@ -306,7 +309,9 @@ export function ItemDetailPanel({
       {hasQuality && (
       <div className="grid grid-cols-5 gap-2">
         {QUALITIES.map(q => {
-          const p = prices.get(priceKey(itemId, city, q.value))?.sell_price_min || null
+          const qRow = prices.get(priceKey(itemId, city, q.value))
+          const p = (qRow?.effective_sell ?? qRow?.sell_price_min) || null
+          const qSuspect = !!qRow?.sell_suspect
           const active = q.value === quality
           return (
             <button
@@ -319,7 +324,7 @@ export function ItemDetailPanel({
               <p className="text-[10px] uppercase tracking-wider truncate" style={{ color: QUALITY_COLORS[q.value] }}>
                 {q.label}
               </p>
-              <p className={`text-sm font-semibold ${p != null ? 'text-[#e2e4ed]' : 'text-[#6b7280]'}`}>{fmt(p)}</p>
+              <p className={`text-sm font-semibold ${p != null ? 'text-[#e2e4ed]' : 'text-[#6b7280]'}`}>{fmt(p)}{qSuspect && <SuspectFlag rawAsk={qRow?.sell_price_min} />}</p>
             </button>
           )
         })}
@@ -426,7 +431,13 @@ export function ItemDetailPanel({
             label="Sell (min)"
             value={fmt(sell)}
             gold={selectedRow?.source === 'user'}
-            title={selectedRow?.source === 'user' ? 'Manual override (not scanned)' : undefined}
+            suspect={sellSuspect}
+            rawAsk={rawSell}
+            title={selectedRow?.source === 'user'
+              ? 'Manual override (not scanned)'
+              : sellSuspect
+                ? `Lowest ask ${fmt(rawSell)} looks like a lone troll listing — showing the recent traded average`
+                : undefined}
           />
           <StatCard label="Buy (max)" value={fmt(buy)} />
         </div>
@@ -493,12 +504,12 @@ export function ItemDetailPanel({
   )
 }
 
-function StatCard({ label, value, title, gold, tone, bold }: { label: string; value: string; title?: string; gold?: boolean; tone?: 'green' | 'red'; bold?: boolean }) {
+function StatCard({ label, value, title, gold, tone, bold, suspect, rawAsk }: { label: string; value: string; title?: string; gold?: boolean; tone?: 'green' | 'red'; bold?: boolean; suspect?: boolean; rawAsk?: number | null }) {
   const color = tone === 'green' ? 'text-green-400' : tone === 'red' ? 'text-red-400' : gold ? 'text-[#c4af64]' : 'text-[#e2e4ed]'
   return (
     <div className={`bg-[#1a1d27] border rounded-lg p-3 text-center ${bold ? 'border-[#c4af64]/50' : 'border-[#2a2d3a]'}`} title={title}>
       <p className={`text-[10px] uppercase tracking-widest mb-1 ${bold ? 'text-[#c4af64] font-semibold' : 'text-[#6b7280]'}`}>{label}</p>
-      <p className={`text-base ${bold ? 'font-bold' : 'font-semibold'} ${color}`}>{value}</p>
+      <p className={`text-base ${bold ? 'font-bold' : 'font-semibold'} ${color}`}>{value}{suspect && <SuspectFlag rawAsk={rawAsk} />}</p>
     </div>
   )
 }

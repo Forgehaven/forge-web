@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import type { Column } from '../../../../../components/DataTable'
 import { utcDate } from '../../../../../utils/date'
 import { fmt } from '../marketFormat'
+import { SuspectFlag } from '../SuspectFlag'
 import { ScanIndicator } from '../DataFreshness'
 import { ItemIcon } from '../../ItemIcon'
 import { profit } from './craftCost'
@@ -80,11 +81,15 @@ export function buildItemColumns(opts: ColumnOpts): Column<ItemRow>[] {
     {
       key: 'sell',
       label: 'Sell (min)',
-      title: 'Lowest current ask, or a shared manual override. Use the pencil to set a manual price when the scanned data is stale.',
-      sortKey: r => r.price?.sell_price_min ?? -1,
+      title: 'Lowest current ask, or a shared manual override. A lone troll ask far above the recent traded average is replaced by that average and flagged with *. Use the pencil to set a manual price when the scanned data is stale.',
+      sortKey: r => (r.price?.effective_sell ?? r.price?.sell_price_min) ?? -1,
       render: row => (
         <span className="flex items-center gap-1.5">
-          {priceCell(row.price?.sell_price_min, row.price?.source === 'user')}
+          {priceCell(
+            row.price?.effective_sell ?? row.price?.sell_price_min,
+            row.price?.source === 'user',
+            row.price?.sell_suspect ? row.price?.sell_price_min : undefined,
+          )}
           {opts.location && (
             <PriceOverrideEditor
               itemId={row.id}
@@ -152,13 +157,13 @@ export function buildItemColumns(opts: ColumnOpts): Column<ItemRow>[] {
       {
         key: 'profit_sell',
         label: 'Profit (sell)',
-        title: 'Craft it, list just under the cheapest sell order, pay sales tax. Click a value for the materials to buy.',
+        title: 'Craft it, list just under the cheapest sell order, pay sales tax. Click a value for the materials to buy. A lone troll ask is valued at the traded average instead.',
         className: 'font-bold text-[#e2e4ed]',
-        sortKey: r => profit(r.price?.sell_price_min, costOf(r), taxRate) ?? Number.NEGATIVE_INFINITY,
+        sortKey: r => profit(r.price?.effective_sell ?? r.price?.sell_price_min, costOf(r), taxRate) ?? Number.NEGATIVE_INFINITY,
         render: row => (
           <ProfitMaterialsCell
             analysis={row.craft}
-            revenue={row.price?.sell_price_min}
+            revenue={row.price?.effective_sell ?? row.price?.sell_price_min}
             taxRate={taxRate}
             strategy={strategy}
           />
@@ -177,7 +182,7 @@ export function buildItemColumns(opts: ColumnOpts): Column<ItemRow>[] {
   return cols
 }
 
-function priceCell(v: number | undefined, custom = false): ReactNode {
+function priceCell(v: number | undefined, custom = false, suspectRawAsk?: number): ReactNode {
   if (v == null || v === 0) return <span className="text-[#6b7280]">-</span>
   const cls = custom
     ? 'text-[#c4af64] font-medium underline decoration-dotted decoration-[#c4af64]/50'
@@ -185,6 +190,7 @@ function priceCell(v: number | undefined, custom = false): ReactNode {
   return (
     <span className={cls} title={custom ? 'Manual override (not scanned)' : undefined}>
       {v.toLocaleString('en-US')}
+      {suspectRawAsk != null && <SuspectFlag rawAsk={suspectRawAsk} />}
     </span>
   )
 }

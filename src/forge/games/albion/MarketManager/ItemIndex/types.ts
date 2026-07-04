@@ -16,6 +16,8 @@ export interface RawItemPrice {
   city: string
   quality: number
   sell_price_min: number
+  effective_sell?: number   // sell_price_min validated vs traded avg; falls back to it for a troll ask
+  sell_suspect?: boolean    // true when sell_price_min looked like a lone troll listing
   buy_price_max: number
   timestamp?: string | null // when ADP last observed this price in game (or the override's entered-at)
   source?: 'adp' | 'user'   // 'user' = a shared manual override replaced the ADP price
