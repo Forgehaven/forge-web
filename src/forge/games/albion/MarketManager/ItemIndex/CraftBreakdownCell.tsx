@@ -11,10 +11,7 @@ const MODE_COLORS = {
   upgrade: 'text-[#a78bfa]',
 } as const
 
-function fmt(n: number | null | undefined): string {
-  if (n == null) return '-'
-  return Math.round(n).toLocaleString('en-US')
-}
+import { fmt } from '../marketFormat'
 
 // Craft-cost cell: shows the optimal cost; hovering (or focusing) reveals the full breakdown in
 // a portal card (portal avoids the table's overflow-x clipping). Lives in its own file so the

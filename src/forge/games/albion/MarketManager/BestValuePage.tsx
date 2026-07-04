@@ -19,10 +19,7 @@ import { StrategyToggles, ToggleGroup } from './ItemIndex/StrategyToggles'
 import { fetchBestValue } from './ItemIndex/albionItemsApi'
 import type { BestValuePayload, BestValueRow } from './ItemIndex/types'
 
-function fmt(n: number | null | undefined): string {
-  if (n == null) return '-'
-  return Math.round(n).toLocaleString('en-US')
-}
+import { fmt } from './marketFormat'
 
 function cityLabel(city: string): string {
   return CITIES.find(c => c.value === city)?.label ?? city

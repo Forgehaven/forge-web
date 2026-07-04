@@ -13,7 +13,7 @@ import { analyzeCraft, collectRecipeIds, profit, strategyCost, type CraftStrateg
 import { returnRateFor, salesTaxRate, stationFeeFor, useCraftSettings } from '../craftEconomics'
 import {
   loadFocus, loadMatSource, loadPremium,
-  saveCraftStrategy, saveMatSource, usePref, type MatSource,
+  saveCraftStrategy, saveMatSource, usePref, usePrefsVersion, type MatSource,
 } from '../premium'
 import { DataFreshness, ScanIndicator } from '../DataFreshness'
 import { freshnessClass } from '../freshness'
@@ -25,6 +25,7 @@ import { PriceOverrideEditor } from '../ItemIndex/PriceOverrideEditor'
 import { useItemName } from './useItemName'
 import { useAvailableTiers } from './useAvailableTiers'
 import { RecipeTreeCard } from './RecipeTreeCard'
+import { fmt } from '../marketFormat'
 
 const QUALITY_COLORS: Record<number, string> = {
   1: '#9ca3af',
@@ -66,11 +67,6 @@ const PERIODS = [
 const TIERS = [1, 2, 3, 4, 5, 6, 7, 8]
 const ENCHANTS = [0, 1, 2, 3, 4]
 const ALL_QUALITIES = [1, 2, 3, 4, 5]
-
-function fmt(n: number | null | undefined): string {
-  if (n == null) return '-'
-  return Math.round(n).toLocaleString('en-US')
-}
 
 interface ChartPoint {
   time: number
@@ -131,6 +127,7 @@ export function ItemDetailPanel({
   const [period, setPeriod] = useState(PERIODS[1])
   // Live prefs: the Craft Settings modal (or another page's toggles) updates these too.
   const matSource = usePref(loadMatSource)
+  const prefsVersion = usePrefsVersion()
   const [strategy, setStrategy] = useState<CraftStrategy3>('optimized')
   const [qty, setQty] = useState(1)
   // 'full' is a detail-only planning view; only the 2-value base/optimized pref is shared.
@@ -186,10 +183,13 @@ export function ItemDetailPanel({
   )
 
   // Craft Settings applied: bonus-aware return rates per craft line (+focus), station fee.
+  // prefsVersion re-derives when the focus toggle (or another page) changes the pref.
   const rrOf: ReturnRateOf = useMemo(() => {
     const focus = loadFocus()
     return id => returnRateFor(id, city, focus)
-  }, [city])
+    // prefsVersion is read indirectly via loadFocus(); bump re-derives the memo.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [city, prefsVersion])
 
   const analysis = useMemo(
     () => analyzeCraft(recipe, priceOf, rrOf, stationFeeFor(itemId, city, settings, recipe?.item_value)),

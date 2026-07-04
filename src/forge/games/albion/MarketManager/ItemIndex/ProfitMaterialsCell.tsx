@@ -7,10 +7,7 @@ import type { CraftAnalysis } from './types'
 
 const CARD_WIDTH = 320
 
-function fmt(n: number | null | undefined): string {
-  if (n == null) return '-'
-  return Math.round(n).toLocaleString('en-US')
-}
+import { fmt } from '../marketFormat'
 
 // The bold Profit (sell) cell: click to open a portal card listing exactly which materials
 // to buy under the configured strategy (base = top-level recipe mats; optimized = the

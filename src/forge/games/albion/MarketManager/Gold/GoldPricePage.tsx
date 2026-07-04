@@ -315,7 +315,8 @@ export function GoldPricePage() {
     recommendation: recKey = 'hold',
   } = stats?.indicators ?? {}
 
-  const visible = useMemo(() => history.slice(-period).reverse(), [history, period])
+  // Chronological (oldest -> newest): SMA/RSI warm-up nulls must fall on the OLDEST points.
+  const visible = useMemo(() => history.slice(-period), [history, period])
 
   const chartData: ChartPoint[] = useMemo(() => {
     const pricesOnly = visible.map(p => p.price)
@@ -329,16 +330,13 @@ export function GoldPricePage() {
     }))
   }, [visible])
 
-  const rawChrono = useMemo(() => [...history], [history])
-
   const rsiData: RsiPoint[] = useMemo(() => {
-    const pricesOnly = rawChrono.map(p => p.price)
-    const rsiVals = rsi(pricesOnly, 14)
-    return rawChrono.map((p, i) => ({
+    const rsiVals = rsi(history.map(p => p.price), 14)
+    return history.map((p, i) => ({
       time: utcDate(p.timestamp).getTime(),
       rsi: rsiVals[i],
     }))
-  }, [rawChrono])
+  }, [history])
 
   const tableData: ({ price: number; timestamp: string; delta: number | null })[] = useMemo(() => {
     return history.slice(-168).map((p, i, arr) => ({

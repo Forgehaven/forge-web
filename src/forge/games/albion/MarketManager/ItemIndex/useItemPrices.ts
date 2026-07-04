@@ -70,6 +70,8 @@ export function useItemPrices(
       if (itemIds.length === 0) {
         setPrices(new Map())
         setFetchedAt(null)
+        setDataAt(null)
+        setError(null)
         setLoading(false)
         return
       }

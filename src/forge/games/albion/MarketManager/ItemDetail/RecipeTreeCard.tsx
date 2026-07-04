@@ -18,10 +18,7 @@ function isTransmute(node: RecipeNode): boolean {
   return node.craftable && node.recipe.length > 0 && (node.silver ?? 0) > 0
 }
 
-function fmt(n: number | null | undefined): string {
-  if (n == null) return '-'
-  return Math.round(n).toLocaleString('en-US')
-}
+import { fmt } from '../marketFormat'
 
 function nodeName(node: RecipeNode): string {
   return `${tierLabel(node.item_id)} ${node.name || node.item_id}`

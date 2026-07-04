@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import type { Column } from '../../../../../components/DataTable'
 import { utcDate } from '../../../../../utils/date'
+import { fmt } from '../marketFormat'
 import { ScanIndicator } from '../DataFreshness'
 import { ItemIcon } from '../../ItemIcon'
 import { profit } from './craftCost'
@@ -174,11 +175,6 @@ export function buildItemColumns(opts: ColumnOpts): Column<ItemRow>[] {
   }
 
   return cols
-}
-
-function fmt(n: number | null | undefined): string {
-  if (n == null) return '-'
-  return Math.round(n).toLocaleString('en-US')
 }
 
 function priceCell(v: number | undefined, custom = false): ReactNode {
