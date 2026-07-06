@@ -28,13 +28,16 @@ export default function AuthCallback() {
 
     async function exchange() {
       try {
-        // The backend exchanges against its configured DISCORD_REDIRECT_URI;
-        // only the code goes in the body.
+        // Send the redirect_uri we authorized with so the backend byte-matches it at
+        // token exchange (it must be on the DISCORD_REDIRECT_URIS allowlist).
         const res = await fetch(`${API_URLS.forgeAPI}/auth/discord/callback`, {
           method: 'POST',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code }),
+          body: JSON.stringify({
+            code,
+            redirect_uri: `${window.location.origin}/auth/callback`,
+          }),
         })
 
         const body = await res.json()
