@@ -13,6 +13,8 @@ export const STORAGE_KEYS = {
   ffxiKeyItems:            'forgegames_ffxi_keyitems_v1',
   ffxiKeyItemsNoSync:      'forgegames_ffxi_keyitems_nosync_v1',
   albionItemFavourites:    'forgegames_albion_item_favourites_v1',
+  albionUserPrices:        'forgegames_albion_user_prices_v1',
+  albionUserCraftSettings: 'forgegames_albion_user_craft_settings_v1',
   albionMMCollapsed:       'forgegames_albion_mm_collapsed_v1',
   albionPremium:           'forgegames_albion_premium_v1',
   albionFocus:             'forgegames_albion_focus_v1',

@@ -25,7 +25,7 @@ beforeEach(() => {
 
   Object.defineProperty(window, 'location', {
     writable: true,
-    value: { ...origLocation, href: '', pathname: '/games/market-manager', origin: 'https://forgehaven.io', reload: vi.fn() },
+    value: { ...origLocation, href: '', pathname: '/games/albion/item-index', origin: 'https://forgehaven.io', reload: vi.fn() },
   })
 })
 
@@ -86,7 +86,7 @@ describe('AuthProvider', () => {
 
     act(() => result.current.login())
 
-    expect(sessionStorage.getItem('auth_return_path')).toBe('/games/market-manager')
+    expect(sessionStorage.getItem('auth_return_path')).toBe('/games/albion/item-index')
     expect(window.location.href).toContain('https://discord.com/api/oauth2/authorize')
     expect(window.location.href).toContain('client_id=1519734763139633354')
     expect(window.location.href).toContain('redirect_uri=https%3A%2F%2Fforgehaven.io%2Fauth%2Fcallback')

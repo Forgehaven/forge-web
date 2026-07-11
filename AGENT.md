@@ -267,367 +267,106 @@ Login is only an upgrade (cross-device sync), never a gate.
   `NationMeta` map; TeleportCost keeps its own 1-4 map with Beastmen), `ffxi/hooks/useCharRank.ts`
   (live nation-rank lookup shown in the character headers).
 
-## Albion Market Manager (AOMM)
+## Albion - Universal Crafting Tools
 
-### Auth (Discord OAuth)
+The Albion tools are **price-free crafting calculators**: the user enters their own market prices
+and the tools compute craft cost, margin, and the recipe tree. There is **no live market feed** -
+the old Market Manager (its live-price / ticker WebSockets, Best Value, Guild Data, category
+pages, and Market Fixing) was removed; that product now lives at runningdawn.com.
 
-- **`DISCORD_CLIENT_ID = '1519734763139633354'`** hardcoded in `src/config/apiUrls.ts` (public value, no env var needed)
-- **`FORGE_API_URL`** via Vite `define.__API_URL__` - reads `FORGE_API_URL` env var, falls back to `https://api.forgehaven.io`. Set `FORGE_API_URL=http://localhost:5002` in `.env.local` for dev
-- **Login is site-wide.** `AuthProvider` is mounted at the app root in `App.tsx` (covers landing / tools / games). `useAuth` + `AuthContext` + types live in `src/auth/authContext.ts`; the provider in `src/auth/AuthProvider.tsx`. A Login button sits in every sidebar footer (above Settings) and opens `src/auth/LoginModal.tsx` (account, per-service guild/role status, logout, login-benefits list + an optional-login note). Login is OPTIONAL - non-login tools/trackers keep working via localStorage; only role-gated services (Albion MM) require it.
-- Flow: `login()` (clears any stale `forge_logged_out` flag) → Discord OAuth → `/auth/callback?code=` → POST `{ code }` to backend (backend exchanges against its configured `DISCORD_REDIRECT_URI`) → cookie `forge_session` (HttpOnly, 1h) → redirect back to stored `auth_return_path` → `/auth/me` check on mount
-- Logout: POSTs `/auth/logout` (the cookie is HttpOnly - only the backend can delete it), clears user state, sets `localStorage.forge_logged_out = true`, reloads the current page
-- 401 handler: `albionFetch` (`src/forge/games/albion/api.ts`) calls `notifyUnauthenticated()` from `src/auth/unauthorized.ts`; `AuthProvider` registers the cleanup handler via `setOnUnauthenticated()`. `albionFetch` also normalizes FastAPI `{detail}` error bodies (e.g. 403 from role guards) into the `{status, message}` envelope
-- `AuthCallback` page (`src/pages/AuthCallback.tsx`): route `/auth/callback` mounted in `App.tsx` (not `GamesLayout`). Uses `initiatedRef` to prevent StrictMode double-firing the token exchange
-- `user.avatar` is a full CDN URL from the backend - use it verbatim as `img src`, never rebuild it from a hash
-
-### Auth types (`src/auth/authContext.ts`)
-```ts
-interface GuildStatus { is_member: boolean; roles: Record<string, boolean> }
-interface AuthUser {
-  id: string; discord_id: string; username: string;
-  avatar: string | null;
-  guilds: Record<string, GuildStatus>;   // keyed by slug: running_dawn, forgehaven
-}
-interface AuthContextType {
-  user: AuthUser | null; loading: boolean; isAuthenticated: boolean;
-  login: () => void; logout: () => Promise<void>; clearAuth: () => void;
-}
-const MM_GUILD = 'running_dawn'
-function mmAccess(user: AuthUser | null): { member: boolean; role: boolean }
+### Folder structure (`src/forge/games/albion/`)
+Each visual section is its own folder; everything cross-section sits under `shared/`:
 ```
-`mmAccess()` is the ONLY place that encodes the MM guild slug + `albion_guild` role name. Always gate through it, never poke `user.guilds` directly in components.
-
-### Auth gating convention
-- **Guild Data** - requires `isAuthenticated` and `mmAccess(user)` → `{ member: true, role: true }`
-- **Gold Price, Favourites, Best Value, all category pages** - require `isAuthenticated` only
-- Denied users still get the MM sidebar but without Guild Data link. The shared footer Login button turns red on Albion MM pages when logged in but `mmAccess` is missing member or role
-- `LoginModal` renders a generic per-guild access list from `user.guilds` (membership chip + a chip per named role, slugs Title-Cased)
-
-### Layout Override pattern
-MM pages swap the default Games sidebar/bottom bar with MM-specific ones at runtime:
-
-```tsx
-const { setSidebar, setBottomBar } = useLayoutOverride()
-useEffect(() => {
-  if (isAuthenticated) {
-    setSidebar(MarketManagerSidebar)
-    setBottomBar(MarketManagerBottomBar)
-  } else {
-    setSidebar(null); setBottomBar(null)
-  }
-  return () => { setSidebar(null); setBottomBar(null) }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [isAuthenticated])
+albion/
+  Splash/         AlbionSplash.tsx + albion-logo.png  (the /games/albion landing)
+  ItemIndex/      ItemIndexPage, CraftFilters, craftRows, CraftTable  (search + filter table)
+  ItemDetail/     ItemDetailPage  (per-item dashboard: prices, craft tree, margin)
+  Favourites/     FavouritesPage  (Item Index scoped to starred items)
+  Gold/           GoldPricePage + chartTicks, indicators, recommendation, useGoldPrice
+  CraftSettings/  CraftSettingsPanel  (a modal opened from the sidebar, NOT a route)
+  shared/
+    api.ts        albionFetch - alias of forgeFetch (the credentialed backend wrapper)
+    constants.ts  CITIES / QUALITIES / STATION_TYPES / CITY_BONUSES
+    ItemIcon.tsx  <ItemIcon> (forge-api proxy + service-worker cached, see below)
+    crafting/     craft engine: craftCost, craftEconomics, craftingApi, itemMeta,
+                  marketFormat, premium, RecipeTreeCard, types, useAllItems, useItemRecipes
+    prices/       userStore.ts - the user's entered prices (localStorage + server sync)
+    settings/     craftSettings.ts (per-user prefs store), api.ts (user-blob GET/PUT), sync.ts
 ```
+Rule going forward: a routed page = its own folder; anything imported by 2+ sections lives in
+`shared/` (never a loose file at the `albion/` root).
 
-`LayoutOverrideProvider` wraps the routes in `GamesLayout.tsx`. `ForgeLayout` reads `useLayoutOverrideValue()` to pick which sidebar/bottom bar to render. Default sidebar/bottom bar show for non-MM routes.
-
-### API client (`src/forge/games/albion/api.ts`)
-```ts
-albionFetch(path, options?)  // wraps fetch(), auto-attaches FORGE_API_URL prefix,
-                             // triggers 401 cleanup (logout + cookie delete) on 401
-```
-Use for all Albion API calls. Never call `fetch()` directly against the backend.
-
-### Date utility (`src/utils/date.ts`)
-```ts
-utcDate(ts: string): Date  // appends 'Z' if missing, then new Date(ts + 'Z')
-```
-Gold timestamps come from the backend as UTC strings without `Z` suffix. Always parse with `utcDate()` before displaying.
-
-### File structure (`src/forge/games/albion/MarketManager/`)
-
-```
-MarketManager/
-  index.tsx                     ← re-exports MarketManager
-  MarketManager.tsx             ← splash page, sets sidebar/bottom bar
-  MarketManagerSidebar.tsx      ← full nav: top links + Market Fixing + sections generated from marketCategories.ts;
-                                 collapse state persisted via useSidebarCollapse(STORAGE_KEYS.albionMMCollapsed)
-  MarketManagerBottomBar.tsx    ← <BottomBar><TickerTape /></BottomBar>
-  TickerTape.tsx                ← marquee ticker (shows a Q{n} quality tag per entry)
-  useTickerWS.ts                ← WebSocket hook for ticker data
-  usePricesWS.ts                ← WebSocket hook for the live price feed (see Live prices below)
-  chartTicks.ts                 ← shared x-axis tick generator (gold + item detail charts)
-  marketCategories.ts           ← single source of truth for category sections/slugs (routes, sidebar, titles)
-  CategoryPage.tsx              ← REAL config-driven table page for every category slug
-  CollapsibleSection.tsx        ← collapsible sidebar section; uncontrolled or controlled (open + onToggle)
-  PlaceholderPage.tsx           ← centered title + "coming soon" (Market Fixing pages still use it)
-  FavouritesPage.tsx            ← favourites table (localStorage) via useEnrichedRows
-  BestValuePage.tsx             ← REAL top-50 craft-and-resell returns (server-computed)
-  GuildData/  Gold/             (as before; GoldPricePage imports chartTicks from ../chartTicks)
-  MarketFixing/                 ← 4 placeholder pages (still out of scope)
-  ItemIndex/                    ← search page + ALL shared item-table machinery:
-    ItemIndexPage, ItemTable (default sort: Profit (sell) desc when craft columns shown,
-    else name asc), ItemFilters, PercentField, itemColumns (buildItemColumns),
-    CraftBreakdownCell, craftCost.ts (analyzeCraft/profit/shoppingList/collectRecipeIds),
-    itemMeta.ts (parseTier/parseEnchant/withTier/withEnchant), types.ts,
-    albionItemsApi.ts (searchItems/fetchCategoryItems/fetchItemPrices/fetchItemHistory/
-    fetchBestValue/fetchRecipes), useItemSearch, useCategoryItems, useItemPrices
-    (+ useLiveItemPrices), useItemRecipes, useEnrichedRows
-  ItemDetail/                   ← ItemDetailPanel (self-contained), ItemDetailPage, ComparePage,
-    useItemHistory, useItemName
-```
-
-### Routes (all in `src/forge/games/GamesLayout.tsx`)
-
-All under `/games/albion/market-manager/`:
-- `gold` - `GoldPricePage`
+### Routes (`src/forge/games/GamesLayout.tsx`), all under `/games/albion/`
+- `` (index) - `AlbionSplash`
 - `item-index` - `ItemIndexPage`
-- `guild-data` - `GuildDataPage`
+- `item/:itemId` - `ItemDetailPage`
 - `favourites` - `FavouritesPage`
-- `best-value` - `BestValuePage`
-- `item/:itemId?quality=&city=` - `ItemDetailPage` (shareable per-item dashboard)
-- `compare?a=&qa=&b=&qb=&city=` - `ComparePage` (two ItemDetailPanels side by side, desktop only)
-- `market-fixing/x-city-arbitrage`, `velocity-flip`, `route-risk-reward`, `bm-volume-predict` (placeholders)
-- every category slug in `marketCategories.ts` → `<CategoryPage slug>` (routes generated in a loop; adding
-  a category is a one-line edit in `marketCategories.ts`). Last section **Other**: Journals,
-  Scrolls, Artifacts (incl. sigils/runes/relics), Animals (mounts + farm), Vanity (placeable),
-  Uncategorized (named tradeables no slug matches - seeds, lootbags, fish, ...). One flat
-  top-level link at the bottom: **Prototype/Unreleased** (`prototype/unreleased`) - nameless
-  `_PROTOTYPE` gear from the dump, listed by id. Item detail header has a wiki button
-  (`wiki.albiononline.com` Special:Search go-link on the item name)
+- `gold` - `GoldPricePage`
 
-### Tab titles (`src/config/sections.ts`)
-Every route listed above maps to `'AOMM - <Page Name>'`. Title is set via inline script in `vite.config.ts` `headScripts()` plugin. The full path prefix must match exactly.
+Craft Settings is a **modal** (sidebar button in `GamesSidebar.tsx`), not a route. Tab titles
+live in `src/config/sections.ts` (`Albion - <Page>`).
 
-### Gold Price page (`src/forge/games/albion/MarketManager/Gold/GoldPricePage.tsx`)
+### Auth (Discord OAuth) - app-wide, optional
+- `DISCORD_CLIENT_ID = '1519734763139633354'` hardcoded in `src/config/apiUrls.ts` (public value).
+- `FORGE_API_URL` via Vite `define.__API_URL__` (falls back to `https://api.forgehaven.io`; set
+  `FORGE_API_URL=http://localhost:5002` in `.env.local` for dev).
+- `AuthProvider` at the app root (`App.tsx`); `useAuth` / `AuthContext` in `src/auth/authContext.ts`.
+  A Login button in every sidebar footer opens `src/auth/LoginModal.tsx`.
+- **Login is OPTIONAL and the Albion tools are NOT role-gated** - they work fully logged out on
+  localStorage. Login only adds cross-device sync of your prices + craft settings.
+- Flow: `login()` -> Discord OAuth -> `/auth/callback?code=` -> POST `{code}` -> HttpOnly
+  `forge_session` cookie (1h) -> redirect to stored `auth_return_path` -> `/auth/me` on mount.
+- Logout POSTs `/auth/logout`, sets `localStorage.forge_logged_out`, reloads.
+- 401 handler: `albionFetch` (`shared/api.ts`) calls `notifyUnauthenticated()`; `AuthProvider`
+  registers the cleanup via `setOnUnauthenticated()`. It also normalizes FastAPI `{detail}` error
+  bodies into the `{status, message}` envelope.
 
-- Fetches from `GET /game/albion/gold/stats` via `useGoldPrice` hook (5-min polling)
-- Returns pre-computed payload: `current`, `history` (oldest-first), `summary`, `indicators`
-- No client-side calculations - all stats from backend
-- `history` array is oldest-first. `history.slice(-period).reverse()` for newest-first chart display
-- Charts use **Recharts** (v3.9.0): `AreaChart` for price + SMA(7)/SMA(25) lines, `LineChart` for RSI(14) sub-panel
-- Timestamps are UTC without `Z` suffix. Parsed via `utcDate()` helper (`src/utils/date.ts`) that appends `Z`
-- Displayed in user's local timezone
-- X-axis ticks: 24H view shows `HH:mm` at 6hr intervals, 7D view shows `Mon DD` at local midnight. Computed via `chartTicks()` function
-- RSI tooltip shows date + time
-- Period toggle: 24H / 7D
-- Collapsible Recent Prices `DataTable`
-- Help modal with glossary of market terms
+### Per-user prices + craft settings (sync)
+- **Prices**: `shared/prices/userStore.ts` - the user's entered buy/sell prices, keyed by item.
+- **Craft settings**: `shared/settings/craftSettings.ts` - `UserCraftSettings` (premium, focus,
+  defaultCity, matSource, craftStrategy, per-city station fees). A localStorage-first store exposed
+  via a `useSyncExternalStore` hook (`useUserCraftSettings`).
+- **Sync**: `shared/settings/sync.ts` (`useAlbionUserSync`, mounted once in `GamesLayout`) loads the
+  server blobs on login and debounced-saves local edits back through `shared/settings/api.ts`
+  (`GET/PUT /game/albion/user/{prices|craft-settings}`). Logged out it does nothing.
+- The community-shared `GET /game/albion/craft-settings` is read by `craftEconomics.ts` for base
+  defaults only; per-user edits never write to it.
 
-### Guild Data page (`src/forge/games/albion/MarketManager/GuildData/GuildRoster.tsx`)
+### Craft economics (`shared/crafting/craftEconomics.ts`)
+- Bonus-aware return rates per item+city via `returnRateFor(id, city, focus)` - `itemEcon(id)`
+  classifies the archetype from the UniqueName to a crafting station + specialty city; unmatched
+  ids fall back to conservative base rates.
+- Premium sales tax (4%/8%) via `salesTaxRate`; flat station fees per 100 nutrition via
+  `userStationFee`. `craftCost.ts` takes a `ReturnRateOf` callable so bonus rates hit exactly their
+  specialty craft lines.
 
-- Total Fame = PvE + Gathering.All + Crafting + KillFame
-- Double-sorted by LastLogin day (desc) then Total Fame (desc). Pre-sorted outside `DataTable`, no column sort triangle initially
-- "Latest API snapshot" notice with timestamp
-- `#` row numbering column (dark muted, no header, `w-8 text-center`)
-- Zone filter: PvE/Gathering/Crafting columns show selected zone data. Non-applicable zones show `-`
+### Item Detail (`ItemDetail/ItemDetailPage.tsx`)
+Per-item dashboard: tier (T1-T8) + enchant (.0-.4) variant switchers that rewrite the item id
+(`shared/crafting/itemMeta.ts`), a per-quality price strip (resources have no quality -
+`isResource()`), a Gold-style history chart, and the **Crafting Tree card**
+(`shared/crafting/RecipeTreeCard.tsx`) with per-node buy / craft / upgrade / transmute modes and an
+aggregated shopping list. Acquisition per node is `min(buy, craft, upgrade)`.
 
-### Ticker (`src/forge/games/albion/MarketManager/TickerTape.tsx` + `useTickerWS.ts`)
+### Item icons (`src/utils/albionIcons.ts` + `shared/ItemIcon.tsx`)
+`itemIconUrl(uniqueName, size, quality?)` builds `{forgeAPI}/game/albion/icon/{id}` (forge-api
+proxy, 7-day immutable cache). The icon service worker (`public/icon-sw.js`, registered in
+`main.tsx`) pins each icon in the Cache API (cache-first, `albion-icons-v1`, 4000-entry cap). The
+proxy is same-origin so responses are non-opaque for the SW. `<ItemIcon uniqueName size quality? />`
+is `loading="lazy" decoding="async" crossOrigin="anonymous"`. Table icons omit `quality` on purpose
+(a quality-filter flip must not re-download every icon).
 
-- WebSocket connects to `{API_URLS.forgeAPI}/game/albion/ws/ticker` (protocol swapped to ws:// or wss:// automatically)
-- 500ms initial delay to avoid page-load HMR race
-- Exponential reconnect backoff: `Math.min(2000 * 2^attempts, 30000)`
-- Items stored in `Record<string, TickerItem>` (plain object map) keyed by `item_id_city_quality`
-- Two message types: `ticker_snapshot` (full replace) and `ticker_update` (merge)
-- `TickerItem`: `{ item_id, name, tier, city, quality, price, change, change_pct }`
-- Display: CSS marquee (`@keyframes marquee`, `--animate-marquee` in `src/index.css`). Dynamic duration computed via `useLayoutEffect`: `animationDuration = scrollWidth / 2 / 100` (targets 100px/s visual speed)
-- Items shown in backend arrival order (no sort). Backend controls which/how many items
-- Item names shortened: strips `"'s "` prefix (e.g. "Adept's Bag" → "Bag")
-- Each entry shows a muted `Q{n}` quality tag after the tier (poller polls qualities 1-5)
-- Empty state: shows "waiting for ticker data" with animated typing dots (up to 8, resetting)
-
-### Category pages (`CategoryPage.tsx`)
-- One component behind every `marketCategories.ts` slug. Items from `GET /game/albion/items/by-category/{slug}`
-  via `useCategoryItems` (module-scope cache per slug - membership is static)
-- Client-side name filter over the loaded list (no server round-trip) + `ItemFilters`
-  (tier/enchant/quality/location) + Return%/Tax% `PercentField`s
-- Table pipeline identical to Item Index: `useEnrichedRows` → `buildItemColumns` → `ItemTable`;
-  item names link to the detail route
-
-### Trading strategy toggles (`ItemIndex/StrategyToggles.tsx`)
-- Two per-user toggles (localStorage `albionMatSource`/`albionCraftStrategy` via premium.ts,
-  typed `MatSource`/`CraftStrategy`), rendered on Item Index / category pages / Favourites /
-  detail panel:
-  - **Mats: Instant buy | Buy orders** - `useEnrichedRows(..., matSource)` and the detail
-    panel's `priceOf` switch material prices between `sell_price_min` and `buy_price_max`
-    (patient buy-order acquisition). Changes every craft cost on the page incl. trees/lists
-  - **Craft: Optimized | Base mats** - which craft cost the PROFIT columns use
-    (`craft.optimal` vs `craft.fullBuy`); both craft columns stay visible
-- **Profit (sell) is the bold primary column** and is CLICKABLE →
-  `ProfitMaterialsCell.tsx` portal card: "Materials to buy" under the current strategy
-  (base → `analysis.baseMaterials`; optimized → `analysis.shopping`, the aggregated
-  shoppingList now stored on CraftAnalysis with `shoppingSilver`), fees line, and the
-  revenue−tax−cost math. Click-toggled, closes on outside mousedown
-- Detail panel: Profit stat card is bold/gold-bordered and labeled with the strategy
-- Best Value shows the same toggles and forwards them as `mats`/`strategy` query params
-  (server-side math); Craft Settings also displays them in the per-user card. Because all
-  render from the same localStorage keys, flipping a toggle anywhere applies everywhere
-
-### Item-table help + default town
-- `ItemIndex/ItemTableHelp.tsx`: "?" button next to the h1 on Item Index / category pages /
-  Favourites opens a Modal glossary explaining all six columns (Sell min, Buy max, Craft base,
-  Craft optimized, Profit sell, Profit buy) with the exact formulas
-- Default market town is PER-USER: `loadDefaultCity()`/`saveDefaultCity()` in `premium.ts`
-  (localStorage `albionDefaultCity`, fallback **Bridgewatch**); selectable on Craft Settings.
-  All pages init their location from it; `constants.DEFAULT_CITY` is only the fallback
-
-### Craft economics (`craftEconomics.ts`) - Craft Settings applied EVERYWHERE
-- The manual Return%/Tax% PercentFields are GONE (component deleted). Every table
-  (Item Index, category pages, Favourites) and the detail panel/tree computes with:
-  - **Bonus-aware return rates per item+city** via `returnRateFor(id, city, focus)` -
-    `itemEcon(id)` classifies the archetype from the UniqueName (weapon family regexes,
-    armor slot×material, offhands, tools/bags/capes, food/potions, resources) to its
-    crafting station + specialty city; unmatched ids fall back to base rates (conservative)
-  - **Premium sales tax** (4%/8%) via `salesTaxRate(loadPremium())` - `useEnrichedRows`
-    returns `taxRate` for the profit columns
-  - **Flat station fees** from the shared settings via `stationFeeFor(id, city, settings)` +
-    `useCraftSettings()` (module-cached GET /craft-settings), folded into
-    `analyzeCraft(..., stationFee)` → `CraftAnalysis.stationFee`
-- `craftCost.ts` takes a `ReturnRateOf` callable (`rrOf(id)`) instead of a flat number, so
-  bonus rates hit exactly their specialty craft lines (like the server's `rr_of`)
-
-### Craft cost columns (`itemColumns.tsx` / `craftCost.ts`)
-- Two columns when `showCraft`: **Craft (base)** = `fullBuy` (top-level mats at market, no
-  sub-crafting) and **Craft (optimized)** = `optimal` with the hover breakdown
-- Breakdowns show BOTH lists (base materials + optimized materials); every material line is
-  `{count}× {tierLabel(id)} {name}` - names ride the recipe payload (server-annotated), tier
-  labels via `tierLabel()` in itemMeta.ts. Detail header prefers `recipe.name` over the
-  search-based `useItemName` fallback
-- `craftCost.ts` acquisition is three-way per node: `min(buy, craft, upgrade)`. `upgrade` =
-  transmute from the enchant level below (RecipeNode.upgrade: `{ from, materials }`, materials
-  are runes/souls/relics at market, NOT return-rate adjusted). Breakdown modes: buy (gray),
-  craft (blue), upgrade (purple)
-- RecipeNode also carries `silver` (flat crafting fee - resource transmutes) and `amount`
-  (batch size - potions craft 5, meals 10); craft cost = `(silver + Σ children) / amount`
-- `shoppingList(node, priceOf, rr)` walks the optimal path and returns the market buys for ONE
-  unit (+ total silver fees); the detail page multiplies by quantity and ceils
-
-### Item Detail + Compare (`ItemDetail/`)
-- `ItemDetailPanel` is fully self-contained (props: itemId/quality/city/onItemId/onQuality) -
-  rendered one-up by `ItemDetailPage` (URL-driven) and two-up by `ComparePage`
-- Variant switchers: tier T1-T8 + enchant .0-.4 rewrite the item id via `withTier`/`withEnchant`
-  (`itemMeta.ts`; resources use the `_LEVELn@n` form, gear plain `@n`)
-- Per-quality price strip (5 clickable cards = current sell per quality; click selects the
-  quality the stat cards use). **Resources have no quality** (`isResource()` in itemMeta.ts):
-  the strip is hidden, lookups pin to quality 1, the chart draws a single gold "Price" line,
-  and the subtitle drops the quality label
-- History chart: `GET /prices/history/{id}?qualities=1,2,3,4,5` via `useItemHistory` (5-min
-  poll), Recharts LineChart with ONE LINE PER QUALITY, periods 24H/7D (time-scale 1) and 30D
-  (time-scale 24); window anchored to the newest data point, not the wall clock
-- **Crafting Tree card** (`RecipeTreeCard.tsx`, bottom of the panel - it owns the qty state and
-  replaced the old standalone Shopping List card): nested flowchart of the recipe with
-  per-node counts (return-rate amortized, ceil for display), icons, and mode badges (buy gray /
-  craft blue / upgrade purple / **transmute orange** - a recipe with a flat silver fee is the
-  transmutator, recognized via `isTransmute`, and NEVER expanded in full-tree mode). Toggle
-  **Optimized** (expands only nodes where craft/transmute/upgrade beats buying; buy leaves
-  collapse with market subtotals) vs **Base mats** (never expands below the root - every direct
-  material is a market buy, for crafters skipping the extra margin) vs **Full tree** (refines
-  every refinable node down to raw).
-  To the right: the **aggregated shopping list** - duplicates across branches summed - from
-  `shoppingList` (optimized), `shoppingListBase` (base) or `shoppingListFullCraft` (full;
-  transmutes stay buys), scaled by
-  qty with silver fees + grand total. Uses `bestMode()` (exported from craftCost.ts)
-
-### Best Value page (`BestValuePage.tsx`)
-- `GET /game/albion/best-value?premium=&focus=&mats=&strategy=&scope=` via `fetchBestValue` -
-  rows are (item, city) pairs across EVERY city, top 50 overall by return %, with Quality and
-  City columns and `rowKey = item_id|city` (same item can appear once per city)
-- Scope toggle at the top: **Craftable Items** (default; server keeps only items made at a real
-  station - drops the stationless 10,000%-return outliers) vs **All Items**; persisted per user
-  (`albionBvScope` via `premium.ts` loadBvScope/saveBvScope), reuses `ToggleGroup` exported from
-  `StrategyToggles.tsx`
-
-### Throughput + pricing-accuracy guards
-- **Sold/day column** on every item table (`itemColumns` 'sold') and Best Value; item detail
-  shows "sold 24h / 1h · avg". Data: `useVolumes` hook → `fetchVolumes` (chunked
-  `GET /prices/volumes/{ids}`, 24h ADP hourly candles; untraded markets have no entry).
-  0/blank sold = distrust the prices.
-- **Station fees are per-100-nutrition**: `stationFeeFor(id, city, settings, itemValue)` =
-  setting x IV x 0.1125 / 100, T1/T2 + unknown-IV exempt (mirrors server
-  `station_fee_silver`). Recipe nodes carry `item_value` (server-annotated). Craft Settings
-  banner/table header say "silver per 100 nutrition".
-- **Transmute silver arrives pre-scaled** by the gold price (server multiplies recipe
-  `silver` by gold_price/5000) - the client mirrors need NO gold logic.
-- Best Value rows carry `revenue` (= min(ask, 24h traded avg), what profit uses),
-  `sold_24h`, `avg_price_24h`; a yellow `*` next to Sold/day flags rows where the ask was
-  capped to the traded price.
-
-### Live prefs + Craft Settings modal
-- Every `premium.ts` saver calls `emitPrefsChanged()`; `usePref(loadX)` /
-  `usePrefsVersion()` (useSyncExternalStore over the `albion-prefs-changed` window event)
-  give pages LIVE pref values - no local useState mirrors. `useEnrichedRows` takes
-  `prefsVersion` as a memo dep (re-reads focus/premium); Best Value refetches on it.
-- **Craft Settings is a modal**: `CraftSettingsPanel.tsx` holds the whole settings UI
-  (per-user toggles via usePref, shared station-fee table); the sidebar's "Craft Settings"
-  button opens it in the shared `Modal` so tables reprice live behind it. The
-  `/craft-settings` route still renders the same panel (deep links). Saving fees calls
-  `updateCachedSettings()` (craftEconomics) which busts the module cache + emits.
-- **DataFreshness / ScanDot** (`DataFreshness.tsx`, ladder in `freshness.ts` - separate
-  file for react-refresh): ADP is CROWDSOURCED - each (item, city, quality) record only
-  updates when a player running the data client opens that market tab, so rows age
-  independently and `timestamp` = the in-game scan time (the poller stores ADP's
-  sell/buy `*_date`, NULL = never scanned). Colors: green <1h, white <1d, yellow <3d,
-  red ≥3d; age measured against fetchedAt (no Date.now in render). Table-level badge
-  "· data from <dt>" = newest scan in batch; per-row `ScanDot` on every Sell (min) cell
-  (gray = never scanned) via `buildItemColumns` opts.fetchedAt / Best Value row `data_at`;
-  detail panel shows "this market last scanned" line for the selected town+quality.
-- ALL math server-side: sales tax from the premium flag (4%/8%), flat station fees + bonus-aware
-  return rates from the shared craft settings/constants; mats priced at Normal quality per city
-- Refetches on every `price_changes` WS frame (cheap - server result is in-memory)
-
-### Craft Settings page (`CraftSettingsPage.tsx` + `premium.ts`)
-- Sidebar link below Best Value. Banner: station fees are GLOBAL (shared blob via
-  `GET/PUT /game/albion/craft-settings`, FFXI-conquest pattern) so the guild keeps them current
-- Station-fee grid: rows = `STATION_TYPES` (constants.ts: forge/hunters_lodge/mages_tower/
-  toolmaker/alchemists_lab/cook/refining), columns = cities, FLAT silver per craft
-- City bonus table is static display data (`CITY_BONUSES` in constants.ts) with the fixed
-  return rates in the headers: refining specialty 36.7%, crafting specialty 24.8%, base 15.2%
-- "I have premium" (gold crown SVG) + "I craft with focus" toggles are PER-USER (localStorage
-  `STORAGE_KEYS.albionPremium`/`albionFocus` via `premium.ts`) - premium drives Best Value's
-  4%/8% sales tax, focus the focus return rates (43.5/53.9/47.9 vs 15.2/36.7/24.8). Return
-  rates derive from production bonuses via `return = 1 − 1/(1 + bonus)` (the in-game "+40%"
-  is the bonus stat; the return rate the station tooltip shows is the converted value)
-- City order everywhere (constants.ts CITIES): 5 royal bonus cities, then Caerleon, then Brecilien
-
-### Live prices (`usePricesWS.ts` + `useLiveItemPrices`)
-- `WS {forgeAPI}/game/albion/ws/prices`: connect frame is `{type:'hello'}` (no snapshot), then
-  `price_changes` frames `{changes:[{item_id, city, quality, old_price, new_price, ...}]}` after
-  every poller cycle. Same 500ms-delay + exponential-backoff shape as useTickerWS
-- `useLiveItemPrices` (in `useItemPrices.ts`) = `useItemPrices` + WS: merges changed sell
-  prices instantly (optimistic) and bumps a refetch so buy prices catch up. `useEnrichedRows`
-  uses it, so Category pages, Item Index, Favourites, and detail panels all tick live
-
-### Item icons (`src/utils/albionIcons.ts`)
-```ts
-itemIconUrl(uniqueName: string, displaySize = 32, quality?: number): string
-```
-Builds `{forgeAPI}/game/albion/icon/{id}?size=...` (forge-api proxy, 7-day immutable HTTP
-cache) and the **icon service worker** (`public/icon-sw.js`, registered in `main.tsx`) then
-pins each icon in the Cache API FOREVER (cache-first, `albion-icons-v1`, 4000-entry cap →
-clear + lazy refill): an icon downloads once per browser, then all repeat loads are
-zero-network. Why not the render CDN directly: it sends NO CORS headers, so cross-origin
-Cache API entries would be opaque responses (Chromium quota-pads those ~7MB each). The
-proxy is same-origin-cacheable because forge-api's CORSMiddleware answers the
-`crossOrigin="anonymous"` img requests. Fetch sizes are normalized to two canonical
-variants (display ≤32 → 64px, larger → 128px) so one cached URL serves every table/tree
-usage. TABLE icons omit the `quality` param on purpose (a quality-filter flip must not
-re-download 200 icons); only the detail-page header icon passes quality.
-
-Component in `src/forge/games/albion/ItemIcon.tsx`: `<ItemIcon uniqueName size quality? />`,
-`loading="lazy" decoding="async" fetchPriority="low" crossOrigin="anonymous"` - off-screen
-rows fetch nothing, visible icons yield network priority to data requests, and responses
-stay non-opaque for the service worker.
-
-### Recipes are fetched in BATCH
-`fetchRecipes` (albionItemsApi.ts) chunks ids 50-per-request against
-`GET /game/albion/recipes/{ids}` - a 200-variant category page = 4 requests (was 200).
-`useItemRecipes`' module cache still dedupes across pages.
-
-### Adding a new MM page
-1. Create page component in appropriate section folder (or PlaceholderPage for stubs)
-2. If it's a real page, follow `PlaceholderPage.tsx` pattern: `useAuth()` + `useLayoutOverride()` to set sidebar/bottom bar
-3. Import and add `<Route>` in `src/forge/games/GamesLayout.tsx`
-4. Add entry in `src/config/sections.ts` for tab title
-5. Add `<MMNavLink>` in `src/forge/games/albion/MarketManager/MarketManagerSidebar.tsx` (under the right `CollapsibleSection` or as a top-level link)
+### Recipes are fetched in batch
+`fetchRecipes` (`shared/crafting/craftingApi.ts`) chunks ids 50-per-request against
+`GET /game/albion/recipes/{ids}`. `useItemRecipes`' module cache dedupes across pages.
 
 ### DataTable (`src/components/DataTable.tsx`)
-Generic sortable table with sticky headers, footer, row class, index passed to `render` as second arg:
+Generic sortable table with sticky headers, footer, and the row index passed to `render` as the
+second arg:
 ```tsx
 <DataTable columns={[
   { key: 'name', label: 'Name', render: (row, i) => <span>{row.name}</span> },
 ]} data={items} />
 ```
-`fill` prop: the table scrolls inside itself instead of the page - `max-h-full overflow-auto`
-container + `sticky top-0` header cells. The parent must bound the height (pattern: page div
-`h-full flex flex-col gap-4`, table wrapped in `flex-1 min-h-0`). ItemTable and Best Value use it.
+`fill` prop: the table scrolls inside itself (`max-h-full overflow-auto` container + `sticky top-0`
+header cells); the parent must bound the height (page div `h-full flex flex-col gap-4`, table
+wrapped in `flex-1 min-h-0`).

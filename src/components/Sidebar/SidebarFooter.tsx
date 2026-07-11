@@ -1,6 +1,5 @@
-import { useLocation } from 'react-router-dom'
 import { CogIcon, UserIcon } from '../Icons'
-import { mmAccess, useAuth } from '../../auth/authContext'
+import { useAuth } from '../../auth/authContext'
 
 export function SidebarFooter({
   onOpenSettings,
@@ -10,14 +9,6 @@ export function SidebarFooter({
   onOpenLogin: () => void
 }) {
   const { user, isAuthenticated } = useAuth()
-  const { pathname } = useLocation()
-
-  // Denied cue: only on Albion MM pages, when logged in but missing guild/role.
-  const access = mmAccess(user)
-  const deniedInAlbion =
-    isAuthenticated &&
-    pathname.startsWith('/games/albion/market-manager') &&
-    (!access.member || !access.role)
 
   const label = isAuthenticated && user ? user.username : 'Login'
 
@@ -25,9 +16,7 @@ export function SidebarFooter({
     <div className="border-t border-[#2a2d3a]">
       <button
         onClick={onOpenLogin}
-        className={`flex items-center gap-1.5 w-full h-10 px-4 transition-colors cursor-pointer ${
-          deniedInAlbion ? 'text-red-400 hover:text-red-300' : 'text-[#3a3d4a] hover:text-[#6b7280]'
-        }`}
+        className="flex items-center gap-1.5 w-full h-10 px-4 transition-colors cursor-pointer text-[#3a3d4a] hover:text-[#6b7280]"
       >
         {isAuthenticated && user?.avatar ? (
           <img src={user.avatar} alt="" className="w-4 h-4 rounded-full object-cover shrink-0" />

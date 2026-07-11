@@ -56,7 +56,7 @@ describe('LoginModal', () => {
   it('logged in on an Albion route: account + Tools statement + per-guild access', async () => {
     fetchSpy.mockResolvedValue(ok(tester(true, false)))
 
-    renderModal('/games/albion/market-manager')
+    renderModal('/games/albion/item-index')
 
     expect(await screen.findByText('Tester#0001')).toBeInTheDocument()
     expect(screen.getByText('Logout')).toBeInTheDocument()
@@ -71,7 +71,7 @@ describe('LoginModal', () => {
   it('logged in: avatar renders the backend URL verbatim', async () => {
     fetchSpy.mockResolvedValue(ok(tester(true, true)))
 
-    const { container } = renderModal('/games/albion/market-manager')
+    const { container } = renderModal('/games/albion/item-index')
 
     await screen.findByText('Tester#0001')
     const img = container.querySelector('img.rounded-full')

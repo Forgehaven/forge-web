@@ -7,7 +7,7 @@ import { useAuth, type AuthUser } from './authContext'
 import { useFfxiCharacters } from '../forge/games/ffxi/hooks/useFfxiCharacters'
 import { API_URLS } from '../config/apiUrls'
 import ffxiLogo from '../forge/games/ffxi/ffxi-logo.png'
-import albionLogo from '../forge/games/albion/albion-logo.png'
+import albionLogo from '../forge/games/albion/Splash/albion-logo.png'
 
 // 'running_dawn' -> 'Running Dawn', 'albion_guild' -> 'Albion Guild'
 function titleCase(slug: string): string {

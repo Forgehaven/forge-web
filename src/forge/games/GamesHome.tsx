@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import ffxiLogo from './ffxi/ffxi-logo.png'
-import albionLogo from './albion/albion-logo.png'
+import albionLogo from './albion/Splash/albion-logo.png'
 
 export function GamesHome() {
   return (
