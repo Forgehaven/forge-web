@@ -17,4 +17,6 @@ export const STORAGE_KEYS = {
   albionUserCraftSettings: 'forgegames_albion_user_craft_settings_v1',
   ffxiSelectedChar:        'forgegames_ffxi_selectedchar_v1',
   ffxiSpellNoSync:         'forgegames_ffxi_spelltracker_nosync_v1',
+  ffxiSpellMirrorChar:     'forgegames_ffxi_spelltracker_mirrorchar_v1',
+  ffxiKeyItemsMirrorChar:  'forgegames_ffxi_keyitems_mirrorchar_v1',
 } as const

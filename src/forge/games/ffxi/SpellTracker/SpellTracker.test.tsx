@@ -174,6 +174,61 @@ describe('SpellTracker live job levels', () => {
     expect(screen.getByText('NIN').closest('button')!.title).toBe('Job not unlocked')
   })
 
+  it('Import uses the pre-sync local copy even after live levels overwrite the mirror', async () => {
+    localStorage.setItem('forgegames_ffxi_selectedchar_v1', 'c1')
+    localStorage.setItem('forgegames_ffxi_spelltracker_v1', JSON.stringify({
+      jobLevels: { WHM: 30 }, learned: { Cure: true },
+    }))
+    mockApi({
+      blob: {},
+      charPayload: { name: 'Mychar', nation: 2, rank: 'Rank 5', avatar: null, jobs: { WHM: 75, BLM: 40 } },
+    })
+
+    const { unmount } = renderTracker()
+
+    // Live levels applied - the localStorage mirror is clobbered by now.
+    expect(await screen.findByDisplayValue('75')).toBeInTheDocument()
+    fireEvent.click(screen.getByText('Save it to Mychar'))
+    unmount()
+
+    const puts = fetchSpy.mock.calls.filter(([u, init]) =>
+      String(u).includes('/data/spell_tracker') && (init as RequestInit | undefined)?.method === 'PUT')
+    expect(puts.length).toBeGreaterThan(0)
+    const body = JSON.parse((puts.at(-1)![1] as RequestInit).body as string)
+    expect(body.data.learned.Cure).toBe(true)
+    expect(body.data.jobLevels.WHM).toBe(75)
+  })
+
+  it("does not offer migration when local data is another character's mirror", async () => {
+    localStorage.setItem('forgegames_ffxi_selectedchar_v1', 'c1')
+    localStorage.setItem('forgegames_ffxi_spelltracker_v1', JSON.stringify({
+      jobLevels: { WHM: 30 }, learned: { Cure: true },
+    }))
+    localStorage.setItem('forgegames_ffxi_spelltracker_mirrorchar_v1', 'other-char')
+    mockApi({ blob: {} })
+
+    renderTracker()
+
+    await screen.findByText('Mychar')
+    await new Promise(r => setTimeout(r, 50))
+    expect(screen.queryByText('Save it to Mychar')).toBeNull()
+  })
+
+  it('Reset levels re-syncs from the armoury instead of blanking', async () => {
+    localStorage.setItem('forgegames_ffxi_selectedchar_v1', 'c1')
+    mockApi({
+      blob: { jobLevels: { WHM: 30 }, learned: {} },
+      charPayload: { name: 'Mychar', nation: 2, rank: 'Rank 5', avatar: null, jobs: { WHM: 75, BLM: 40 } },
+    })
+
+    renderTracker()
+
+    expect(await screen.findByDisplayValue('75')).toBeInTheDocument()
+    fireEvent.click(screen.getByText('Levels'))
+    fireEvent.click(screen.getByText('Yes'))
+    expect(screen.getByDisplayValue('75')).toBeInTheDocument()
+  })
+
   it('pushes overwritten levels to the character blob', async () => {
     localStorage.setItem('forgegames_ffxi_selectedchar_v1', 'c1')
     mockApi({

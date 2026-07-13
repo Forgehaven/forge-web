@@ -17,6 +17,7 @@ import { ResetButton } from '../components/ResetButton'
 import { CHAR_NATIONS } from '../nations'
 
 const SK = STORAGE_KEYS.ffxiSpellTracker
+const MIRROR_KEY = STORAGE_KEYS.ffxiSpellMirrorChar
 const NOSYNC_KEY = STORAGE_KEYS.ffxiSpellNoSync
 
 // Character ids whose "import this browser's data" offer was declined.
@@ -210,6 +211,9 @@ export function SpellTracker() {
 
   const { rank: syncedRank, jobs: liveJobs } = useCharLive(selectedChar?.name ?? null)
   const [loadedCharId, setLoadedCharId] = useState<string | null>(null)
+  // Pre-sync browser copy for the migration banner; the mirror and live-jobs
+  // writes clobber localStorage, so Import must read this instead.
+  const [localSnapshot, setLocalSnapshot] = useState<SavedState | null>(null)
 
   const { scheduleSave } = useSyncedBlob<SpellBlob>({
     key: selectedChar?.id ?? null,
@@ -220,6 +224,13 @@ export function SpellTracker() {
       ? (data, base) => putCharData(selectedChar.id, 'spell_tracker', data, base)
       : null,
     onLoaded: data => {
+      if (data === null && localSnapshot === null) {
+        // A mirror left by ANOTHER character is not migratable local data.
+        const owner = localStorage.getItem(MIRROR_KEY)
+        setLocalSnapshot(owner && owner !== selectedChar?.id
+          ? { jobLevels: {}, learned: {} }
+          : loadState())
+      }
       setServerEmpty(data === null)
       setLoadedCharId(selectedChar?.id ?? null)
       setSaved(prev => ({
@@ -227,7 +238,7 @@ export function SpellTracker() {
         jobLevels: data?.jobLevels ?? {},
         learned: data?.learned ?? {},
       }))
-      if (data) localStorage.setItem(SK, JSON.stringify({ jobLevels: data.jobLevels ?? {}, learned: data.learned ?? {} }))
+      if (data) writeLocal({ jobLevels: data.jobLevels ?? {}, learned: data.learned ?? {} })
     },
   })
   const [search, setSearch] = useState('')
@@ -263,16 +274,32 @@ export function SpellTracker() {
     updateTableHeight()
   }, [charLoaded, updateTableHeight])
 
+  // Mirror writes are stamped with the owning character so another character's
+  // mirror is never mistaken for migratable pre-login data; logged-out edits
+  // make the copy this browser's own again.
+  function writeLocal(next: SavedState) {
+    localStorage.setItem(SK, JSON.stringify(next))
+    if (synced && selectedChar) localStorage.setItem(MIRROR_KEY, selectedChar.id)
+    else if (!synced) localStorage.removeItem(MIRROR_KEY)
+  }
+
   function persist(next: SavedState) {
     setSaved(next)
-    localStorage.setItem(SK, JSON.stringify(next))
+    writeLocal(next)
     if (synced) scheduleSave({ jobLevels: next.jobLevels, learned: next.learned })
   }
 
   function importLocalToCharacter() {
-    const local = loadState()
+    const local = localSnapshot ?? loadState()
     setServerEmpty(false)
-    persist({ ...saved, jobLevels: local.jobLevels, learned: local.learned })
+    // Live armoury levels already overwrote jobLevels and the effect won't
+    // re-fire, so keep them; otherwise take the browser copy's levels.
+    const liveApplied = liveJobs !== null && Object.values(liveJobs).some(lvl => lvl > 0)
+    persist({
+      ...saved,
+      jobLevels: liveApplied ? saved.jobLevels : local.jobLevels,
+      learned: { ...local.learned, ...saved.learned },
+    })
   }
 
   function declineMigration() {
@@ -284,9 +311,9 @@ export function SpellTracker() {
 
   const localHasData = useMemo(() => {
     if (!synced || !serverEmpty) return false
-    const local = loadState()
+    const local = localSnapshot ?? loadState()
     return Object.keys(local.learned).length > 0 || Object.keys(local.jobLevels).length > 0
-  }, [synced, serverEmpty])
+  }, [synced, serverEmpty, localSnapshot])
 
   const showMigration =
     localHasData && selectedChar !== null && !noSync.includes(selectedChar.id)
@@ -295,15 +322,22 @@ export function SpellTracker() {
     persist({ ...saved, jobLevels: { ...saved.jobLevels, [job]: Math.max(0, Math.min(99, level)) } })
   }
 
-  // Live armoury levels overwrite tracked ones after the blob loads;
-  // 0/missing = advanced job not unlocked, all-zero payload = /anon char.
-  useEffect(() => {
-    if (!synced || !liveJobs || !selectedChar || loadedCharId !== selectedChar.id) return
-    if (!Object.values(liveJobs).some(lvl => lvl > 0)) return
+  // Armoury job map: 0/missing = advanced job not unlocked; null when no
+  // usable data yet (fetch pending or /anon all-zero payload).
+  function liveLevelMap(): Partial<Record<JobAbbr, number>> | null {
+    if (!liveJobs || !Object.values(liveJobs).some(lvl => lvl > 0)) return null
     const next: Partial<Record<JobAbbr, number>> = {}
     for (const job of JOBS) {
       next[job] = Math.max(0, Math.min(99, liveJobs[job] ?? 0))
     }
+    return next
+  }
+
+  // Live armoury levels overwrite tracked ones after the blob loads.
+  useEffect(() => {
+    if (!synced || !selectedChar || loadedCharId !== selectedChar.id) return
+    const next = liveLevelMap()
+    if (!next) return
     if (JOBS.every(job => next[job] === saved.jobLevels[job])) return
     persist({ ...saved, jobLevels: next }) // eslint-disable-line react-hooks/set-state-in-effect
   }, [liveJobs, loadedCharId, synced]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -328,7 +362,7 @@ export function SpellTracker() {
       if (isLearning) learned[spellName] = true
       else delete learned[spellName]
       const next = { ...prev, learned }
-      localStorage.setItem(SK, JSON.stringify(next))
+      writeLocal(next)
       if (synced) scheduleSave({ jobLevels: next.jobLevels, learned: next.learned })
       return next
     })
@@ -352,7 +386,9 @@ export function SpellTracker() {
   }
 
   function handleReset(target: ResetTarget) {
-    if (target === 'levels') persist({ ...saved, jobLevels: {} })
+    // Synced levels come from the armoury, so "reset" means re-sync to it
+    // (discarding manual tweaks), not blanking until the next page load.
+    if (target === 'levels') persist({ ...saved, jobLevels: liveLevelMap() ?? {} })
     else persist({ ...saved, learned: {} })
     setConfirmReset(null)
   }

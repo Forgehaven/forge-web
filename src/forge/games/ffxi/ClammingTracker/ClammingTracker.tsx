@@ -428,6 +428,7 @@ export function ClammingTracker() {
   const [serverBlob, setServerBlob] = useState<SavedState | null>(null)
   const [baseUpdatedAt, setBaseUpdatedAt] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
+  const [conflictNotice, setConflictNotice] = useState(false)
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -467,7 +468,9 @@ export function ClammingTracker() {
       if (res.status === 'ok') {
         setServerBlob(saved)
         setBaseUpdatedAt(res.payload?.updated_at ?? null)
+        setConflictNotice(false)
       } else if (res.message === 'conflict') {
+        setConflictNotice(true)
         const server = res.payload as
           | { data?: Partial<SavedState>; updated_at?: string | null }
           | undefined
@@ -491,6 +494,7 @@ export function ClammingTracker() {
   }, [saved.overrides])
 
   function setPrice(id: string, field: 'ah' | 'ahStack', value: number) {
+    setConflictNotice(false)
     setSaved(prev => {
       const next: SavedState = {
         ...prev,
@@ -650,7 +654,12 @@ export function ClammingTracker() {
 
       {/* Account sync: prices save to the account with the manual Save button */}
       {isAuthenticated && (
-        <div className="flex items-center justify-end">
+        <div className="flex items-center justify-end gap-3">
+          {conflictNotice && (
+            <span className="text-xs text-[#c4af64]">
+              Newer save from another device loaded - your unsaved edits were replaced.
+            </span>
+          )}
           <button
             onClick={saveToServer}
             disabled={!dirty || saving}

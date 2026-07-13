@@ -12,6 +12,7 @@ import { ResetButton } from '../components/ResetButton'
 import { CHAR_NATIONS } from '../nations'
 
 const SK = STORAGE_KEYS.ffxiKeyItems
+const MIRROR_KEY = STORAGE_KEYS.ffxiKeyItemsMirrorChar
 const NOSYNC_KEY = STORAGE_KEYS.ffxiKeyItemsNoSync
 
 type KeyItemBlob = {
@@ -61,6 +62,9 @@ export function KeyItemTracker() {
   const [noSync, setNoSync] = useState<string[]>(loadNoSync)
   const [confirmReset, setConfirmReset] = useState<'collected' | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  // Pre-sync browser copy for the migration banner; synced toggles mirror
+  // into localStorage, so Import must read this instead.
+  const [localSnapshot, setLocalSnapshot] = useState<KeyItemBlob | null>(null)
 
   const selectedChar = isAuthenticated
     ? characters.find(c => c.id === selectedCharId) ?? null
@@ -77,9 +81,14 @@ export function KeyItemTracker() {
       ? (data, base) => putCharData(selectedChar.id, 'key_item_tracker', data, base)
       : null,
     onLoaded: data => {
+      if (data === null && localSnapshot === null) {
+        // A mirror left by ANOTHER character is not migratable local data.
+        const owner = localStorage.getItem(MIRROR_KEY)
+        setLocalSnapshot(owner && owner !== selectedChar?.id ? { collected: {} } : loadState())
+      }
       setServerEmpty(data === null)
       setSaved({ collected: data?.collected ?? {} })
-      if (data) localStorage.setItem(SK, JSON.stringify({ collected: data.collected ?? {} }))
+      if (data) writeLocal({ collected: data.collected ?? {} })
     },
   })
 
@@ -100,9 +109,18 @@ export function KeyItemTracker() {
     return () => window.removeEventListener('resize', updateTableHeight)
   }, [updateTableHeight])
 
+  // Mirror writes are stamped with the owning character so another character's
+  // mirror is never mistaken for migratable pre-login data; logged-out edits
+  // make the copy this browser's own again.
+  function writeLocal(next: KeyItemBlob) {
+    localStorage.setItem(SK, JSON.stringify(next))
+    if (synced && selectedChar) localStorage.setItem(MIRROR_KEY, selectedChar.id)
+    else if (!synced) localStorage.removeItem(MIRROR_KEY)
+  }
+
   function persist(next: KeyItemBlob) {
     setSaved(next)
-    localStorage.setItem(SK, JSON.stringify(next))
+    writeLocal(next)
     if (synced) scheduleSave(next)
   }
 
@@ -114,9 +132,9 @@ export function KeyItemTracker() {
   }
 
   function importLocalToCharacter() {
-    const local = loadState()
+    const local = localSnapshot ?? loadState()
     setServerEmpty(false)
-    persist({ collected: local.collected })
+    persist({ collected: { ...local.collected, ...saved.collected } })
   }
 
   function declineMigration() {
@@ -128,8 +146,8 @@ export function KeyItemTracker() {
 
   const localHasData = useMemo(() => {
     if (!synced || !serverEmpty) return false
-    return Object.keys(loadState().collected).length > 0
-  }, [synced, serverEmpty])
+    return Object.keys((localSnapshot ?? loadState()).collected).length > 0
+  }, [synced, serverEmpty, localSnapshot])
 
   function handleReset() {
     persist({ collected: {} })

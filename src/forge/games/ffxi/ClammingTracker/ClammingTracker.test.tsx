@@ -71,6 +71,46 @@ describe('ClammingTracker sync', () => {
     expect(JSON.parse((put![1] as RequestInit).body as string).data.overrides.nebimonite.ah).toBe(500)
   })
 
+  it('conflict on save loads the server blob and shows a notice', async () => {
+    localStorage.setItem(STORAGE_KEYS.ffxiClamming, JSON.stringify({
+      overrides: { nebimonite: { ah: 500 } },
+    }))
+    fetchSpy.mockImplementation((url: string | URL, init?: RequestInit) => {
+      const u = String(url)
+      if (u.includes('/auth/me')) {
+        return Promise.resolve(ok({
+          id: 'u1', discord_id: 'd1', username: 'Tester#0001', avatar: null, guilds: {},
+        }))
+      }
+      if (u.includes('/user-data/clamming') && init?.method === 'PUT') {
+        return Promise.resolve(new Response(JSON.stringify({
+          status: 'error', message: 'conflict',
+          payload: {
+            data: { overrides: { 'coral-fragment': { ah: 2400 } }, exceptions: {}, disabledRec: {} },
+            updated_at: 'T9',
+          },
+        }), { status: 200 }))
+      }
+      if (u.includes('/user-data/clamming')) {
+        return Promise.resolve(ok({ data: {}, updated_at: null }))
+      }
+      return Promise.resolve(new Response(JSON.stringify({ status: 'error' }), { status: 404 }))
+    })
+
+    renderTracker()
+
+    await userEvent.click(await screen.findByRole('button', { name: 'Save' }))
+
+    expect(await screen.findByText(/Newer save from another device/)).toBeInTheDocument()
+    // Server blob replaced the local prices.
+    expect(await screen.findByDisplayValue('2400')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Saved' })).toBeInTheDocument()
+
+    // Next price edit clears the notice.
+    await userEvent.type(screen.getByDisplayValue('2400'), '0')
+    expect(screen.queryByText(/Newer save from another device/)).toBeNull()
+  })
+
   it('loads the account blob from the server and shows Saved', async () => {
     // coral-fragment: AH 2400 beats vendor 1750, so it lands in the AH section
     // where the editable price input renders.

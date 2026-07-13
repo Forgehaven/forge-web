@@ -235,7 +235,11 @@ Login is only an upgrade (cross-device sync), never a gate.
 - **localStorage mirror**: while synced, tools keep their localStorage key as a lagged
   copy of the active character's blob (written on load and on every edit), so an offline
   reload or logout shows last-synced data. The old rule "never write localStorage while
-  synced" is gone; the local key now holds whichever character was last active.
+  synced" is gone; the local key now holds whichever character was last active. Mirror
+  writes are stamped with the owning character id (`..._mirrorchar_v1` keys); the
+  migration banner treats local data stamped by another character as not migratable,
+  and tools snapshot the pre-sync copy at banner time so Import survives later mirror
+  writes.
 - **Per-tool behavior** (logged in):
   - *SpellTracker*: per-character `{jobLevels, learned}` blob (`spell_tracker`), auto-sync;
     logged in shows the CharacterSelect header, logged out has NO character header at all (the

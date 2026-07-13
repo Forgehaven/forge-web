@@ -126,6 +126,42 @@ describe('KeyItemTracker synced', () => {
     expect(local.collected['Dem Gate Crystal']).toBe(true)
   })
 
+  it('Import keeps the pre-sync local copy even after synced toggles mirror over it', async () => {
+    localStorage.setItem('forgegames_ffxi_selectedchar_v1', 'c1')
+    localStorage.setItem(SK, JSON.stringify({ collected: { "Map of Al'Taieu": true } }))
+    mockApi({})
+
+    const { unmount } = renderTracker()
+
+    expect(await screen.findByText('This browser has unsynced Key Item data.')).toBeInTheDocument()
+    // Toggle while the banner is up: the mirror overwrites localStorage.
+    await userEvent.click(screen.getByText('Gate Crystals'))
+    await userEvent.click(screen.getByLabelText('Holla Gate Crystal'))
+    await userEvent.click(screen.getByText('Save it to Mychar'))
+    unmount()
+
+    const puts = fetchSpy.mock.calls.filter(call =>
+      String(call[0]).includes('/data/key_item_tracker')
+        && (call[1] as RequestInit | undefined)?.method === 'PUT')
+    expect(puts.length).toBeGreaterThan(0)
+    const body = JSON.parse(String((puts.at(-1)![1] as RequestInit).body))
+    expect(body.data.collected["Map of Al'Taieu"]).toBe(true)
+    expect(body.data.collected['Holla Gate Crystal']).toBe(true)
+  })
+
+  it("does not offer migration when local data is another character's mirror", async () => {
+    localStorage.setItem('forgegames_ffxi_selectedchar_v1', 'c1')
+    localStorage.setItem(SK, JSON.stringify({ collected: { 'Map of Norg': true } }))
+    localStorage.setItem('forgegames_ffxi_keyitems_mirrorchar_v1', 'other-char')
+    mockApi({})
+
+    renderTracker()
+
+    await screen.findByText('Mychar')
+    await new Promise(r => setTimeout(r, 50))
+    expect(screen.queryByText('This browser has unsynced Key Item data.')).toBeNull()
+  })
+
   it('offers migration for unsynced local data and remembers a decline', async () => {
     localStorage.setItem('forgegames_ffxi_selectedchar_v1', 'c1')
     localStorage.setItem(SK, JSON.stringify({ collected: { 'Map of Norg': true } }))
