@@ -1,6 +1,6 @@
 import { useEffect, useSyncExternalStore } from 'react'
 import { fetchCraftSettings } from './craftingApi'
-import { emitPrefsChanged, subscribePrefs } from './premium'
+import { emitPrefsChanged, subscribePrefs } from './prefsBus'
 import { isResource } from './itemMeta'
 import type { CraftSettings } from './types'
 import { STATION_TYPES } from '../constants'

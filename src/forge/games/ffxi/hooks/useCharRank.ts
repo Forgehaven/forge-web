@@ -1,24 +1,35 @@
 import { useEffect, useState } from 'react'
 import { fetchChar } from '../api'
 
-// Live nation-rank lookup for a registered character. Rank changes as
-// characters complete rank-up missions, so it is fetched per character
-// (backend caches ok lookups) instead of stored anywhere.
-export function useCharRank(name: string | null): string | null {
-  const [charRank, setCharRank] = useState<{ name: string; rank: string } | null>(null)
+export interface CharLive {
+  rank: string | null
+  jobs: Record<string, number> | null
+}
+
+// Live armoury lookup for a registered character (rank + job levels), fetched
+// per character instead of stored (backend caches ok lookups). An all-zero
+// jobs map means the character is /anon; consumers decide how to handle it.
+export function useCharLive(name: string | null): CharLive {
+  const [live, setLive] = useState<{ name: string; rank: string | null; jobs: Record<string, number> | null } | null>(null)
 
   useEffect(() => {
     if (!name) return
     let cancelled = false
     fetchChar(name)
       .then(res => {
-        if (!cancelled && res.status === 'ok' && res.payload.rank) {
-          setCharRank({ name, rank: res.payload.rank })
+        if (!cancelled && res.status === 'ok') {
+          setLive({ name, rank: res.payload.rank ?? null, jobs: res.payload.jobs ?? null })
         }
       })
-      .catch(() => { /* rank stays unknown */ })
+      .catch(() => { /* rank/jobs stay unknown */ })
     return () => { cancelled = true }
   }, [name])
 
-  return charRank && charRank.name === name ? charRank.rank : null
+  return live && live.name === name
+    ? { rank: live.rank, jobs: live.jobs }
+    : { rank: null, jobs: null }
+}
+
+export function useCharRank(name: string | null): string | null {
+  return useCharLive(name).rank
 }

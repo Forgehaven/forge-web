@@ -10,7 +10,7 @@ import { useAuth } from '../../../../auth/authContext'
 import { getCharData, putCharData } from '../api'
 import { useFfxiCharacters } from '../hooks/useFfxiCharacters'
 import { useSyncedBlob } from '../hooks/useSyncedBlob'
-import { useCharRank } from '../hooks/useCharRank'
+import { useCharLive } from '../hooks/useCharRank'
 import { SyncedCharacterHeader } from '../components/SyncedCharacterHeader'
 import { loadSelectedCharId } from '../selectedChar'
 import { ResetButton } from '../components/ResetButton'
@@ -203,18 +203,13 @@ export function SpellTracker() {
   const selectedChar = isAuthenticated
     ? characters.find(c => c.id === selectedCharId) ?? null
     : null
-  // Synced mode: `saved` mirrors the selected character's server blob and
-  // localStorage is left alone (it stays the logged-out browser copy).
+  // Synced mode: `saved` mirrors the selected character's server blob, and
+  // localStorage is kept as a lagged copy of it so an offline reload shows
+  // last-synced data instead of stale pre-login state.
   const synced = selectedChar !== null
-  // Once synced this mount, never fall back to writing localStorage: if the
-  // session dies mid-use, `saved` holds server data and writing it would
-  // destroy the protected logged-out browser copy.
-  const wasSynced = useRef(false)
-  useEffect(() => {
-    if (synced) wasSynced.current = true
-  }, [synced])
 
-  const syncedRank = useCharRank(selectedChar?.name ?? null)
+  const { rank: syncedRank, jobs: liveJobs } = useCharLive(selectedChar?.name ?? null)
+  const [loadedCharId, setLoadedCharId] = useState<string | null>(null)
 
   const { scheduleSave } = useSyncedBlob<SpellBlob>({
     key: selectedChar?.id ?? null,
@@ -222,15 +217,17 @@ export function SpellTracker() {
       ? () => getCharData<SpellBlob>(selectedChar.id, 'spell_tracker')
       : null,
     save: selectedChar
-      ? data => putCharData(selectedChar.id, 'spell_tracker', data)
+      ? (data, base) => putCharData(selectedChar.id, 'spell_tracker', data, base)
       : null,
     onLoaded: data => {
       setServerEmpty(data === null)
+      setLoadedCharId(selectedChar?.id ?? null)
       setSaved(prev => ({
         ...prev,
         jobLevels: data?.jobLevels ?? {},
         learned: data?.learned ?? {},
       }))
+      if (data) localStorage.setItem(SK, JSON.stringify({ jobLevels: data.jobLevels ?? {}, learned: data.learned ?? {} }))
     },
   })
   const [search, setSearch] = useState('')
@@ -268,11 +265,8 @@ export function SpellTracker() {
 
   function persist(next: SavedState) {
     setSaved(next)
-    if (synced) {
-      scheduleSave({ jobLevels: next.jobLevels, learned: next.learned })
-    } else if (!wasSynced.current) {
-      localStorage.setItem(SK, JSON.stringify(next))
-    }
+    localStorage.setItem(SK, JSON.stringify(next))
+    if (synced) scheduleSave({ jobLevels: next.jobLevels, learned: next.learned })
   }
 
   function importLocalToCharacter() {
@@ -301,6 +295,20 @@ export function SpellTracker() {
     persist({ ...saved, jobLevels: { ...saved.jobLevels, [job]: Math.max(1, Math.min(99, level)) } })
   }
 
+  // Live armoury levels overwrite tracked ones after the blob loads;
+  // all-zero payload = /anon char, keep last known levels.
+  useEffect(() => {
+    if (!synced || !liveJobs || !selectedChar || loadedCharId !== selectedChar.id) return
+    if (!Object.values(liveJobs).some(lvl => lvl > 0)) return
+    const next: Partial<Record<JobAbbr, number>> = {}
+    for (const job of JOBS) {
+      const lvl = liveJobs[job] ?? 0
+      if (lvl >= 1) next[job] = Math.min(99, lvl)
+    }
+    if (JOBS.every(job => next[job] === saved.jobLevels[job])) return
+    persist({ ...saved, jobLevels: next }) // eslint-disable-line react-hooks/set-state-in-effect
+  }, [liveJobs, loadedCharId, synced]) // eslint-disable-line react-hooks/exhaustive-deps
+
   function cancelSpellTimers(spellName: string) {
     if (countdownTimers.current.has(spellName)) {
       clearTimeout(countdownTimers.current.get(spellName)!)
@@ -321,8 +329,8 @@ export function SpellTracker() {
       if (isLearning) learned[spellName] = true
       else delete learned[spellName]
       const next = { ...prev, learned }
+      localStorage.setItem(SK, JSON.stringify(next))
       if (synced) scheduleSave({ jobLevels: next.jobLevels, learned: next.learned })
-      else if (!wasSynced.current) localStorage.setItem(SK, JSON.stringify(next))
       return next
     })
 

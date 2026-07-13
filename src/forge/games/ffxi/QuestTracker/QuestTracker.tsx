@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import { useAuth } from '../../../../auth/authContext'
 import { getCharData, putCharData } from '../api'
@@ -87,13 +87,6 @@ export function QuestTracker() {
     : null
   const synced = selectedChar !== null
   const syncedRank = useCharRank(selectedChar?.name ?? null)
-  // Once synced this mount, never fall back to writing localStorage: if the
-  // session dies mid-use, `saved` holds server data and writing it would
-  // destroy the logged-out browser copy.
-  const wasSynced = useRef(false)
-  useEffect(() => {
-    if (synced) wasSynced.current = true
-  }, [synced])
 
   const { scheduleSave } = useSyncedBlob<QuestBlob>({
     key: selectedChar?.id ?? null,
@@ -101,17 +94,18 @@ export function QuestTracker() {
       ? () => getCharData<QuestBlob>(selectedChar.id, 'quest_tracker')
       : null,
     save: selectedChar
-      ? data => putCharData(selectedChar.id, 'quest_tracker', data)
+      ? (data, base) => putCharData(selectedChar.id, 'quest_tracker', data, base)
       : null,
     onLoaded: data => {
       setSaved({ eco: data?.eco ?? {}, highwind: data?.highwind ?? null })
+      if (data) localStorage.setItem(SK, JSON.stringify({ eco: data.eco ?? {}, highwind: data.highwind ?? null }))
     },
   })
 
   function persist(next: QuestBlob) {
     setSaved(next)
+    localStorage.setItem(SK, JSON.stringify(next))
     if (synced) scheduleSave(next)
-    else if (!wasSynced.current) localStorage.setItem(SK, JSON.stringify(next))
   }
 
   const reset = lastConquestReset()

@@ -123,7 +123,7 @@ describe('QuestTracker synced', () => {
     expect(screen.getByText('Done this week')).toBeInTheDocument()
   })
 
-  it('toggling saves to the character blob, not localStorage', async () => {
+  it('toggling saves to the character blob and mirrors to localStorage', async () => {
     localStorage.setItem('forgegames_ffxi_selectedchar_v1', 'c1')
     mockApi()
 
@@ -143,6 +143,8 @@ describe('QuestTracker synced', () => {
     const body = JSON.parse(String((put![1] as RequestInit).body))
     expect(body.data.eco.bastok).toBeGreaterThan(0)
     expect(body.data.eco.windurst).toBeGreaterThan(0)
-    expect(localStorage.getItem(SK)).toBeNull()
+    const local = JSON.parse(localStorage.getItem(SK)!)
+    expect(local.eco.bastok).toBeGreaterThan(0)
+    expect(local.eco.windurst).toBeGreaterThan(0)
   })
 })

@@ -3,7 +3,7 @@ import { notifyUnauthenticated } from '../auth/unauthorized'
 
 export type Envelope<T> =
   | { status: 'ok'; message?: string; payload: T }
-  | { status: 'error'; message: string }
+  | { status: 'error'; message: string; payload?: unknown }
 
 // Credentialed fetch against forge-api. Always returns the {status, message,
 // payload} envelope: 401s trigger the auth cleanup hook, and FastAPI

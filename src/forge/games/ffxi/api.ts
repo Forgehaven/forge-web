@@ -47,14 +47,20 @@ export function deleteCharacter(id: string) {
   return forgeFetch<null>(`/game/ffxi/characters/${id}`, { method: 'DELETE' })
 }
 
+export interface PutResult {
+  updated_at: string | null
+}
+
 export function getCharData<T>(id: string, tool: CharacterTool) {
   return forgeFetch<ToolBlob<T>>(`/game/ffxi/characters/${id}/data/${tool}`)
 }
 
-export function putCharData(id: string, tool: CharacterTool, data: unknown) {
-  return forgeFetch<null>(`/game/ffxi/characters/${id}/data/${tool}`, {
+export function putCharData(
+  id: string, tool: CharacterTool, data: unknown, baseUpdatedAt: string | null,
+) {
+  return forgeFetch<PutResult>(`/game/ffxi/characters/${id}/data/${tool}`, {
     method: 'PUT',
-    body: JSON.stringify({ data }),
+    body: JSON.stringify({ data, base_updated_at: baseUpdatedAt }),
   })
 }
 
@@ -62,10 +68,10 @@ export function getUserData<T>(tool: UserTool) {
   return forgeFetch<ToolBlob<T>>(`/game/ffxi/user-data/${tool}`)
 }
 
-export function putUserData(tool: UserTool, data: unknown) {
-  return forgeFetch<null>(`/game/ffxi/user-data/${tool}`, {
+export function putUserData(tool: UserTool, data: unknown, baseUpdatedAt: string | null) {
+  return forgeFetch<PutResult>(`/game/ffxi/user-data/${tool}`, {
     method: 'PUT',
-    body: JSON.stringify({ data }),
+    body: JSON.stringify({ data, base_updated_at: baseUpdatedAt }),
   })
 }
 

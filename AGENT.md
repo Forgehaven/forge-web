@@ -228,7 +228,14 @@ Login is only an upgrade (cross-device sync), never a gate.
   (`ffxi/selectedChar.ts`).
 - **Sync plumbing**: `ffxi/hooks/useSyncedBlob.ts` - loads the server blob when the key
   (char id / tool) appears, debounced auto-save (1s) that flushes on unmount. Pass null
-  load/save when logged out.
+  load/save when logged out. Saves are compare-and-set: each PUT carries the blob's last
+  seen `updated_at` (`base_updated_at`); a `conflict` reply means another device wrote
+  first - server wins, the returned blob is fed back through `onLoaded` and the local
+  write is dropped.
+- **localStorage mirror**: while synced, tools keep their localStorage key as a lagged
+  copy of the active character's blob (written on load and on every edit), so an offline
+  reload or logout shows last-synced data. The old rule "never write localStorage while
+  synced" is gone; the local key now holds whichever character was last active.
 - **Per-tool behavior** (logged in):
   - *SpellTracker*: per-character `{jobLevels, learned}` blob (`spell_tracker`), auto-sync;
     logged in shows the CharacterSelect header, logged out has NO character header at all (the

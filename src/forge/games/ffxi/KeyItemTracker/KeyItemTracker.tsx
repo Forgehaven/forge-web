@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { KEY_ITEMS, KEY_ITEM_CATEGORIES, type KeyItemCategory } from '../data/keyItems'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import { useAuth } from '../../../../auth/authContext'
@@ -67,13 +67,6 @@ export function KeyItemTracker() {
     : null
   const synced = selectedChar !== null
   const syncedRank = useCharRank(selectedChar?.name ?? null)
-  // Once synced this mount, never fall back to writing localStorage: if the
-  // session dies mid-use, `saved` holds server data and writing it would
-  // destroy the logged-out browser copy.
-  const wasSynced = useRef(false)
-  useEffect(() => {
-    if (synced) wasSynced.current = true
-  }, [synced])
 
   const { scheduleSave } = useSyncedBlob<KeyItemBlob>({
     key: selectedChar?.id ?? null,
@@ -81,11 +74,12 @@ export function KeyItemTracker() {
       ? () => getCharData<KeyItemBlob>(selectedChar.id, 'key_item_tracker')
       : null,
     save: selectedChar
-      ? data => putCharData(selectedChar.id, 'key_item_tracker', data)
+      ? (data, base) => putCharData(selectedChar.id, 'key_item_tracker', data, base)
       : null,
     onLoaded: data => {
       setServerEmpty(data === null)
       setSaved({ collected: data?.collected ?? {} })
+      if (data) localStorage.setItem(SK, JSON.stringify({ collected: data.collected ?? {} }))
     },
   })
 
@@ -108,8 +102,8 @@ export function KeyItemTracker() {
 
   function persist(next: KeyItemBlob) {
     setSaved(next)
+    localStorage.setItem(SK, JSON.stringify(next))
     if (synced) scheduleSave(next)
-    else if (!wasSynced.current) localStorage.setItem(SK, JSON.stringify(next))
   }
 
   function toggleCollected(name: string) {

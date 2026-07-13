@@ -99,7 +99,7 @@ describe('KeyItemTracker synced', () => {
     })
   }
 
-  it('loads the character blob and saves toggles to it, not localStorage', async () => {
+  it('loads the character blob, saves toggles to it, mirrors localStorage', async () => {
     localStorage.setItem('forgegames_ffxi_selectedchar_v1', 'c1')
     mockApi({ collected: { 'Dem Gate Crystal': true } })
 
@@ -121,7 +121,9 @@ describe('KeyItemTracker synced', () => {
     const body = JSON.parse(String((put![1] as RequestInit).body))
     expect(body.data.collected['Holla Gate Crystal']).toBe(true)
     expect(body.data.collected['Dem Gate Crystal']).toBe(true)
-    expect(localStorage.getItem(SK)).toBeNull()
+    const local = JSON.parse(localStorage.getItem(SK)!)
+    expect(local.collected['Holla Gate Crystal']).toBe(true)
+    expect(local.collected['Dem Gate Crystal']).toBe(true)
   })
 
   it('offers migration for unsynced local data and remembers a decline', async () => {

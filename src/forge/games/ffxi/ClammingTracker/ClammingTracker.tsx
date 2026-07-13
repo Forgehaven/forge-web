@@ -426,6 +426,7 @@ export function ClammingTracker() {
   // Server baseline for the account; null = not synced. Prices are saved
   // manually (the flashing Save button), unlike the auto-synced tools.
   const [serverBlob, setServerBlob] = useState<SavedState | null>(null)
+  const [baseUpdatedAt, setBaseUpdatedAt] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
@@ -436,12 +437,14 @@ export function ClammingTracker() {
     let cancelled = false
     getUserData<Partial<SavedState>>('clamming').then(res => {
       if (cancelled || res.status !== 'ok') return
+      setBaseUpdatedAt(res.payload.updated_at ?? null)
       const data = res.payload.data
       if (data && Object.keys(data).length > 0) {
         const next: SavedState = { overrides: {}, exceptions: {}, disabledRec: {}, ...data }
         setSaved(next)
         setStableOverrides(next.overrides)
         setServerBlob(next)
+        localStorage.setItem(SK, JSON.stringify(next))
       } else {
         // No server data yet: keep the local view; it shows as unsaved so the
         // first Save uploads this browser's prices to the account.
@@ -460,8 +463,21 @@ export function ClammingTracker() {
     if (!isAuthenticated || !dirty || saving) return
     setSaving(true)
     try {
-      const res = await putUserData('clamming', saved)
-      if (res.status === 'ok') setServerBlob(saved)
+      const res = await putUserData('clamming', saved, baseUpdatedAt)
+      if (res.status === 'ok') {
+        setServerBlob(saved)
+        setBaseUpdatedAt(res.payload?.updated_at ?? null)
+      } else if (res.message === 'conflict') {
+        const server = res.payload as
+          | { data?: Partial<SavedState>; updated_at?: string | null }
+          | undefined
+        const next: SavedState = { overrides: {}, exceptions: {}, disabledRec: {}, ...(server?.data ?? {}) }
+        setSaved(next)
+        setStableOverrides(next.overrides)
+        setServerBlob(next)
+        setBaseUpdatedAt(server?.updated_at ?? null)
+        localStorage.setItem(SK, JSON.stringify(next))
+      }
     } finally {
       setSaving(false)
     }

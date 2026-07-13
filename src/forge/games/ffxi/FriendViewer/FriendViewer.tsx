@@ -97,7 +97,7 @@ export function FriendViewer() {
   const { scheduleSave } = useSyncedBlob<FriendBlob>({
     key: isAuthenticated ? 'friend_viewer' : null,
     load: isAuthenticated ? () => getUserData<FriendBlob>('friend_viewer') : null,
-    save: isAuthenticated ? data => putUserData('friend_viewer', data) : null,
+    save: isAuthenticated ? (data, base) => putUserData('friend_viewer', data, base) : null,
     onLoaded: data => {
       // Runs outside any state updater (updaters must stay pure). Union merge:
       // known limitation - a friend deleted on another device can be
