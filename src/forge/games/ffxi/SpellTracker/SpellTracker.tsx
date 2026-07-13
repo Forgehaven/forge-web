@@ -384,6 +384,18 @@ export function SpellTracker() {
   }
 
   const jobLevel = saved.jobLevels[activeJob] ?? 1
+
+  const tabStates = useMemo(() => {
+    const states = {} as Record<JobAbbr, { lvl: number; missing: number }>
+    for (const job of JOBS) {
+      const lvl = saved.jobLevels[job] ?? 1
+      const missing = lvl === 0
+        ? 0
+        : JOB_SPELLS[job].filter(s => s.jobs[job]! <= lvl && !saved.learned[s.name]).length
+      states[job] = { lvl, missing }
+    }
+    return states
+  }, [saved.jobLevels, saved.learned])
   const jobSpells = JOB_SPELLS[activeJob]
 
   const visibleSpells = useMemo(() => {
@@ -468,11 +480,20 @@ export function SpellTracker() {
         {/* Job tabs */}
         <div className="flex border-b border-[#2a2d3a] overflow-x-auto">
           {JOBS.map(job => {
-            const lvl = saved.jobLevels[job] ?? 1
+            const { lvl, missing } = tabStates[job]
             const isActive = activeJob === job
+            const lvlColor = lvl === 0
+              ? 'text-[#4b5563]'
+              : missing > 0 ? 'text-[#c4af64]' : 'text-[#4ade80]'
+            const title = lvl === 0
+              ? 'Job not unlocked'
+              : missing > 0
+                ? `${missing} learnable spell${missing === 1 ? '' : 's'} missing`
+                : 'All learnable spells learned'
             return (
               <button
                 key={job}
+                title={title}
                 onClick={() => { setActiveJob(job); setSearch('') }}
                 className={`flex flex-col items-center px-4 py-2.5 text-sm font-bold shrink-0 transition-colors border-b-2 cursor-pointer ${
                   isActive
@@ -481,7 +502,7 @@ export function SpellTracker() {
                 }`}
               >
                 <span>{job}</span>
-                <span className={`text-xs font-semibold ${isActive ? 'text-[#c4af64]/70' : 'text-[#4b5563]'}`}>{lvl}</span>
+                <span className={`text-xs font-semibold ${lvlColor}`}>{lvl}</span>
               </button>
             )
           })}

@@ -1,5 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { fireEvent, render, screen } from '@testing-library/react'
+import {
+  whiteMagic, blackMagic, songs, ninjutsu, summoningMagic, blueMagic,
+} from '../data/spells'
 import { MemoryRouter } from 'react-router-dom'
 import { AuthProvider } from '../../../../auth/AuthProvider'
 import { SpellTracker } from './SpellTracker'
@@ -152,6 +155,23 @@ describe('SpellTracker live job levels', () => {
     expect(await screen.findByDisplayValue('75')).toBeInTheDocument()
     fireEvent.click(screen.getByText('NIN'))
     expect(await screen.findByDisplayValue('0')).toBeInTheDocument()
+  })
+
+  it('marks tabs missing, caught up, and locked via title', async () => {
+    localStorage.setItem('forgegames_ffxi_selectedchar_v1', 'c1')
+    const allSpells = [...whiteMagic, ...blackMagic, ...songs, ...ninjutsu, ...summoningMagic, ...blueMagic]
+    const whmLearned = Object.fromEntries(
+      allSpells.filter(s => s.jobs.WHM !== undefined && s.jobs.WHM <= 75).map(s => [s.name, true]))
+    mockApi({
+      blob: { jobLevels: {}, learned: whmLearned },
+      charPayload: { name: 'Mychar', nation: 2, rank: 'Rank 5', avatar: null, jobs: { WHM: 75, BLM: 40, NIN: 0 } },
+    })
+
+    renderTracker()
+
+    expect(await screen.findByTitle('All learnable spells learned')).toHaveTextContent('WHM')
+    expect(screen.getByText('BLM').closest('button')!.title).toMatch(/learnable spells missing$/)
+    expect(screen.getByText('NIN').closest('button')!.title).toBe('Job not unlocked')
   })
 
   it('pushes overwritten levels to the character blob', async () => {
