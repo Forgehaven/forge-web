@@ -292,18 +292,17 @@ export function SpellTracker() {
     localHasData && selectedChar !== null && !noSync.includes(selectedChar.id)
 
   function setJobLevel(job: JobAbbr, level: number) {
-    persist({ ...saved, jobLevels: { ...saved.jobLevels, [job]: Math.max(1, Math.min(99, level)) } })
+    persist({ ...saved, jobLevels: { ...saved.jobLevels, [job]: Math.max(0, Math.min(99, level)) } })
   }
 
   // Live armoury levels overwrite tracked ones after the blob loads;
-  // all-zero payload = /anon char, keep last known levels.
+  // 0/missing = advanced job not unlocked, all-zero payload = /anon char.
   useEffect(() => {
     if (!synced || !liveJobs || !selectedChar || loadedCharId !== selectedChar.id) return
     if (!Object.values(liveJobs).some(lvl => lvl > 0)) return
     const next: Partial<Record<JobAbbr, number>> = {}
     for (const job of JOBS) {
-      const lvl = liveJobs[job] ?? 0
-      if (lvl >= 1) next[job] = Math.min(99, lvl)
+      next[job] = Math.max(0, Math.min(99, liveJobs[job] ?? 0))
     }
     if (JOBS.every(job => next[job] === saved.jobLevels[job])) return
     persist({ ...saved, jobLevels: next }) // eslint-disable-line react-hooks/set-state-in-effect
@@ -495,7 +494,7 @@ export function SpellTracker() {
             <div className="flex items-center">
               <button
                 onClick={() => setJobLevel(activeJob, jobLevel - 1)}
-                disabled={jobLevel <= 1}
+                disabled={jobLevel <= 0}
                 className="px-1.5 py-0.5 text-xs text-[#6b7280] hover:text-[#e2e4ed] disabled:opacity-20 disabled:cursor-not-allowed cursor-pointer transition-colors border border-r-0 border-[#2a2d3a] rounded-l bg-[#0f1117] leading-none"
               >▼</button>
               <input

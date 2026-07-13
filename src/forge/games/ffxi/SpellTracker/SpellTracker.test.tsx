@@ -140,7 +140,7 @@ describe('SpellTracker live job levels', () => {
     expect(screen.getByDisplayValue('30')).toBeInTheDocument()
   })
 
-  it('drops manual levels for jobs the armoury reports unleveled', async () => {
+  it('zeroes jobs the armoury reports locked', async () => {
     localStorage.setItem('forgegames_ffxi_selectedchar_v1', 'c1')
     mockApi({
       blob: { jobLevels: { WHM: 30, NIN: 20 }, learned: {} },
@@ -151,7 +151,7 @@ describe('SpellTracker live job levels', () => {
 
     expect(await screen.findByDisplayValue('75')).toBeInTheDocument()
     fireEvent.click(screen.getByText('NIN'))
-    expect(await screen.findByDisplayValue('1')).toBeInTheDocument()
+    expect(await screen.findByDisplayValue('0')).toBeInTheDocument()
   })
 
   it('pushes overwritten levels to the character blob', async () => {
@@ -169,6 +169,8 @@ describe('SpellTracker live job levels', () => {
       String(u).includes('/data/spell_tracker') && (init as RequestInit | undefined)?.method === 'PUT')
     expect(put).toBeTruthy()
     const body = JSON.parse((put![1] as RequestInit).body as string)
-    expect(body.data.jobLevels).toEqual({ WHM: 75, BLM: 40 })
+    expect(body.data.jobLevels).toEqual({
+      WHM: 75, BLM: 40, RDM: 0, PLD: 0, DRK: 0, BRD: 0, SMN: 0, NIN: 0,
+    })
   })
 })
