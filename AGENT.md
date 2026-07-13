@@ -259,6 +259,10 @@ Login is only an upgrade (cross-device sync), never a gate.
     `/user-data/clamming` (per user, NO character dropdown), **manual save** - a gold flashing
     Save button appears when local state differs from the server baseline. Default AH prices were
     removed from `data/items.ts`; prices are user-entered.
+  - *VanaTimers*: no storage, no auth - pure client math in `data/vanaTime.ts` (ported from
+    go-vanatime, same epoch as LandSandBoat's `VTIME_BASEDATE`; airship/ferry minutes from
+    horizonffxi.wiki route pages). Vana clock + day element, moon phase, tally countdown
+    (reuses `conquest.ts`), departure tables; ticks via `useNow(250)`.
   - *FriendViewer*: per-user `{names, starred}` blob (`friend_viewer`), auto-sync; server ∪ local
     name merge on load. Job/rank snapshots stay localStorage-only, each stamped with `fetchedAt`;
     an all-zero jobs fetch (friend went `/anon`) keeps the last good snapshot and shows an

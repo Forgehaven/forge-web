@@ -13,6 +13,7 @@ import { SpellTracker } from './ffxi/SpellTracker'
 import { KeyItemTracker } from './ffxi/KeyItemTracker'
 import { TeleportCost } from './ffxi/TeleportCost'
 import { FriendViewer } from './ffxi/FriendViewer'
+import { VanaTimers } from './ffxi/VanaTimers'
 import { AlbionSplash } from './albion/Splash/AlbionSplash'
 import { ItemIndexPage } from './albion/ItemIndex/ItemIndexPage'
 import { ItemDetailPage } from './albion/ItemDetail/ItemDetailPage'
@@ -49,6 +50,7 @@ export default function GamesLayout() {
           <Route path="ffxi/key-item-tracker" element={<KeyItemTracker />} />
           <Route path="ffxi/teleport-cost" element={<TeleportCost />} />
           <Route path="ffxi/friend-viewer" element={<FriendViewer />} />
+          <Route path="ffxi/vana-timers" element={<VanaTimers />} />
           <Route path="albion" element={<AlbionSplash />} />
           <Route path="albion/item-index" element={<ItemIndexPage />} />
           <Route path="albion/item/:itemId" element={<ItemDetailPage />} />
