@@ -73,32 +73,46 @@ export function moonPhase(earthMs: number): MoonState {
   }
 }
 
-// Departure schedules in Vana'diel minutes-of-day. Airships run every 6 Vana
-// hours, the Selbina-Mhaura ferry every 8; minute-exact times from the
-// horizonffxi.wiki route pages (Bastok-Jeuno_Airship etc).
+// Departure schedules in Vana'diel minutes-of-day; minute-exact times from
+// the horizonffxi.wiki route pages (Bastok-Jeuno_Airship, Manaclipper,
+// Phanauet_Channel etc). Airships repeat every 6 Vana hours, the ferry every
+// 8; Manaclipper and barge runs are irregular, hence explicit lists.
 export interface ScheduleRoute {
   route: string
-  firstMin: number
-  intervalMin: number
+  departuresMin: number[]
 }
 
-const AIRSHIP_INTERVAL = 360
-const FERRY_INTERVAL = 480
+const every = (firstMin: number, intervalMin: number): number[] =>
+  Array.from({ length: Math.floor(1440 / intervalMin) }, (_, i) => firstMin + i * intervalMin)
 
 export const AIRSHIP_ROUTES: ScheduleRoute[] = [
-  { route: "Jeuno → San d'Oria", firstMin: 73, intervalMin: AIRSHIP_INTERVAL },
-  { route: 'Jeuno → Bastok', firstMin: 254, intervalMin: AIRSHIP_INTERVAL },
-  { route: 'Jeuno → Windurst', firstMin: 163, intervalMin: AIRSHIP_INTERVAL },
-  { route: 'Jeuno → Kazham', firstMin: 337, intervalMin: AIRSHIP_INTERVAL },
-  { route: "San d'Oria → Jeuno", firstMin: 252, intervalMin: AIRSHIP_INTERVAL },
-  { route: 'Bastok → Jeuno', firstMin: 72, intervalMin: AIRSHIP_INTERVAL },
-  { route: 'Windurst → Jeuno', firstMin: 343, intervalMin: AIRSHIP_INTERVAL },
-  { route: 'Kazham → Jeuno', firstMin: 162, intervalMin: AIRSHIP_INTERVAL },
+  { route: "Jeuno → San d'Oria", departuresMin: every(73, 360) },
+  { route: 'Jeuno → Bastok', departuresMin: every(254, 360) },
+  { route: 'Jeuno → Windurst', departuresMin: every(163, 360) },
+  { route: 'Jeuno → Kazham', departuresMin: every(337, 360) },
+  { route: "San d'Oria → Jeuno", departuresMin: every(252, 360) },
+  { route: 'Bastok → Jeuno', departuresMin: every(72, 360) },
+  { route: 'Windurst → Jeuno', departuresMin: every(343, 360) },
+  { route: 'Kazham → Jeuno', departuresMin: every(162, 360) },
 ]
 
 export const FERRY_ROUTES: ScheduleRoute[] = [
-  { route: 'Selbina → Mhaura', firstMin: 0, intervalMin: FERRY_INTERVAL },
-  { route: 'Mhaura → Selbina', firstMin: 0, intervalMin: FERRY_INTERVAL },
+  { route: 'Selbina → Mhaura', departuresMin: every(0, 480) },
+  { route: 'Mhaura → Selbina', departuresMin: every(0, 480) },
+]
+
+export const MANACLIPPER_ROUTES: ScheduleRoute[] = [
+  { route: 'Bibiki Bay → Purgonorgo Isle', departuresMin: [330, 1050] },
+  { route: 'Purgonorgo Isle → Bibiki Bay', departuresMin: [555, 1275] },
+  { route: 'Maliyakaleya Reef tour', departuresMin: [770] },
+  { route: 'Dhalmel Rock tour', departuresMin: [50] },
+]
+
+export const BARGE_ROUTES: ScheduleRoute[] = [
+  { route: 'South → Central Landing', departuresMin: [50] },
+  { route: 'South → North Landing', departuresMin: [610] },
+  { route: 'Central → South Landing', departuresMin: [310, 1190] },
+  { route: 'North → Central Landing', departuresMin: [1045] },
 ]
 
 export interface Departure {
@@ -110,15 +124,107 @@ export interface Departure {
 export function nextDeparture(earthMs: number, r: ScheduleRoute): Departure {
   const v = vanaMs(earthMs)
   const nowMin = (v % DAY_MS) / MINUTE_MS
-  const wait = ((r.firstMin - nowMin) % r.intervalMin + r.intervalMin) % r.intervalMin
-  const depMin = (nowMin + wait) % 1440
+  let wait = Infinity
+  let depMin = r.departuresMin[0]
+  for (const dep of r.departuresMin) {
+    const w = ((dep - nowMin) % 1440 + 1440) % 1440
+    if (w < wait) {
+      wait = w
+      depMin = dep
+    }
+  }
   const hh = String(Math.floor(depMin / 60)).padStart(2, '0')
-  const mm = String(Math.floor(depMin % 60)).padStart(2, '0')
+  const mm = String(depMin % 60).padStart(2, '0')
   return {
     route: r.route,
     vanaClock: `${hh}:${mm}`,
     earthMsUntil: Math.ceil((wait * MINUTE_MS) / SCALE),
   }
+}
+
+// RSE rotation ported from the pyogenes timer (credit: pyogenes.com); zone
+// names per horizonffxi.wiki. One RSE week = 8 game days.
+const RSE_ANCHOR_MS = Date.UTC(2004, 0, 28, 9, 14, 24)
+const GAME_DAY_EARTH_MS = DAY_MS / SCALE
+const RSE_WEEK_EARTH_MS = 8 * GAME_DAY_EARTH_MS
+
+export const RSE_RACES = [
+  'Hume ♂', 'Hume ♀', 'Elvaan ♂', 'Elvaan ♀',
+  'Tarutaru ♂', 'Tarutaru ♀', 'Mithra', 'Galka',
+] as const
+
+export const RSE_ZONES = ['Gusgen Mines', 'Maze of Shakhrami', "Ordelle's Caves"] as const
+
+// Lv27-33 armor set per race, aligned with RSE_RACES (wiki RSE page).
+export const RSE_SETS = [
+  'Custom', 'Custom', 'Magna', 'Magna', 'Wonder', 'Wonder', 'Savage', "Elder's",
+] as const
+
+export interface RseWeek {
+  race: string
+  set: string
+  zone: string
+  startsEarthMs: number
+  endsEarthMs: number
+}
+
+function rseWeek(week: number): RseWeek {
+  const raceIdx = ((week % 8) + 8) % 8
+  return {
+    race: RSE_RACES[raceIdx],
+    set: RSE_SETS[raceIdx],
+    zone: RSE_ZONES[((week % 3) + 3) % 3],
+    startsEarthMs: RSE_ANCHOR_MS + week * RSE_WEEK_EARTH_MS,
+    endsEarthMs: RSE_ANCHOR_MS + (week + 1) * RSE_WEEK_EARTH_MS,
+  }
+}
+
+export function rseNow(earthMs: number): RseWeek {
+  return rseWeek(Math.floor((earthMs - RSE_ANCHOR_MS) / RSE_WEEK_EARTH_MS))
+}
+
+export function rseSchedule(earthMs: number, n: number, raceIdx?: number): RseWeek[] {
+  const current = Math.floor((earthMs - RSE_ANCHOR_MS) / RSE_WEEK_EARTH_MS)
+  const weeks: RseWeek[] = []
+  for (let w = current; weeks.length < n; w++) {
+    if (raceIdx === undefined || ((w % 8) + 8) % 8 === raceIdx) weeks.push(rseWeek(w))
+  }
+  return weeks
+}
+
+function earthMsAtVanaDay(day: number): number {
+  return EARTH_BASE_MS + (day * DAY_MS - 885 * YEAR_MS) / SCALE
+}
+
+export interface MoonEvents {
+  nextFullMs: number
+  nextNewMs: number
+}
+
+export function upcomingMoonEvents(earthMs: number): MoonEvents {
+  const days = Math.floor(vanaMs(earthMs) / DAY_MS)
+  const pos = (days + 8) % MOON_CYCLE_DAYS
+  const toFull = (42 - pos + MOON_CYCLE_DAYS) % MOON_CYCLE_DAYS || MOON_CYCLE_DAYS
+  const toNew = (0 - pos + MOON_CYCLE_DAYS) % MOON_CYCLE_DAYS || MOON_CYCLE_DAYS
+  return {
+    nextFullMs: earthMsAtVanaDay(days + toFull),
+    nextNewMs: earthMsAtVanaDay(days + toNew),
+  }
+}
+
+// Consumables gated or modified by the Vana'diel weekday (Horizon Era+ rules).
+export interface DayItem {
+  weekday: number
+  item: string
+  note: string
+}
+
+export const DAY_ITEMS: DayItem[] = [
+  { weekday: 6, item: 'Movalpolos Water', note: 'Refresh procs while MP% is below the current moon %' },
+]
+
+export function itemsForDay(weekday: number): DayItem[] {
+  return DAY_ITEMS.filter(i => i.weekday === weekday)
 }
 
 export function formatEarthWait(ms: number): string {

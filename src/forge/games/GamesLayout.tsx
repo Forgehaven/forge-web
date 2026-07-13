@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { ForgeLayout } from '../../components/ForgeLayout'
 import { GamesBottomBar } from './GamesBottomBar'
 import { NotFound } from '../../components/NotFound'
@@ -11,7 +11,7 @@ import { ClammingTracker } from './ffxi/ClammingTracker'
 import { QuestTracker } from './ffxi/QuestTracker'
 import { SpellTracker } from './ffxi/SpellTracker'
 import { KeyItemTracker } from './ffxi/KeyItemTracker'
-import { TeleportCost } from './ffxi/TeleportCost'
+import { FactionConquest } from './ffxi/FactionConquest'
 import { FriendViewer } from './ffxi/FriendViewer'
 import { VanaTimers } from './ffxi/VanaTimers'
 import { AlbionSplash } from './albion/Splash/AlbionSplash'
@@ -48,7 +48,8 @@ export default function GamesLayout() {
           <Route path="ffxi/clamming-tracker" element={<ClammingTracker />} />
           <Route path="ffxi/spell-tracker" element={<SpellTracker />} />
           <Route path="ffxi/key-item-tracker" element={<KeyItemTracker />} />
-          <Route path="ffxi/teleport-cost" element={<TeleportCost />} />
+          <Route path="ffxi/faction-conquest" element={<FactionConquest />} />
+          <Route path="ffxi/teleport-cost" element={<Navigate to="/games/ffxi/faction-conquest" replace />} />
           <Route path="ffxi/friend-viewer" element={<FriendViewer />} />
           <Route path="ffxi/vana-timers" element={<VanaTimers />} />
           <Route path="albion" element={<AlbionSplash />} />

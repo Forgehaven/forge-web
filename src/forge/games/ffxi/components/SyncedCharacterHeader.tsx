@@ -5,7 +5,7 @@ import type { FfxiCharacter } from '../api'
 
 // Logged-in replacement for CharacterHeader: round avatar + registered
 // character dropdown + nation line. `nation` is pre-resolved by the caller
-// because tools use different nation id spaces (SpellTracker 0-2, TeleportCost 1-4).
+// because tools use different nation id spaces (SpellTracker 0-2, FactionConquest 1-4).
 export function SyncedCharacterHeader({
   characters,
   selectedId,

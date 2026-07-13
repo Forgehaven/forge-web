@@ -1,5 +1,5 @@
 // Conquest tally clock - Sunday 23:59:59 JST = Sunday 14:59:59 UTC. Shared by
-// TeleportCost (map reset) and QuestTracker (weekly repeatables).
+// FactionConquest (map reset), QuestTracker (weekly repeatables), VanaTimers.
 
 export function lastConquestReset(): number {
   const now = Date.now()

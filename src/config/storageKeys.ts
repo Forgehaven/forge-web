@@ -6,7 +6,8 @@ export const STORAGE_KEYS = {
   tempUnit:                'forgetools_temp_unit',
   ipCache:                 'forge_ip_v2',
   ffxiSpellTracker:        'forgegames_ffxi_spelltracker_v1',
-  ffxiTeleportCost:        'forgegames_ffxi_teleportcost_v1',
+  // Value keeps the old teleportcost slug so existing browsers keep their data.
+  ffxiFactionConquest:     'forgegames_ffxi_teleportcost_v1',
   ffxiClamming:            'forgegames_ffxi_clamming_v1',
   ffxiFriendViewer:        'forgegames_ffxi_friendviewer_v1',
   ffxiQuestTracker:        'forgegames_ffxi_questtracker_v1',
@@ -19,4 +20,5 @@ export const STORAGE_KEYS = {
   ffxiSpellNoSync:         'forgegames_ffxi_spelltracker_nosync_v1',
   ffxiSpellMirrorChar:     'forgegames_ffxi_spelltracker_mirrorchar_v1',
   ffxiKeyItemsMirrorChar:  'forgegames_ffxi_keyitems_mirrorchar_v1',
+  ffxiVanaTimers:          'forgegames_ffxi_vanatimers_v1',
 } as const

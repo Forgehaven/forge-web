@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import {
   vanaTime, moonPhase, nextDeparture, formatEarthWait,
-  VANA_WEEKDAYS, AIRSHIP_ROUTES, FERRY_ROUTES,
+  rseNow, rseSchedule, upcomingMoonEvents, itemsForDay,
+  VANA_WEEKDAYS, AIRSHIP_ROUTES, FERRY_ROUTES, MANACLIPPER_ROUTES, BARGE_ROUTES,
 } from './vanaTime'
 
 // Golden vectors from the go-vanatime README (the reference implementation
@@ -83,6 +84,72 @@ describe('nextDeparture', () => {
     const at2300 = V1 + (23 * 60 * 60_000) / 25
     const kazham = nextDeparture(at2300, AIRSHIP_ROUTES[7])
     expect(kazham.vanaClock).toBe('02:42')
+  })
+})
+
+describe('irregular schedules', () => {
+  it('manaclipper and barge next departures from Vana midnight', () => {
+    expect(nextDeparture(V1, MANACLIPPER_ROUTES[0]).vanaClock).toBe('05:30')
+    expect(nextDeparture(V1, MANACLIPPER_ROUTES[1]).vanaClock).toBe('09:15')
+    expect(nextDeparture(V1, MANACLIPPER_ROUTES[3]).vanaClock).toBe('00:50')
+    expect(nextDeparture(V1, BARGE_ROUTES[0]).vanaClock).toBe('00:50')
+    expect(nextDeparture(V1, BARGE_ROUTES[2]).vanaClock).toBe('05:10')
+    expect(nextDeparture(V1, BARGE_ROUTES[3]).vanaClock).toBe('17:25')
+  })
+
+  it('picks the nearest of multiple departures', () => {
+    // Vana 06:00: Central -> South departures are 05:10 and 19:50; next is 19:50.
+    const at0600 = V1 + (6 * 3_600_000) / 25
+    expect(nextDeparture(at0600, BARGE_ROUTES[2]).vanaClock).toBe('19:50')
+  })
+})
+
+describe('rse', () => {
+  const ANCHOR = Date.UTC(2004, 0, 28, 9, 14, 24)
+  const WEEK = (8 * 86_400_000) / 25
+
+  it('anchor week is Hume M at Gusgen Mines', () => {
+    const w = rseNow(ANCHOR + 3_600_000)
+    expect(w.race).toBe('Hume ♂')
+    expect(w.zone).toBe('Gusgen Mines')
+    expect(w.endsEarthMs).toBe(ANCHOR + WEEK)
+  })
+
+  it('rotates race mod 8 and zone mod 3', () => {
+    expect(rseNow(ANCHOR + WEEK + 1).race).toBe('Hume ♀')
+    expect(rseNow(ANCHOR + WEEK + 1).zone).toBe('Maze of Shakhrami')
+    expect(rseNow(ANCHOR + 8 * WEEK + 1).race).toBe('Hume ♂')
+    expect(rseNow(ANCHOR + 8 * WEEK + 1).zone).toBe("Ordelle's Caves")
+  })
+
+  it('schedule lists current week onward', () => {
+    const rows = rseSchedule(ANCHOR + 1, 3)
+    expect(rows.map(w => w.race)).toEqual(['Hume ♂', 'Hume ♀', 'Elvaan ♂'])
+  })
+
+  it('schedule filtered by race recurs every 8 weeks with rotating zones', () => {
+    const rows = rseSchedule(ANCHOR + 1, 3, 0)
+    expect(rows.map(w => w.race)).toEqual(['Hume ♂', 'Hume ♂', 'Hume ♂'])
+    expect(rows.map(w => w.zone)).toEqual(['Gusgen Mines', "Ordelle's Caves", 'Maze of Shakhrami'])
+    expect(rows[1].startsEarthMs - rows[0].startsEarthMs).toBe(8 * WEEK)
+  })
+})
+
+describe('upcomingMoonEvents', () => {
+  it('from V1 (cycle pos 52): new in 32 game days, full in 74', () => {
+    const ev = upcomingMoonEvents(V1)
+    const gameDay = 86_400_000 / 25
+    expect(ev.nextNewMs - V1).toBe(32 * gameDay)
+    expect(ev.nextFullMs - V1).toBe(74 * gameDay)
+    expect(moonPhase(ev.nextNewMs).percent).toBe(0)
+    expect(moonPhase(ev.nextFullMs).percent).toBe(100)
+  })
+})
+
+describe('itemsForDay', () => {
+  it('Lightsday has Movalpolos Water, Firesday has nothing', () => {
+    expect(itemsForDay(6).map(i => i.item)).toEqual(['Movalpolos Water'])
+    expect(itemsForDay(0)).toEqual([])
   })
 })
 

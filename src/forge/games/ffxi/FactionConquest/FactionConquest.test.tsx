@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { AuthProvider } from '../../../../auth/AuthProvider'
-import { TeleportCost } from './TeleportCost'
+import { FactionConquest } from './FactionConquest'
 
 const fetchSpy = vi.fn()
 globalThis.fetch = fetchSpy
@@ -25,13 +25,13 @@ function renderTool() {
   return render(
     <MemoryRouter>
       <AuthProvider>
-        <TeleportCost />
+        <FactionConquest />
       </AuthProvider>
     </MemoryRouter>,
   )
 }
 
-describe('TeleportCost conquest sync', () => {
+describe('FactionConquest conquest sync', () => {
   it('applies the community conquest map from the public endpoint', async () => {
     const updated = new Date().toISOString()
     fetchSpy.mockImplementation((url: string | URL) => {
@@ -116,9 +116,53 @@ describe('TeleportCost conquest sync', () => {
 
     renderTool()
 
-    expect(await screen.findByText('Teleport')).toBeInTheDocument()
+    expect(await screen.findByText('Faction')).toBeInTheDocument()
     expect(screen.queryByText(/Community conquest map/)).toBeNull()
     // logged out: local-only data, reset stays available
     expect(screen.getByText('Reset Conquest')).toBeInTheDocument()
+    expect(screen.getByText(/No conquest data yet this week/)).toBeInTheDocument()
+  })
+
+  it('ranks factions by territory and shows the signet max for the character', async () => {
+    fetchSpy.mockImplementation((url: string | URL) => {
+      const u = String(url)
+      if (u.includes('/auth/me')) {
+        return Promise.resolve(ok({
+          id: 'u1', discord_id: 'd1', username: 'Tester#0001', avatar: null, guilds: {},
+        }))
+      }
+      if (u.includes('/game/ffxi/conquest')) {
+        // Sandy 3 (incl. no-outpost Tu'Lia), Bastok 1, Windurst 1 (Movalpolos):
+        // Sandy 1st, Bastok and Windurst tied 2nd.
+        return Promise.resolve(ok({
+          owners: {
+            'West Ronfaure': 3, 'Valkurm Dunes': 3, "Tu'Lia": 3,
+            'North Gustaberg': 1, Movalpolos: 2,
+          },
+          updated_at: new Date().toISOString(),
+        }))
+      }
+      if (u.includes('/game/ffxi/char/')) {
+        return Promise.resolve(ok({ name: 'Mychar', nation: 0, rank: 'Rank 6', avatar: null }))
+      }
+      if (u.includes('/game/ffxi/characters')) {
+        return Promise.resolve(ok([{ id: 'c1', name: 'Mychar', nation: 0, avatar: null }]))
+      }
+      return Promise.resolve(new Response(JSON.stringify({ status: 'error' }), { status: 404 }))
+    })
+
+    renderTool()
+
+    expect(await screen.findByText('1st')).toBeInTheDocument()
+    expect(screen.getAllByText('2nd')).toHaveLength(2)
+    expect(screen.queryByText('3rd')).toBeNull()
+    // No-outpost conquest regions render with owner toggles but no costs
+    // (region link appears twice: mobile stand-in + desktop region column).
+    expect(screen.getAllByText('Movalpolos').length).toBeGreaterThan(0)
+    expect(screen.getAllByText("Tu'Lia").length).toBeGreaterThan(0)
+    expect(screen.getAllByText('no outpost')).toHaveLength(2)
+    // Rank 6 + 1st place = 7 hours.
+    expect(await screen.findByText(/Signet max/)).toBeInTheDocument()
+    expect(screen.getByText('7h')).toBeInTheDocument()
   })
 })

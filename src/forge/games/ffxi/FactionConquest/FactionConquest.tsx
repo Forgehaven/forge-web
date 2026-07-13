@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { OUTPOSTS, type Outpost } from '../data/zones'
+import { OUTPOSTS, NO_OUTPOST_REGIONS, type Outpost } from '../data/zones'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import { useAuth } from '../../../../auth/authContext'
 import { getConquest, putConquest } from '../api'
@@ -18,7 +18,7 @@ import beastmenIcon from '../data/BeastmenIcon.png'
 
 const getNow = () => Date.now()
 
-const SK    = STORAGE_KEYS.ffxiTeleportCost
+const SK    = STORAGE_KEYS.ffxiFactionConquest
 
 // ---------------------------------------------------------------------------
 // Nations
@@ -39,6 +39,8 @@ const HOME_NATION_IDS = [1, 2, 3] as NationId[]
 // uses 1-4 (Bastok/Windurst/San d'Oria/Beastmen). Map registered-character
 // nations into the local ids.
 const CHAR_NATION_TO_TC: Record<number, NationId> = { 0: 3, 1: 1, 2: 2 }
+
+const ORDINALS: Record<number, string> = { 1: '1st', 2: '2nd', 3: '3rd' }
 
 function wikiZoneUrl(zone: string) {
   return `https://horizonffxi.wiki/${encodeURIComponent(zone.replace(/ /g, '_'))}`
@@ -115,6 +117,17 @@ function OutpostRow({ outpost, mode, userNation, owner, onOwnerChange }: Outpost
       >
         {access.notOwned.toLocaleString()}
       </td>
+      <OwnerCells owner={owner} onOwnerChange={onOwnerChange} />
+    </tr>
+  )
+}
+
+function OwnerCells({ owner, onOwnerChange }: {
+  owner: NationId | null
+  onOwnerChange: (n: NationId | null) => void
+}) {
+  return (
+    <>
       {NATION_IDS.map(nid => {
         const meta = NATIONS[nid]
         const active = owner === nid
@@ -142,6 +155,45 @@ function OutpostRow({ outpost, mode, userNation, owner, onOwnerChange }: Outpost
           </td>
         )
       })}
+    </>
+  )
+}
+
+// Conquest regions without an outpost: no teleport, no costs, but their
+// owner still feeds the standings.
+function NoOutpostRow({ region, owner, onOwnerChange }: {
+  region: string
+  owner: NationId | null
+  onOwnerChange: (n: NationId | null) => void
+}) {
+  return (
+    <tr className="border-b border-[#1a1d27] last:border-0 hover:bg-[#1a1d27]/30">
+      <td className="pl-4 py-2 pr-3 whitespace-nowrap">
+        {/* Region link stands in on mobile, where the Region column is hidden. */}
+        <a
+          href={wikiZoneUrl(region)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="md:hidden text-sm text-[#c4af64]/70 hover:text-[#c4af64] transition-colors"
+        >
+          {region}
+        </a>
+        <span className="hidden md:inline text-xs text-[#4b5563] italic">no outpost</span>
+      </td>
+      <td className="py-2 pr-3 text-xs whitespace-nowrap hidden md:table-cell">
+        <a
+          href={wikiZoneUrl(region)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#c4af64]/70 hover:text-[#c4af64] transition-colors"
+        >
+          {region}
+        </a>
+      </td>
+      <td className="py-2 pr-3 text-xs text-[#374151] text-center">—</td>
+      <td style={{ width: '64px' }} className="py-2 pr-2 text-xs text-right text-[#374151]">—</td>
+      <td style={{ width: '64px' }} className="py-2 pl-2 pr-3 text-xs text-left text-[#374151]">—</td>
+      <OwnerCells owner={owner} onOwnerChange={onOwnerChange} />
     </tr>
   )
 }
@@ -150,7 +202,7 @@ function OutpostRow({ outpost, mode, userNation, owner, onOwnerChange }: Outpost
 // Main component
 // ---------------------------------------------------------------------------
 
-export function TeleportCost() {
+export function FactionConquest() {
   const [saved, setSaved]           = useState<SavedState>(loadState)
   const [mode, setMode]             = useState<'home' | 'jeuno'>('jeuno')
   const { isAuthenticated } = useAuth()
@@ -302,6 +354,35 @@ export function TeleportCost() {
   const synced = isAuthenticated && characters.length > 0
   const userNation = synced ? charNationId : saved.nation
 
+  // Territory standings from the community map; ties share a place, exactly
+  // like a conquest tally draw. Signet duration = character rank + place
+  // (era rule; max 13h).
+  const standings = useMemo(() => {
+    const counts: Record<NationId, number> = { 1: 0, 2: 0, 3: 0, 4: 0 }
+    const keys = [...OUTPOSTS.map(o => o.zone), ...NO_OUTPOST_REGIONS]
+    for (const key of keys) {
+      const own = saved.owners[key] ?? null
+      if (own) counts[own]++
+    }
+    const ranked = HOME_NATION_IDS
+      .map(nid => ({ nid, count: counts[nid] }))
+      .sort((a, b) => b.count - a.count)
+    const placed = ranked.map(e => ({
+      ...e,
+      place: 1 + ranked.filter(x => x.count > e.count).length,
+    }))
+    return { placed, beastmen: counts[4] }
+  }, [saved.owners])
+
+  const anyOwned = standings.placed.some(e => e.count > 0) || standings.beastmen > 0
+  const userPlace = userNation !== null && userNation !== 4
+    ? standings.placed.find(e => e.nid === userNation)?.place ?? null
+    : null
+  const rankNum = syncedRank ? parseInt(syncedRank.replace(/\D/g, ''), 10) || null : null
+  const signetHours = rankNum !== null && userPlace !== null && anyOwned
+    ? rankNum + userPlace
+    : null
+
   return (
     <div className="flex flex-col gap-5 max-w-3xl mx-auto w-full">
 
@@ -349,7 +430,7 @@ export function TeleportCost() {
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
-            Teleport <span className="text-[#c4af64]">Cost</span>
+            Faction <span className="text-[#c4af64]">Conquest</span>
           </h1>
           <p className="text-sm text-[#6b7280] mt-0.5">FFXI · Horizon</p>
           {communityUpdatedAt && (
@@ -387,6 +468,39 @@ export function TeleportCost() {
             </>
           )}
         </div>
+      </div>
+
+      {/* Faction standings + signet */}
+      <div className="flex items-center gap-4 flex-wrap rounded-lg border border-[#2a2d3a] bg-[#1a1d27] px-4 py-2.5 text-sm">
+        {anyOwned ? (
+          <>
+            {standings.placed.map(e => {
+              const meta = NATIONS[e.nid]
+              return (
+                <span key={e.nid} className="flex items-center gap-1.5">
+                  <span className="text-[#6b7280] text-xs">{ORDINALS[e.place]}</span>
+                  {meta.icon && <img src={meta.icon} alt="" className="w-4 h-4 object-contain" />}
+                  <span style={{ color: meta.color }}>{meta.name}</span>
+                  <span className="text-[#9ca3af] tabular-nums">{e.count}</span>
+                </span>
+              )
+            })}
+            {standings.beastmen > 0 && (
+              <span className="flex items-center gap-1.5 opacity-60">
+                <img src={NATIONS[4].icon} alt="" className="w-4 h-4 object-contain" />
+                <span style={{ color: NATIONS[4].color }}>Beastmen</span>
+                <span className="text-[#9ca3af] tabular-nums">{standings.beastmen}</span>
+              </span>
+            )}
+            {signetHours !== null && (
+              <span className="ml-auto text-xs text-[#9ca3af]">
+                Signet max <span className="text-[#c4af64] font-semibold">{signetHours}h</span>
+              </span>
+            )}
+          </>
+        ) : (
+          <span className="text-[#6b7280] text-xs">No conquest data yet this week - set region owners below.</span>
+        )}
       </div>
 
       {/* Import panel */}
@@ -467,6 +581,14 @@ export function TeleportCost() {
                   userNation={userNation}
                   owner={saved.owners[outpost.zone] ?? null}
                   onOwnerChange={n => setOwner(outpost.zone, n)}
+                />
+              ))}
+              {NO_OUTPOST_REGIONS.map(region => (
+                <NoOutpostRow
+                  key={region}
+                  region={region}
+                  owner={saved.owners[region] ?? null}
+                  onOwnerChange={n => setOwner(region, n)}
                 />
               ))}
             </tbody>

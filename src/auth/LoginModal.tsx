@@ -70,9 +70,9 @@ export function LoginModal({ open, onClose }: { open: boolean; onClose: () => vo
               <ul className="text-xs text-[#9ca3af] space-y-1 list-disc list-inside">
                 <li>
                   Save &amp; sync your <span className="text-[#e2e4ed]">/games</span> trackers across devices:
-                  FFXI Spell Tracker, Teleport Cost, Clamming Tracker, and more (today they live only in this browser).
+                  FFXI Spell Tracker, Faction Conquest, Clamming Tracker, and more (today they live only in this browser).
                 </li>
-                <li>Share entries with your guild, like the week's Teleport Cost prices everyone can reference.</li>
+                <li>Share entries with your guild, like the week's Faction Conquest map everyone can reference.</li>
                 <li>Access role-gated services like the Albion Market Manager.</li>
               </ul>
             </div>

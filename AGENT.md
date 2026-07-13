@@ -247,22 +247,31 @@ Login is only an upgrade (cross-device sync), never a gate.
     localStorage only). Migration banner offers a one-click upload of this browser's data when
     the character's server blob is empty - declining ("No thanks") is remembered per character
     in `forgegames_ffxi_spelltracker_nosync_v1`.
-  - *TeleportCost*: the conquest `owners` map is **community-shared** - public `GET /conquest`
-    for everyone (even logged out), debounced `PUT` for logged-in edits. The backend blanks it
-    weekly at Sunday 14:59:59 UTC. Logged in: CharacterSelect header, nation mapped from the char
-    API's 0/1/2 to the tool's 1-4 ids, and the Reset Conquest button is HIDDEN (it would blank the
-    shared map for everyone). Logged out: a Home Nation picker (Bastok/Windurst/San d'Oria only -
-    Beastmen own outposts but are not pickable; unselected nations grey out) + reset. The old
-    free-text fetch header (CharacterHeader component) was deleted app-wide; NationMeta now
-    lives in `ffxi/nations.ts`.
+  - *FactionConquest* (formerly TeleportCost; route `ffxi/faction-conquest`, old
+    `ffxi/teleport-cost` redirects; localStorage value keeps the old `teleportcost` slug): the
+    conquest `owners` map is **community-shared** - public `GET /conquest` for everyone (even
+    logged out), debounced `PUT` for logged-in edits. The backend blanks it weekly at Sunday
+    14:59:59 UTC. Logged in: CharacterSelect header, nation mapped from the char API's 0/1/2 to
+    the tool's 1-4 ids, and the Reset Conquest button is HIDDEN (it would blank the shared map
+    for everyone). Logged out: a Home Nation picker (Bastok/Windurst/San d'Oria only - Beastmen
+    own outposts but are not pickable; unselected nations grey out) + reset. The old free-text
+    fetch header (CharacterHeader component) was deleted app-wide; NationMeta now lives in
+    `ffxi/nations.ts`. Standings strip ranks the 3 nations by owned-territory count (ties share
+    a place); Signet max = character rank + nation place (era rule), shown when both known.
+    Movalpolos and Tu'Lia are conquest regions WITHOUT outposts: owner-toggle-only rows
+    (`NO_OUTPOST_REGIONS` in `data/zones.ts`) that feed the standings but show no teleport
+    costs. Lumoria/Promyvion have no conquest influence - absent.
   - *ClammingTracker*: **account-wide** `{overrides, exceptions, disabledRec}` blob via
     `/user-data/clamming` (per user, NO character dropdown), **manual save** - a gold flashing
     Save button appears when local state differs from the server baseline. Default AH prices were
     removed from `data/items.ts`; prices are user-entered.
   - *VanaTimers*: no storage, no auth - pure client math in `data/vanaTime.ts` (ported from
-    go-vanatime, same epoch as LandSandBoat's `VTIME_BASEDATE`; airship/ferry minutes from
-    horizonffxi.wiki route pages). Vana clock + day element, moon phase, tally countdown
-    (reuses `conquest.ts`), departure tables; ticks via `useNow(250)`.
+    go-vanatime, same epoch as LandSandBoat's `VTIME_BASEDATE`; schedule minutes from
+    horizonffxi.wiki pages). Vana clock + day element, SVG moon, tally countdown (reuses
+    `conquest.ts`), airship/ferry/Manaclipper/barge departures (flash <3 earth min), RSE
+    rotation (pyogenes algorithm), lunar events, day-locked consumables (`DAY_ITEMS`);
+    ticks via `useNow(250)`. Weather is a server-side random roll - NOT computable
+    client-side; footer links the wiki's Special:WeatherForecast instead.
   - *FriendViewer*: per-user `{names, starred}` blob (`friend_viewer`), auto-sync; server ∪ local
     name merge on load. Job/rank snapshots stay localStorage-only, each stamped with `fetchedAt`;
     an all-zero jobs fetch (friend went `/anon`) keeps the last good snapshot and shows an
@@ -275,11 +284,11 @@ Login is only an upgrade (cross-device sync), never a gate.
     the /Maps page (category tagging misses ~23 maps); name doubles as id + wiki slug.
   - *QuestTracker*: per-character `{eco, highwind}` blob (`quest_tracker`) of completion
     timestamps, auto-sync. Weekly state is DERIVED against `lastConquestReset()`
-    (`ffxi/conquest.ts`, shared with TeleportCost) - stale timestamps read as "not done", never
+    (`ffxi/conquest.ts`, shared with FactionConquest) - stale timestamps read as "not done", never
     cleaned up by writes. Eco-Warrior rotation (all three nations before repeats, one per week)
     restarts in-display once all three are done and stale. Wiki data from horizonffxi.wiki.
 - **Shared FFXI helpers**: `ffxi/conquest.ts` (tally clock), `ffxi/nations.ts` (char-API 0-2
-  `NationMeta` map; TeleportCost keeps its own 1-4 map with Beastmen), `ffxi/hooks/useCharRank.ts`
+  `NationMeta` map; FactionConquest keeps its own 1-4 map with Beastmen), `ffxi/hooks/useCharRank.ts`
   (live nation-rank lookup shown in the character headers).
 
 ## Albion - Universal Crafting Tools

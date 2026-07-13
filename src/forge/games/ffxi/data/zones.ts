@@ -8,6 +8,10 @@
 export type Access = { lv: number; owned: number; notOwned: number }
 export type Outpost = { zone: string; region: string; home: Access; jeuno: Access }
 
+// Conquest-influence regions with no outpost (no teleport, no costs): they
+// still count toward the weekly tally standings. Owners map keys by region.
+export const NO_OUTPOST_REGIONS = ['Movalpolos', "Tu'Lia"] as const
+
 export const OUTPOSTS: Outpost[] = [
   { zone: 'North Gustaberg',         region: 'Gustaberg',             home: { lv: 20, owned: 200,  notOwned: 800  }, jeuno: { lv: 10, owned: 250,  notOwned: 1000 } },
   { zone: 'West Ronfaure',           region: 'Ronfaure',              home: { lv: 20, owned: 200,  notOwned: 800  }, jeuno: { lv: 10, owned: 250,  notOwned: 1000 } },
