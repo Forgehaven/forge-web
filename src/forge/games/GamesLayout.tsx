@@ -20,6 +20,8 @@ import { ItemDetailPage } from './albion/ItemDetail/ItemDetailPage'
 import { FavouritesPage } from './albion/Favourites/FavouritesPage'
 import { GoldPricePage } from './albion/Gold/GoldPricePage'
 import { LayoutOverrideProvider } from '../../components/LayoutOverride'
+import { AlarmProvider } from '../../components/alarms/AlarmProvider'
+import { ffxiAlarmTargets } from './ffxi/alarms'
 import { useAlbionUserSync } from './albion/shared/settings/sync'
 
 function AlbionUserSync() {
@@ -31,6 +33,7 @@ export default function GamesLayout() {
   return (
       <LayoutOverrideProvider>
       <AlbionUserSync />
+      <AlarmProvider sources={{ ffxi: ffxiAlarmTargets }}>
       <Routes>
         <Route element={
           <ForgeLayout
@@ -60,6 +63,7 @@ export default function GamesLayout() {
           <Route path="*" element={<NotFound backTo="/games" backLabel="Back to games" />} />
         </Route>
       </Routes>
+      </AlarmProvider>
       </LayoutOverrideProvider>
   )
 }

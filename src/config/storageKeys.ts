@@ -21,4 +21,5 @@ export const STORAGE_KEYS = {
   ffxiSpellMirrorChar:     'forgegames_ffxi_spelltracker_mirrorchar_v1',
   ffxiKeyItemsMirrorChar:  'forgegames_ffxi_keyitems_mirrorchar_v1',
   ffxiVanaTimers:          'forgegames_ffxi_vanatimers_v1',
+  gameAlarms:              'forgegames_alarms_v1',
 } as const

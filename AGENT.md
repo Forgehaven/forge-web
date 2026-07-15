@@ -285,8 +285,15 @@ Login is only an upgrade (cross-device sync), never a gate.
     Full/New Moon, Sunrise/Sunset (`dayNight`, day = 06:00-18:00), Conquest tally, RSE
     week change (+ per-race keys), and `TIMED_ITEMS` (`itemActivations` - day/moon-gated
     items sorted active-first then next-to-activate, notes in InfoTips). `buildAlertTargets`
-    is the single source for armable events; a floating bottom-right widget lists armed
-    alarms with countdowns + disarm (fixed z-40, only when something is armed).
+    Clock ticks via a rAF `TickingClock` (Vana second = 40ms real) with fixed-width digit
+    slots (no jitter); weekday shows in-game element icons (`data/elements/*Icon.png`,
+    pulled from horizonffxi.wiki like the nation icons). The ALARM ENGINE is NOT in this
+    page: `src/components/alarms/AlarmProvider.tsx` is a generic /games-wide notification
+    engine (mounted in GamesLayout, sources map prop, keys namespaced `sourceId:name`,
+    prefs in `forgegames_alarms_v1` with migration from the old VanaTimers blob); FFXI's
+    armable events live in `ffxi/alarms.ts` (`ffxiAlarmTargets`); pages consume via
+    `useAlarmSource('ffxi')` + `AlertBell`. Floating top-right widget (collapsible, starts
+    collapsed on mobile) lists armed alarms with lead + countdown + disarm.
   - *FriendViewer*: per-user `{names, starred}` blob (`friend_viewer`), auto-sync; server ∪ local
     name merge on load. Job/rank snapshots stay localStorage-only, each stamped with `fetchedAt`;
     an all-zero jobs fetch (friend went `/anon`) keeps the last good snapshot and shows an
