@@ -1,4 +1,5 @@
 import type { AlarmTarget } from '../../../components/alarms/alarmContext'
+import { STORAGE_KEYS } from '../../../config/storageKeys'
 import { lastConquestReset } from './conquest'
 import {
   nextDeparture, guildStatus, upcomingMoonEvents, dayNight, rseNow, rseSchedule,
@@ -27,5 +28,32 @@ export function ffxiAlarmTargets(nowMs: number): AlarmTarget[] {
       inMs: (rseSchedule(nowMs, 2, i).find(w => w.startsEarthMs > nowMs)?.startsEarthMs ?? nowMs) - nowMs,
     })),
     ...itemActivations(nowMs).map(t => ({ key: t.item.item, inMs: t.nextFutureInMs })),
+    ...lockoutTargets(nowMs),
   ]
+}
+
+const LOCKOUT_MS = 72 * 3_600_000
+
+// Lockout timers come from the LockoutTracker's localStorage copy (the
+// logged-out store / synced mirror of the last active character), so the
+// bells can ring without that page mounted.
+function lockoutTargets(nowMs: number): AlarmTarget[] {
+  try {
+    const p = JSON.parse(localStorage.getItem(STORAGE_KEYS.ffxiLockouts) ?? '')
+    const out: AlarmTarget[] = []
+    const dynamis: number[] = Array.isArray(p?.dynamis)
+      ? p.dynamis.filter((n: unknown) => typeof n === 'number')
+      : []
+    if (dynamis.length > 0) {
+      const inMs = Math.max(...dynamis) + LOCKOUT_MS - nowMs
+      if (inMs > 0) out.push({ key: 'Dynamis ready', inMs })
+    }
+    if (typeof p?.limbus === 'number') {
+      const inMs = p.limbus + LOCKOUT_MS - nowMs
+      if (inMs > 0) out.push({ key: 'Limbus ready', inMs })
+    }
+    return out
+  } catch {
+    return []
+  }
 }

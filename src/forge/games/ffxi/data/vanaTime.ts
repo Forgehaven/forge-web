@@ -364,6 +364,16 @@ export function itemActivations(earthMs: number): ItemActivation[] {
     Number(b.active) - Number(a.active) || a.nextStartInMs - b.nextStartInMs)
 }
 
+export function formatLongWait(ms: number): string {
+  const total = Math.max(0, Math.floor(ms / 60_000))
+  const d = Math.floor(total / 1440)
+  const h = Math.floor((total % 1440) / 60)
+  const m = total % 60
+  if (d > 0) return `${d}d ${h}h`
+  if (h > 0) return `${h}h ${m}m`
+  return `${m}m`
+}
+
 export function formatEarthWait(ms: number): string {
   const totalSec = Math.max(0, Math.floor(ms / 1000))
   const m = Math.floor(totalSec / 60)

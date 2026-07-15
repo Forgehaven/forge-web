@@ -294,6 +294,12 @@ Login is only an upgrade (cross-device sync), never a gate.
     armable events live in `ffxi/alarms.ts` (`ffxiAlarmTargets`); pages consume via
     `useAlarmSource('ffxi')` + `AlertBell`. Floating top-right widget (collapsible, starts
     collapsed on mobile) lists armed alarms with lead + countdown + disarm.
+  - *LockoutTracker* (route `ffxi/lockouts`): per-character `{dynamis: number[], limbus}` blob
+    (`lockout_tracker`), auto-sync + localStorage mirror (mirror includes `charName` and is
+    read by `ffxi/alarms.ts` so "Dynamis ready"/"Limbus ready" bells ring on any /games page).
+    Both lockouts are 72 Earth hours; Dynamis counts from hourglass trade (Horizon also caps
+    two entries per conquest tally - shown as n/2), Limbus from Cosmo-Cleanse PURCHASE
+    (Horizon 1.1 change).
   - *FriendViewer*: per-user `{names, starred}` blob (`friend_viewer`), auto-sync; server ∪ local
     name merge on load. Job/rank snapshots stay localStorage-only, each stamped with `fetchedAt`;
     an all-zero jobs fetch (friend went `/anon`) keeps the last good snapshot and shows an

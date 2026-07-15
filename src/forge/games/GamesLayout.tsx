@@ -14,6 +14,7 @@ import { KeyItemTracker } from './ffxi/KeyItemTracker'
 import { FactionConquest } from './ffxi/FactionConquest'
 import { FriendViewer } from './ffxi/FriendViewer'
 import { VanaTimers } from './ffxi/VanaTimers'
+import { LockoutTracker } from './ffxi/LockoutTracker'
 import { AlbionSplash } from './albion/Splash/AlbionSplash'
 import { ItemIndexPage } from './albion/ItemIndex/ItemIndexPage'
 import { ItemDetailPage } from './albion/ItemDetail/ItemDetailPage'
@@ -55,6 +56,7 @@ export default function GamesLayout() {
           <Route path="ffxi/teleport-cost" element={<Navigate to="/games/ffxi/faction-conquest" replace />} />
           <Route path="ffxi/friend-viewer" element={<FriendViewer />} />
           <Route path="ffxi/vana-timers" element={<VanaTimers />} />
+          <Route path="ffxi/lockouts" element={<LockoutTracker />} />
           <Route path="albion" element={<AlbionSplash />} />
           <Route path="albion/item-index" element={<ItemIndexPage />} />
           <Route path="albion/item/:itemId" element={<ItemDetailPage />} />

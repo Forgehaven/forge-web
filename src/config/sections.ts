@@ -8,6 +8,7 @@ export const SECTION_TITLES: [string, string][] = [
   ['/games/albion', 'Albion'],
   ['/games/ffxi/vana-timers', 'FFXI - Vana Timers'],
   ['/games/ffxi/faction-conquest', 'FFXI - Faction Conquest'],
+  ['/games/ffxi/lockouts', 'FFXI - Lockout Tracker'],
   ['/games', 'Forge Games'],
   ['/', 'FORGEHAVEN'],
 ]

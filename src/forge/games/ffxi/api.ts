@@ -17,7 +17,7 @@ export interface ConquestState {
   updated_at: string | null
 }
 
-export type CharacterTool = 'spell_tracker' | 'quest_tracker' | 'key_item_tracker'
+export type CharacterTool = 'spell_tracker' | 'quest_tracker' | 'key_item_tracker' | 'lockout_tracker'
 export type UserTool = 'friend_viewer' | 'clamming'
 
 // Public HorizonXI character lookup (no login). Error envelope = not found.
