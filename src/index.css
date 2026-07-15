@@ -163,6 +163,31 @@ textarea {
     background-color: rgb(196 175 100 / 0.08);
   }
 
+  /* ── Slim range slider (VanaTimers chime volume) ── */
+
+  .forge-slider {
+    appearance: none;
+    height: 4px;
+    border-radius: 9999px;
+    background: #2a2d3a;
+  }
+  .forge-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 9999px;
+    background: #c4af64;
+    cursor: pointer;
+  }
+  .forge-slider::-moz-range-thumb {
+    width: 10px;
+    height: 10px;
+    border: 0;
+    border-radius: 9999px;
+    background: #c4af64;
+    cursor: pointer;
+  }
+
   /* ── Bottom bar ── */
 
   /*

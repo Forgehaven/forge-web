@@ -271,7 +271,22 @@ Login is only an upgrade (cross-device sync), never a gate.
     `conquest.ts`), airship/ferry/Manaclipper/barge departures (flash <3 earth min), RSE
     rotation (pyogenes algorithm), lunar events, day-locked consumables (`DAY_ITEMS`);
     ticks via `useNow(250)`. Weather is a server-side random roll - NOT computable
-    client-side; footer links the wiki's Special:WeatherForecast instead.
+    client-side; footer links the wiki's Special:WeatherForecast instead. Departure alert
+    bells: clicking an unarmed bell opens a cursor-anchored lead picker (1m/2m/5m/15m/1h,
+    per-alarm lead - no global lead), armed click disarms; one-shot auto-disarm on fire;
+    sound-type bars (soft/normal/loud - NO preview on select; the bell icon is the test
+    button), repeat toggle (rings every 3s behind a Dismiss modal), volume slider (master
+    gain), all persisted in the same prefs blob (`armed: {key, lead}[]`; legacy string[]
+    + alertLead migrates on load); sound is a synthesized Web Audio chime
+    (`src/lib/chime.ts`, no assets, no Notification API - AudioContext resumed on gesture).
+    Crafting guilds section (`GUILDS`/`guildStatus` in vanaTime.ts): hours + weekly holiday
+    per guild (Alchemists' holiday is Lightsday - the wiki page has a copy-paste typo),
+    open/closed countdowns, armable "opens" bells. Alert targets beyond departures:
+    Full/New Moon, Sunrise/Sunset (`dayNight`, day = 06:00-18:00), Conquest tally, RSE
+    week change (+ per-race keys), and `TIMED_ITEMS` (`itemActivations` - day/moon-gated
+    items sorted active-first then next-to-activate, notes in InfoTips). `buildAlertTargets`
+    is the single source for armable events; a floating bottom-right widget lists armed
+    alarms with countdowns + disarm (fixed z-40, only when something is armed).
   - *FriendViewer*: per-user `{names, starred}` blob (`friend_viewer`), auto-sync; server ∪ local
     name merge on load. Job/rank snapshots stay localStorage-only, each stamped with `fetchedAt`;
     an all-zero jobs fetch (friend went `/anon`) keeps the last good snapshot and shows an

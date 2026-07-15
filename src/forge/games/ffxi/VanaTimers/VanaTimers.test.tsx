@@ -1,12 +1,22 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import { VanaTimers } from './VanaTimers'
+import { playChime } from '../../../../lib/chime'
+
+vi.mock('../../../../lib/chime', () => ({
+  ensureAudio: vi.fn(),
+  hookAudioGesture: vi.fn(),
+  playChime: vi.fn(),
+  setChimeVolume: vi.fn(),
+}))
 
 // Golden instant: Vana 1300-02-03 00:00:00 Firesday, Waning Gibbous 76%.
 const V1 = Date.UTC(2018, 3, 29, 12, 7, 12)
 
 describe('VanaTimers', () => {
   beforeEach(() => {
+    localStorage.clear()
+    vi.clearAllMocks()
     vi.useFakeTimers()
     vi.setSystemTime(V1)
   })
@@ -43,9 +53,120 @@ describe('VanaTimers', () => {
     expect(screen.getByText('now')).toBeInTheDocument()
     expect(screen.getByText('Full Moon')).toBeInTheDocument()
     expect(screen.getByText('New Moon')).toBeInTheDocument()
-    // V1 is Firesday: Movalpolos Water shows as upcoming on Lightsday.
-    expect(screen.getByText(/Movalpolos Water · Lightsday in/)).toBeInTheDocument()
+    // V1 is Firesday: all three timed items upcoming, sorted; night at Vana midnight.
+    expect(screen.getByText('Movalpolos Water')).toBeInTheDocument()
+    expect(screen.getByText('Treat Staff')).toBeInTheDocument()
+    expect(screen.getByText('Amood')).toBeInTheDocument()
+    expect(screen.getByText('Night')).toBeInTheDocument()
+    expect(screen.getByLabelText('Toggle alert for Sunrise')).toBeInTheDocument()
+    expect(screen.getByLabelText('Toggle alert for Conquest tally')).toBeInTheDocument()
+    expect(screen.getByLabelText('Toggle alert for RSE week change')).toBeInTheDocument()
+    // Guilds: Firesday is Carpenters' and Weavers' holiday; Fishermen open at 03:00.
+    expect(screen.getByText('Crafting guilds & shops')).toBeInTheDocument()
+    expect(screen.getAllByText('holiday today')).toHaveLength(2)
+    // Fishermen and Tanners both open at 03:00 -> identical countdowns.
+    expect(screen.getAllByText('opens in 7m 12s')).toHaveLength(2)
+    expect(screen.getByLabelText('Toggle alert for Alchemists opens')).toBeInTheDocument()
+    expect(screen.getByLabelText('Toggle alert for Full Moon')).toBeInTheDocument()
     expect(screen.getByText('live weather (wiki)')).toHaveAttribute(
       'href', 'https://horizonffxi.wiki/Special:WeatherForecast')
+  })
+
+  it('armed alert chimes inside the lead window and auto-disarms', () => {
+    // 90 earth seconds before the ferry's 00:00 departure - inside the 2m lead.
+    vi.setSystemTime(V1 - 90_000)
+    render(<VanaTimers />)
+
+    fireEvent.click(screen.getByLabelText('Toggle alert for Selbina → Mhaura'))
+    fireEvent.click(screen.getByLabelText('Chime 2m before'))
+    let stored = JSON.parse(localStorage.getItem('forgegames_ffxi_vanatimers_v1')!)
+    expect(stored.armed).toEqual([{ key: 'Selbina → Mhaura', lead: 120_000 }])
+
+    act(() => { vi.advanceTimersByTime(300) })
+
+    expect(playChime).toHaveBeenCalledTimes(1)
+    stored = JSON.parse(localStorage.getItem('forgegames_ffxi_vanatimers_v1')!)
+    expect(stored.armed).toEqual([])
+
+    // Further ticks must not re-fire the same departure instance.
+    act(() => { vi.advanceTimersByTime(600) })
+    expect(playChime).toHaveBeenCalledTimes(1)
+
+    // Re-arming the same route inside the same window fires again.
+    fireEvent.click(screen.getByLabelText('Toggle alert for Selbina → Mhaura'))
+    fireEvent.click(screen.getByLabelText('Chime 2m before'))
+    act(() => { vi.advanceTimersByTime(300) })
+    expect(playChime).toHaveBeenCalledTimes(2)
+  })
+
+  it('migrates legacy armed string list using the old global lead', () => {
+    localStorage.setItem('forgegames_ffxi_vanatimers_v1', JSON.stringify({
+      collapsed: {}, alertLead: 5, armed: ['Full Moon'],
+    }))
+    render(<VanaTimers />)
+
+    expect(screen.getByText(/Alarms \(1\)/)).toBeInTheDocument()
+    expect(screen.getAllByText('5m').length).toBeGreaterThan(0)
+  })
+
+  it('floating alarms widget lists armed alerts sorted and disarms via ×', () => {
+    vi.setSystemTime(V1 - 90_000)
+    render(<VanaTimers />)
+
+    expect(screen.queryByText(/Alarms \(/)).toBeNull()
+
+    fireEvent.click(screen.getByLabelText('Toggle alert for Full Moon'))
+    fireEvent.click(screen.getByLabelText('Chime 1h before'))
+    fireEvent.click(screen.getByLabelText('Toggle alert for Selbina → Mhaura'))
+    fireEvent.click(screen.getByLabelText('Chime 2m before'))
+
+    expect(screen.getByText(/Alarms \(2\)/)).toBeInTheDocument()
+    const disarms = screen.getAllByLabelText(/Disarm alarm for/)
+    expect(disarms).toHaveLength(2)
+    // Ferry departs sooner, so it sorts first.
+    expect(disarms[0]).toHaveAccessibleName('Disarm alarm for Selbina → Mhaura')
+    // Per-alarm leads shown on the rows.
+    expect(screen.getByText('1h')).toBeInTheDocument()
+
+    fireEvent.click(screen.getByLabelText('Disarm alarm for Full Moon'))
+    expect(screen.getAllByLabelText(/Disarm alarm for/)).toHaveLength(1)
+    const stored = JSON.parse(localStorage.getItem('forgegames_ffxi_vanatimers_v1')!)
+    expect(stored.armed).toEqual([{ key: 'Selbina → Mhaura', lead: 120_000 }])
+  })
+
+  it('volume bars persist the chime level without playing a preview', () => {
+    render(<VanaTimers />)
+
+    fireEvent.click(screen.getByLabelText('Chime volume loud'))
+
+    expect(playChime).not.toHaveBeenCalled()
+    const stored = JSON.parse(localStorage.getItem('forgegames_ffxi_vanatimers_v1')!)
+    expect(stored.chimeLevel).toBe('loud')
+  })
+
+  it('repeat mode rings until the alarm modal is dismissed', () => {
+    vi.setSystemTime(V1 - 90_000)
+    render(<VanaTimers />)
+
+    fireEvent.click(screen.getByLabelText('Repeat alarm until dismissed'))
+    fireEvent.click(screen.getByLabelText('Toggle alert for Selbina → Mhaura'))
+    fireEvent.click(screen.getByLabelText('Chime 2m before'))
+    act(() => { vi.advanceTimersByTime(300) })
+
+    expect(screen.getByText('Departure alert')).toBeInTheDocument()
+    // The full route string only appears in the modal (table cells split endpoints).
+    expect(screen.getByText('Selbina → Mhaura')).toBeInTheDocument()
+    const callsAfterFire = vi.mocked(playChime).mock.calls.length
+    expect(callsAfterFire).toBe(1)
+
+    act(() => { vi.advanceTimersByTime(6500) })
+    expect(vi.mocked(playChime).mock.calls.length).toBeGreaterThanOrEqual(callsAfterFire + 2)
+
+    fireEvent.click(screen.getByText('Dismiss'))
+    expect(screen.queryByText('Departure alert')).toBeNull()
+
+    const callsAfterDismiss = vi.mocked(playChime).mock.calls.length
+    act(() => { vi.advanceTimersByTime(7000) })
+    expect(vi.mocked(playChime).mock.calls.length).toBe(callsAfterDismiss)
   })
 })

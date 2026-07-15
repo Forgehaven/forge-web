@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
   vanaTime, moonPhase, nextDeparture, formatEarthWait,
-  rseNow, rseSchedule, upcomingMoonEvents, itemsForDay,
+  rseNow, rseSchedule, upcomingMoonEvents, itemActivations, dayNight, guildStatus, GUILDS,
   VANA_WEEKDAYS, AIRSHIP_ROUTES, FERRY_ROUTES, MANACLIPPER_ROUTES, BARGE_ROUTES,
 } from './vanaTime'
 
@@ -146,10 +146,61 @@ describe('upcomingMoonEvents', () => {
   })
 })
 
-describe('itemsForDay', () => {
-  it('Lightsday has Movalpolos Water, Firesday has nothing', () => {
-    expect(itemsForDay(6).map(i => i.item)).toEqual(['Movalpolos Water'])
-    expect(itemsForDay(0)).toEqual([])
+describe('guildStatus', () => {
+  const VANA_HOUR_EARTH = 3_600_000 / 25
+  const fishermen = GUILDS.find(g => g.name === 'Fishermen')!
+  const carpenters = GUILDS.find(g => g.name === 'Carpenters')!
+
+  it('V1 is Firesday midnight: Carpenters on holiday, next open Earthsday 6:00', () => {
+    const s = guildStatus(V1, carpenters)
+    expect(s.holiday).toBe(true)
+    expect(s.open).toBe(false)
+    expect(s.nextOpenInMs).toBe(30 * VANA_HOUR_EARTH)
+  })
+
+  it('Fishermen closed at Vana midnight, opens in 3 Vana hours', () => {
+    const s = guildStatus(V1, fishermen)
+    expect(s).toEqual({ open: false, holiday: false, changesInMs: 3 * VANA_HOUR_EARTH, nextOpenInMs: 3 * VANA_HOUR_EARTH })
+  })
+
+  it('Fishermen open at Vana noon, closes in 6 Vana hours', () => {
+    const s = guildStatus(V1 + 12 * VANA_HOUR_EARTH, fishermen)
+    expect(s.open).toBe(true)
+    expect(s.changesInMs).toBe(6 * VANA_HOUR_EARTH)
+  })
+})
+
+describe('dayNight', () => {
+  const VH = 3_600_000 / 25
+
+  it('V1 Vana midnight is night; sunrise in 6 Vana hours, sunset in 18', () => {
+    expect(dayNight(V1)).toEqual({ isNight: true, sunriseInMs: 6 * VH, sunsetInMs: 18 * VH })
+  })
+
+  it('Vana noon is day with sunset in 6 Vana hours', () => {
+    const s = dayNight(V1 + 12 * VH)
+    expect(s.isNight).toBe(false)
+    expect(s.sunsetInMs).toBe(6 * VH)
+  })
+})
+
+describe('itemActivations', () => {
+  const GAME_DAY = 86_400_000 / 25
+
+  it('V1 (Firesday) sorts by next activation: Movalpolos 6d, Treat Staff 7d, Amood 49d', () => {
+    const rows = itemActivations(V1)
+    expect(rows.map(r => r.item.item)).toEqual(['Movalpolos Water', 'Treat Staff', 'Amood'])
+    expect(rows.map(r => r.nextStartInMs)).toEqual([6 * GAME_DAY, 7 * GAME_DAY, 49 * GAME_DAY])
+    expect(rows.every(r => !r.active)).toBe(true)
+  })
+
+  it('active item sorts first with next future occurrence a week out', () => {
+    const lightsday = V1 + 6 * GAME_DAY
+    const rows = itemActivations(lightsday)
+    expect(rows[0].item.item).toBe('Movalpolos Water')
+    expect(rows[0].active).toBe(true)
+    expect(rows[0].nextStartInMs).toBe(0)
+    expect(rows[0].nextFutureInMs).toBe(8 * GAME_DAY)
   })
 })
 

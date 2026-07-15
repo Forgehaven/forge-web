@@ -212,19 +212,156 @@ export function upcomingMoonEvents(earthMs: number): MoonEvents {
   }
 }
 
-// Consumables gated or modified by the Vana'diel weekday (Horizon Era+ rules).
-export interface DayItem {
-  weekday: number
-  item: string
-  note: string
+// Crafting guild hours + weekly holidays (horizonffxi.wiki guild pages;
+// Alchemists' holiday cross-checked against era sources - the wiki page has a
+// copy-paste typo). Hours are Vana'diel; holiday = weekday index the guild is
+// closed all day.
+export interface Guild {
+  name: string
+  cities: string
+  openHour: number
+  closeHour: number
+  holiday: number
 }
 
-export const DAY_ITEMS: DayItem[] = [
-  { weekday: 6, item: 'Movalpolos Water', note: 'Refresh procs while MP% is below the current moon %' },
+export const GUILDS: Guild[] = [
+  { name: 'Alchemists', cities: 'Bastok', openHour: 8, closeHour: 23, holiday: 6 },
+  { name: 'Blacksmiths', cities: "Bastok · San d'Oria · Mhaura", openHour: 8, closeHour: 23, holiday: 2 },
+  { name: 'Boneworkers', cities: 'Windurst', openHour: 8, closeHour: 23, holiday: 3 },
+  { name: 'Carpenters', cities: "San d'Oria", openHour: 6, closeHour: 21, holiday: 0 },
+  { name: 'Weavers', cities: 'Windurst · Selbina', openHour: 6, closeHour: 21, holiday: 0 },
+  { name: 'Culinarians', cities: 'Windurst', openHour: 5, closeHour: 20, holiday: 7 },
+  { name: 'Fishermen', cities: 'Windurst · Selbina', openHour: 3, closeHour: 18, holiday: 5 },
+  { name: 'Goldsmiths', cities: 'Bastok · Mhaura', openHour: 8, closeHour: 23, holiday: 4 },
+  { name: 'Tanners', cities: "San d'Oria", openHour: 3, closeHour: 18, holiday: 4 },
 ]
 
-export function itemsForDay(weekday: number): DayItem[] {
-  return DAY_ITEMS.filter(i => i.weekday === weekday)
+export interface GuildStatus {
+  open: boolean
+  holiday: boolean
+  changesInMs: number
+  nextOpenInMs: number
+}
+
+export function guildStatus(earthMs: number, g: Guild): GuildStatus {
+  const v = vanaMs(earthMs)
+  const dayIdx = Math.floor(v / DAY_MS)
+  const weekday = dayIdx % 8
+  const holiday = weekday === g.holiday
+  const hour = (v % DAY_MS) / HOUR_MS
+  const open = !holiday && hour >= g.openHour && hour < g.closeHour
+
+  let nextOpenInMs = 0
+  for (let d = 0; d <= 8; d++) {
+    if ((dayIdx + d) % 8 === g.holiday) continue
+    const openV = (dayIdx + d) * DAY_MS + g.openHour * HOUR_MS
+    if (openV > v) {
+      nextOpenInMs = Math.ceil((openV - v) / SCALE)
+      break
+    }
+  }
+
+  const changesInMs = open
+    ? Math.ceil((dayIdx * DAY_MS + g.closeHour * HOUR_MS - v) / SCALE)
+    : nextOpenInMs
+  return { open, holiday, changesInMs, nextOpenInMs }
+}
+
+// Day/night cycle: day is 06:00-18:00 Vana time.
+export interface DayNight {
+  isNight: boolean
+  sunriseInMs: number
+  sunsetInMs: number
+}
+
+export function dayNight(earthMs: number): DayNight {
+  const v = vanaMs(earthMs)
+  const dayStart = Math.floor(v / DAY_MS) * DAY_MS
+  const hour = (v % DAY_MS) / HOUR_MS
+  const sunriseV = hour < 6 ? dayStart + 6 * HOUR_MS : dayStart + 30 * HOUR_MS
+  const sunsetV = hour < 18 ? dayStart + 18 * HOUR_MS : dayStart + 42 * HOUR_MS
+  return {
+    isNight: hour < 6 || hour >= 18,
+    sunriseInMs: Math.ceil((sunriseV - v) / SCALE),
+    sunsetInMs: Math.ceil((sunsetV - v) / SCALE),
+  }
+}
+
+// Items whose effect is gated by the Vana'diel weekday or moon phase
+// (Horizon Era+ rules / era latents).
+export interface TimedItem {
+  item: string
+  note: string
+  kind: 'consumable' | 'equipment'
+  trigger: { type: 'weekday'; weekday: number } | { type: 'moonPhase'; name: string }
+}
+
+export const TIMED_ITEMS: TimedItem[] = [
+  {
+    item: 'Movalpolos Water', kind: 'consumable',
+    note: 'Refresh procs while MP% is below the current moon %',
+    trigger: { type: 'weekday', weekday: 6 },
+  },
+  {
+    item: 'Treat Staff', kind: 'equipment',
+    note: 'Warp latent active at Night',
+    trigger: { type: 'weekday', weekday: 7 },
+  },
+  {
+    item: 'Amood', kind: 'equipment',
+    note: 'Club (DMG 58 / 59 on +1): the "occasionally attacks twice" latent is only active during the First Quarter Moon, waxing 40-55%',
+    trigger: { type: 'moonPhase', name: 'First Quarter' },
+  },
+]
+
+export interface ItemActivation {
+  item: TimedItem
+  active: boolean
+  nextStartInMs: number
+  nextFutureInMs: number
+}
+
+function phaseNameAt(day: number): string {
+  return MOON_PHASE_NAMES[Math.floor((day + 12) / 7) % 12]
+}
+
+export function itemActivations(earthMs: number): ItemActivation[] {
+  const v = vanaMs(earthMs)
+  const day = Math.floor(v / DAY_MS)
+  const weekday = day % 8
+
+  const rows = TIMED_ITEMS.map(item => {
+    let active: boolean
+    let nextStartDay: number
+    let nextFutureDay: number
+    if (item.trigger.type === 'weekday') {
+      const delta = (item.trigger.weekday - weekday + 8) % 8
+      active = delta === 0
+      nextStartDay = day + delta
+      nextFutureDay = day + (delta === 0 ? 8 : delta)
+    } else {
+      const name = item.trigger.name
+      active = phaseNameAt(day) === name
+      let start = 0
+      for (let d = 1; d <= MOON_CYCLE_DAYS + 7; d++) {
+        if (phaseNameAt(day + d) === name && phaseNameAt(day + d - 1) !== name) {
+          start = day + d
+          break
+        }
+      }
+      nextStartDay = active ? day : start
+      nextFutureDay = start
+    }
+    return {
+      item,
+      active,
+      nextStartInMs: active ? 0 : Math.max(0, earthMsAtVanaDay(nextStartDay) - earthMs),
+      nextFutureInMs: Math.max(0, earthMsAtVanaDay(nextFutureDay) - earthMs),
+    }
+  })
+
+  return rows.sort((a, b) =>
+    Number(b.active) - Number(a.active) || a.nextStartInMs - b.nextStartInMs)
 }
 
 export function formatEarthWait(ms: number): string {
