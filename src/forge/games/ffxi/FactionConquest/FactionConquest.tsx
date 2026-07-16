@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { OUTPOSTS, NO_OUTPOST_REGIONS, type Outpost } from '../data/zones'
+import { MAP_IDS } from '../InteractiveMap/mapIds'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import { useAuth } from '../../../../auth/authContext'
 import { getConquest, putConquest } from '../api'
@@ -44,6 +46,30 @@ const ORDINALS: Record<number, string> = { 1: '1st', 2: '2nd', 3: '3rd' }
 
 function wikiZoneUrl(zone: string) {
   return `https://horizonffxi.wiki/${encodeURIComponent(zone.replace(/ /g, '_'))}`
+}
+
+const MAP_ID_SET = new Set(MAP_IDS)
+
+function mapIdFor(zone: string): string | null {
+  const slug = zone.toLowerCase().replace(/['.]/g, '').replace(/[^a-z0-9]+/g, '_')
+  if (MAP_ID_SET.has(slug)) return slug
+  if (MAP_ID_SET.has(`${slug}_1`)) return `${slug}_1`
+  return null
+}
+
+function MapLink({ zone }: { zone: string }) {
+  const id = mapIdFor(zone)
+  if (!id) return null
+  return (
+    <Link
+      to={`/games/ffxi/map/${id}`}
+      title={`Open ${zone} on the Interactive Map`}
+      aria-label={`Open ${zone} on the Interactive Map`}
+      className="ml-1.5 text-[#6b7280] hover:text-[#c4af64] transition-colors"
+    >
+      ⌖
+    </Link>
+  )
 }
 
 // ---------------------------------------------------------------------------
@@ -98,6 +124,7 @@ function OutpostRow({ outpost, mode, userNation, owner, onOwnerChange }: Outpost
         >
           {outpost.zone}
         </a>
+        <MapLink zone={outpost.zone} />
       </td>
       <td className="py-2 pr-3 text-xs text-[#c4af64]/70 whitespace-nowrap hidden md:table-cell">{outpost.region}</td>
       <td className="py-2 pr-3 text-xs text-[#6b7280] text-center tabular-nums">{access.lv}</td>

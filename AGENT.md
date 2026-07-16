@@ -300,6 +300,50 @@ Login is only an upgrade (cross-device sync), never a gate.
     Both lockouts are 72 Earth hours; Dynamis counts from hourglass trade (Horizon also caps
     two entries per conquest tally - shown as n/2), Limbus from Cosmo-Cleanse PURCHASE
     (Horizon 1.1 change).
+  - *InteractiveMap* (route `ffxi/map`): 312 zone maps as 1024px WebP in `public/ffxi_maps/`
+    (~34MB, NOT bundled - static copies, one lazy image per viewed zone). 280 are Remapster's
+    hand-redrawn maps (spalose) used per the artist's credit+linkback terms - the page footer
+    credit is REQUIRED, keep it. 32 zones missing from the packs (Kazham, Fei'Yin, Movalpolos,
+    Altepa, sky, etc.) are filled with horizonffxi.wiki images (Vana'diel Atlas / ffxi-atlas.com
+    art, credited in the same footer), converted via
+    `ffmpeg -vf "scale=1024:1024:force_original_aspect_ratio=decrease,pad=1024:1024:..."`.
+    Index in `InteractiveMap/mapIds.ts` (generated from the directory listing; regenerate if
+    maps change) + name beautifier in `maps.ts` (FIXUPS for apostrophes). Viewer is the
+    dependency-free `components/ZoomPan.tsx` (wheel zoom to cursor, drag pan, dblclick reset)
+    - no Leaflet; markers = positioned divs on the same transform. Non-Horizon content
+    (Abyssea/WotG/SoA/Escha/Dynamis-[D]) pruned from the packs. Last-viewed zone persists in
+    `forgegames_ffxi_map_v1`; teleport quick-link chips (HOLLA/DEM/MEA/ALTEP/YHOAT/VAHZL) jump
+    straight to crystal zones. Clickable exits live in `InteractiveMap/connections.ts`
+    (~965 links over 253 zones, 1024px coords), rebuilt by a full-map marker sweep: `mark`
+    field = the number/letter badge printed on the map (numbered dungeon entrances route to
+    the specific floor owning that number; letter badges pair floors within a zone family).
+    Batallia/Eldieme/Purgonorgo blocks are hand-verified seeds - keep them authoritative on
+    regeneration. Small one-off additions: use the page's annotate mode (click copies a
+    paste-ready entry). Exit trigger positions are NOT in open server data (LSB/ASB keep them
+    client-side). Still unlinked: zones with no map anywhere (BC arenas, Mog House residential,
+    salvage/assault instances, Qu'Bia Arena, Talacca Cove, Hazhalm, Monarch Linn, Boneyard
+    Gully, Lebros). The zone id lives in the URL (`ffxi/map/:zoneId`) so views are shareable;
+    bare `/map` redirects to the last-viewed zone. Header chips: city row (Sandy/Bastok/
+    Windy/Jeuno, nation colors) + teleport row (HOLLA..VAHZL) + NM toggle. NM spawn areas
+    live in `InteractiveMap/nms.ts` (`NM_SPAWNS`: map id -> areas in 1024px space, sourced
+    from wiki spawn maps via agent sweeps; ~512 areas over 128 zones; NMs without wiki
+    position maps - battlefield/Dynamis/Horizon-custom ones - are intentionally absent).
+    Entries with `unmarked: true` (no known position - absent from the wiki spawn image or
+    on a floor we don't ship) are legend-only: wiki link + "unmarked" badge, no shape.
+    Areas render in one SVG layer: red translucent circle, or polygon when the entry has
+    `points: [[x,y],...]`; big areas render first so small camps win clicks; strokes use
+    non-scaling-stroke. Click opens the NM's wiki page. A collapsible legend card (top-left
+    over the map, `legend` flag in the map storage key) lists the zone's NMs - hovering a row
+    or a shape highlights via shared state. Annotate mode has point (connection entry) and
+    area sub-modes; area clicks trace a live outline, "finish" copies a paste-ready NmSpawn
+    with `points` (centroid x/y, r 0). nms.ts is safe to hand-edit: the merge script parses
+    the existing file and preserves `points` + locally added entries on regeneration. A second
+    header Select ("Search NMs…", aria-label `Search NMs`) searches all NMs globally via the
+    module-scope `NM_OPTIONS` index (value `mapId|name`, split at first `|`); picking jumps to
+    the zone, forces the NM layer on, and pulse-highlights the shape(s) for 3s (`flashNm`,
+    cleared by timeout or map pointerdown). Toggle + last zone persist in
+    `forgegames_ffxi_map_v1` `{last, nm}`. ZoomPan takes `contentSize`/`resetKey` to center
+    content on load and re-center per zone; its pointer-capture skips `button, a` children.
   - *FriendViewer*: per-user `{names, starred}` blob (`friend_viewer`), auto-sync; server ∪ local
     name merge on load. Job/rank snapshots stay localStorage-only, each stamped with `fetchedAt`;
     an all-zero jobs fetch (friend went `/anon`) keeps the last good snapshot and shows an

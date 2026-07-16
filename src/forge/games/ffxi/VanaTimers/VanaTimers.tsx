@@ -22,7 +22,7 @@ import windurstIcon from '../data/WindurstIcon.png'
 import { Select, type SelectOption } from '../../../../components/Select'
 import {
   vanaTime, moonPhase, nextDeparture, formatEarthWait,
-  rseSchedule, upcomingMoonEvents, itemActivations, dayNight,
+  rseSchedule, upcomingMoonEvents, itemActivations, dayNight, undeadHours,
   VANA_WEEKDAYS, WEEKDAY_ELEMENTS, RSE_RACES,
   AIRSHIP_ROUTES, FERRY_ROUTES, MANACLIPPER_ROUTES, BARGE_ROUTES,
   GUILDS, guildStatus,
@@ -129,7 +129,7 @@ function TickingClock() {
   const t = vanaTime(nowMs)
   const str = `${pad(t.hour)}:${pad(t.minute)}:${pad(t.second)}`
   return (
-    <div className="text-5xl font-semibold text-[#e2e4ed] flex justify-center" data-testid="vana-clock">
+    <div className="text-5xl font-semibold leading-none text-[#e2e4ed] flex justify-center" data-testid="vana-clock">
       {str.split('').map((c, i) => (
         <span key={i} className={`text-center ${c === ':' ? 'w-[0.28em]' : 'w-[0.54em]'}`}>{c}</span>
       ))}
@@ -258,6 +258,7 @@ export function VanaTimers() {
 
   const items = itemActivations(ms)
   const cycle = dayNight(ms)
+  const undead = undeadHours(ms)
   const rseAlertName = rseRace.value === 'all' ? 'RSE week change' : `RSE ${rseRace.label} week`
 
   const fmtDate = (t: number) =>
@@ -282,17 +283,17 @@ export function VanaTimers() {
       </div>
 
       <div className="grid gap-5 md:grid-cols-[2fr_3fr]">
-        <div className="rounded-lg border border-[#2a2d3a] bg-[#1a1d27] px-5 py-4 text-center">
-          <div className="flex items-baseline justify-between mb-1">
+        <div className="rounded-lg border border-[#2a2d3a] bg-[#1a1d27] px-5 py-2 text-center">
+          <div className="flex items-baseline justify-between">
             <span className="text-[10px] uppercase tracking-wider text-[#6b7280]">Vana'diel time</span>
             <span className="text-xs text-[#6b7280] tabular-nums">{date}</span>
           </div>
-          <TickingClock />
-          <div className="text-lg font-semibold mt-1.5 flex items-center justify-center gap-2" style={{ color: dayColor }}>
+          <div className="text-lg font-semibold flex items-center justify-center gap-2" style={{ color: dayColor }}>
             <img src={ELEMENT_ICONS[WEEKDAY_ELEMENTS[v.weekday]]} alt="" className="w-4 h-4 object-contain" />
             {weekday}
             <img src={ELEMENT_ICONS[WEEKDAY_ELEMENTS[v.weekday]]} alt="" className="w-4 h-4 object-contain" />
           </div>
+          <TickingClock />
           <div className="text-xs text-[#6b7280] mt-1.5 flex items-center justify-center gap-1.5">
             <span style={{ color: cycle.isNight ? '#60a5fa' : '#fde68a' }}>
               {cycle.isNight ? 'Night' : 'Day'}
@@ -304,6 +305,21 @@ export function VanaTimers() {
             <AlertBell
               target={cycle.isNight ? 'Sunrise' : 'Sunset'}
               armed={alarms.has(cycle.isNight ? 'Sunrise' : 'Sunset')}
+              onToggle={alarms.toggle}
+              size={14}
+            />
+          </div>
+          <div className="text-xs text-[#6b7280] mt-0.5 flex items-center justify-center gap-1.5">
+            <span style={{ color: undead.active ? '#c084fc' : '#4b5563' }}>
+              {undead.active ? 'Undead roam' : 'Undead at 20:00'}
+            </span>
+            <span>
+              · {undead.active ? 'vanish' : 'appear'} in{' '}
+              {formatEarthWait(undead.active ? undead.vanishInMs : undead.appearInMs)}
+            </span>
+            <AlertBell
+              target={undead.active ? 'Undead vanish (4:00)' : 'Undead appear (20:00)'}
+              armed={alarms.has(undead.active ? 'Undead vanish (4:00)' : 'Undead appear (20:00)')}
               onToggle={alarms.toggle}
               size={14}
             />

@@ -188,6 +188,19 @@ textarea {
     cursor: pointer;
   }
 
+  /* ── Interactive Map exit markers ── */
+
+  @keyframes marker-breathe {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+  .map-marker-breathe {
+    animation: marker-breathe 3s ease-in-out infinite;
+  }
+  .map-marker-breathe:hover {
+    animation: none;
+  }
+
   /* ── Bottom bar ── */
 
   /*

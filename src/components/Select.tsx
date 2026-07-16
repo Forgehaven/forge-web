@@ -28,7 +28,7 @@ const sharedClassNames: Props<SelectOption, false>['classNames'] = {
   noOptionsMessage: () => 'text-[#6b7280] text-sm px-3 py-2',
 }
 
-export function Select(props: Props<SelectOption, false>) {
+export function Select({ classNames, ...props }: Props<SelectOption, false>) {
   return (
     <ReactSelect<SelectOption, false>
       unstyled
@@ -38,7 +38,7 @@ export function Select(props: Props<SelectOption, false>) {
         menu: base => ({ ...base, zIndex: 9999 }),
         menuList: () => ({ maxHeight: 480, overflowY: 'auto' }),
       }}
-      classNames={sharedClassNames}
+      classNames={{ ...sharedClassNames, ...classNames }}
       {...props}
     />
   )

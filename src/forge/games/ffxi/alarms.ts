@@ -2,7 +2,7 @@ import type { AlarmTarget } from '../../../components/alarms/alarmContext'
 import { STORAGE_KEYS } from '../../../config/storageKeys'
 import { lastConquestReset } from './conquest'
 import {
-  nextDeparture, guildStatus, upcomingMoonEvents, dayNight, rseNow, rseSchedule,
+  nextDeparture, guildStatus, upcomingMoonEvents, dayNight, undeadHours, rseNow, rseSchedule,
   itemActivations,
   AIRSHIP_ROUTES, FERRY_ROUTES, MANACLIPPER_ROUTES, BARGE_ROUTES, GUILDS, RSE_RACES,
 } from './data/vanaTime'
@@ -13,6 +13,7 @@ import {
 export function ffxiAlarmTargets(nowMs: number): AlarmTarget[] {
   const moonEvents = upcomingMoonEvents(nowMs)
   const cycle = dayNight(nowMs)
+  const undead = undeadHours(nowMs)
   return [
     ...[...AIRSHIP_ROUTES, ...FERRY_ROUTES, ...MANACLIPPER_ROUTES, ...BARGE_ROUTES]
       .map(r => ({ key: r.route, inMs: nextDeparture(nowMs, r).earthMsUntil })),
@@ -21,6 +22,8 @@ export function ffxiAlarmTargets(nowMs: number): AlarmTarget[] {
     { key: 'New Moon', inMs: moonEvents.nextNewMs - nowMs },
     { key: 'Sunrise', inMs: cycle.sunriseInMs },
     { key: 'Sunset', inMs: cycle.sunsetInMs },
+    { key: 'Undead appear (20:00)', inMs: undead.appearInMs },
+    { key: 'Undead vanish (4:00)', inMs: undead.vanishInMs },
     { key: 'Conquest tally', inMs: lastConquestReset() + 7 * 86_400_000 - nowMs },
     { key: 'RSE week change', inMs: rseNow(nowMs).endsEarthMs - nowMs },
     ...RSE_RACES.map((race, i) => ({

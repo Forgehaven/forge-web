@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
   vanaTime, moonPhase, nextDeparture, formatEarthWait,
-  rseNow, rseSchedule, upcomingMoonEvents, itemActivations, dayNight, guildStatus, GUILDS,
+  rseNow, rseSchedule, upcomingMoonEvents, itemActivations, dayNight, undeadHours, guildStatus, GUILDS,
   VANA_WEEKDAYS, AIRSHIP_ROUTES, FERRY_ROUTES, MANACLIPPER_ROUTES, BARGE_ROUTES,
 } from './vanaTime'
 
@@ -181,6 +181,28 @@ describe('dayNight', () => {
     const s = dayNight(V1 + 12 * VH)
     expect(s.isNight).toBe(false)
     expect(s.sunsetInMs).toBe(6 * VH)
+  })
+})
+
+describe('undeadHours', () => {
+  const VH = 3_600_000 / 25
+
+  it('V1 Vana midnight: undead out, vanish at 4:00, next appearance at 20:00', () => {
+    expect(undeadHours(V1)).toEqual({ active: true, vanishInMs: 4 * VH, appearInMs: 20 * VH })
+  })
+
+  it('Vana noon: undead gone, appear in 8 Vana hours', () => {
+    const u = undeadHours(V1 + 12 * VH)
+    expect(u.active).toBe(false)
+    expect(u.appearInMs).toBe(8 * VH)
+    expect(u.vanishInMs).toBe(16 * VH)
+  })
+
+  it('21:00: active with vanish in 7 Vana hours', () => {
+    const u = undeadHours(V1 + 21 * VH)
+    expect(u.active).toBe(true)
+    expect(u.vanishInMs).toBe(7 * VH)
+    expect(u.appearInMs).toBe(23 * VH)
   })
 })
 

@@ -103,7 +103,7 @@ export const MOBS: Mob[] = [
 
   // --- Aquan ---
   { name: 'Pugil',     category: 'Aquan', modifiers: { Ice: +0.5, Lightning: +0.5, Water: -0.5 } },
-  { name: 'Crab',      category: 'Aquan', modifiers: { Ice: +0.5, Lightning: +0.5, Blunt: +0.125, Slashing: -0.125 } },
+  { name: 'Crab',      category: 'Aquan', modifiers: { Ice: +0.5, Lightning: +0.5, Blunt: +0.125 } },
   { name: 'Sea Monk',  category: 'Aquan', modifiers: { Ice: +0.5, Lightning: +0.5, Water: -0.5 } },
 
   // --- Dragon ---

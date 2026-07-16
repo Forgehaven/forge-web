@@ -287,6 +287,26 @@ export function dayNight(earthMs: number): DayNight {
   }
 }
 
+// Field undead (ghosts, skeletons, etc.) roam 20:00-04:00 game time.
+export interface UndeadHours {
+  active: boolean
+  appearInMs: number
+  vanishInMs: number
+}
+
+export function undeadHours(earthMs: number): UndeadHours {
+  const v = vanaMs(earthMs)
+  const dayStart = Math.floor(v / DAY_MS) * DAY_MS
+  const hour = (v % DAY_MS) / HOUR_MS
+  const appearV = hour < 20 ? dayStart + 20 * HOUR_MS : dayStart + 44 * HOUR_MS
+  const vanishV = hour < 4 ? dayStart + 4 * HOUR_MS : dayStart + 28 * HOUR_MS
+  return {
+    active: hour >= 20 || hour < 4,
+    appearInMs: Math.ceil((appearV - v) / SCALE),
+    vanishInMs: Math.ceil((vanishV - v) / SCALE),
+  }
+}
+
 // Items whose effect is gated by the Vana'diel weekday or moon phase
 // (Horizon Era+ rules / era latents).
 export interface TimedItem {

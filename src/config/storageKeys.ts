@@ -23,4 +23,5 @@ export const STORAGE_KEYS = {
   ffxiVanaTimers:          'forgegames_ffxi_vanatimers_v1',
   gameAlarms:              'forgegames_alarms_v1',
   ffxiLockouts:            'forgegames_ffxi_lockouts_v1',
+  ffxiMap:                 'forgegames_ffxi_map_v1',
 } as const
