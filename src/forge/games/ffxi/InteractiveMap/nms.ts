@@ -292,9 +292,22 @@ export const NM_SPAWNS: Record<string, NmSpawn[]> = {
     { name: "Ungur", page: "Ungur", x: 322, y: 575, r: 30 },
     { name: "Wyvernpoacher Drachlox", page: "Wyvernpoacher Drachlox", x: 521, y: 583, r: 24 },
   ],
-  "ifrits_cauldron_1": [
-    { name: "Tarasque", page: "Tarasque", unmarked: true },
-    { name: "Vouivre", page: "Vouivre", x: 530, y: 425, r: 48 },
+  "ifrits_cauldron_3": [
+    { name: "Foreseer Oramix", page: "Foreseer Oramix", unmarked: true },
+    { name: "Vouivre", page: "Vouivre", x: 548, y: 418, r: 55, points: [[480, 390], [516, 360], [590, 356], [620, 384], [616, 450], [580, 480], [510, 476], [472, 444]] },
+  ],
+  "ifrits_cauldron_5": [
+    { name: "Lindwurm", page: "Lindwurm", unmarked: true },
+  ],
+  "ifrits_cauldron_6": [
+    { name: "Tarasque", page: "Tarasque", x: 544, y: 470, r: 40 },
+  ],
+  "ifrits_cauldron_7": [
+    { name: "Bomb Queen", page: "Bomb Queen", x: 576, y: 650, r: 35 },
+    { name: "Tyrannic Tunnok", page: "Tyrannic Tunnok", unmarked: true },
+  ],
+  "ifrits_cauldron_8": [
+    { name: "Ash Dragon", page: "Ash Dragon", unmarked: true },
   ],
   "inner_horutoto_ruins_2": [
     { name: "Maltha", page: "Maltha", x: 400, y: 595, r: 28 },
@@ -320,7 +333,7 @@ export const NM_SPAWNS: Record<string, NmSpawn[]> = {
     { name: "Bendigeit Vran", page: "Bendigeit Vran", x: 513, y: 449, r: 100 },
     { name: "Forger", page: "Forger", x: 246, y: 482, r: 20 },
     { name: "Ghillie Dhu", page: "Ghillie Dhu", x: 670, y: 630, r: 45 },
-    { name: "Goblin Archaeologist", page: "Goblin Archaeologist", unmarked: true },
+    { name: "Goblin Delver", page: "Goblin Delver", x: 559, y: 435, r: 45 },
     { name: "Haty", page: "Haty", x: 553, y: 548, r: 150, points: [[415, 478], [462, 478], [600, 494], [668, 494], [692, 556], [692, 618], [628, 618], [598, 556], [462, 538], [415, 535]] },
     { name: "Highlander Lizard", page: "Highlander Lizard", x: 360, y: 530, r: 110 },
     { name: "Rambunctious Rex", page: "Rambunctious Rex", unmarked: true },
@@ -361,7 +374,7 @@ export const NM_SPAWNS: Record<string, NmSpawn[]> = {
   ],
   "la_theine_plateau": [
     { name: "Bloodtear Baldurf", page: "Bloodtear Baldurf", x: 511, y: 533, r: 150, points: [[327, 460], [413, 447], [500, 487], [600, 513], [667, 540], [673, 613], [633, 600], [533, 593], [433, 560], [333, 513]] },
-    { name: "Goblin Archaeologist", page: "Goblin Archaeologist", unmarked: true },
+    { name: "Goblin Delver", page: "Goblin Delver", x: 621, y: 497, r: 45 },
     { name: "Libertine Landon", page: "Libertine Landon", x: 456, y: 692, r: 15 },
     { name: "Lumbering Lambert", page: "Lumbering Lambert", x: 456, y: 548, r: 95, points: [[322, 478], [380, 460], [415, 478], [434, 514], [500, 516], [540, 550], [606, 570], [606, 594], [520, 610], [478, 626], [428, 588], [352, 522]] },
     { name: "Nihniknoovi", page: "Nihniknoovi", x: 754, y: 674, r: 35 },
@@ -631,7 +644,6 @@ export const NM_SPAWNS: Record<string, NmSpawn[]> = {
     { name: "Wuur the Sandcomber", page: "Wuur the Sandcomber", x: 514, y: 578, r: 34 },
   ],
   "sea_serpent_grotto_2": [
-    { name: "Qull Shellbuster", page: "Qull Shellbuster", x: 640, y: 638, r: 50 },
     { name: "Qull the Shellbuster", page: "Qull the Shellbuster", x: 652, y: 633, r: 55, points: [[707, 633], [691, 649], [652, 655], [613, 649], [597, 633], [613, 617], [652, 611], [691, 617]] },
     { name: "Seww the Squidlimbed", page: "Seww the Squidlimbed", x: 415, y: 435, r: 36 },
   ],
@@ -650,7 +662,6 @@ export const NM_SPAWNS: Record<string, NmSpawn[]> = {
     { name: "Denn the Orcavoiced", page: "Denn the Orcavoiced", x: 578, y: 630, r: 30 },
     { name: "Denn the Orcavoiced", page: "Denn the Orcavoiced", x: 575, y: 625, r: 26 },
     { name: "Novv the Whitehearted", page: "Novv the Whitehearted", x: 666, y: 486, r: 32 },
-    { name: "Yarr Pearleyed", page: "Yarr Pearleyed", x: 736, y: 376, r: 35 },
     { name: "Yarr the Pearleyed", page: "Yarr the Pearleyed", x: 734, y: 372, r: 66, points: [[772, 372], [761, 419], [734, 438], [707, 419], [696, 372], [707, 325], [734, 306], [761, 325]] },
     { name: "Zuug the Shoreleaper", page: "Zuug the Shoreleaper", x: 378, y: 645, r: 32 },
   ],
@@ -676,6 +687,7 @@ export const NM_SPAWNS: Record<string, NmSpawn[]> = {
     { name: "Tococo", page: "Tococo", x: 467, y: 445, r: 45 },
   ],
   "tahrongi_canyon": [
+    { name: "Goblin Delver", page: "Goblin Delver", x: 559, y: 373, r: 45 },
     { name: "Habrok", page: "Habrok", x: 395, y: 720, r: 32, points: [[376, 701], [406, 694], [425, 709], [421, 731], [399, 750], [376, 739], [365, 716]] },
     { name: "Herbage Hunter", page: "Herbage Hunter", x: 435, y: 318, r: 30, points: [[425, 296], [455, 304], [459, 326], [440, 341], [421, 330], [410, 311]] },
     { name: "Serpopard Ishtar", page: "Serpopard Ishtar", x: 515, y: 374, r: 50, points: [[498, 328], [532, 326], [545, 352], [543, 388], [530, 416], [510, 424], [494, 402], [487, 362]] },

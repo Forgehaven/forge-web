@@ -18,7 +18,7 @@ function renderMap(initialPath = '/games/ffxi/map') {
 
 describe('maps index', () => {
   it('covers all bundled zones with beautified names', () => {
-    expect(MAPS.length).toBe(312)
+    expect(MAPS.length).toBe(319)
     const byId = new Map(MAPS.map(m => [m.id, m.name]))
     expect(byId.get('northern_san_doria')).toBe("Northern San d'Oria")
     expect(byId.get('rulude_gardens')).toBe("Ru'Lude Gardens")
@@ -144,6 +144,30 @@ describe('InteractiveMap', () => {
     // marked rows sort above unmarked rows (Biast would otherwise precede Boreal Coeurl)
     const coeurlRow = screen.getByRole('link', { name: 'Boreal Coeurl' })
     expect(coeurlRow.compareDocumentPosition(row) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+  })
+
+  it('legend spans every floor of the zone, badges the map number, and jumps on first click', () => {
+    localStorage.setItem('forgegames_ffxi_map_v1', JSON.stringify({ last: 'ifrits_cauldron_1', nm: true }))
+    renderMap()
+
+    // Vouivre lives on floor 3; floor 1 still lists it, badged with its map
+    // number (the accessible name concatenates the row spans without a space)
+    const row = screen.getByRole('link', { name: 'Vouivremap 3' })
+    expect(row).toHaveAttribute('href', 'https://horizonffxi.wiki/Vouivre')
+    expect(screen.queryByLabelText('Vouivre (wiki)')).not.toBeInTheDocument()
+
+    // unmarked NMs from other floors keep the unmarked badge and plain wiki link
+    const ashDragon = screen.getByRole('link', { name: /Ash Dragon/ })
+    expect(ashDragon).toHaveTextContent('unmarked')
+    expect(ashDragon).not.toHaveAttribute('title')
+
+    // first click jumps to the NM's floor instead of opening the wiki
+    expect(fireEvent.click(row)).toBe(false)
+    expect(screen.getByAltText("Ifrit's Cauldron (3)")).toBeInTheDocument()
+    expect(screen.getByLabelText('Vouivre (wiki)')).toHaveAttribute('data-highlighted')
+
+    // on the right floor the row turns back into a plain wiki link
+    expect(screen.getByRole('link', { name: 'Vouivremap 3' })).not.toHaveAttribute('title')
   })
 
   it('legend collapse persists', () => {

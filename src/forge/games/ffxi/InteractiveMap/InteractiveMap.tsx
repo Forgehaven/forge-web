@@ -14,6 +14,8 @@ import jeunoIcon from '../data/JeunoIcon.png'
 const SK = STORAGE_KEYS.ffxiMap
 
 const MAP_NAME = new Map(MAPS.map(m => [m.id, m.name]))
+const zoneBaseOf = (id: string) => id.replace(/_\d+$/, '')
+const floorOf = (id: string) => /_(\d+)$/.exec(id)?.[1] ?? ''
 const NM_OPTIONS: SelectOption[] = Object.entries(NM_SPAWNS)
   .flatMap(([mapId, spawns]) =>
     [...new Set(spawns.map(s => s.name))].map(name => ({
@@ -84,12 +86,25 @@ export function InteractiveMap() {
   const nmSpawns = map ? NM_SPAWNS[map.id] ?? [] : []
   // Big roamer blobs first, small camps last, so tight areas always win the click.
   const sortedSpawns = nmSpawns.filter(s => !s.unmarked).sort((a, b) => areaOf(b) - areaOf(a))
-  const legendRows = [...new Map(nmSpawns.map(s => [s.name, s.page])).entries()]
-    .map(([name, page]) => ({
-      name,
-      page,
-      unmarked: nmSpawns.filter(s => s.name === name).every(s => s.unmarked),
-    }))
+  // Legend covers the whole zone, not just the current floor: rows for NMs on
+  // other floors show a map badge and jump there on first click (wiki on the next).
+  const zoneMaps = map
+    ? MAPS.filter(m => zoneBaseOf(m.id) === zoneBaseOf(map.id))
+        .sort((a, b) => Number(floorOf(a.id)) - Number(floorOf(b.id)))
+    : []
+  const multiFloor = zoneMaps.length > 1
+  const zoneEntries = zoneMaps.flatMap(m => (NM_SPAWNS[m.id] ?? []).map(s => ({ s, mapId: m.id })))
+  const legendRows = [...new Map(zoneEntries.map(e => [e.s.name, e.s.page])).entries()]
+    .map(([name, page]) => {
+      const marked = zoneEntries.filter(e => e.s.name === name && !e.s.unmarked)
+      return {
+        name,
+        page,
+        unmarked: marked.length === 0,
+        floors: [...new Set(marked.map(e => floorOf(e.mapId)))].filter(Boolean),
+        jumpTo: marked.length > 0 && !marked.some(e => e.mapId === map?.id) ? marked[0].mapId : null,
+      }
+    })
     .sort((a, b) => Number(a.unmarked) - Number(b.unmarked) || a.name.localeCompare(b.name))
 
   // Bare /map restores the last viewed zone; the id lives in the URL so a
@@ -266,18 +281,29 @@ export function InteractiveMap() {
             </button>
             {legendOpen && (
               <ul className="max-h-64 overflow-y-auto border-t border-[#2a2d3a] py-1">
-                {legendRows.map(({ name, page, unmarked }) => (
+                {legendRows.map(({ name, page, unmarked, floors, jumpTo }) => (
                   <li key={name}>
                     <a
                       href={wikiUrl(page)}
                       target="_blank"
                       rel="noreferrer"
+                      title={jumpTo ? `On map ${floorOf(jumpTo)} · click to jump` : undefined}
+                      onClick={e => {
+                        if (!jumpTo || e.ctrlKey || e.metaKey || e.shiftKey) return
+                        e.preventDefault()
+                        setFlashNm(name)
+                        setZone(jumpTo)
+                      }}
                       onMouseEnter={() => setHoveredNm(name)}
                       onMouseLeave={() => setHoveredNm(null)}
                       className="flex items-center justify-between gap-2 px-3 py-0.5 text-xs text-[#e2e4ed] hover:text-[#ef4444] hover:bg-[#0b0d13]/60 transition-colors"
                     >
                       <span className="truncate">{name}</span>
-                      {unmarked && <span className="shrink-0 text-[10px] text-[#6b7280]">unmarked</span>}
+                      {unmarked
+                        ? <span className="shrink-0 text-[10px] text-[#6b7280]">unmarked</span>
+                        : multiFloor && floors.length > 0 && (
+                          <span className="shrink-0 text-[10px] text-[#6b7280]">map {floors.join('·')}</span>
+                        )}
                     </a>
                   </li>
                 ))}

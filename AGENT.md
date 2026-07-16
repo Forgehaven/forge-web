@@ -300,7 +300,7 @@ Login is only an upgrade (cross-device sync), never a gate.
     Both lockouts are 72 Earth hours; Dynamis counts from hourglass trade (Horizon also caps
     two entries per conquest tally - shown as n/2), Limbus from Cosmo-Cleanse PURCHASE
     (Horizon 1.1 change).
-  - *InteractiveMap* (route `ffxi/map`): 312 zone maps as 1024px WebP in `public/ffxi_maps/`
+  - *InteractiveMap* (route `ffxi/map`): 319 zone maps as 1024px WebP in `public/ffxi_maps/`
     (~34MB, NOT bundled - static copies, one lazy image per viewed zone). 280 are Remapster's
     hand-redrawn maps (spalose) used per the artist's credit+linkback terms - the page footer
     credit is REQUIRED, keep it. 32 zones missing from the packs (Kazham, Fei'Yin, Movalpolos,
@@ -326,14 +326,18 @@ Login is only an upgrade (cross-device sync), never a gate.
     bare `/map` redirects to the last-viewed zone. Header chips: city row (Sandy/Bastok/
     Windy/Jeuno, nation colors) + teleport row (HOLLA..VAHZL) + NM toggle. NM spawn areas
     live in `InteractiveMap/nms.ts` (`NM_SPAWNS`: map id -> areas in 1024px space, sourced
-    from wiki spawn maps via agent sweeps; ~512 areas over 128 zones; NMs without wiki
+    from wiki spawn maps via agent sweeps; ~550 areas over 133 zones; NMs without wiki
     position maps - battlefield/Dynamis/Horizon-custom ones - are intentionally absent).
     Entries with `unmarked: true` (no known position - absent from the wiki spawn image or
     on a floor we don't ship) are legend-only: wiki link + "unmarked" badge, no shape.
     Areas render in one SVG layer: red translucent circle, or polygon when the entry has
     `points: [[x,y],...]`; big areas render first so small camps win clicks; strokes use
     non-scaling-stroke. Click opens the NM's wiki page. A collapsible legend card (top-left
-    over the map, `legend` flag in the map storage key) lists the zone's NMs - hovering a row
+    over the map, `legend` flag in the map storage key) lists the WHOLE zone's NMs across
+    every floor (maps grouped by id base, trailing `_N` = floor): rows for NMs on another
+    floor get a muted `map N` badge and jump to that floor on first click (flash highlight;
+    wiki opens on the next click / when already on the right floor; ctrl/meta/shift-click
+    always goes to the wiki), marked rows sort above unmarked, hovering a row
     or a shape highlights via shared state. Annotate mode has point (connection entry) and
     area sub-modes; area clicks trace a live outline, "finish" copies a paste-ready NmSpawn
     with `points` (centroid x/y, r 0). nms.ts is safe to hand-edit: the merge script parses
