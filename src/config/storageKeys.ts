@@ -24,4 +24,5 @@ export const STORAGE_KEYS = {
   gameAlarms:              'forgegames_alarms_v1',
   ffxiLockouts:            'forgegames_ffxi_lockouts_v1',
   ffxiMap:                 'forgegames_ffxi_map_v1',
+  ffxiExpCamps:            'forgegames_ffxi_expcamps_v1',
 } as const

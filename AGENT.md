@@ -300,6 +300,21 @@ Login is only an upgrade (cross-device sync), never a gate.
     Both lockouts are 72 Earth hours; Dynamis counts from hourglass trade (Horizon also caps
     two entries per conquest tally - shown as n/2), Limbus from Cosmo-Cleanse PURCHASE
     (Horizon 1.1 change).
+  - *ExpCamps* (route `ffxi/exp-camps`): filterable EXP camp table (241 rows) generated from
+    horizonffxi.wiki/EXP_Camps by `scratch/expcamps-gen.mjs` into `ExpCamps/camps.ts` - do not
+    hand-edit rows, rerun the generator (it parses each wiki table's own header row for column
+    roles, converts `{{Location Tooltip}}` grid cells to 1024px map space via the measured
+    transform `65 + (idx-1)*61.7`, and resolves zone names to map ids with slug fixups; bare
+    `(G-6)` refs are trusted only in the Mana/Undead Burn sections). Camp `type` comes from the
+    wiki section (standard/sky/merit/manaburn/undeadburn/unverified; alpha+shatter are empty
+    upstream). Filters: level (range containment; merit = 75+), type, text search. Zone cells
+    Link into the Interactive Map with `state: { flashCamp: id }`. `levelLabel` lives in the
+    generated camps.ts and is shared with the map layer. Star column favourites camps
+    (`forgegames_ffxi_expcamps_v1` `{favs: id[]}`); favourites pin above the rest through any
+    column sort via DataTable's generic `pinned` prop. When logged in, favourites sync to the
+    `exp_camps` per-user tool blob (useSyncedBlob + get/putUserData, union merge on load -
+    FriendViewer idiom; offline-first, localStorage stays the source of truth). Backend
+    allow-list lives in forge-api `src/endpoints/game/ffxi/user_data.py`.
   - *InteractiveMap* (route `ffxi/map`): 319 zone maps as 1024px WebP in `public/ffxi_maps/`
     (~34MB, NOT bundled - static copies, one lazy image per viewed zone). 280 are Remapster's
     hand-redrawn maps (spalose) used per the artist's credit+linkback terms - the page footer
@@ -345,7 +360,14 @@ Login is only an upgrade (cross-device sync), never a gate.
     header Select ("Search NMs…", aria-label `Search NMs`) searches all NMs globally via the
     module-scope `NM_OPTIONS` index (value `mapId|name`, split at first `|`); picking jumps to
     the zone, forces the NM layer on, and pulse-highlights the shape(s) for 3s (`flashNm`,
-    cleared by timeout or map pointerdown). Toggle + last zone persist in
+    cleared by timeout or map pointerdown). An EXP toggle (green, beside NM, `exp` flag in the
+    same storage key) draws EXP camp dots from `ExpCamps/camps.ts` spots (constant-size green
+    dots as positioned divs like connection markers - NOT the SVG layer, native svg <title>
+    tooltips proved unreliable - with an instant styled group-hover label + aria-label
+    `Lv <levels> · <description>`); arriving with
+    router state `{ flashCamp: id }` from the EXP Camps table seeds the layer on and pulses
+    that camp's dots (`flashCamp`, lazy-init from `useLocation().state` - nav state only
+    exists at mount since the table is a separate route). Toggle + last zone persist in
     `forgegames_ffxi_map_v1` `{last, nm}`. ZoomPan takes `contentSize`/`resetKey` to center
     content on load and re-center per zone; its pointer-capture skips `button, a` children.
   - *FriendViewer*: per-user `{names, starred}` blob (`friend_viewer`), auto-sync; server ∪ local

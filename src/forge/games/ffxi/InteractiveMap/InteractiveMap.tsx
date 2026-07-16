@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Select, type SelectOption } from '../../../../components/Select'
 import { ZoomPan } from '../../../../components/ZoomPan'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import { MAPS, type MapEntry } from './maps'
 import { CONNECTIONS } from './connections'
 import { NM_SPAWNS, type NmSpawn } from './nms'
+import { EXP_CAMPS, levelLabel, type ExpCamp } from '../ExpCamps/camps'
 import sandoriaIcon from '../data/SandoriaIcon.png'
 import bastokIcon from '../data/BastokIcon.png'
 import windurstIcon from '../data/WindurstIcon.png'
@@ -16,6 +17,11 @@ const SK = STORAGE_KEYS.ffxiMap
 const MAP_NAME = new Map(MAPS.map(m => [m.id, m.name]))
 const zoneBaseOf = (id: string) => id.replace(/_\d+$/, '')
 const floorOf = (id: string) => /_(\d+)$/.exec(id)?.[1] ?? ''
+
+const CAMP_SPOTS: Record<string, { camp: ExpCamp; x: number; y: number }[]> = {}
+for (const camp of EXP_CAMPS) {
+  for (const s of camp.spots) (CAMP_SPOTS[s.mapId] ??= []).push({ camp, x: s.x, y: s.y })
+}
 const NM_OPTIONS: SelectOption[] = Object.entries(NM_SPAWNS)
   .flatMap(([mapId, spawns]) =>
     [...new Set(spawns.map(s => s.name))].map(name => ({
@@ -40,21 +46,22 @@ const QUICK_LINKS = [
   { name: 'VAHZL', id: 'beaucedine_glacier' },
 ]
 
-function loadPrefs(): { last: string | null; nm: boolean; legend: boolean } {
+function loadPrefs(): { last: string | null; nm: boolean; exp: boolean; legend: boolean } {
   try {
     const p = JSON.parse(localStorage.getItem(SK) ?? '')
     return {
       last: typeof p?.last === 'string' ? p.last : null,
       nm: p?.nm === true,
+      exp: p?.exp === true,
       legend: p?.legend !== false,
     }
   } catch { /* fall through */ }
-  return { last: null, nm: false, legend: true }
+  return { last: null, nm: false, exp: false, legend: true }
 }
 
-function savePrefs(patch: Partial<{ last: string; nm: boolean; legend: boolean }>) {
-  const { last, nm, legend } = loadPrefs()
-  localStorage.setItem(SK, JSON.stringify({ last, nm, legend, ...patch }))
+function savePrefs(patch: Partial<{ last: string; nm: boolean; exp: boolean; legend: boolean }>) {
+  const { last, nm, exp, legend } = loadPrefs()
+  localStorage.setItem(SK, JSON.stringify({ last, nm, exp, legend, ...patch }))
 }
 
 function wikiUrl(page: string) {
@@ -73,17 +80,23 @@ function areaOf(s: NmSpawn): number {
 export function InteractiveMap() {
   const { zoneId } = useParams()
   const navigate = useNavigate()
+  // EXP Camps table rows link here with the camp id in router state; it only
+  // arrives on mount (the table page is a separate route), so seed state lazily.
+  const navFlashCamp = (useLocation().state as { flashCamp?: string } | null)?.flashCamp ?? null
   const [annotate, setAnnotate] = useState(false)
   const [annotateMode, setAnnotateMode] = useState<'point' | 'area'>('point')
   const [tracePoints, setTracePoints] = useState<[number, number][]>([])
   const [copied, setCopied] = useState<string | null>(null)
   const [showNms, setShowNms] = useState(() => loadPrefs().nm)
+  const [showCamps, setShowCamps] = useState(() => navFlashCamp ? true : loadPrefs().exp)
   const [legendOpen, setLegendOpen] = useState(() => loadPrefs().legend)
   const [hoveredNm, setHoveredNm] = useState<string | null>(null)
   const [flashNm, setFlashNm] = useState<string | null>(null)
+  const [flashCamp, setFlashCamp] = useState<string | null>(navFlashCamp)
   const map: MapEntry | null = MAPS.find(m => m.id === zoneId) ?? null
   const connections = map ? CONNECTIONS[map.id] ?? [] : []
   const nmSpawns = map ? NM_SPAWNS[map.id] ?? [] : []
+  const campSpots = map ? CAMP_SPOTS[map.id] ?? [] : []
   // Big roamer blobs first, small camps last, so tight areas always win the click.
   const sortedSpawns = nmSpawns.filter(s => !s.unmarked).sort((a, b) => areaOf(b) - areaOf(a))
   // Legend covers the whole zone, not just the current floor: rows for NMs on
@@ -121,9 +134,23 @@ export function InteractiveMap() {
     return () => clearTimeout(t)
   }, [flashNm])
 
+  useEffect(() => {
+    if (!flashCamp) return
+    savePrefs({ exp: true })
+    const t = setTimeout(() => setFlashCamp(null), 3000)
+    return () => clearTimeout(t)
+  }, [flashCamp])
+
   function toggleNms() {
     setShowNms(prev => {
       savePrefs({ nm: !prev })
+      return !prev
+    })
+  }
+
+  function toggleCamps() {
+    setShowCamps(prev => {
+      savePrefs({ exp: !prev })
       return !prev
     })
   }
@@ -225,6 +252,18 @@ export function InteractiveMap() {
             >
               NM
             </button>
+            <button
+              onClick={toggleCamps}
+              aria-pressed={showCamps}
+              title="Toggle EXP camps"
+              className={`px-2 py-1 rounded border text-xs font-semibold tracking-wide transition-colors cursor-pointer ${
+                showCamps
+                  ? 'border-[#4ade80] text-[#4ade80] bg-[#4ade80]/10'
+                  : 'border-[#2a2d3a] bg-[#1a1d27] text-[#6b7280] hover:border-[#4ade80] hover:text-[#4ade80]'
+              }`}
+            >
+              EXP
+            </button>
           </div>
         </div>
         <div className="flex items-center gap-2 flex-wrap justify-end">
@@ -268,7 +307,7 @@ export function InteractiveMap() {
 
       <div
         className="relative flex-1 min-h-[420px] rounded-lg border border-[#2a2d3a] bg-[#0b0d13] overflow-hidden"
-        onPointerDown={() => setFlashNm(null)}
+        onPointerDown={() => { setFlashNm(null); setFlashCamp(null) }}
       >
         {map && showNms && legendRows.length > 0 && (
           <div className="absolute top-2 left-2 z-10 w-52 rounded-lg border border-[#2a2d3a] bg-[#1a1d27]/95 shadow-lg shadow-black/40">
@@ -377,6 +416,28 @@ export function InteractiveMap() {
                     )}
                   </svg>
                 )}
+                {showCamps && campSpots.map(({ camp, x, y }, i) => {
+                  const flash = flashCamp === camp.id
+                  return (
+                    <div
+                      key={`${camp.id}-${i}`}
+                      aria-label={`Lv ${levelLabel(camp)} · ${camp.description}`}
+                      data-highlighted={flash || undefined}
+                      className="absolute group hover:z-20"
+                      style={{
+                        left: x,
+                        top: y,
+                        transform: `translate(-50%, -50%) scale(${1 / scale})`,
+                      }}
+                    >
+                      {flash && <span className="absolute -inset-1.5 rounded-full bg-[#4ade80]/40 animate-ping" />}
+                      <span className="relative block w-3.5 h-3.5 rounded-full bg-[#4ade80] border-2 border-[#0b0d13] shadow-lg shadow-black/60" />
+                      <span className="absolute left-1/2 top-full mt-1 -translate-x-1/2 w-max max-w-64 whitespace-normal text-center text-[11px] px-1.5 py-0.5 rounded bg-[#1a1d27] border border-[#2a2d3a] text-[#e2e4ed] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                        <span className="text-[#4ade80] font-semibold">Lv {levelLabel(camp)}</span> · {camp.description}
+                      </span>
+                    </div>
+                  )
+                })}
                 {connections.map(c => (
                   <button
                     key={`${c.to}-${c.x}-${c.y}`}

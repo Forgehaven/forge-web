@@ -18,12 +18,14 @@ interface DataTableProps<T> {
   defaultSort?: string
   defaultSortDir?: 'asc' | 'desc'
   footer?: ReactNode
+  // Rows matching this stay pinned above the rest through any column sort.
+  pinned?: (row: T) => boolean
   // Scroll inside the table instead of the page: caps at the parent's height
   // (parent needs a bounded height, e.g. flex-1 min-h-0) and sticks the header.
   fill?: boolean
 }
 
-export function DataTable<T>({ columns, data, rowKey, rowClass, defaultSort, defaultSortDir = 'desc', footer, fill }: DataTableProps<T>) {
+export function DataTable<T>({ columns, data, rowKey, rowClass, defaultSort, defaultSortDir = 'desc', footer, pinned, fill }: DataTableProps<T>) {
   const [sortCol, setSortCol] = useState(defaultSort ?? '')
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>(defaultSortDir)
 
@@ -34,17 +36,19 @@ export function DataTable<T>({ columns, data, rowKey, rowClass, defaultSort, def
 
   const sorted = useMemo(() => {
     const col = columns.find(c => c.key === sortCol && c.sortKey)
-    if (!col || !col.sortKey) return data
-    const copy = [...data]
-    copy.sort((a, b) => {
-      const va = col.sortKey!(a)
-      const vb = col.sortKey!(b)
-      if (va < vb) return sortDir === 'asc' ? -1 : 1
-      if (va > vb) return sortDir === 'asc' ? 1 : -1
-      return 0
-    })
-    return copy
-  }, [data, columns, sortCol, sortDir])
+    let rows = data
+    if (col?.sortKey) {
+      rows = [...data].sort((a, b) => {
+        const va = col.sortKey!(a)
+        const vb = col.sortKey!(b)
+        if (va < vb) return sortDir === 'asc' ? -1 : 1
+        if (va > vb) return sortDir === 'asc' ? 1 : -1
+        return 0
+      })
+    }
+    if (pinned) rows = [...rows.filter(pinned), ...rows.filter(r => !pinned(r))]
+    return rows
+  }, [data, columns, sortCol, sortDir, pinned])
 
   if (data.length === 0) return null
 

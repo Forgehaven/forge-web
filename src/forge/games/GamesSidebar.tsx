@@ -46,6 +46,7 @@ const sections: { section: string; games: GameEntry[] }[] = [
     games: [
       { path: `${G}/ffxi/skillchain-calc`, label: 'Skillchain Calc' },
       { path: `${G}/ffxi/vana-timers`,    label: 'Vana Timers' },
+      { path: `${G}/ffxi/exp-camps`,      label: 'EXP Camps' },
       { path: `${G}/ffxi/map`,            label: 'Interactive Map' },
       { path: `${G}/ffxi/quest-tracker`,   label: 'Quest Tracker' },
       { path: `${G}/ffxi/spell-tracker`,    label: 'Spell Tracker' },

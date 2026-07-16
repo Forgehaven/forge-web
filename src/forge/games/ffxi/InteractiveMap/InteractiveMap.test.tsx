@@ -5,9 +5,9 @@ import { InteractiveMap } from './InteractiveMap'
 import { MAPS } from './maps'
 import { NM_SPAWNS } from './nms'
 
-function renderMap(initialPath = '/games/ffxi/map') {
+function renderMap(initialEntry: string | { pathname: string; state?: object } = '/games/ffxi/map') {
   return render(
-    <MemoryRouter initialEntries={[initialPath]}>
+    <MemoryRouter initialEntries={[initialEntry]}>
       <Routes>
         <Route path="/games/ffxi/map" element={<InteractiveMap />} />
         <Route path="/games/ffxi/map/:zoneId" element={<InteractiveMap />} />
@@ -63,7 +63,7 @@ describe('InteractiveMap', () => {
     fireEvent.click(screen.getByLabelText('Go to Lower Jeuno'))
 
     expect(screen.getByAltText('Lower Jeuno')).toHaveAttribute('src', '/ffxi_maps/lower_jeuno.webp')
-    expect(JSON.parse(localStorage.getItem('forgegames_ffxi_map_v1')!)).toEqual({ last: 'lower_jeuno', nm: false, legend: true })
+    expect(JSON.parse(localStorage.getItem('forgegames_ffxi_map_v1')!)).toEqual({ last: 'lower_jeuno', nm: false, exp: false, legend: true })
     // Round trip exists in the seed data.
     expect(screen.getByLabelText('Go to Upper Jeuno')).toBeInTheDocument()
   })
@@ -206,6 +206,29 @@ describe('InteractiveMap', () => {
     } finally {
       vi.useRealTimers()
     }
+  })
+
+  it('toggles EXP camp dots with level + description hover text and persists', () => {
+    renderMap('/games/ffxi/map/ghelsba_outpost_1')
+    expect(screen.queryAllByLabelText(/^Lv 10-12/).length).toBe(0)
+
+    fireEvent.click(screen.getByRole('button', { name: 'EXP' }))
+
+    const dots = screen.getAllByLabelText(/^Lv 10-12 · This "camp" is a roaming loop/)
+    expect(dots.length).toBe(4)
+    expect(JSON.parse(localStorage.getItem('forgegames_ffxi_map_v1')!).exp).toBe(true)
+
+    fireEvent.click(screen.getByRole('button', { name: 'EXP' }))
+    expect(screen.queryAllByLabelText(/^Lv 10-12/).length).toBe(0)
+  })
+
+  it('turns the EXP layer on and highlights the camp when arriving from the table', () => {
+    renderMap({ pathname: '/games/ffxi/map/ghelsba_outpost_1', state: { flashCamp: 'standard-ghelsba_outpost-1' } })
+
+    const dots = screen.getAllByLabelText(/^Lv 10-12/)
+    expect(dots.length).toBe(4)
+    for (const d of dots) expect(d).toHaveAttribute('data-highlighted')
+    expect(JSON.parse(localStorage.getItem('forgegames_ffxi_map_v1')!).exp).toBe(true)
   })
 
   it('area annotate mode traces an outline and copies a spawn snippet', () => {

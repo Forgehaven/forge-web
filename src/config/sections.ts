@@ -8,6 +8,7 @@ export const SECTION_TITLES: [string, string][] = [
   ['/games/albion', 'Albion'],
   ['/games/ffxi/skillchain-calc', 'FFXI - Skillchain Calc'],
   ['/games/ffxi/vana-timers', 'FFXI - Vana Timers'],
+  ['/games/ffxi/exp-camps', 'FFXI - EXP Camps'],
   ['/games/ffxi/map', 'FFXI - Interactive Map'],
   ['/games/ffxi/quest-tracker', 'FFXI - Quest Tracker'],
   ['/games/ffxi/spell-tracker', 'FFXI - Spell Tracker'],

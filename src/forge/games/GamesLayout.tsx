@@ -16,6 +16,7 @@ import { FriendViewer } from './ffxi/FriendViewer'
 import { VanaTimers } from './ffxi/VanaTimers'
 import { LockoutTracker } from './ffxi/LockoutTracker'
 import { InteractiveMap } from './ffxi/InteractiveMap'
+import { ExpCampsPage } from './ffxi/ExpCamps'
 import { AlbionSplash } from './albion/Splash/AlbionSplash'
 import { ItemIndexPage } from './albion/ItemIndex/ItemIndexPage'
 import { ItemDetailPage } from './albion/ItemDetail/ItemDetailPage'
@@ -58,6 +59,7 @@ export default function GamesLayout() {
           <Route path="ffxi/friend-viewer" element={<FriendViewer />} />
           <Route path="ffxi/vana-timers" element={<VanaTimers />} />
           <Route path="ffxi/lockouts" element={<LockoutTracker />} />
+          <Route path="ffxi/exp-camps" element={<ExpCampsPage />} />
           <Route path="ffxi/map" element={<InteractiveMap />} />
           <Route path="ffxi/map/:zoneId" element={<InteractiveMap />} />
           <Route path="albion" element={<AlbionSplash />} />
