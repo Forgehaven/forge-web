@@ -56,6 +56,46 @@ describe('computeSkillchain', () => {
     expect(result?.level).toBe(3)
   })
 
+  // Regression: Shield Break was wrongly Induration (bad wiki infobox), which
+  // faked an Induration→Compression chain here. Correct value is Impaction.
+  it('Shield Break → Dark Harvest does not chain', () => {
+    const ws1 = WEAPON_SKILLS.find(w => w.name === 'Shield Break')!
+    const ws2 = WEAPON_SKILLS.find(w => w.name === 'Dark Harvest')!
+    expect(computeSkillchain(ws1, ws2)).toBeNull()
+  })
+
+  // Dark Harvest is Compression on HorizonXI (changed from era Reverberation),
+  // so the era-classic Fast Blade → Dark Harvest = Reverberation no longer exists.
+  it('Fast Blade → Dark Harvest does not chain on HorizonXI', () => {
+    const ws1 = WEAPON_SKILLS.find(w => w.name === 'Fast Blade')!
+    const ws2 = WEAPON_SKILLS.find(w => w.name === 'Dark Harvest')!
+    expect(computeSkillchain(ws1, ws2)).toBeNull()
+  })
+
+  it('Tachi: Hobaku → Dark Harvest = Compression (Induration opener)', () => {
+    const ws1 = WEAPON_SKILLS.find(w => w.name === 'Tachi: Hobaku')!
+    const ws2 = WEAPON_SKILLS.find(w => w.name === 'Dark Harvest')!
+    const result = computeSkillchain(ws1, ws2)
+    expect(result?.name).toBe('Compression')
+    expect(result?.level).toBe(1)
+  })
+
+  it('Shield Break (Impaction) → Burning Blade = Liquefaction', () => {
+    const ws1 = WEAPON_SKILLS.find(w => w.name === 'Shield Break')!
+    const ws2 = WEAPON_SKILLS.find(w => w.name === 'Burning Blade')!
+    const result = computeSkillchain(ws1, ws2)
+    expect(result?.name).toBe('Liquefaction')
+    expect(result?.level).toBe(1)
+  })
+
+  it('Gale Axe → Starburst = Gravitation (HorizonXI Compression primary)', () => {
+    const ws1 = WEAPON_SKILLS.find(w => w.name === 'Gale Axe')!
+    const ws2 = WEAPON_SKILLS.find(w => w.name === 'Starburst')!
+    const result = computeSkillchain(ws1, ws2)
+    expect(result?.name).toBe('Gravitation')
+    expect(result?.level).toBe(2)
+  })
+
   it('picks highest level chain when multiple resonate', () => {
     // Avalanche Axe (Induration). Shoulder Tackle (Reverberation+Impaction).
     // Induration→Impaction = Impaction L1, Induration→Reverberation = Fragmentation L2 - L2 wins.
@@ -191,7 +231,7 @@ describe('findBestGroups', () => {
     expect(topFinal?.level).toBe(3)
   })
 
-  // 4 WARs: Sword → Swift Blade (Gravitation+Light) at 225; GS → Ground Strike (Fragmentation+Distortion, quest 71).
+  // 4 WARs: Sword → Swift Blade (Gravitation) at 225; GS → Ground Strike (Fragmentation+Distortion, quest 71).
   // Pair {0,1} and pair {2,3} each form Darkness L3 (Gravitation→Distortion) independently.
   // Concurrency bonus (+2) makes two concurrent L3 chains beat a single 4-step L3 chain.
   it('two concurrent L3 chains score higher than any single chain', () => {

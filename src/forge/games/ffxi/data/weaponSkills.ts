@@ -50,7 +50,7 @@ export const WEAPON_SKILLS: WeaponSkill[] = [
   { name: 'Raging Fists',    weapon: 'Hand-to-Hand', skillReq: 125, attrs: ['Impaction'] },
   { name: 'Spinning Attack', weapon: 'Hand-to-Hand', skillReq: 150, attrs: ['Liquefaction', 'Impaction'] },
   { name: 'Howling Fist',    weapon: 'Hand-to-Hand', skillReq: 200, attrs: ['Transfixion', 'Impaction'] },
-  { name: 'Dragon Kick',     weapon: 'Hand-to-Hand', skillReq: 225, attrs: ['Fragmentation', 'Light'] },
+  { name: 'Dragon Kick',     weapon: 'Hand-to-Hand', skillReq: 225, attrs: ['Fragmentation'] }, // no Light on era (retail 2011+ addition)
   { name: 'Asuran Fists',    weapon: 'Hand-to-Hand', skillReq: 250, questLevel: 71, attrs: ['Gravitation', 'Liquefaction'] },
 
   // ── Dagger ──────────────────────────────────────────────────────────────────
@@ -75,7 +75,7 @@ export const WEAPON_SKILLS: WeaponSkill[] = [
   { name: 'Circle Blade',    weapon: 'Sword', skillReq: 150, attrs: ['Reverberation', 'Impaction'] },
   { name: 'Spirits Within',  weapon: 'Sword', skillReq: 175, attrs: [] },
   { name: 'Vorpal Blade',    weapon: 'Sword', skillReq: 200, attrs: ['Scission', 'Impaction'] },
-  { name: 'Swift Blade',     weapon: 'Sword', skillReq: 225, attrs: ['Gravitation', 'Light'] },
+  { name: 'Swift Blade',     weapon: 'Sword', skillReq: 225, attrs: ['Gravitation'] }, // no Light on era (retail 2011+ addition)
   { name: 'Savage Blade',    weapon: 'Sword', skillReq: 240, questLevel: 71, attrs: ['Fragmentation', 'Scission'] },
 
   // ── Great Sword ──────────────────────────────────────────────────────────────
@@ -101,9 +101,9 @@ export const WEAPON_SKILLS: WeaponSkill[] = [
   { name: 'Decimation',    weapon: 'Axe', skillReq: 240, questLevel: 71, attrs: ['Fusion', 'Detonation'] }, // HorizonXI: secondary changed from Reverberation
 
   // ── Great Axe ────────────────────────────────────────────────────────────────
-  { name: 'Shield Break',  weapon: 'Great Axe', skillReq: 5,   attrs: ['Induration'] },
+  { name: 'Shield Break',  weapon: 'Great Axe', skillReq: 5,   attrs: ['Impaction'] }, // wiki article infobox wrongly says Induration; wiki chart/Chains addon/in-game = Impaction
   { name: 'Iron Tempest',  weapon: 'Great Axe', skillReq: 40,  attrs: ['Scission'] },
-  { name: 'Sturmwind',     weapon: 'Great Axe', skillReq: 70,  attrs: ['Scission', 'Reverberation'] },
+  { name: 'Sturmwind',     weapon: 'Great Axe', skillReq: 70,  attrs: ['Reverberation', 'Scission'] },
   { name: 'Armor Break',   weapon: 'Great Axe', skillReq: 100, attrs: ['Impaction'] },
   { name: 'Keen Edge',     weapon: 'Great Axe', skillReq: 150, attrs: ['Compression'] },
   { name: 'Weapon Break',  weapon: 'Great Axe', skillReq: 175, attrs: ['Impaction'] },
@@ -113,9 +113,9 @@ export const WEAPON_SKILLS: WeaponSkill[] = [
 
   // ── Scythe ───────────────────────────────────────────────────────────────────
   { name: 'Slice',            weapon: 'Scythe', skillReq: 5,   attrs: ['Scission'] },
-  { name: 'Dark Harvest',     weapon: 'Scythe', skillReq: 30,  attrs: ['Compression'] },
+  { name: 'Dark Harvest',     weapon: 'Scythe', skillReq: 30,  attrs: ['Compression'] },   // HorizonXI: changed from Reverberation
   { name: 'Shadow of Death',  weapon: 'Scythe', skillReq: 70,  attrs: ['Induration', 'Reverberation'] },
-  { name: 'Nightmare Scythe', weapon: 'Scythe', skillReq: 100, attrs: ['Compression', 'Reverberation'] },
+  { name: 'Nightmare Scythe', weapon: 'Scythe', skillReq: 100, attrs: ['Compression', 'Scission'] }, // wiki infobox says Reverberation secondary; Chains addon + era = Scission
   { name: 'Spinning Scythe',  weapon: 'Scythe', skillReq: 125, attrs: ['Reverberation', 'Scission'] },
   { name: 'Vorpal Scythe',    weapon: 'Scythe', skillReq: 150, attrs: ['Transfixion', 'Scission'] },
   { name: 'Guillotine',       weapon: 'Scythe', skillReq: 200, attrs: ['Induration'] },
@@ -138,9 +138,9 @@ export const WEAPON_SKILLS: WeaponSkill[] = [
   { name: 'Blade: Retsu',weapon: 'Katana', skillReq: 30,  attrs: ['Scission'] },
   { name: 'Blade: Teki', weapon: 'Katana', skillReq: 70,  attrs: ['Reverberation'] },
   { name: 'Blade: To',   weapon: 'Katana', skillReq: 100, attrs: ['Induration', 'Detonation'] },
-  { name: 'Blade: Chi',  weapon: 'Katana', skillReq: 150, attrs: ['Impaction', 'Transfixion'] },
+  { name: 'Blade: Chi',  weapon: 'Katana', skillReq: 150, attrs: ['Transfixion', 'Impaction'] },
   { name: 'Blade: Ei',   weapon: 'Katana', skillReq: 175, attrs: ['Compression'] },
-  { name: 'Blade: Jin',  weapon: 'Katana', skillReq: 200, attrs: ['Impaction', 'Detonation'] },
+  { name: 'Blade: Jin',  weapon: 'Katana', skillReq: 200, attrs: ['Detonation', 'Impaction'] },
   { name: 'Blade: Ten',  weapon: 'Katana', skillReq: 225, attrs: ['Gravitation'] },
   { name: 'Blade: Ku',   weapon: 'Katana', skillReq: 250, questLevel: 71, attrs: ['Gravitation', 'Transfixion'] },
 
@@ -172,7 +172,7 @@ export const WEAPON_SKILLS: WeaponSkill[] = [
   { name: 'Heavy Swing',   weapon: 'Staff', skillReq: 5,   attrs: ['Impaction'] },
   { name: 'Rock Crusher',  weapon: 'Staff', skillReq: 40,  attrs: ['Impaction'] },
   { name: 'Earth Crusher', weapon: 'Staff', skillReq: 70,  attrs: ['Detonation', 'Impaction'] },
-  { name: 'Starburst',     weapon: 'Staff', skillReq: 100, attrs: ['Transfixion'] },
+  { name: 'Starburst',     weapon: 'Staff', skillReq: 100, attrs: ['Compression', 'Transfixion'] }, // HorizonXI: secondary changed from Reverberation to Transfixion
   { name: 'Sunburst',      weapon: 'Staff', skillReq: 150, attrs: ['Transfixion', 'Reverberation'] },
   { name: 'Shell Crusher', weapon: 'Staff', skillReq: 175, attrs: ['Detonation'] },
   { name: 'Full Swing',    weapon: 'Staff', skillReq: 200, attrs: ['Liquefaction', 'Impaction'] },
