@@ -14,7 +14,6 @@ export function PasswordGenerator() {
   const [opts, setOpts] = useState({ uppercase: true, lowercase: true, numbers: true, symbols: false })
   const [password, setPassword] = useState('')
 
-  const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full font-mono"
 
   const generate = useCallback(() => {
     const charset = Object.entries(opts)
@@ -88,7 +87,7 @@ export function PasswordGenerator() {
             </div>
             <input
               readOnly
-              className={inputClass}
+              className="forge-input-mono"
               value={password}
             />
           </div>

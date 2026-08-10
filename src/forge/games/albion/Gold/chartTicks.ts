@@ -29,9 +29,3 @@ export function chartTicks(times: number[], period: number): number[] {
   }
   return ticks
 }
-
-export function tickLabel(t: number, period: number): string {
-  const d = new Date(t)
-  if (period <= 24) return d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-}

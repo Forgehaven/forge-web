@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import { STORAGE_KEYS } from '../config/storageKeys'
+import { useLocalList } from './useLocalList'
 
 export type CityFavourite = {
   id: number
@@ -12,42 +12,7 @@ export type CityFavourite = {
   longitude?: number
 }
 
-const KEY = STORAGE_KEYS.cityFavourites
-
-function load(): CityFavourite[] {
-  try {
-    return JSON.parse(localStorage.getItem(KEY) ?? '[]')
-  } catch {
-    return []
-  }
-}
-
 export function useCityFavourites() {
-  const [cities, setCities] = useState<CityFavourite[]>(load)
-
-  function toggle(city: CityFavourite) {
-    setCities(prev => {
-      const next = prev.some(c => c.id === city.id)
-        ? prev.filter(c => c.id !== city.id)
-        : [...prev, city]
-      localStorage.setItem(KEY, JSON.stringify(next))
-      return next
-    })
-  }
-
-  function isFavourite(id: number) {
-    return cities.some(c => c.id === id)
-  }
-
-  function move(from: number, to: number) {
-    setCities(prev => {
-      const next = [...prev]
-      const [item] = next.splice(from, 1)
-      next.splice(to, 0, item)
-      localStorage.setItem(KEY, JSON.stringify(next))
-      return next
-    })
-  }
-
+  const { items: cities, toggle, has: isFavourite, move } = useLocalList<CityFavourite, number>(STORAGE_KEYS.cityFavourites, c => c.id)
   return { cities, toggle, isFavourite, move }
 }

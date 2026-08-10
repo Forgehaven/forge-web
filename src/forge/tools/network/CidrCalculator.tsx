@@ -37,7 +37,6 @@ export function CidrCalculator() {
   const [cidr, setCidr] = useState('192.168.1.0/24')
   const [copied, setCopied] = useState('')
 
-  const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full font-mono"
 
   const result = cidrCalc(cidr.trim())
 
@@ -64,7 +63,7 @@ export function CidrCalculator() {
         <div>
           <label className="block text-xs text-[#6b7280] mb-1">CIDR Notation</label>
           <input
-            className={inputClass}
+            className="forge-input-mono"
             value={cidr}
             onChange={e => setCidr(e.target.value)}
             placeholder="192.168.1.0/24"

@@ -75,7 +75,7 @@ export interface GamesSidebarProps {
   onOpenLogin: () => void
 }
 
-export function GamesSidebar({ isOpen, onClose, onOpenSettings, onOpenLogin }: GamesSidebarProps) {
+export function GamesSidebar({ isOpen, onClose, onOpenLogin }: GamesSidebarProps) {
   const { collapsed, toggle } = useSidebarCollapse(STORAGE_KEYS.gamesCollapsedSections)
   const [craftOpen, setCraftOpen] = useState(false)
 
@@ -120,7 +120,7 @@ export function GamesSidebar({ isOpen, onClose, onOpenSettings, onOpenLogin }: G
           ))}
         </nav>
 
-        <SidebarFooter onOpenSettings={onOpenSettings} onOpenLogin={onOpenLogin} />
+        <SidebarFooter onOpenLogin={onOpenLogin} />
       </SidebarShell>
 
       <Modal open={craftOpen} onClose={() => setCraftOpen(false)} title="Craft Settings" maxWidth="max-w-6xl">

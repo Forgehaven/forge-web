@@ -9,8 +9,6 @@ export const API_URLS = {
   discordAuthorize:   'https://discord.com/api/oauth2/authorize',
   horizonXiPlayers:   'https://horizonxi.com/players',
   horizonXiAvatarBase:'https://pub-8d18c77b6a6c43f2ae9fc4c782ef9b78.r2.dev/images/account/create-character/face',
-  horizonXiWiki:      'https://horizonffxi.wiki',
-  myMemory:           'https://api.mymemory.translated.net/get',
 } as const
 
 export const POLL_INTERVALS = {

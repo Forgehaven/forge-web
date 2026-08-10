@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { useCopy } from '../../../hooks/useCopy'
 
 function base64UrlDecode(str: string): string {
   const padded = str.replace(/-/g, '+').replace(/_/g, '/').padEnd(str.length + (4 - str.length % 4) % 4, '=')
@@ -9,8 +10,8 @@ function base64UrlDecode(str: string): string {
 
 export function JwtDecoder() {
   const [jwt, setJwt] = useState('')
-  const [copiedHeader, setCopiedHeader] = useState(false)
-  const [copiedPayload, setCopiedPayload] = useState(false)
+  const { copy: copyHeader, copied: copiedHeader } = useCopy()
+  const { copy: copyPayload, copied: copiedPayload } = useCopy()
 
   const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full font-mono resize-none"
 
@@ -36,12 +37,6 @@ export function JwtDecoder() {
     const expired = Math.floor(Date.now() / 1000) > exp
     return { expired, expDate: new Date(exp * 1000).toISOString() }
   }, [result])
-
-  function copy(text: string, which: 'header' | 'payload') {
-    navigator.clipboard.writeText(text)
-    if (which === 'header') { setCopiedHeader(true); setTimeout(() => setCopiedHeader(false), 1500) }
-    else { setCopiedPayload(true); setTimeout(() => setCopiedPayload(false), 1500) }
-  }
 
   return (
     <div className="max-w-2xl">
@@ -82,7 +77,7 @@ export function JwtDecoder() {
               <div className="flex items-center justify-between mb-1">
                 <p className="text-xs text-[#6b7280]">Header</p>
                 <button
-                  onClick={() => copy(JSON.stringify(result.header, null, 2), 'header')}
+                  onClick={() => copyHeader(JSON.stringify(result.header, null, 2))}
                   className="text-xs text-[#c4af64] hover:text-[#e2e4ed] transition-colors"
                 >
                   {copiedHeader ? 'Copied!' : 'Copy'}
@@ -95,7 +90,7 @@ export function JwtDecoder() {
               <div className="flex items-center justify-between mb-1">
                 <p className="text-xs text-[#6b7280]">Payload</p>
                 <button
-                  onClick={() => copy(JSON.stringify(result.payload, null, 2), 'payload')}
+                  onClick={() => copyPayload(JSON.stringify(result.payload, null, 2))}
                   className="text-xs text-[#c4af64] hover:text-[#e2e4ed] transition-colors"
                 >
                   {copiedPayload ? 'Copied!' : 'Copy'}

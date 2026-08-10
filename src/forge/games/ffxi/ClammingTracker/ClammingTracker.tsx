@@ -5,6 +5,7 @@ import { useAuth } from '../../../../auth/authContext'
 import { getUserData, putUserData } from '../api'
 import { ConfirmButton } from '../../../../components/ConfirmButton'
 import { ImportPanel } from '../../../../components/ImportPanel'
+import { useCopy } from '../../../../hooks/useCopy'
 
 const SK = STORAGE_KEYS.ffxiClamming
 
@@ -418,8 +419,8 @@ export function ClammingTracker() {
   const [stableOverrides, setStableOverrides] = useState<Record<string, PriceOverride>>(() => loadState().overrides)
   const [draggingId, setDraggingId] = useState<string | null>(null)
   const [dragTarget, setDragTarget] = useState<'ah' | 'vendor' | null>(null)
-  const [copied, setCopied] = useState(false)
-  const [copiedHXI, setCopiedHXI] = useState(false)
+  const { copy: copyExport, copied } = useCopy()
+  const { copy: copyHXI, copied: copiedHXI } = useCopy()
   const [importOpen, setImportOpen] = useState(false)
 
   const { isAuthenticated } = useAuth()
@@ -555,16 +556,11 @@ export function ClammingTracker() {
       const { ah, ahStack } = effectivePrices(item, saved.overrides)
       return `${hxiName}:${hxiclamPrice(item, ah, ahStack, saved.disabledRec)}`
     })
-    navigator.clipboard.writeText(lines.join('\n'))
-    setCopiedHXI(true)
-    setTimeout(() => setCopiedHXI(false), 1500)
+    copyHXI(lines.join('\n'))
   }
 
   function exportState() {
-    const code = btoa(JSON.stringify(saved))
-    navigator.clipboard.writeText(code)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
+    copyExport(btoa(JSON.stringify(saved)))
   }
 
   function importState(code: string): boolean {

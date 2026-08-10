@@ -52,18 +52,3 @@ export interface CraftAnalysis {
   stationFee: number       // flat station usage fee (Craft Settings) folded into the costs
 }
 
-// GET/PUT /game/albion/craft-settings - community-shared flat per-station-type usage fees
-// (silver) per city. Sales tax is premium-based (4%/8%, a per-user toggle) and return rates
-// are fixed bonus-aware constants - both live server-side, not in this blob.
-export interface CityCraftSettings {
-  station_fees: Record<string, number> // keyed by station type, flat silver per craft
-}
-
-export interface CraftSettings {
-  cities: Record<string, CityCraftSettings>
-}
-
-export interface CraftSettingsPayload {
-  settings: CraftSettings
-  updated_at: string | null
-}

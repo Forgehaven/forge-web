@@ -503,7 +503,6 @@ export function PhoneAreaCode() {
   const [input, setInput] = useState('')
   const result = useMemo(() => analyze(input), [input])
 
-  const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full font-mono"
 
   return (
     <div className="max-w-2xl">
@@ -513,7 +512,7 @@ export function PhoneAreaCode() {
         <div>
           <label className="block text-xs text-[#6b7280] mb-1">Area code or phone number</label>
           <input
-            className={inputClass}
+            className="forge-input-mono"
             type="text"
             value={input}
             onChange={e => setInput(e.target.value)}

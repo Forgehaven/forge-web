@@ -60,7 +60,6 @@ export function AesEncryptDecrypt() {
     }
   }
 
-  const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full"
 
   return (
     <div className="max-w-xl">
@@ -84,13 +83,13 @@ export function AesEncryptDecrypt() {
       <div className="flex flex-col gap-4">
         <div>
           <label className="block text-xs text-[#6b7280] mb-1">Password</label>
-          <input type="password" className={inputClass} value={password} onChange={e => setPassword(e.target.value)} placeholder="Secret password" />
+          <input type="password" className="forge-input" value={password} onChange={e => setPassword(e.target.value)} placeholder="Secret password" />
         </div>
 
         <div>
           <label className="block text-xs text-[#6b7280] mb-1">{mode === 'encrypt' ? 'Plaintext' : 'Ciphertext (base64)'}</label>
           <textarea
-            className={`${inputClass} font-mono resize-none`}
+            className="forge-input font-mono resize-none"
             rows={5}
             value={input}
             onChange={e => setInput(e.target.value)}

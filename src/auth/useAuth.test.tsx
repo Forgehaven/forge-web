@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { renderHook, act, waitFor } from '@testing-library/react'
-import { mmAccess, useAuth, type AuthUser } from './authContext'
+import { useAuth, type AuthUser } from './authContext'
 import { AuthProvider } from './AuthProvider'
 
 const fetchSpy = vi.fn()
@@ -163,20 +163,5 @@ describe('AuthProvider', () => {
 
   it('throws if useAuth is used outside provider', () => {
     expect(() => renderHook(() => useAuth()).result.current).toThrow('useAuth must be used within an AuthProvider')
-  })
-})
-
-describe('mmAccess', () => {
-  it('reports member + role from the running_dawn guild status', () => {
-    expect(mmAccess(user(true, true))).toEqual({ member: true, role: true })
-    expect(mmAccess(user(true, false))).toEqual({ member: true, role: false })
-    expect(mmAccess(user(false, false))).toEqual({ member: false, role: false })
-  })
-
-  it('is all-false for null user or missing guild data', () => {
-    expect(mmAccess(null)).toEqual({ member: false, role: false })
-    expect(mmAccess({ ...user(), guilds: {} })).toEqual({ member: false, role: false })
-    expect(mmAccess({ ...user(), guilds: { running_dawn: { is_member: true, roles: {} } } }))
-      .toEqual({ member: true, role: false })
   })
 })

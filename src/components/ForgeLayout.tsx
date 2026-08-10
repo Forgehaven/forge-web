@@ -3,21 +3,17 @@ import { Link, Outlet } from 'react-router-dom'
 import { HamburgerIcon } from './Icons'
 import { Modal } from './Modal'
 import { LoginModal } from '../auth/LoginModal'
-import { useLayoutOverrideValue } from './LayoutOverride'
 
 interface ForgeLayoutProps {
   title: string
   homePath: string
   sidebar: React.ComponentType<{ isOpen: boolean; onClose: () => void; onOpenSettings: () => void; onOpenLogin: () => void }>
-  settings: React.ComponentType
+  settings?: React.ComponentType
   bottomBar?: React.ComponentType
   headerExtra?: React.ReactNode
 }
 
-export function ForgeLayout({ title, homePath, sidebar: DefaultSidebar, settings: Settings, bottomBar: DefaultBottomBar, headerExtra }: ForgeLayoutProps) {
-  const override = useLayoutOverrideValue()
-  const Sidebar = override.sidebar ?? DefaultSidebar
-  const BottomBar = override.bottomBar ?? DefaultBottomBar
+export function ForgeLayout({ title, homePath, sidebar: Sidebar, settings: Settings, bottomBar: BottomBar, headerExtra }: ForgeLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [loginOpen, setLoginOpen] = useState(false)
@@ -98,9 +94,11 @@ export function ForgeLayout({ title, homePath, sidebar: DefaultSidebar, settings
         {BottomBar && <BottomBar />}
       </div>
 
-      <Modal open={settingsOpen} onClose={() => setSettingsOpen(false)} title="Settings">
-        <Settings />
-      </Modal>
+      {Settings && (
+        <Modal open={settingsOpen} onClose={() => setSettingsOpen(false)} title="Settings">
+          <Settings />
+        </Modal>
+      )}
 
       <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
     </div>

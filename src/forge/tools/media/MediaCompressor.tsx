@@ -1,9 +1,10 @@
 ﻿import { useState, useRef, useEffect } from 'react'
-import { FFmpeg } from '@ffmpeg/ffmpeg'
 import { fetchFile } from '@ffmpeg/util'
 import { Select } from '../../../components/Select'
 import type { SelectOption } from '../../../components/Select'
 import { ProgressBar } from '../../../components/UI'
+import { FileDropZone } from '../../../components/FileDropZone'
+import { getFFmpeg, cancelFFmpeg, resetFFmpeg, isFFmpegLoaded } from '../../../lib/ffmpeg'
 
 const imgFormatOptions: SelectOption[] = [
   { value: 'webp-lossless', label: 'WebP - lossless' },
@@ -31,34 +32,16 @@ const videoScaleOptions: SelectOption[] = [
   { value: '360',      label: '360p' },
 ]
 
-// ── FFmpeg singleton ─────────────────────────────────────────────────────────
-let _ff: FFmpeg | null = null
-let _ffmpeg: FFmpeg | null = null
-let _ffmpegReady: Promise<FFmpeg> | null = null
-function getFFmpeg(onProgress: (p: number) => void): Promise<FFmpeg> {
-  if (_ffmpegReady) return _ffmpegReady
-  const ff = new FFmpeg()
-  _ff = ff
-  ff.on('progress', ({ progress }) => onProgress(Math.max(0, Math.min(1, progress))))
-  _ffmpegReady = ff.load({ coreURL: '/ffmpeg/ffmpeg-core.js', wasmURL: '/ffmpeg/ffmpeg-core.wasm' })
-    .then(() => { _ffmpeg = ff; return ff })
-  return _ffmpegReady
-}
-
-function cancelFFmpeg() { _ff?.terminate(); _ff = null; _ffmpeg = null; _ffmpegReady = null }
-
 // ── Image tab ────────────────────────────────────────────────────────────────
 function ImageTab() {
   const [file, setFile] = useState<File | null>(null)
   const [img, setImg] = useState<HTMLImageElement | null>(null)
   const [formatId, setFormatId] = useState('webp-lossless')
   const [quality, setQuality] = useState(0.80)
-  const [dropping, setDropping] = useState(false)
   const [outputUrl, setOutputUrl] = useState<string | null>(null)
   const [outputSize, setOutputSize] = useState(0)
   const [converting, setConverting] = useState(false)
   const [error, setError] = useState('')
-  const fileRef = useRef<HTMLInputElement>(null)
   const urlRef = useRef<string | null>(null)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -99,15 +82,7 @@ function ImageTab() {
 
   return (
     <div className="flex flex-col gap-5">
-      <div
-        onDragOver={e => { e.preventDefault(); setDropping(true) }}
-        onDragLeave={() => setDropping(false)}
-        onDrop={e => { e.preventDefault(); setDropping(false); const f = e.dataTransfer.files[0]; if (f) acceptFile(f) }}
-        onClick={() => fileRef.current?.click()}
-        className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${dropping ? 'border-[#c4af64] bg-[#c4af64]/5' : 'border-[#2a2d3a] hover:border-[#3a3d4a]'}`}
-      >
-        <input ref={fileRef} type="file" accept="image/*" className="hidden"
-          onChange={e => { const f = e.target.files?.[0]; if (f) acceptFile(f) }} />
+      <FileDropZone accept="image/*" onFiles={files => acceptFile(files[0])}>
         {file ? (
           <div>
             <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name}</p>
@@ -119,7 +94,7 @@ function ImageTab() {
             <p className="text-xs text-[#3a3d4a] mt-1">PNG, JPEG, WebP · all processing is local</p>
           </div>
         )}
-      </div>
+      </FileDropZone>
 
       {error && <p className="text-xs text-red-400">{error}</p>}
 
@@ -176,7 +151,6 @@ function AudioTab() {
   const [file, setFile] = useState<File | null>(null)
   const [mode, setMode] = useState<'flac' | 'mp3'>('flac')
   const [bitrate, setBitrate] = useState(96)
-  const [dropping, setDropping] = useState(false)
   const [ffmpegLoading, setFfmpegLoading] = useState(false)
   const [ffmpegProgress, setFfmpegProgress] = useState(0)
   const [processing, setProcessing] = useState(false)
@@ -185,14 +159,13 @@ function AudioTab() {
   const [outputName, setOutputName] = useState('')
   const [outputSize, setOutputSize] = useState(0)
   const [error, setError] = useState('')
-  const fileRef = useRef<HTMLInputElement>(null)
 
   async function compress() {
     if (!file || processing || ffmpegLoading) return
     setError(''); setOutputUrl(null); setProcProgress(0)
-    const progressHandler = (p: number) => { if (!_ffmpeg) setFfmpegProgress(p); else setProcProgress(p) }
+    const progressHandler = (p: number) => { if (!isFFmpegLoaded()) setFfmpegProgress(p); else setProcProgress(p) }
     try {
-      if (!_ffmpeg) { setFfmpegLoading(true); setFfmpegProgress(0) }
+      if (!isFFmpegLoaded()) { setFfmpegLoading(true); setFfmpegProgress(0) }
       const ff = await getFFmpeg(progressHandler)
       setFfmpegLoading(false); setProcessing(true)
       ff.on('progress', ({ progress }) => setProcProgress(Math.max(0, Math.min(1, progress))))
@@ -218,31 +191,22 @@ function AudioTab() {
       }
     } catch (err) {
       if (err instanceof Error && err.message === 'called FFmpeg.terminate()') return
-      setError(String(err)); _ff = null; _ffmpeg = null; _ffmpegReady = null
+      setError(String(err)); resetFFmpeg()
     } finally { setFfmpegLoading(false); setProcessing(false) }
   }
 
   function cancel() { cancelFFmpeg(); setFfmpegLoading(false); setProcessing(false); setError('') }
 
   const isBusy = ffmpegLoading || processing
-  const btnClass = "px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
 
   return (
     <div className="flex flex-col gap-5">
-      <div
-        onDragOver={e => { e.preventDefault(); setDropping(true) }}
-        onDragLeave={() => setDropping(false)}
-        onDrop={e => { e.preventDefault(); setDropping(false); const f = e.dataTransfer.files[0]; if (f) { setError(''); setOutputUrl(null); setFile(f) } }}
-        onClick={() => fileRef.current?.click()}
-        className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${dropping ? 'border-[#c4af64] bg-[#c4af64]/5' : 'border-[#2a2d3a] hover:border-[#3a3d4a]'}`}
-      >
-        <input ref={fileRef} type="file" accept="audio/*" className="hidden"
-          onChange={e => { const f = e.target.files?.[0]; if (f) { setError(''); setOutputUrl(null); setFile(f) } }} />
+      <FileDropZone accept="audio/*" onFiles={files => { setError(''); setOutputUrl(null); setFile(files[0]) }}>
         {file
           ? <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name} <span className="text-[#6b7280]">({(file.size / 1024).toFixed(0)} KB)</span></p>
           : <div><p className="text-sm text-[#6b7280]">Drop an audio file here or click to upload</p><p className="text-xs text-[#3a3d4a] mt-1">MP3, WAV, FLAC, OGG · all processing is local</p></div>
         }
-      </div>
+      </FileDropZone>
 
       {error && <p className="text-xs text-red-400">{error}</p>}
 
@@ -273,7 +237,7 @@ function AudioTab() {
           {mode === 'mp3' && <p className="text-xs text-[#3a3d4a]">Re-encoding an already-compressed file (e.g. MP3→MP3) introduces generation loss. Use FLAC for uncompressed sources.</p>}
 
           <div className="flex items-center gap-3">
-            <button onClick={compress} disabled={isBusy} className={btnClass}>
+            <button onClick={compress} disabled={isBusy} className="forge-btn-accent">
               {processing ? 'Compressing…' : ffmpegLoading ? 'Loading FFmpeg…' : 'Compress'}
             </button>
             {isBusy && <button onClick={cancel} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">Cancel</button>}
@@ -288,7 +252,7 @@ function AudioTab() {
                 <span className="text-[#6b7280]">Output: <span className="text-[#e2e4ed]">{(outputSize / 1024).toFixed(0)} KB</span></span>
                 {(() => { const s = Math.round((1 - outputSize / file.size) * 100); return <span className={s > 0 ? 'text-green-400' : 'text-yellow-400'}>{s > 0 ? `${s}% smaller` : `${Math.abs(s)}% larger`}</span> })()}
               </div>
-              <a href={outputUrl} download={outputName} className={btnClass + ' self-start'}>{outputName}</a>
+              <a href={outputUrl} download={outputName} className="forge-btn-accent self-start">{outputName}</a>
             </div>
           )}
         </>
@@ -302,7 +266,6 @@ function VideoTab() {
   const [file, setFile] = useState<File | null>(null)
   const [crf, setCrf] = useState(28)
   const [scale, setScale] = useState('original')
-  const [dropping, setDropping] = useState(false)
   const [ffmpegLoading, setFfmpegLoading] = useState(false)
   const [ffmpegProgress, setFfmpegProgress] = useState(0)
   const [processing, setProcessing] = useState(false)
@@ -311,14 +274,13 @@ function VideoTab() {
   const [outputName, setOutputName] = useState('')
   const [outputSize, setOutputSize] = useState(0)
   const [error, setError] = useState('')
-  const fileRef = useRef<HTMLInputElement>(null)
 
   async function compress() {
     if (!file || processing || ffmpegLoading) return
     setError(''); setOutputUrl(null); setProcProgress(0)
-    const progressHandler = (p: number) => { if (!_ffmpeg) setFfmpegProgress(p); else setProcProgress(p) }
+    const progressHandler = (p: number) => { if (!isFFmpegLoaded()) setFfmpegProgress(p); else setProcProgress(p) }
     try {
-      if (!_ffmpeg) { setFfmpegLoading(true); setFfmpegProgress(0) }
+      if (!isFFmpegLoaded()) { setFfmpegLoading(true); setFfmpegProgress(0) }
       const ff = await getFFmpeg(progressHandler)
       setFfmpegLoading(false); setProcessing(true)
       ff.on('progress', ({ progress }) => setProcProgress(Math.max(0, Math.min(1, progress))))
@@ -338,34 +300,25 @@ function VideoTab() {
       setOutputName(file.name.replace(/\.[^.]+$/, '') + '-compressed.mp4')
     } catch (err) {
       if (err instanceof Error && err.message === 'called FFmpeg.terminate()') return
-      setError(String(err)); _ff = null; _ffmpeg = null; _ffmpegReady = null
+      setError(String(err)); resetFFmpeg()
     } finally { setFfmpegLoading(false); setProcessing(false) }
   }
 
   function cancel() { cancelFFmpeg(); setFfmpegLoading(false); setProcessing(false); setError('') }
 
   const isBusy = ffmpegLoading || processing
-  const btnClass = "px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
 
   const quality = crf <= 20 ? 'High quality, larger file' : crf <= 26 ? 'Balanced' : 'Smaller file, visible quality loss'
 
   return (
     <div className="flex flex-col gap-5">
       <p className="text-xs text-[#3a3d4a]">Video compression re-encodes using H.264 (lossy). Lower CRF = better quality, larger file.</p>
-      <div
-        onDragOver={e => { e.preventDefault(); setDropping(true) }}
-        onDragLeave={() => setDropping(false)}
-        onDrop={e => { e.preventDefault(); setDropping(false); const f = e.dataTransfer.files[0]; if (f) { setError(''); setOutputUrl(null); setFile(f) } }}
-        onClick={() => fileRef.current?.click()}
-        className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${dropping ? 'border-[#c4af64] bg-[#c4af64]/5' : 'border-[#2a2d3a] hover:border-[#3a3d4a]'}`}
-      >
-        <input ref={fileRef} type="file" accept="video/*" className="hidden"
-          onChange={e => { const f = e.target.files?.[0]; if (f) { setError(''); setOutputUrl(null); setFile(f) } }} />
+      <FileDropZone accept="video/*" onFiles={files => { setError(''); setOutputUrl(null); setFile(files[0]) }}>
         {file
           ? <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name} <span className="text-[#6b7280]">({(file.size / 1024 / 1024).toFixed(1)} MB)</span></p>
           : <div><p className="text-sm text-[#6b7280]">Drop a video file here or click to upload</p><p className="text-xs text-[#3a3d4a] mt-1">MP4, WebM, MOV · all processing is local · may be slow for large files</p></div>
         }
-      </div>
+      </FileDropZone>
 
       {error && <p className="text-xs text-red-400">{error}</p>}
 
@@ -394,7 +347,7 @@ function VideoTab() {
           </div>
 
           <div className="flex items-center gap-3">
-            <button onClick={compress} disabled={isBusy} className={btnClass}>
+            <button onClick={compress} disabled={isBusy} className="forge-btn-accent">
               {processing ? 'Compressing…' : ffmpegLoading ? 'Loading FFmpeg…' : 'Compress'}
             </button>
             {isBusy && <button onClick={cancel} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">Cancel</button>}
@@ -410,7 +363,7 @@ function VideoTab() {
                 <span className="text-[#6b7280]">Output: <span className="text-[#e2e4ed]">{(outputSize / 1024 / 1024).toFixed(1)} MB</span></span>
                 {(() => { const s = Math.round((1 - outputSize / file.size) * 100); return <span className={s > 0 ? 'text-green-400' : 'text-yellow-400'}>{s > 0 ? `${s}% smaller` : `${Math.abs(s)}% larger`}</span> })()}
               </div>
-              <a href={outputUrl} download={outputName} className={btnClass + ' self-start'}>{outputName}</a>
+              <a href={outputUrl} download={outputName} className="forge-btn-accent self-start">{outputName}</a>
             </div>
           )}
         </>

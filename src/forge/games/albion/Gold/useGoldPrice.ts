@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { albionFetch } from '../shared/api'
+import { forgeFetch } from '../../../../lib/api'
 
 export interface GoldStats {
   current: number
@@ -36,7 +36,7 @@ export function useGoldPrice(): UseGoldPriceResult {
 
     async function fetchStats() {
       try {
-        const result = await albionFetch<GoldStats>('/game/albion/gold/stats')
+        const result = await forgeFetch<GoldStats>('/game/albion/gold/stats')
         if (cancelled) return
         if (result.status === 'ok') {
           setStats(result.payload)

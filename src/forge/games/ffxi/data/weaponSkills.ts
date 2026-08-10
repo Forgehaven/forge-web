@@ -1,4 +1,4 @@
-import type { PhysicalType, SCAttr } from './elements'
+import type { SCAttr } from './elements'
 export type { SCAttr }
 
 export type WeaponType =
@@ -13,30 +13,6 @@ export interface WeaponSkill {
   attrs: SCAttr[]
   skillReq: number
   questLevel?: number
-}
-
-export const WEAPON_TYPES: WeaponType[] = [
-  'Hand-to-Hand', 'Dagger', 'Sword', 'Great Sword',
-  'Axe', 'Great Axe', 'Scythe', 'Polearm',
-  'Katana', 'Great Katana', 'Club', 'Staff',
-  'Archery', 'Marksmanship',
-]
-
-export const WEAPON_DAMAGE_TYPE: Record<WeaponType, PhysicalType> = {
-  'Hand-to-Hand': 'Blunt',
-  'Dagger':       'Piercing',
-  'Sword':        'Slashing',
-  'Great Sword':  'Slashing',
-  'Axe':          'Slashing',
-  'Great Axe':    'Slashing',
-  'Scythe':       'Slashing',
-  'Polearm':      'Piercing',
-  'Katana':       'Slashing',
-  'Great Katana': 'Slashing',
-  'Club':         'Blunt',
-  'Staff':        'Blunt',
-  'Archery':      'Piercing',
-  'Marksmanship': 'Piercing',
 }
 
 // Skill thresholds and SC attributes sourced from horizonffxi.wiki

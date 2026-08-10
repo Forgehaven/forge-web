@@ -97,7 +97,6 @@ export function HashGenerator() {
   const [cracking, setCracking] = useState(false)
   const [crackResult, setCrackResult] = useState<{ found: true; input: string; algo: HashAlgo } | { found: false } | null>(null)
 
-  const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full font-mono"
 
   useEffect(() => {
     if (!input) return
@@ -163,7 +162,7 @@ export function HashGenerator() {
         <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">
           <div>
             <label className="block text-xs text-[#6b7280] mb-1">Input Text</label>
-            <input className={inputClass} value={input} onChange={e => setInput(e.target.value)} placeholder="Enter text to hash..." />
+            <input className="forge-input-mono" value={input} onChange={e => setInput(e.target.value)} placeholder="Enter text to hash..." />
           </div>
           {(['MD5', 'SHA-1', 'SHA-256', 'SHA-512'] as HashAlgo[]).map(algo => (
             <div key={algo} className="bg-[#0f1117] border border-[#2a2d3a] rounded-lg px-4 py-3">
@@ -185,7 +184,7 @@ export function HashGenerator() {
             <div>
               <label className="block text-xs text-[#6b7280] mb-1">Hash to look up</label>
               <input
-                className={inputClass}
+                className="forge-input-mono"
                 value={lookupHash}
                 onChange={e => { setLookupHash(e.target.value); setCrackResult(null) }}
                 placeholder="Paste an MD5, SHA-1, SHA-256 or SHA-512 hash..."
@@ -204,7 +203,7 @@ export function HashGenerator() {
                 Custom wordlist <span className="text-[#3a3d4a]">(one word per line, appended to built-in list)</span>
               </label>
               <textarea
-                className={`${inputClass} resize-none`}
+                className="forge-input-mono resize-none"
                 rows={4}
                 value={customWords}
                 onChange={e => setCustomWords(e.target.value)}

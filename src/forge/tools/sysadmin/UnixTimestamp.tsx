@@ -54,7 +54,6 @@ export function UnixTimestamp() {
   const dateFromInput = dateInput ? new Date(dateInput) : null
   const validDate = dateFromInput && !isNaN(dateFromInput.getTime())
 
-  const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full font-mono"
   const btnClass = "px-3 py-1.5 text-xs rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer"
 
   const rp = { copiedKey, onCopy: copy }
@@ -74,7 +73,7 @@ export function UnixTimestamp() {
               value={tsInput}
               onChange={e => setTsInput(e.target.value)}
               placeholder="e.g. 1700000000"
-              className={inputClass}
+              className="forge-input-mono"
             />
             <button onClick={() => setTsInput(String(Math.floor(Date.now() / 1000)))} className={btnClass}>
               Now
@@ -104,7 +103,7 @@ export function UnixTimestamp() {
               type="datetime-local"
               value={dateInput}
               onChange={e => setDateInput(e.target.value)}
-              className={inputClass}
+              className="forge-input-mono"
             />
             <button
               onClick={() => setDateInput(new Date().toISOString().slice(0, 16))}

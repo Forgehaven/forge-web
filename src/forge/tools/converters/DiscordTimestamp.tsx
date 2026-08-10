@@ -74,7 +74,6 @@ export function DiscordTimestamp() {
     return () => clearInterval(id)
   }, [])
 
-  const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full font-mono"
 
   const tsResult = useMemo(() => {
     const n = Number(tsInput)
@@ -146,7 +145,7 @@ export function DiscordTimestamp() {
 
         <div>
           <label className="block text-xs text-[#6b7280] mb-1">Unix Timestamp → Human Date</label>
-          <input className={inputClass} type="number" inputMode="numeric" value={tsInput} onChange={e => setTsInput(e.target.value)} placeholder="e.g. 1700000000" />
+          <input className="forge-input-mono" type="number" inputMode="numeric" value={tsInput} onChange={e => setTsInput(e.target.value)} placeholder="e.g. 1700000000" />
           {tsResult && (
             <div className="mt-2 flex items-center justify-between">
               <p className="font-mono text-sm text-[#c4af64]">
@@ -162,7 +161,7 @@ export function DiscordTimestamp() {
         <div>
           <label className="block text-xs text-[#6b7280] mb-1">Human Date → Unix Timestamp</label>
           <div className="flex gap-2 flex-wrap">
-            <input className={`${inputClass} flex-1 min-w-0`} type="date" value={dateInput} onChange={e => setDateInput(e.target.value)} />
+            <input className="forge-input-mono flex-1 min-w-0" type="date" value={dateInput} onChange={e => setDateInput(e.target.value)} />
             <div className="flex items-center gap-1 shrink-0">
               <Select
                 options={is24hr ? hourOptions24 : hourOptions12}

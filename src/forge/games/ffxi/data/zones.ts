@@ -33,17 +33,3 @@ export const OUTPOSTS: Outpost[] = [
 ]
 
 // ---------------------------------------------------------------------------
-// WHM Teleport spell destinations
-// Source: horizonffxi.wiki/Teleport_(Spell)
-// ---------------------------------------------------------------------------
-
-export type TeleportDestination = { crag: string; zone: string }
-
-export const TELEPORT_DESTINATIONS: Record<string, TeleportDestination> = {
-  'Teleport-Dem':   { crag: 'Dem',   zone: 'Konschtat Highlands'  },
-  'Teleport-Holla': { crag: 'Holla', zone: 'La Theine Plateau'    },
-  'Teleport-Mea':   { crag: 'Mea',   zone: 'Tahrongi Canyon'      },
-  'Teleport-Altep': { crag: 'Altep', zone: 'Eastern Altepa Desert' },
-  'Teleport-Yhoat': { crag: 'Yhoat', zone: 'Yhoator Jungle'       },
-  'Teleport-Vahzl': { crag: 'Vahzl', zone: 'Beaucedine Glacier'   },
-}

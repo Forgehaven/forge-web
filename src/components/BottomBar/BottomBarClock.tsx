@@ -1,9 +1,14 @@
 import { useIPInfo } from '../../hooks/useIPInfo'
-import { useClock } from '../../hooks/useClock'
+import { useNow } from '../../hooks/useNow'
 
 export function BottomBarClock() {
   const { data: ip } = useIPInfo()
-  const time = useClock(ip?.timezone ?? null)
+  const time = useNow().toLocaleTimeString('en-GB', {
+    timeZone: ip?.timezone ?? undefined,
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  })
 
   const tz = ip?.timezone
     ? ip.timezone.split('/').pop()?.replace(/_/g, ' ')

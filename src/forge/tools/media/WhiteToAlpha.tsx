@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
+import { FileDropZone } from '../../../components/FileDropZone'
 
 const SQRT3 = Math.sqrt(3)
 
@@ -41,13 +42,11 @@ export function WhiteToAlpha() {
   const [imgEl, setImgEl] = useState<HTMLImageElement | null>(null)
   const [threshold, setThreshold] = useState(25)
   const [feather, setFeather] = useState(10)
-  const [dropping, setDropping] = useState(false)
   const [processing, setProcessing] = useState(false)
   const [outputUrl, setOutputUrl] = useState<string | null>(null)
   const [outputName, setOutputName] = useState('')
   const [error, setError] = useState('')
 
-  const fileRef = useRef<HTMLInputElement>(null)
   const outputUrlRef = useRef<string | null>(null)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -86,25 +85,13 @@ export function WhiteToAlpha() {
     img.src = URL.createObjectURL(f)
   }
 
-  const btnClass = "px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-
   return (
     <div className="max-w-2xl">
       <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">White to Alpha</h1>
 
       <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-5">
 
-        <div
-          onDragOver={e => { e.preventDefault(); setDropping(true) }}
-          onDragLeave={() => setDropping(false)}
-          onDrop={e => { e.preventDefault(); setDropping(false); const f = e.dataTransfer.files[0]; if (f) acceptFile(f) }}
-          onClick={() => fileRef.current?.click()}
-          className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
-            dropping ? 'border-[#c4af64] bg-[#c4af64]/5' : 'border-[#2a2d3a] hover:border-[#3a3d4a]'
-          }`}
-        >
-          <input ref={fileRef} type="file" accept="image/*" className="hidden"
-            onChange={e => { const f = e.target.files?.[0]; if (f) acceptFile(f) }} />
+        <FileDropZone accept="image/*" onFiles={files => acceptFile(files[0])}>
           {file ? (
             <div>
               <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name}</p>
@@ -116,7 +103,7 @@ export function WhiteToAlpha() {
               <p className="text-xs text-[#3a3d4a] mt-1">PNG, JPG, WEBP · white background removed, exported as PNG · all processing is local</p>
             </div>
           )}
-        </div>
+        </FileDropZone>
 
         {error && <p className="text-xs text-red-400">{error}</p>}
 
@@ -165,7 +152,7 @@ export function WhiteToAlpha() {
 
             {outputUrl && !processing && (
               <div className="flex gap-3 items-center">
-                <a href={outputUrl} download={outputName} className={btnClass}>
+                <a href={outputUrl} download={outputName} className="forge-btn-accent">
                   Download {outputName}
                 </a>
                 <span className="text-xs text-[#6b7280]">PNG with transparency · all processing is local</span>

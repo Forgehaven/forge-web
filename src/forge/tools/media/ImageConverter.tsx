@@ -1,5 +1,6 @@
 ﻿import { useState, useRef, useEffect } from 'react'
 import { Select } from '../../../components/Select'
+import { FileDropZone } from '../../../components/FileDropZone'
 
 const FORMATS = [
   { mime: 'image/png',  ext: 'png',  label: 'PNG',  lossless: true },
@@ -12,13 +13,11 @@ export function ImageConverter() {
   const [img, setImg] = useState<HTMLImageElement | null>(null)
   const [outMime, setOutMime] = useState('image/png')
   const [quality, setQuality] = useState(0.85)
-  const [dropping, setDropping] = useState(false)
   const [outputUrl, setOutputUrl] = useState<string | null>(null)
   const [outputSize, setOutputSize] = useState(0)
   const [outputName, setOutputName] = useState('')
   const [converting, setConverting] = useState(false)
   const [error, setError] = useState('')
-  const fileRef = useRef<HTMLInputElement>(null)
   const outputUrlRef = useRef<string | null>(null)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -67,15 +66,7 @@ export function ImageConverter() {
       <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Image Converter</h1>
       <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-5">
 
-        <div
-          onDragOver={e => { e.preventDefault(); setDropping(true) }}
-          onDragLeave={() => setDropping(false)}
-          onDrop={e => { e.preventDefault(); setDropping(false); const f = e.dataTransfer.files[0]; if (f) acceptFile(f) }}
-          onClick={() => fileRef.current?.click()}
-          className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${dropping ? 'border-[#c4af64] bg-[#c4af64]/5' : 'border-[#2a2d3a] hover:border-[#3a3d4a]'}`}
-        >
-          <input ref={fileRef} type="file" accept="image/*" className="hidden"
-            onChange={e => { const f = e.target.files?.[0]; if (f) acceptFile(f) }} />
+        <FileDropZone accept="image/*" onFiles={files => acceptFile(files[0])}>
           {file ? (
             <div>
               <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name}</p>
@@ -87,7 +78,7 @@ export function ImageConverter() {
               <p className="text-xs text-[#3a3d4a] mt-1">PNG, JPEG, WebP, GIF, AVIF · all processing is local</p>
             </div>
           )}
-        </div>
+        </FileDropZone>
 
         {error && <p className="text-xs text-red-400">{error}</p>}
 

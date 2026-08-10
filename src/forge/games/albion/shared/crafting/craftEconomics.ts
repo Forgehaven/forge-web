@@ -1,12 +1,10 @@
-import { useEffect, useSyncExternalStore } from 'react'
-import { fetchCraftSettings } from './craftingApi'
-import { emitPrefsChanged, subscribePrefs } from './prefsBus'
 import { isResource } from './itemMeta'
-import type { CraftSettings } from './types'
 import { STATION_TYPES } from '../constants'
 
 // Mirrors forge-api craft_settings.py: resource return rates derived from production
-// bonuses via return = 1 - 1/(1 + bonus); focus adds +59% bonus.
+// bonuses via return = 1 - 1/(1 + bonus); focus adds +59% bonus. The economics half
+// (RETURN_RATES through NUTRITION_PER_ITEM_VALUE) also mirrors runningdawn.github.io
+// .../MarketManager/craftEconomics.ts - change all three in lockstep.
 export const RETURN_RATES = {
   base: 15.2,
   refining: 36.7,
@@ -122,23 +120,8 @@ export function returnRateFor(id: string, city: string, focus: boolean): number 
 // server's station_fee_silver in craft_settings.py.
 export const NUTRITION_PER_ITEM_VALUE = 0.1125
 
-export function stationFeeFor(
-  id: string,
-  city: string,
-  settings: CraftSettings | null,
-  itemValue?: number | null,
-): number {
-  if (!settings || !itemValue) return 0
-  const econ = itemEcon(id)
-  if (!econ) return 0
-  const tier = parseInt(id.match(/^T(\d)/)?.[1] ?? '0', 10)
-  if (tier <= 2) return 0
-  const setting = settings.cities[city]?.station_fees?.[econ.station] ?? 0
-  return setting * itemValue * NUTRITION_PER_ITEM_VALUE / 100
-}
-
-// Per-user variant of stationFeeFor: reads the flat {city: {station: fee}} map from the user's
-// own craft settings (settings/craftSettings.ts) instead of the shared blob.
+// Reads the flat {city: {station: fee}} map from the user's own craft settings
+// (settings/craftSettings.ts). Mirrors the server's station_fee_silver.
 export function userStationFee(
   id: string,
   city: string,
@@ -152,34 +135,6 @@ export function userStationFee(
   if (tier <= 2) return 0
   const setting = stationFees[city]?.[econ.station] ?? 0
   return setting * itemValue * NUTRITION_PER_ITEM_VALUE / 100
-}
-
-// Shared craft settings, fetched once per session (module cache) - station fees change
-// rarely and the backend caches for 10s anyway. Saving from the Craft Settings modal calls
-// updateCachedSettings so every open table repriced immediately.
-let cachedSettings: CraftSettings | null = null
-
-export function updateCachedSettings(settings: CraftSettings): void {
-  cachedSettings = settings
-  emitPrefsChanged()
-}
-
-export function useCraftSettings(): CraftSettings | null {
-  const settings = useSyncExternalStore(subscribePrefs, () => cachedSettings)
-
-  useEffect(() => {
-    if (cachedSettings) return
-    let cancelled = false
-    fetchCraftSettings().then(result => {
-      if (cancelled || result.status !== 'ok') return
-      updateCachedSettings(result.payload.settings)
-    })
-    return () => {
-      cancelled = true
-    }
-  }, [])
-
-  return settings
 }
 
 // Station-type value → display label (Warrior's Forge, etc.), for the Item Index Station column.

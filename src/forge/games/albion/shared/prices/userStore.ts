@@ -33,12 +33,6 @@ function keyOf(itemId: string, city: string, quality: number): string {
   return `${itemId}|${city}|${quality}`
 }
 
-// Read a single price straight from the store (non-reactive). For reactive reads in a
-// component, take the map from useUserPrices() and use priceFrom().
-export function getPrice(itemId: string, city: string, quality: number): number | null {
-  return priceFrom(cache, itemId, city, quality)
-}
-
 export function priceFrom(map: PriceMap, itemId: string, city: string, quality: number): number | null {
   const v = map[keyOf(itemId, city, quality)]
   return typeof v === 'number' ? v : null

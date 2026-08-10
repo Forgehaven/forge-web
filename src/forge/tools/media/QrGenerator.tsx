@@ -3,6 +3,7 @@ import QRCode from 'qrcode'
 import jsQR from 'jsqr'
 import { Select } from '../../../components/Select'
 import type { SelectOption } from '../../../components/Select'
+import { FileDropZone } from '../../../components/FileDropZone'
 
 const sizeOptions: SelectOption[] = [
   { value: '128', label: '128 px' },
@@ -36,8 +37,6 @@ function decodeImageFile(file: File): Promise<string | null> {
 
 function QrDecoder({ onDecode }: { onDecode: (text: string) => void }) {
   const [decodeResult, setDecodeResult] = useState<string | null | 'none'>(null)
-  const [dragging, setDragging] = useState(false)
-  const fileRef = useRef<HTMLInputElement>(null)
 
   async function processFile(file: File) {
     if (!file.type.startsWith('image/')) return
@@ -56,37 +55,14 @@ function QrDecoder({ onDecode }: { onDecode: (text: string) => void }) {
     return () => window.removeEventListener('paste', onPaste)
   }, [])
 
-  function onDrop(e: React.DragEvent) {
-    e.preventDefault()
-    setDragging(false)
-    const file = e.dataTransfer.files[0]
-    if (file) processFile(file)
-  }
-
-  function onFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (file) processFile(file)
-    e.target.value = ''
-  }
-
   return (
     <div className="flex flex-col gap-3">
       <label className="text-xs text-[#6b7280]">Decode QR Code</label>
 
-      <div
-        className={`border-2 border-dashed rounded-lg px-4 py-6 text-center transition-colors cursor-pointer ${
-          dragging ? 'border-[#c4af64] bg-[#c4af64]/5' : 'border-[#2a2d3a] hover:border-[#3a3d4a]'
-        }`}
-        onClick={() => fileRef.current?.click()}
-        onDragOver={e => { e.preventDefault(); setDragging(true) }}
-        onDragLeave={() => setDragging(false)}
-        onDrop={onDrop}
-      >
+      <FileDropZone accept="image/*" className="px-4 py-6" onFiles={files => processFile(files[0])}>
         <p className="text-sm text-[#6b7280]">Upload or drag & drop an image</p>
         <p className="text-xs text-[#3a3d4a] mt-1">or paste one with Ctrl+V / Cmd+V</p>
-      </div>
-
-      <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onFileChange} />
+      </FileDropZone>
 
       {decodeResult === 'none' && (
         <p className="text-xs text-red-400">No QR code found in image.</p>
@@ -170,9 +146,6 @@ export function QrGenerator() {
     }, 'image/png')
   }, [text])
 
-  const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full"
-  const btnClass = "px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-
   return (
     <div className="max-w-2xl">
       <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">QR Code Generator</h1>
@@ -188,7 +161,7 @@ export function QrGenerator() {
             value={text}
             onChange={e => setText(e.target.value)}
             placeholder="https://example.com"
-            className={inputClass}
+            className="forge-input"
           />
         </div>
 
@@ -225,10 +198,10 @@ export function QrGenerator() {
         {text.trim() && (
           <div className="flex flex-col items-center gap-4 pt-2">
             <canvas ref={canvasRef} className="rounded border border-[#2a2d3a]" />
-            <button onClick={download} className={btnClass}>
+            <button onClick={download} className="forge-btn-accent">
               Download PNG
             </button>
-            <button onClick={copyImage} className={btnClass}>
+            <button onClick={copyImage} className="forge-btn-accent">
               {copied ? 'Copied!' : 'Copy to Clipboard'}
             </button>
           </div>

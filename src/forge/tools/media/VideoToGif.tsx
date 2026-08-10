@@ -1,8 +1,10 @@
 ﻿import { useState, useRef } from 'react'
-import { FFmpeg } from '@ffmpeg/ffmpeg'
 import { fetchFile } from '@ffmpeg/util'
 import { Select } from '../../../components/Select'
 import type { SelectOption } from '../../../components/Select'
+import { FileDropZone } from '../../../components/FileDropZone'
+import { getFFmpeg, cancelFFmpeg, resetFFmpeg, isFFmpegLoaded } from '../../../lib/ffmpeg'
+import { formatTime } from '../../../lib/time'
 
 const fpsOptions: SelectOption[] = [
   { value: '8',  label: '8 fps - smaller file' },
@@ -20,31 +22,6 @@ const widthOptions: SelectOption[] = [
 
 const MAX_GIF_DURATION = 20
 
-function formatTime(s: number): string {
-  const m = Math.floor(s / 60)
-  const sec = s % 60
-  if (m === 0) return `${sec.toFixed(1)}s`
-  return `${m}:${sec.toFixed(1).padStart(4, '0')}`
-}
-
-let _ff: FFmpeg | null = null
-let _ffmpeg: FFmpeg | null = null
-let _ffmpegReady: Promise<FFmpeg> | null = null
-
-function getFFmpeg(onProgress: (p: number) => void): Promise<FFmpeg> {
-  if (_ffmpegReady) return _ffmpegReady
-  const ff = new FFmpeg()
-  _ff = ff
-  ff.on('progress', ({ progress }) => onProgress(Math.max(0, Math.min(1, progress))))
-  _ffmpegReady = ff.load({
-    coreURL: '/ffmpeg/ffmpeg-core.js',
-    wasmURL: '/ffmpeg/ffmpeg-core.wasm',
-  }).then(() => { _ffmpeg = ff; return ff })
-  return _ffmpegReady
-}
-
-function cancelFFmpeg() { _ff?.terminate(); _ff = null; _ffmpeg = null; _ffmpegReady = null }
-
 export function VideoToGif() {
   const [file, setFile] = useState<File | null>(null)
   const [videoUrl, setVideoUrl] = useState<string | null>(null)
@@ -53,7 +30,6 @@ export function VideoToGif() {
   const [end, setEnd] = useState(0)
   const [fps, setFps] = useState(10)
   const [width, setWidth] = useState(480)
-  const [dropping, setDropping] = useState(false)
   const [ffmpegLoading, setFfmpegLoading] = useState(false)
   const [ffmpegProgress, setFfmpegProgress] = useState(0)
   const [generating, setGenerating] = useState(false)
@@ -63,7 +39,6 @@ export function VideoToGif() {
   const [outputName, setOutputName] = useState('')
   const [outputSize, setOutputSize] = useState(0)
 
-  const fileRef = useRef<HTMLInputElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)      // hidden - fires onLoadedMetadata
   const playerRef = useRef<HTMLVideoElement>(null)     // visible player - used for currentTime
 
@@ -96,12 +71,12 @@ export function VideoToGif() {
     setGenProgress(0)
 
     const progressHandler = (p: number) => {
-      if (!_ffmpeg) setFfmpegProgress(p)
+      if (!isFFmpegLoaded()) setFfmpegProgress(p)
       else setGenProgress(p)
     }
 
     try {
-      if (!_ffmpeg) { setFfmpegLoading(true); setFfmpegProgress(0) }
+      if (!isFFmpegLoaded()) { setFfmpegLoading(true); setFfmpegProgress(0) }
       const ff = await getFFmpeg(progressHandler)
       setFfmpegLoading(false)
       setGenerating(true)
@@ -130,7 +105,7 @@ export function VideoToGif() {
       setOutputSize(blob.size)
     } catch (err) {
       if (err instanceof Error && err.message === 'called FFmpeg.terminate()') return
-      setError(String(err)); _ff = null; _ffmpeg = null; _ffmpegReady = null
+      setError(String(err)); resetFFmpeg()
     } finally {
       setFfmpegLoading(false)
       setGenerating(false)
@@ -139,8 +114,6 @@ export function VideoToGif() {
 
   function cancel() { cancelFFmpeg(); setFfmpegLoading(false); setGenerating(false); setError('') }
 
-  const btnClass = "px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-  const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full"
   const isBusy = ffmpegLoading || generating
 
   return (
@@ -151,22 +124,12 @@ export function VideoToGif() {
 
         <video ref={videoRef} src={videoUrl ?? undefined} onLoadedMetadata={onMetadata} className="hidden" />
 
-        <div
-          onDragOver={e => { e.preventDefault(); setDropping(true) }}
-          onDragLeave={() => setDropping(false)}
-          onDrop={e => { e.preventDefault(); setDropping(false); const f = e.dataTransfer.files[0]; if (f) acceptFile(f) }}
-          onClick={() => fileRef.current?.click()}
-          className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
-            dropping ? 'border-[#c4af64] bg-[#c4af64]/5' : 'border-[#2a2d3a] hover:border-[#3a3d4a]'
-          }`}
-        >
-          <input ref={fileRef} type="file" accept="video/*" className="hidden"
-            onChange={e => { const f = e.target.files?.[0]; if (f) acceptFile(f) }} />
+        <FileDropZone accept="video/*" onFiles={files => acceptFile(files[0])}>
           {file ? (
             <div>
               <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name}</p>
               <p className="text-xs text-[#6b7280] mt-1">
-                {(file.size / 1024 / 1024).toFixed(1)} MB{duration > 0 && ` · ${formatTime(duration)}`}
+                {(file.size / 1024 / 1024).toFixed(1)} MB{duration > 0 && ` · ${formatTime(duration, 1)}`}
               </p>
             </div>
           ) : (
@@ -175,7 +138,7 @@ export function VideoToGif() {
               <p className="text-xs text-[#3a3d4a] mt-1">MP4, WebM, MOV · up to {MAX_GIF_DURATION}s · all processing is local</p>
             </div>
           )}
-        </div>
+        </FileDropZone>
 
         {error && <p className="text-xs text-red-400">{error}</p>}
 
@@ -197,7 +160,7 @@ export function VideoToGif() {
                   type="number" inputMode="decimal" min={0} max={end - 0.5} step={0.1}
                   value={start.toFixed(1)}
                   onChange={e => setStart(Math.max(0, Math.min(parseFloat(e.target.value) || 0, end - 0.5)))}
-                  className={inputClass}
+                  className="forge-input"
                 />
                 <button
                   onClick={() => {
@@ -218,7 +181,7 @@ export function VideoToGif() {
                   type="number" inputMode="decimal" min={start + 0.5} max={duration} step={0.1}
                   value={end.toFixed(1)}
                   onChange={e => setEnd(Math.min(duration, Math.max(parseFloat(e.target.value) || 0, start + 0.5)))}
-                  className={inputClass}
+                  className="forge-input"
                 />
                 <button
                   onClick={() => { const t = playerRef.current?.currentTime ?? duration; setEnd(Math.min(duration, Math.max(t, start + 0.5))) }}
@@ -230,7 +193,7 @@ export function VideoToGif() {
               <div>
                 <label className="block text-xs text-[#6b7280] mb-1">Duration</label>
                 <div className={`rounded px-3 py-2 text-sm border ${isCapped ? 'bg-[#0f1117] border-yellow-500/40 text-yellow-400' : 'bg-[#0f1117] border-[#2a2d3a] text-[#6b7280]'}`}>
-                  {isCapped ? `capped at ${MAX_GIF_DURATION}s` : formatTime(end - start)}
+                  {isCapped ? `capped at ${MAX_GIF_DURATION}s` : formatTime(end - start, 1)}
                 </div>
               </div>
             </div>
@@ -258,7 +221,7 @@ export function VideoToGif() {
             </div>
 
             <div className="flex items-center gap-3 flex-wrap">
-              <button onClick={generateGif} disabled={isBusy} className={btnClass}>
+              <button onClick={generateGif} disabled={isBusy} className="forge-btn-accent">
                 {generating ? 'Generating…' : ffmpegLoading ? 'Loading FFmpeg…' : 'Generate GIF'}
               </button>
               {isBusy && <button onClick={cancel} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">Cancel</button>}
@@ -293,7 +256,7 @@ export function VideoToGif() {
               <div className="flex flex-col gap-3 border-t border-[#2a2d3a] pt-4">
                 <img src={outputUrl} alt="Generated GIF" className="w-full rounded" style={{ maxHeight: 300, objectFit: 'contain', background: '#0f1117' }} />
                 <div className="flex gap-3 items-center">
-                  <a href={outputUrl} download={outputName} className={btnClass}>
+                  <a href={outputUrl} download={outputName} className="forge-btn-accent">
                     Download {outputName}
                   </a>
                   <span className="text-xs text-[#6b7280]">{(outputSize / 1024 / 1024).toFixed(2)} MB · all processing is local</span>

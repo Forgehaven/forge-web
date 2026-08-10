@@ -1,5 +1,6 @@
 ﻿import { useState } from 'react'
 import { Select } from '../../../components/Select'
+import { useCopy } from '../../../hooks/useCopy'
 
 type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
@@ -42,7 +43,7 @@ export function WebhookTester() {
   const [sending, setSending] = useState(false)
   const [response, setResponse] = useState<ResponseData | null>(null)
   const [error, setError] = useState('')
-  const [copiedBody, setCopiedBody] = useState(false)
+  const { copy, copied: copiedBody } = useCopy()
 
   const hasBody = ['POST', 'PUT', 'PATCH'].includes(method)
 
@@ -90,13 +91,10 @@ export function WebhookTester() {
 
   function copyBody() {
     if (!response) return
-    navigator.clipboard.writeText(tryPretty(response.body))
-    setCopiedBody(true)
-    setTimeout(() => setCopiedBody(false), 1500)
+    copy(tryPretty(response.body))
   }
 
   const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] font-mono"
-  const btnClass = "px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
 
   return (
     <div className="max-w-2xl">
@@ -158,7 +156,7 @@ export function WebhookTester() {
           </div>
         )}
 
-        <button onClick={send} disabled={sending || !url.trim()} className={btnClass}>
+        <button onClick={send} disabled={sending || !url.trim()} className="forge-btn-accent">
           {sending ? 'Sending…' : 'Send Request'}
         </button>
 

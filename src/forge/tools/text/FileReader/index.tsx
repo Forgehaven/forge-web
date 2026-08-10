@@ -1,5 +1,6 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { DotMsgParser } from 'dotmsg'
+import { FileDropZone } from '../../../../components/FileDropZone'
 
 type ParsedMsg = {
   subject: string | undefined
@@ -17,9 +18,7 @@ type ParsedMsg = {
 export function FileReader() {
   const [parsed, setParsed] = useState<ParsedMsg | null>(null)
   const [error, setError] = useState('')
-  const [dropping, setDropping] = useState(false)
   const [bodyMode, setBodyMode] = useState<'text' | 'html'>('text')
-  const fileRef = useRef<HTMLInputElement>(null)
 
   async function readFile(file: File) {
     if (!file.name.toLowerCase().endsWith('.msg')) {
@@ -106,19 +105,9 @@ export function FileReader() {
 
       <hr className="border-[#2a2d3a]" />
 
-      <div
-        onDragOver={e => { e.preventDefault(); setDropping(true) }}
-        onDragLeave={() => setDropping(false)}
-        onDrop={e => { e.preventDefault(); setDropping(false); const f = e.dataTransfer.files[0]; if (f) readFile(f) }}
-        onClick={() => fileRef.current?.click()}
-        className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
-          dropping ? 'border-[#c4af64] bg-[#c4af64]/5' : 'border-[#2a2d3a] hover:border-[#3a3d4a]'
-        }`}
-      >
-        <input ref={fileRef} type="file" accept=".msg" className="hidden"
-          onChange={e => { const f = e.target.files?.[0]; if (f) readFile(f) }} />
+      <FileDropZone accept=".msg" onFiles={files => readFile(files[0])}>
         <p className="text-sm text-[#6b7280]">Drop a file here or click to open</p>
-      </div>
+      </FileDropZone>
 
       {error && <p className="text-xs text-red-400">{error}</p>}
 

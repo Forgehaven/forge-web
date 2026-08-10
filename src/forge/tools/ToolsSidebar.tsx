@@ -9,6 +9,7 @@ import { SidebarSearch } from '../../components/Sidebar/SidebarSearch'
 import { SidebarSection } from '../../components/Sidebar/SidebarSection'
 import { SidebarDivider } from '../../components/Sidebar/SidebarDivider'
 import { SidebarFooter } from '../../components/Sidebar/SidebarFooter'
+import { TOOL_SECTIONS, ALL_TOOLS } from './toolsManifest'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `block pl-4 pr-8 py-2 md:py-0 text-sm leading-5 transition-colors ${
@@ -18,112 +19,9 @@ const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   }`
 
 type ToolEntry = { path: string; label: string }
-type Section = { section: string; tools: ToolEntry[] }
 
-const T = '/tools'
-
-const sections: Section[] = [
-  {
-    section: 'Converters',
-    tools: [
-      { path: `${T}/unit-converter`, label: 'Unit Converter' },
-      { path: `${T}/timestamp-converter`, label: 'Discord Timestamp' },
-      { path: `${T}/base-converter`, label: 'Base Converter' },
-      { path: `${T}/colour-converter`, label: 'Colour Converter' },
-      { path: `${T}/currency-converter`, label: 'Currency Converter' },
-    ],
-  },
-  {
-    section: 'Text',
-    tools: [
-      { path: `${T}/xml-json`, label: 'XML ↔ JSON' },
-      { path: `${T}/text-formatter`, label: 'Text Formatter' },
-      { path: `${T}/text-diff`, label: 'Text Diff' },
-      { path: `${T}/text-translate`, label: 'Text Translate' },
-      { path: `${T}/regex-tester`, label: 'Regex Tester' },
-      { path: `${T}/markdown-preview`, label: 'Markdown Preview' },
-      { path: `${T}/pdf-to-epub`, label: 'PDF to EPUB' },
-      { path: `${T}/word-counter`, label: 'Word Counter' },
-      { path: `${T}/file-reader`, label: 'File Reader' },
-    ],
-  },
-  {
-    section: 'Media',
-    tools: [
-      { path: `${T}/audio-cutter`, label: 'Audio Cutter' },
-      { path: `${T}/video-cutter`, label: 'Video Cutter' },
-      { path: `${T}/white-to-alpha`, label: 'White to Alpha' },
-      { path: `${T}/video-to-gif`, label: 'Video to GIF' },
-      { path: `${T}/img-colour-palette`, label: 'Img Colour Palette' },
-      { path: `${T}/img-editor`, label: 'Img Editor' },
-      { path: `${T}/img-collage`, label: 'Img Collage' },
-      { path: `${T}/qr-generator`, label: 'QR Generator' },
-      { path: `${T}/video-to-mp3`, label: 'Video to MP3' },
-      { path: `${T}/image-converter`, label: 'Image Converter' },
-      { path: `${T}/media-compressor`, label: 'Media Compressor' },
-      { path: `${T}/audio-tuner`, label: 'Audio Tuner' },
-    ],
-  },
-  {
-    section: 'Lookups',
-    tools: [
-      { path: `${T}/ip-geolocation`, label: 'IP Geolocation' },
-      { path: `${T}/phone-area-code`, label: 'Phone Area Code' },
-      { path: `${T}/timezone-lookup`, label: 'City Time Zones' },
-      { path: `${T}/weather`, label: 'Weather Lookup' },
-    ],
-  },
-  {
-    section: 'Encoding',
-    tools: [
-      { path: `${T}/base64`, label: 'Base64' },
-      { path: `${T}/url-encoder`, label: 'URL Encoder' },
-      { path: `${T}/jwt-decoder`, label: 'JWT Decoder' },
-    ],
-  },
-  {
-    section: 'Generators',
-    tools: [
-      { path: `${T}/hash-generator`, label: 'Hash Generator' },
-      { path: `${T}/uuid-generator`, label: 'UUID Generator' },
-      { path: `${T}/password-generator`, label: 'Password Generator' },
-      { path: `${T}/lorem-ipsum`, label: 'Lorem Ipsum' },
-    ],
-  },
-  {
-    section: 'Sysadmin',
-    tools: [
-      { path: `${T}/cron-parser`, label: 'Cron Parser' },
-      { path: `${T}/unix-timestamp`, label: 'Unix Timestamp' },
-      { path: `${T}/json-api`, label: 'JSON API Tester' },
-      { path: `${T}/webhook-tester`, label: 'Webhook Tester' },
-    ],
-  },
-  {
-    section: 'Network',
-    tools: [
-      { path: `${T}/cidr-calculator`, label: 'CIDR Calculator' },
-      { path: `${T}/http-headers`, label: 'HTTP Headers' },
-      { path: `${T}/contrast-checker`, label: 'Contrast Checker' },
-      { path: `${T}/user-agent`, label: 'User Agent Parser' },
-    ],
-  },
-  {
-    section: 'Crypto',
-    tools: [
-      { path: `${T}/aes`, label: 'AES Encrypt / Decrypt' },
-      { path: `${T}/bcrypt`, label: 'Bcrypt Tester' },
-    ],
-  },
-  {
-    section: 'Data',
-    tools: [
-      { path: `${T}/qr-data-xfer`, label: 'QR Data Transfer' },
-    ],
-  },
-]
-
-const allTools = sections.flatMap(s => s.tools)
+const sections = TOOL_SECTIONS
+const allTools: ToolEntry[] = ALL_TOOLS
 
 function ToolRow({
   tool,

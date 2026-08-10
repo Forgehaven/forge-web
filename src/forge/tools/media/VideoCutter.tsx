@@ -1,32 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { FFmpeg } from '@ffmpeg/ffmpeg'
 import { fetchFile } from '@ffmpeg/util'
-
-function formatTime(s: number): string {
-  const m = Math.floor(s / 60)
-  const sec = s % 60
-  if (m === 0) return `${sec.toFixed(2)}s`
-  return `${m}:${sec.toFixed(2).padStart(5, '0')}`
-}
-
-// Singleton - load once, reuse across exports
-let _ff: FFmpeg | null = null
-let _ffmpeg: FFmpeg | null = null
-let _ffmpegReady: Promise<FFmpeg> | null = null
-
-function getFFmpeg(onProgress: (p: number) => void): Promise<FFmpeg> {
-  if (_ffmpegReady) return _ffmpegReady
-  const ff = new FFmpeg()
-  _ff = ff
-  ff.on('progress', ({ progress }) => onProgress(Math.max(0, Math.min(1, progress))))
-  _ffmpegReady = ff.load({
-    coreURL: '/ffmpeg/ffmpeg-core.js',
-    wasmURL: '/ffmpeg/ffmpeg-core.wasm',
-  }).then(() => { _ffmpeg = ff; return ff })
-  return _ffmpegReady
-}
-
-function cancelFFmpeg() { _ff?.terminate(); _ff = null; _ffmpeg = null; _ffmpegReady = null }
+import { FileDropZone } from '../../../components/FileDropZone'
+import { getFFmpeg, cancelFFmpeg, resetFFmpeg, isFFmpegLoaded } from '../../../lib/ffmpeg'
+import { formatTime } from '../../../lib/time'
 
 export function VideoCutter() {
   const [file, setFile] = useState<File | null>(null)
@@ -36,7 +12,6 @@ export function VideoCutter() {
   const [trimEnd, setTrimEnd] = useState(0)
   const [currentTime, setCurrentTime] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [dropping, setDropping] = useState(false)
   const [ffmpegLoading, setFfmpegLoading] = useState(false)
   const [ffmpegProgress, setFfmpegProgress] = useState(0)
   const [cutting, setCutting] = useState(false)
@@ -47,7 +22,6 @@ export function VideoCutter() {
 
   const videoRef = useRef<HTMLVideoElement>(null)
   const timelineRef = useRef<HTMLDivElement>(null)
-  const fileRef = useRef<HTMLInputElement>(null)
   const rafRef = useRef(0)
 
   // Stable refs for drag closures
@@ -182,13 +156,13 @@ export function VideoCutter() {
     setCutProgress(0)
 
     const progressHandler = (p: number) => {
-      if (!_ffmpeg) setFfmpegProgress(p)
+      if (!isFFmpegLoaded()) setFfmpegProgress(p)
       else setCutProgress(p)
     }
 
     try {
       // Load FFmpeg if not already loaded
-      if (!_ffmpeg) {
+      if (!isFFmpegLoaded()) {
         setFfmpegLoading(true)
         setFfmpegProgress(0)
       }
@@ -221,7 +195,7 @@ export function VideoCutter() {
       setOutputUrl(URL.createObjectURL(blob))
     } catch (err) {
       if (err instanceof Error && err.message === 'called FFmpeg.terminate()') return
-      setError(String(err)); _ff = null; _ffmpeg = null; _ffmpegReady = null
+      setError(String(err)); resetFFmpeg()
     } finally {
       setFfmpegLoading(false)
       setCutting(false)
@@ -229,9 +203,6 @@ export function VideoCutter() {
   }
 
   function cancel() { cancelFFmpeg(); setFfmpegLoading(false); setCutting(false); setError('') }
-
-  const btnClass = "px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-  const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full"
 
   const startPct = duration > 0 ? (trimStart / duration) * 100 : 0
   const endPct = duration > 0 ? (trimEnd / duration) * 100 : 100
@@ -254,17 +225,7 @@ export function VideoCutter() {
         />
 
         {/* Drop zone */}
-        <div
-          onDragOver={e => { e.preventDefault(); setDropping(true) }}
-          onDragLeave={() => setDropping(false)}
-          onDrop={e => { e.preventDefault(); setDropping(false); const f = e.dataTransfer.files[0]; if (f) acceptFile(f) }}
-          onClick={() => fileRef.current?.click()}
-          className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
-            dropping ? 'border-[#c4af64] bg-[#c4af64]/5' : 'border-[#2a2d3a] hover:border-[#3a3d4a]'
-          }`}
-        >
-          <input ref={fileRef} type="file" accept="video/*" className="hidden"
-            onChange={e => { const f = e.target.files?.[0]; if (f) acceptFile(f) }} />
+        <FileDropZone accept="video/*" onFiles={files => acceptFile(files[0])}>
           {file ? (
             <div>
               <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name}</p>
@@ -284,7 +245,7 @@ export function VideoCutter() {
               </p>
             </div>
           )}
-        </div>
+        </FileDropZone>
 
         {error && <p className="text-xs text-red-400">{error}</p>}
 
@@ -345,7 +306,7 @@ export function VideoCutter() {
                     trimStartRef.current = v
                     setTrimStart(v)
                   }}
-                  className={inputClass}
+                  className="forge-input"
                 />
               </div>
               <div>
@@ -358,7 +319,7 @@ export function VideoCutter() {
                     trimEndRef.current = v
                     setTrimEnd(v)
                   }}
-                  className={inputClass}
+                  className="forge-input"
                 />
               </div>
               <div>
@@ -371,13 +332,13 @@ export function VideoCutter() {
 
             {/* Playback + cut */}
             <div className="flex items-center gap-3 flex-wrap">
-              <button onClick={togglePlay} className={btnClass}>
+              <button onClick={togglePlay} className="forge-btn-accent">
                 {isPlaying ? '⏸ Pause' : '▶ Play selection'}
               </button>
               <span className="text-xs text-[#6b7280] font-mono">
                 {formatTime(currentTime)} / {formatTime(duration)}
               </span>
-              <button onClick={exportCut} disabled={isBusy} className={`${btnClass} ml-auto`}>
+              <button onClick={exportCut} disabled={isBusy} className="forge-btn-accent ml-auto">
                 {cutting ? 'Cutting…' : ffmpegLoading ? 'Loading FFmpeg…' : 'Cut & Export MP4'}
               </button>
               {isBusy && <button onClick={cancel} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">Cancel</button>}
@@ -412,7 +373,7 @@ export function VideoCutter() {
             {/* Download */}
             {outputUrl && (
               <div className="flex gap-3 items-center border-t border-[#2a2d3a] pt-4">
-                <a href={outputUrl} download={outputName} className={btnClass}>
+                <a href={outputUrl} download={outputName} className="forge-btn-accent">
                   Download {outputName}
                 </a>
                 <span className="text-xs text-[#6b7280]">

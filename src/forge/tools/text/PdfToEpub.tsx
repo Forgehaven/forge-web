@@ -1,6 +1,7 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState } from 'react'
 import * as pdfjsLib from 'pdfjs-dist'
 import JSZip from 'jszip'
+import { FileDropZone } from '../../../components/FileDropZone'
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.mjs',
@@ -149,11 +150,6 @@ export function PdfToEpub() {
   const [error, setError] = useState('')
   const [epubUrl, setEpubUrl] = useState<string | null>(null)
   const [epubName, setEpubName] = useState('')
-  const [dragging, setDragging] = useState(false)
-  const fileRef = useRef<HTMLInputElement>(null)
-
-  const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full"
-  const btnClass = "px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
 
   function acceptFile(f: File) {
     if (!f.name.toLowerCase().endsWith('.pdf')) {
@@ -168,18 +164,6 @@ export function PdfToEpub() {
     setPageCount(0)
     if (!title) setTitle(f.name.replace(/\.pdf$/i, ''))
   }
-
-  function onFileInput(e: React.ChangeEvent<HTMLInputElement>) {
-    const f = e.target.files?.[0]
-    if (f) acceptFile(f)
-  }
-
-  const onDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    setDragging(false)
-    const f = e.dataTransfer.files[0]
-    if (f) acceptFile(f)
-  }, [title]) // eslint-disable-line react-hooks/exhaustive-deps
 
   async function convert() {
     if (!file) return
@@ -219,16 +203,7 @@ export function PdfToEpub() {
       <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">
 
         {/* drop zone */}
-        <div
-          onDragOver={e => { e.preventDefault(); setDragging(true) }}
-          onDragLeave={() => setDragging(false)}
-          onDrop={onDrop}
-          onClick={() => fileRef.current?.click()}
-          className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
-            dragging ? 'border-[#c4af64] bg-[#c4af64]/5' : 'border-[#2a2d3a] hover:border-[#3a3d4a]'
-          }`}
-        >
-          <input ref={fileRef} type="file" accept=".pdf" className="hidden" onChange={onFileInput} />
+        <FileDropZone accept=".pdf" onFiles={files => acceptFile(files[0])}>
           {file ? (
             <div>
               <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name}</p>
@@ -243,13 +218,13 @@ export function PdfToEpub() {
               <p className="text-xs text-[#3a3d4a] mt-1">All processing happens locally in your browser</p>
             </div>
           )}
-        </div>
+        </FileDropZone>
 
         {/* metadata */}
         <div>
           <label className="block text-xs text-[#6b7280] mb-1">Title</label>
           <input
-            className={inputClass}
+            className="forge-input"
             placeholder="Book title"
             value={title}
             onChange={e => setTitle(e.target.value)}
@@ -259,7 +234,7 @@ export function PdfToEpub() {
         <div>
           <label className="block text-xs text-[#6b7280] mb-1">Author <span className="text-[#3a3d4a]">(optional)</span></label>
           <input
-            className={inputClass}
+            className="forge-input"
             placeholder="Author name"
             value={author}
             onChange={e => setAuthor(e.target.value)}
@@ -289,7 +264,7 @@ export function PdfToEpub() {
           <button
             onClick={convert}
             disabled={!file || status === 'converting'}
-            className={btnClass}
+            className="forge-btn-accent"
           >
             {status === 'converting' ? 'Converting…' : 'Convert to EPUB'}
           </button>
@@ -298,7 +273,7 @@ export function PdfToEpub() {
             <a
               href={epubUrl}
               download={epubName}
-              className={btnClass}
+              className="forge-btn-accent"
             >
               Download {epubName}
             </a>

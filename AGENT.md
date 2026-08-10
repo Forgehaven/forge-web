@@ -117,7 +117,6 @@ GeoResult          // { id, name, country_code, country, admin1?, timezone, lati
 flag(cc)           // country code → emoji flag
 haversineKm(lat1, lon1, lat2, lon2)   // great-circle distance in km
 bearingDeg(lat1, lon1, lat2, lon2)    // rhumb line bearing in degrees
-formatDist(km)     // "42 km" / "1,234 km"
 ```
 Geocoding API: `https://geocoding-api.open-meteo.com/v1/search`
 
@@ -451,8 +450,9 @@ live in `src/config/sections.ts` (`Albion - <Page>`).
 - **Sync**: `shared/settings/sync.ts` (`useAlbionUserSync`, mounted once in `GamesLayout`) loads the
   server blobs on login and debounced-saves local edits back through `shared/settings/api.ts`
   (`GET/PUT /game/albion/user/{prices|craft-settings}`). Logged out it does nothing.
-- The community-shared `GET /game/albion/craft-settings` is read by `craftEconomics.ts` for base
-  defaults only; per-user edits never write to it.
+- Station fees come solely from the user's own craft settings (`userStationFee` +
+  `settings/craftSettings.ts`); the old shared `GET /game/albion/craft-settings` read path was
+  removed from the frontend (the endpoint still exists server-side).
 
 ### Craft economics (`shared/crafting/craftEconomics.ts`)
 - Bonus-aware return rates per item+city via `returnRateFor(id, city, focus)` - `itemEcon(id)`

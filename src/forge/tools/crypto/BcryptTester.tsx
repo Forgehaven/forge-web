@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import bcrypt from 'bcryptjs'
+import { useCopy } from '../../../hooks/useCopy'
 
 type Mode = 'hash' | 'verify'
 
@@ -11,7 +12,7 @@ export function BcryptTester() {
   const [rounds, setRounds] = useState(10)
   const [hashOutput, setHashOutput] = useState('')
   const [hashing, setHashing] = useState(false)
-  const [hashCopied, setHashCopied] = useState(false)
+  const { copy: copyHash, copied: hashCopied } = useCopy()
 
   // Verify mode
   const [verifyPassword, setVerifyPassword] = useState('')
@@ -43,15 +44,6 @@ export function BcryptTester() {
     }
   }
 
-  function copyHash() {
-    navigator.clipboard.writeText(hashOutput)
-    setHashCopied(true)
-    setTimeout(() => setHashCopied(false), 1500)
-  }
-
-  const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full"
-  const btnClass = "px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed"
-
   return (
     <div className="max-w-xl">
       <div className="flex items-center justify-between mb-6">
@@ -75,7 +67,7 @@ export function BcryptTester() {
         <div className="flex flex-col gap-4">
           <div>
             <label className="block text-xs text-[#6b7280] mb-1">Password</label>
-            <input className={inputClass} type="password" value={hashInput}
+            <input className="forge-input" type="password" value={hashInput}
               onChange={e => setHashInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && doHash()}
               placeholder="Password to hash" />
@@ -96,7 +88,7 @@ export function BcryptTester() {
             </div>
           </div>
 
-          <button onClick={doHash} disabled={!hashInput || hashing} className={btnClass}>
+          <button onClick={doHash} disabled={!hashInput || hashing} className="forge-btn-accent">
             {hashing ? 'Hashing…' : 'Hash Password'}
           </button>
 
@@ -104,7 +96,7 @@ export function BcryptTester() {
             <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs text-[#6b7280]">Bcrypt hash</span>
-                <button onClick={copyHash} className="text-xs text-[#c4af64] hover:text-[#e2e4ed] transition-colors cursor-pointer">
+                <button onClick={() => copyHash(hashOutput)} className="text-xs text-[#c4af64] hover:text-[#e2e4ed] transition-colors cursor-pointer">
                   {hashCopied ? 'Copied!' : 'Copy'}
                 </button>
               </div>
@@ -116,19 +108,19 @@ export function BcryptTester() {
         <div className="flex flex-col gap-4">
           <div>
             <label className="block text-xs text-[#6b7280] mb-1">Password</label>
-            <input className={inputClass} type="password" value={verifyPassword}
+            <input className="forge-input" type="password" value={verifyPassword}
               onChange={e => { setVerifyPassword(e.target.value); setVerifyResult(null) }}
               placeholder="Password to verify" />
           </div>
 
           <div>
             <label className="block text-xs text-[#6b7280] mb-1">Bcrypt hash</label>
-            <input className={`${inputClass} font-mono`} value={verifyHash}
+            <input className="forge-input font-mono" value={verifyHash}
               onChange={e => { setVerifyHash(e.target.value); setVerifyResult(null) }}
               placeholder="$2a$10$..." />
           </div>
 
-          <button onClick={doVerify} disabled={!verifyPassword || !verifyHash.trim() || verifying} className={btnClass}>
+          <button onClick={doVerify} disabled={!verifyPassword || !verifyHash.trim() || verifying} className="forge-btn-accent">
             {verifying ? 'Verifying…' : 'Verify'}
           </button>
 

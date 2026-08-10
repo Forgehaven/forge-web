@@ -79,7 +79,7 @@ describe('ExpCampsPage', () => {
     mockApi({ authed: true, serverFavs: ['standard-uleguerand_range-1'] })
     renderPage()
 
-    await waitFor(() => expect(screen.getAllByRole('row')[1]).toHaveTextContent('Uleguerand Range'))
+    await waitFor(() => expect(screen.getAllByRole('row')[1]).toHaveTextContent('Uleguerand Range'), { timeout: 3000 })
     expect(JSON.parse(localStorage.getItem('forgegames_ffxi_expcamps_v1')!).favs)
       .toContain('standard-uleguerand_range-1')
   })

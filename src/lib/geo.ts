@@ -30,8 +30,3 @@ export function bearingDeg(lat1: number, lon1: number, lat2: number, lon2: numbe
   const Δψ = Math.log(Math.tan(φ2 / 2 + Math.PI / 4) / Math.tan(φ1 / 2 + Math.PI / 4))
   return (Math.atan2(Δλ, Δψ) * 180 / Math.PI + 360) % 360
 }
-
-export function formatDist(km: number): string {
-  if (km < 1) return '< 1 km'
-  return `${Math.round(km).toLocaleString()} km`
-}

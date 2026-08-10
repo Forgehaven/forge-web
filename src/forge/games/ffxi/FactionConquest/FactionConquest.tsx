@@ -13,6 +13,7 @@ import { loadSelectedCharId } from '../selectedChar'
 import type { NationMeta } from '../nations'
 import { ConfirmButton } from '../../../../components/ConfirmButton'
 import { ImportPanel } from '../../../../components/ImportPanel'
+import { useCopy } from '../../../../hooks/useCopy'
 import bastokIcon from '../data/BastokIcon.png'
 import windurstIcon from '../data/WindurstIcon.png'
 import sandoriaIcon from '../data/SandoriaIcon.png'
@@ -296,7 +297,7 @@ export function FactionConquest() {
     if (pendingOwners.current) putConquest(pendingOwners.current)
   }, [])
   const [importOpen, setImportOpen] = useState(false)
-  const [copied, setCopied] = useState(false)
+  const { copy, copied } = useCopy()
   const [sortCol, setSortCol] = useState<'zone' | 'region' | null>(null)
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc')
 
@@ -341,10 +342,7 @@ export function FactionConquest() {
   }
 
   function exportState() {
-    const code = btoa(JSON.stringify({ owners: saved.owners }))
-    navigator.clipboard.writeText(code)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
+    copy(btoa(JSON.stringify({ owners: saved.owners })))
   }
 
   function importState(code: string): boolean {

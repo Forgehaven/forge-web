@@ -3,26 +3,24 @@ import { ForgeLayout } from '../../components/ForgeLayout'
 import { GamesBottomBar } from './GamesBottomBar'
 import { NotFound } from '../../components/NotFound'
 import { GamesSidebar } from './GamesSidebar'
-import { GamesSettings } from './GamesSettings'
 import { GamesHome } from './GamesHome'
 import { FFxiSplash } from './ffxi/FFxiSplash'
-import { SkillchainCalc } from './ffxi/SkillchainCalc'
-import { ClammingTracker } from './ffxi/ClammingTracker'
-import { QuestTracker } from './ffxi/QuestTracker'
-import { SpellTracker } from './ffxi/SpellTracker'
-import { KeyItemTracker } from './ffxi/KeyItemTracker'
-import { FactionConquest } from './ffxi/FactionConquest'
-import { FriendViewer } from './ffxi/FriendViewer'
-import { VanaTimers } from './ffxi/VanaTimers'
-import { LockoutTracker } from './ffxi/LockoutTracker'
-import { InteractiveMap } from './ffxi/InteractiveMap'
-import { ExpCampsPage } from './ffxi/ExpCamps'
+import { SkillchainCalc } from './ffxi/SkillchainCalc/SkillchainCalc'
+import { ClammingTracker } from './ffxi/ClammingTracker/ClammingTracker'
+import { QuestTracker } from './ffxi/QuestTracker/QuestTracker'
+import { SpellTracker } from './ffxi/SpellTracker/SpellTracker'
+import { KeyItemTracker } from './ffxi/KeyItemTracker/KeyItemTracker'
+import { FactionConquest } from './ffxi/FactionConquest/FactionConquest'
+import { FriendViewer } from './ffxi/FriendViewer/FriendViewer'
+import { VanaTimers } from './ffxi/VanaTimers/VanaTimers'
+import { LockoutTracker } from './ffxi/LockoutTracker/LockoutTracker'
+import { InteractiveMap } from './ffxi/InteractiveMap/InteractiveMap'
+import { ExpCampsPage } from './ffxi/ExpCamps/ExpCampsPage'
 import { AlbionSplash } from './albion/Splash/AlbionSplash'
 import { ItemIndexPage } from './albion/ItemIndex/ItemIndexPage'
 import { ItemDetailPage } from './albion/ItemDetail/ItemDetailPage'
 import { FavouritesPage } from './albion/Favourites/FavouritesPage'
 import { GoldPricePage } from './albion/Gold/GoldPricePage'
-import { LayoutOverrideProvider } from '../../components/LayoutOverride'
 import { AlarmProvider } from '../../components/alarms/AlarmProvider'
 import { ffxiAlarmTargets } from './ffxi/alarms'
 import { useAlbionUserSync } from './albion/shared/settings/sync'
@@ -34,7 +32,7 @@ function AlbionUserSync() {
 
 export default function GamesLayout() {
   return (
-      <LayoutOverrideProvider>
+      <>
       <AlbionUserSync />
       <AlarmProvider sources={{ ffxi: ffxiAlarmTargets }}>
       <Routes>
@@ -43,7 +41,6 @@ export default function GamesLayout() {
             title="Games"
             homePath="/games"
             sidebar={GamesSidebar}
-            settings={GamesSettings}
             bottomBar={GamesBottomBar}
           />
         }>
@@ -71,6 +68,6 @@ export default function GamesLayout() {
         </Route>
       </Routes>
       </AlarmProvider>
-      </LayoutOverrideProvider>
+      </>
   )
 }

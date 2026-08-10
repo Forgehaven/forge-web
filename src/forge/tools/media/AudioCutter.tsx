@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
+import { FileDropZone } from '../../../components/FileDropZone'
+import { formatTime } from '../../../lib/time'
 
 // Lazy-load the IIFE build from /public to avoid Vite module-resolution issues
 let _lameReady: Promise<void> | null = null
@@ -14,13 +16,6 @@ function ensureLamejs(): Promise<void> {
     document.head.appendChild(s)
   })
   return _lameReady
-}
-
-function formatTime(s: number): string {
-  const m = Math.floor(s / 60)
-  const sec = s % 60
-  if (m === 0) return `${sec.toFixed(2)}s`
-  return `${m}:${sec.toFixed(2).padStart(5, '0')}`
 }
 
 function sliceToMp3(buf: AudioBuffer, startSec: number, endSec: number): Blob {
@@ -81,7 +76,6 @@ export function AudioCutter() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isDecoding, setIsDecoding] = useState(false)
   const [isExporting, setIsExporting] = useState(false)
-  const [dropping, setDropping] = useState(false)
   const [error, setError] = useState('')
   const [outputUrl, setOutputUrl] = useState<string | null>(null)
   const [outputName, setOutputName] = useState('')
@@ -92,7 +86,6 @@ export function AudioCutter() {
   const playStartPositionRef = useRef(0)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const waveRef = useRef<HTMLDivElement>(null)
-  const fileRef = useRef<HTMLInputElement>(null)
   const rafRef = useRef(0)
 
   // Stable refs for closures - avoids stale state in event handlers
@@ -328,9 +321,6 @@ export function AudioCutter() {
       .finally(() => setIsExporting(false))
   }
 
-  const btnClass = "px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-  const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full"
-
   const startPct = duration > 0 ? (trimStart / duration) * 100 : 0
   const endPct = duration > 0 ? (trimEnd / duration) * 100 : 100
 
@@ -341,17 +331,7 @@ export function AudioCutter() {
       <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-5">
 
         {/* Drop zone */}
-        <div
-          onDragOver={e => { e.preventDefault(); setDropping(true) }}
-          onDragLeave={() => setDropping(false)}
-          onDrop={e => { e.preventDefault(); setDropping(false); const f = e.dataTransfer.files[0]; if (f) acceptFile(f) }}
-          onClick={() => fileRef.current?.click()}
-          className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
-            dropping ? 'border-[#c4af64] bg-[#c4af64]/5' : 'border-[#2a2d3a] hover:border-[#3a3d4a]'
-          }`}
-        >
-          <input ref={fileRef} type="file" accept="audio/*" className="hidden"
-            onChange={e => { const f = e.target.files?.[0]; if (f) acceptFile(f) }} />
+        <FileDropZone accept="audio/*" onFiles={files => acceptFile(files[0])}>
           {file ? (
             <div>
               <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name}</p>
@@ -371,7 +351,7 @@ export function AudioCutter() {
               </p>
             </div>
           )}
-        </div>
+        </FileDropZone>
 
         {isDecoding && <p className="text-xs text-[#6b7280]">Decoding audio…</p>}
         {error && <p className="text-xs text-red-400">{error}</p>}
@@ -407,7 +387,7 @@ export function AudioCutter() {
                     setTrimStart(v)
                     redraw()
                   }}
-                  className={inputClass}
+                  className="forge-input"
                 />
               </div>
               <div>
@@ -421,7 +401,7 @@ export function AudioCutter() {
                     setTrimEnd(v)
                     redraw()
                   }}
-                  className={inputClass}
+                  className="forge-input"
                 />
               </div>
               <div>
@@ -434,13 +414,13 @@ export function AudioCutter() {
 
             {/* Playback + cut */}
             <div className="flex items-center gap-3 flex-wrap">
-              <button onClick={togglePlay} className={btnClass}>
+              <button onClick={togglePlay} className="forge-btn-accent">
                 {isPlaying ? '⏸ Pause' : '▶ Play selection'}
               </button>
               <span className="text-xs text-[#6b7280] font-mono">
                 {formatTime(currentTime)} / {formatTime(duration)}
               </span>
-              <button onClick={exportCut} disabled={isExporting} className={`${btnClass} ml-auto`}>
+              <button onClick={exportCut} disabled={isExporting} className="forge-btn-accent ml-auto">
                 {isExporting ? 'Exporting…' : 'Cut & Export MP3'}
               </button>
             </div>
@@ -448,7 +428,7 @@ export function AudioCutter() {
             {/* Download */}
             {outputUrl && (
               <div className="flex gap-3 items-center border-t border-[#2a2d3a] pt-4">
-                <a href={outputUrl} download={outputName} className={btnClass}>
+                <a href={outputUrl} download={outputName} className="forge-btn-accent">
                   Download {outputName}
                 </a>
               </div>

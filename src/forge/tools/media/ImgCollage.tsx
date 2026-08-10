@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { FileDropZone } from '../../../components/FileDropZone'
 
 interface CollageImg {
   id: number
@@ -73,7 +74,6 @@ export function ImgCollage() {
   const [canvasH, setCanvasH] = useState('1080')
   const [bg, setBg] = useState('#000000')
   const [gap, setGap] = useState(8)
-  const [dropping, setDropping] = useState(false)
   const [tick, setTick] = useState(0)
   const [draggingId, setDraggingId] = useState<number | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
@@ -210,18 +210,10 @@ export function ImgCollage() {
               </button>
             )}
           </div>
-          <div
-            onDragOver={e => { e.preventDefault(); if (e.dataTransfer.types.includes('Files')) setDropping(true) }}
-            onDragLeave={() => setDropping(false)}
-            onDrop={e => { e.preventDefault(); setDropping(false); if (e.dataTransfer.types.includes('Files')) addFiles(e.dataTransfer.files) }}
-            onClick={() => fileRef.current?.click()}
-            className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${dropping ? 'border-[#c4af64] bg-[#c4af64]/5' : 'border-[#2a2d3a] hover:border-[#3a3d4a]'}`}
-          >
-            <input ref={fileRef} type="file" multiple accept="image/*" className="hidden"
-              onChange={e => { if (e.target.files) addFiles(e.target.files); e.target.value = '' }} />
+          <FileDropZone accept="image/*" multiple inputRef={fileRef} className="p-6" onFiles={addFiles}>
             <p className="text-sm text-[#6b7280]">Drop images here or click to upload</p>
             <p className="text-xs text-[#3a3d4a] mt-1">Up to {MAX} images · PNG, JPG, WEBP · all processing is local</p>
-          </div>
+          </FileDropZone>
         </div>
 
         {/* Thumbnails */}

@@ -12,7 +12,6 @@ const baseMap: Record<Base, { label: string; radix: number; prefix: string; plac
 export function BaseConverter() {
   const [values, setValues] = useState<Record<Base, string>>({ binary: '', octal: '', decimal: '', hex: '' })
 
-  const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full font-mono"
 
   function handleChange(base: Base, raw: string) {
     const { radix } = baseMap[base]
@@ -47,7 +46,7 @@ export function BaseConverter() {
                 {label} {prefix && <span className="text-[#c4af64]">({prefix})</span>}
               </label>
               <input
-                className={inputClass}
+                className="forge-input-mono"
                 value={values[base]}
                 onChange={e => handleChange(base, e.target.value)}
                 placeholder={placeholder}

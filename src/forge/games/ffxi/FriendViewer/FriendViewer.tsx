@@ -6,6 +6,7 @@ import { fetchChar, getUserData, putUserData } from '../api'
 import { useSyncedBlob } from '../hooks/useSyncedBlob'
 import { ConfirmButton } from '../../../../components/ConfirmButton'
 import { ImportPanel } from '../../../../components/ImportPanel'
+import { useCopy } from '../../../../hooks/useCopy'
 import bastokIcon from '../data/BastokIcon.png'
 import windurstIcon from '../data/WindurstIcon.png'
 import sandoriaIcon from '../data/SandoriaIcon.png'
@@ -85,7 +86,7 @@ export function FriendViewer() {
   const [draggedIdx, setDraggedIdx] = useState<number | null>(null)
   const [dragOverIdx, setDragOverIdx] = useState<number | null>(null)
   const touchDragRef = useRef<{ fromIdx: number; overIdx: number | null; startX: number; startY: number } | null>(null)
-  const [copied, setCopied] = useState(false)
+  const { copy, copied } = useCopy()
   const [importOpen, setImportOpen] = useState(false)
   const [diff, setDiff] = useState<Record<string, Record<string, number>>>({})
 
@@ -220,9 +221,7 @@ export function FriendViewer() {
   }
 
   function exportNames() {
-    navigator.clipboard.writeText(btoa(JSON.stringify(saved.names)))
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
+    copy(btoa(JSON.stringify(saved.names)))
   }
 
   function importNames(code: string): boolean {

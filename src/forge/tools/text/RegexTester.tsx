@@ -7,7 +7,6 @@ export function RegexTester() {
   const [flags, setFlags] = useState<Set<Flag>>(new Set(['g']))
   const [testStr, setTestStr] = useState('')
 
-  const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full font-mono"
 
   function toggleFlag(f: Flag) {
     setFlags(prev => {
@@ -67,7 +66,7 @@ export function RegexTester() {
           <div className="flex items-center gap-2">
             <span className="text-[#6b7280] font-mono">/</span>
             <input
-              className={inputClass}
+              className="forge-input-mono"
               value={pattern}
               onChange={e => setPattern(e.target.value)}
               placeholder="[a-z]+"
@@ -93,7 +92,7 @@ export function RegexTester() {
         <div>
           <label className="block text-xs text-[#6b7280] mb-1">Test String</label>
           <textarea
-            className={`${inputClass} resize-none`}
+            className="forge-input-mono resize-none"
             rows={4}
             value={testStr}
             onChange={e => setTestStr(e.target.value)}

@@ -84,7 +84,6 @@ export function IpGeoLocation() {
   }
 
   const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] flex-1 font-mono"
-  const btnClass = "px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
 
   const rows: [string, string][] = data ? [
     ['IP Address',  data.ip],
@@ -113,10 +112,10 @@ export function IpGeoLocation() {
             placeholder="IP address (leave blank for your own)"
             className={inputClass}
           />
-          <button onClick={() => lookup(input || undefined)} disabled={loading} className={btnClass}>
+          <button onClick={() => lookup(input || undefined)} disabled={loading} className="forge-btn-accent">
             {loading ? 'Looking up…' : 'Lookup'}
           </button>
-          <button onClick={() => { setInput(''); lookup(undefined) }} disabled={loading || ipLoading} className={btnClass}>
+          <button onClick={() => { setInput(''); lookup(undefined) }} disabled={loading || ipLoading} className="forge-btn-accent">
             My IP
           </button>
         </div>

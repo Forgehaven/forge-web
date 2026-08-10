@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import ReactCrop, { type Crop, type PixelCrop } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
+import { FileDropZone } from '../../../components/FileDropZone'
 
 function LockIcon({ locked }: { locked: boolean }) {
   return locked ? (
@@ -58,10 +59,8 @@ export function ImgEditor() {
   const [resizeH, setResizeH] = useState('0')
   const [lockAspect, setLockAspect] = useState(true)
   const [scaleOutput, setScaleOutput] = useState(false)
-  const [dropping, setDropping] = useState(false)
   const [error, setError] = useState('')
 
-  const fileRef = useRef<HTMLInputElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
   const previewCanvasRef = useRef<HTMLCanvasElement>(null)
   const urlRef = useRef('')
@@ -299,15 +298,7 @@ export function ImgEditor() {
       <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-5">
 
         {/* Upload */}
-        <div
-          onDragOver={e => { e.preventDefault(); setDropping(true) }}
-          onDragLeave={() => setDropping(false)}
-          onDrop={e => { e.preventDefault(); setDropping(false); const f = e.dataTransfer.files[0]; if (f) acceptFile(f) }}
-          onClick={() => fileRef.current?.click()}
-          className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${dropping ? 'border-[#c4af64] bg-[#c4af64]/5' : 'border-[#2a2d3a] hover:border-[#3a3d4a]'}`}
-        >
-          <input ref={fileRef} type="file" accept="image/*" className="hidden"
-            onChange={e => { const f = e.target.files?.[0]; if (f) acceptFile(f) }} />
+        <FileDropZone accept="image/*" onFiles={files => acceptFile(files[0])}>
           {file ? (
             <div>
               <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name}</p>
@@ -319,7 +310,7 @@ export function ImgEditor() {
               <p className="text-xs text-[#3a3d4a] mt-1">PNG, JPG, WEBP · all processing is local</p>
             </div>
           )}
-        </div>
+        </FileDropZone>
 
         {error && <p className="text-xs text-red-400">{error}</p>}
 
