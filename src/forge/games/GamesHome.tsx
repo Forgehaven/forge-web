@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import ffxiLogo from './ffxi/ffxi-logo.png'
-import albionLogo from './albion/Splash/albion-logo.png'
 
 export function GamesHome() {
   return (
@@ -28,17 +27,6 @@ export function GamesHome() {
               className="w-12 h-12 object-contain opacity-70 group-hover:opacity-100 transition-opacity"
             />
             FFXI Horizon
-          </Link>
-          <Link
-            to="/games/albion"
-            className="group flex flex-col items-center gap-2 text-sm text-[#9ca3af] hover:text-[#e2e4ed] transition-colors"
-          >
-            <img
-              src={albionLogo}
-              alt=""
-              className="h-12 w-auto object-contain opacity-70 group-hover:opacity-100 transition-opacity"
-            />
-            Albion Online
           </Link>
         </div>
       </div>

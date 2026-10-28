@@ -13,9 +13,9 @@ describe('forgeFetch', () => {
   it('sends credentials include and Content-Type json', async () => {
     fetchSpy.mockResolvedValue(new Response(JSON.stringify({ status: 'ok', payload: { data: 1 } }), { status: 200 }))
 
-    const result = await forgeFetch('/albion/test')
+    const result = await forgeFetch('/test')
 
-    expect(fetchSpy).toHaveBeenCalledWith('https://api.forgehaven.io/albion/test', {
+    expect(fetchSpy).toHaveBeenCalledWith('https://api.forgehaven.io/test', {
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
     })
@@ -28,7 +28,7 @@ describe('forgeFetch', () => {
     const cb = vi.fn()
     setOnUnauthenticated(cb)
 
-    const result = await forgeFetch('/albion/test')
+    const result = await forgeFetch('/test')
 
     expect(cb).toHaveBeenCalledOnce()
     expect(result).toEqual({ status: 'error', message: 'Not authenticated' })
@@ -40,7 +40,7 @@ describe('forgeFetch', () => {
     const cb = vi.fn()
     setOnUnauthenticated(cb)
 
-    const result = await forgeFetch('/albion/test')
+    const result = await forgeFetch('/test')
 
     expect(cb).not.toHaveBeenCalled()
     expect(result).toEqual({ status: 'error', message: 'Bad request' })
@@ -52,7 +52,7 @@ describe('forgeFetch', () => {
     const cb = vi.fn()
     setOnUnauthenticated(cb)
 
-    const result = await forgeFetch('/albion/test')
+    const result = await forgeFetch('/test')
 
     expect(cb).not.toHaveBeenCalled()
     expect(result).toEqual({ status: 'error', message: 'Missing required role' })

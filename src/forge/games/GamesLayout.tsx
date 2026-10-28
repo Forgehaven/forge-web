@@ -16,24 +16,12 @@ import { VanaTimers } from './ffxi/VanaTimers/VanaTimers'
 import { LockoutTracker } from './ffxi/LockoutTracker/LockoutTracker'
 import { InteractiveMap } from './ffxi/InteractiveMap/InteractiveMap'
 import { ExpCampsPage } from './ffxi/ExpCamps/ExpCampsPage'
-import { AlbionSplash } from './albion/Splash/AlbionSplash'
-import { ItemIndexPage } from './albion/ItemIndex/ItemIndexPage'
-import { ItemDetailPage } from './albion/ItemDetail/ItemDetailPage'
-import { FavouritesPage } from './albion/Favourites/FavouritesPage'
-import { GoldPricePage } from './albion/Gold/GoldPricePage'
 import { AlarmProvider } from '../../components/alarms/AlarmProvider'
 import { ffxiAlarmTargets } from './ffxi/alarms'
-import { useAlbionUserSync } from './albion/shared/settings/sync'
-
-function AlbionUserSync() {
-  useAlbionUserSync()
-  return null
-}
 
 export default function GamesLayout() {
   return (
       <>
-      <AlbionUserSync />
       <AlarmProvider sources={{ ffxi: ffxiAlarmTargets }}>
       <Routes>
         <Route element={
@@ -59,11 +47,6 @@ export default function GamesLayout() {
           <Route path="ffxi/exp-camps" element={<ExpCampsPage />} />
           <Route path="ffxi/map" element={<InteractiveMap />} />
           <Route path="ffxi/map/:zoneId" element={<InteractiveMap />} />
-          <Route path="albion" element={<AlbionSplash />} />
-          <Route path="albion/item-index" element={<ItemIndexPage />} />
-          <Route path="albion/item/:itemId" element={<ItemDetailPage />} />
-          <Route path="albion/favourites" element={<FavouritesPage />} />
-          <Route path="albion/gold" element={<GoldPricePage />} />
           <Route path="*" element={<NotFound backTo="/games" backLabel="Back to games" />} />
         </Route>
       </Routes>

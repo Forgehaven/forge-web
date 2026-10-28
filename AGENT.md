@@ -94,7 +94,6 @@ Converters · Text · Media · Lookups · Encoding · Generators · Sysadmin · 
 | `useWeather(lat, lon)` | SWR-backed current weather string, 10-min refresh |
 | `useIPInfo()` | Redux-backed `{ data: IPInfo \| null }` from ipapi.co, 5-min TTL cache |
 | `useLocalList(key, idOf)` | localStorage-backed list state (`{ items, toggle, has, move }`), the base of the favourites hooks |
-| `useItemFavourites()` | Starred Albion items (`ItemFavourite` snapshots). Built on `useLocalList`. localStorage: `forgegames_albion_item_favourites_v1` |
 | `useTempUnit()` | `[unit, setUnit]` C/F preference synced across tabs; module also exports `formatTemp`/`formatWind`/`formatPressure`/`formatPrecip`/`formatDist` |
 | `useSidebarCollapse(key)` | Collapsed-section map for a sidebar (`{ collapsed, toggle }`), persisted under the given storage key |
 
@@ -216,8 +215,7 @@ Prefer extracting reusable UI into `src/components/`. Folder-per-concern (e.g. `
 Login is only an upgrade (cross-device sync), never a gate.
 
 - **API client**: `forgeFetch<T>(path, init?)` in `src/lib/api.ts` is THE credentialed backend
-  wrapper (envelope + 401 hook + `{detail}` normalization). `albionFetch` is now just an alias of
-  it. FFXI helpers live in `src/forge/games/ffxi/api.ts`: `listCharacters` / `registerCharacter` /
+  wrapper (envelope + 401 hook + `{detail}` normalization). FFXI helpers live in `src/forge/games/ffxi/api.ts`: `listCharacters` / `registerCharacter` /
   `deleteCharacter` / `getCharData` / `putCharData` / `getUserData` / `putUserData` /
   `getConquest` / `putConquest`.
 - **Character registry**: users register up to **3** HorizonXI characters (server-enforced;
@@ -390,98 +388,19 @@ Login is only an upgrade (cross-device sync), never a gate.
   `NationMeta` map; FactionConquest keeps its own 1-4 map with Beastmen), `ffxi/hooks/useCharRank.ts`
   (live nation-rank lookup shown in the character headers).
 
-## Albion - Universal Crafting Tools
-
-The Albion tools are **price-free crafting calculators**: the user enters their own market prices
-and the tools compute craft cost, margin, and the recipe tree. There is **no live market feed** -
-the old Market Manager (its live-price / ticker WebSockets, Best Value, Guild Data, category
-pages, and Market Fixing) was removed; that product now lives at runningdawn.com.
-
-### Folder structure (`src/forge/games/albion/`)
-Each visual section is its own folder; everything cross-section sits under `shared/`:
-```
-albion/
-  Splash/         AlbionSplash.tsx + albion-logo.png  (the /games/albion landing)
-  ItemIndex/      ItemIndexPage, CraftFilters, craftRows, CraftTable  (search + filter table)
-  ItemDetail/     ItemDetailPage  (per-item dashboard: prices, craft tree, margin)
-  Favourites/     FavouritesPage  (Item Index scoped to starred items)
-  Gold/           GoldPricePage + chartTicks, indicators, recommendation, useGoldPrice
-  CraftSettings/  CraftSettingsPanel  (a modal opened from the sidebar, NOT a route)
-  shared/
-    api.ts        albionFetch - alias of forgeFetch (the credentialed backend wrapper)
-    constants.ts  CITIES / QUALITIES / STATION_TYPES / CITY_BONUSES
-    ItemIcon.tsx  <ItemIcon> (forge-api proxy + service-worker cached, see below)
-    crafting/     craft engine: craftCost, craftEconomics, craftingApi, itemMeta,
-                  marketFormat, RecipeTreeCard, types, useAllItems, useItemRecipes
-    prices/       userStore.ts - the user's entered prices (localStorage + server sync)
-    settings/     craftSettings.ts (per-user prefs store), api.ts (user-blob GET/PUT), sync.ts
-```
-Rule going forward: a routed page = its own folder; anything imported by 2+ sections lives in
-`shared/` (never a loose file at the `albion/` root).
-
-### Routes (`src/forge/games/GamesLayout.tsx`), all under `/games/albion/`
-- `` (index) - `AlbionSplash`
-- `item-index` - `ItemIndexPage`
-- `item/:itemId` - `ItemDetailPage`
-- `favourites` - `FavouritesPage`
-- `gold` - `GoldPricePage`
-
-Craft Settings is a **modal** (sidebar button in `GamesSidebar.tsx`), not a route. Tab titles
-live in `src/config/sections.ts` (`Albion - <Page>`).
-
-### Auth (Discord OAuth) - app-wide, optional
+## Auth (Discord OAuth) - app-wide, optional
 - `DISCORD_CLIENT_ID = '1519734763139633354'` hardcoded in `src/config/apiUrls.ts` (public value).
 - `FORGE_API_URL` via Vite `define.__API_URL__` (falls back to `https://api.forgehaven.io`; set
   `FORGE_API_URL=http://localhost:5002` in `.env.local` for dev).
 - `AuthProvider` at the app root (`App.tsx`); `useAuth` / `AuthContext` in `src/auth/authContext.ts`.
   A Login button in every sidebar footer opens `src/auth/LoginModal.tsx`.
-- **Login is OPTIONAL and the Albion tools are NOT role-gated** - they work fully logged out on
-  localStorage. Login only adds cross-device sync of your prices + craft settings.
+- **Login is OPTIONAL**: nothing is role-gated. Login only adds cross-device sync (FFXI).
 - Flow: `login()` -> Discord OAuth -> `/auth/callback?code=` -> POST `{code}` -> HttpOnly
   `forge_session` cookie (1h) -> redirect to stored `auth_return_path` -> `/auth/me` on mount.
 - Logout POSTs `/auth/logout`, sets `localStorage.forge_logged_out`, reloads.
-- 401 handler: `albionFetch` (`shared/api.ts`) calls `notifyUnauthenticated()`; `AuthProvider`
+- 401 handler: `forgeFetch` (`src/lib/api.ts`) calls `notifyUnauthenticated()`; `AuthProvider`
   registers the cleanup via `setOnUnauthenticated()`. It also normalizes FastAPI `{detail}` error
   bodies into the `{status, message}` envelope.
-
-### Per-user prices + craft settings (sync)
-- **Prices**: `shared/prices/userStore.ts` - the user's entered buy/sell prices, keyed by item.
-- **Craft settings**: `shared/settings/craftSettings.ts` - `UserCraftSettings` (premium, focus,
-  defaultCity, matSource, craftStrategy, per-city station fees). A localStorage-first store exposed
-  via a `useSyncExternalStore` hook (`useUserCraftSettings`).
-- **Sync**: `shared/settings/sync.ts` (`useAlbionUserSync`, mounted once in `GamesLayout`) loads the
-  server blobs on login and debounced-saves local edits back through `shared/settings/api.ts`
-  (`GET/PUT /game/albion/user/{prices|craft-settings}`). Logged out it does nothing.
-- Station fees come solely from the user's own craft settings (`userStationFee` +
-  `settings/craftSettings.ts`); the old shared `GET /game/albion/craft-settings` read path was
-  removed from the frontend (the endpoint still exists server-side).
-
-### Craft economics (`shared/crafting/craftEconomics.ts`)
-- Bonus-aware return rates per item+city via `returnRateFor(id, city, focus)` - `itemEcon(id)`
-  classifies the archetype from the UniqueName to a crafting station + specialty city; unmatched
-  ids fall back to conservative base rates.
-- Premium sales tax (4%/8%) via `salesTaxRate`; flat station fees per 100 nutrition via
-  `userStationFee`. `craftCost.ts` takes a `ReturnRateOf` callable so bonus rates hit exactly their
-  specialty craft lines.
-
-### Item Detail (`ItemDetail/ItemDetailPage.tsx`)
-Per-item dashboard: tier (T1-T8) + enchant (.0-.4) variant switchers that rewrite the item id
-(`shared/crafting/itemMeta.ts`), a per-quality price strip (resources have no quality -
-`isResource()`), a Gold-style history chart, and the **Crafting Tree card**
-(`shared/crafting/RecipeTreeCard.tsx`) with per-node buy / craft / upgrade / transmute modes and an
-aggregated shopping list. Acquisition per node is `min(buy, craft, upgrade)`.
-
-### Item icons (`src/utils/albionIcons.ts` + `shared/ItemIcon.tsx`)
-`itemIconUrl(uniqueName, size, quality?)` builds `{forgeAPI}/game/albion/icon/{id}` (forge-api
-proxy, 7-day immutable cache). The icon service worker (`public/icon-sw.js`, registered in
-`main.tsx`) pins each icon in the Cache API (cache-first, `albion-icons-v1`, 4000-entry cap). The
-proxy is same-origin so responses are non-opaque for the SW. `<ItemIcon uniqueName size quality? />`
-is `loading="lazy" decoding="async" crossOrigin="anonymous"`. Table icons omit `quality` on purpose
-(a quality-filter flip must not re-download every icon).
-
-### Recipes are fetched in batch
-`fetchRecipes` (`shared/crafting/craftingApi.ts`) chunks ids 50-per-request against
-`GET /game/albion/recipes/{ids}`. `useItemRecipes`' module cache dedupes across pages.
 
 ### DataTable (`src/components/DataTable.tsx`)
 Generic sortable table with sticky headers, footer, and the row index passed to `render` as the

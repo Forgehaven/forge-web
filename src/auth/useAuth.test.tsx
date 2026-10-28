@@ -6,13 +6,13 @@ import { AuthProvider } from './AuthProvider'
 const fetchSpy = vi.fn()
 globalThis.fetch = fetchSpy
 
-function user(member = true, role = true): AuthUser {
+function user(member = true): AuthUser {
   return {
     id: 'u1',
     discord_id: 'd1',
     username: 'Test#0001',
     avatar: 'https://cdn.discordapp.com/avatars/d1/hash.png',
-    guilds: { running_dawn: { is_member: member, roles: { albion_guild: role } } },
+    guilds: { running_dawn: { is_member: member, roles: {} } },
   }
 }
 
@@ -25,7 +25,7 @@ beforeEach(() => {
 
   Object.defineProperty(window, 'location', {
     writable: true,
-    value: { ...origLocation, href: '', pathname: '/games/albion/item-index', origin: 'https://forgehaven.io', reload: vi.fn() },
+    value: { ...origLocation, href: '', pathname: '/games/ffxi/spell-tracker', origin: 'https://forgehaven.io', reload: vi.fn() },
   })
 })
 
@@ -86,7 +86,7 @@ describe('AuthProvider', () => {
 
     act(() => result.current.login())
 
-    expect(sessionStorage.getItem('auth_return_path')).toBe('/games/albion/item-index')
+    expect(sessionStorage.getItem('auth_return_path')).toBe('/games/ffxi/spell-tracker')
     expect(window.location.href).toContain('https://discord.com/api/oauth2/authorize')
     expect(window.location.href).toContain('client_id=1519734763139633354')
     expect(window.location.href).toContain('redirect_uri=https%3A%2F%2Fforgehaven.io%2Fauth%2Fcallback')

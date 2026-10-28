@@ -42,7 +42,7 @@ describe('SidebarFooter', () => {
   it('shows the Discord avatar when logged in', async () => {
     fetchSpy.mockResolvedValue(ok({
       id: 'u1', discord_id: 'd1', username: 'Tester#0001', avatar: AVATAR_URL,
-      guilds: { running_dawn: { is_member: true, roles: { albion_guild: true } } },
+      guilds: { running_dawn: { is_member: true, roles: {} } },
     }))
 
     const { container } = renderFooter()

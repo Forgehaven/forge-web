@@ -7,9 +7,8 @@ import { useAuth, type AuthUser } from './authContext'
 import { useFfxiCharacters } from '../forge/games/ffxi/hooks/useFfxiCharacters'
 import { API_URLS } from '../config/apiUrls'
 import ffxiLogo from '../forge/games/ffxi/ffxi-logo.png'
-import albionLogo from '../forge/games/albion/Splash/albion-logo.png'
 
-// 'running_dawn' -> 'Running Dawn', 'albion_guild' -> 'Albion Guild'
+// 'running_dawn' -> 'Running Dawn'
 function titleCase(slug: string): string {
   return slug
     .split('_')
@@ -73,7 +72,6 @@ export function LoginModal({ open, onClose }: { open: boolean; onClose: () => vo
                   FFXI Spell Tracker, Faction Conquest, Clamming Tracker, and more (today they live only in this browser).
                 </li>
                 <li>Share entries with your guild, like the week's Faction Conquest map everyone can reference.</li>
-                <li>Access role-gated services like the Albion Market Manager.</li>
               </ul>
             </div>
             <button
@@ -83,8 +81,7 @@ export function LoginModal({ open, onClose }: { open: boolean; onClose: () => vo
               Login with Discord
             </button>
             <p className="text-xs text-[#6b7280] leading-relaxed border-t border-[#2a2d3a] pt-3">
-              Login is optional. Tools and trackers work locally in your browser; only services like the
-              Albion Market Manager require login.
+              Login is optional. Tools and trackers work locally in your browser.
             </p>
           </div>
         )}
@@ -98,10 +95,10 @@ function GamesSection({ user }: { user: AuthUser }) {
   const { pathname } = useLocation()
   const sections = [
     { key: 'ffxi', label: 'FFXI Horizon', icon: ffxiLogo, prefix: '/games/ffxi', body: <FfxiCharacters /> },
-    { key: 'albion', label: 'Albion Online', icon: albionLogo, prefix: '/games/albion', body: <AlbionAccess user={user} /> },
   ]
   return (
     <>
+      <GuildAccess user={user} />
       {sections.map(s => (
         <Collapsible
           key={s.key}
@@ -204,11 +201,11 @@ function AccessChip({ ok, label }: { ok: boolean; label: string }) {
 }
 
 // One row per guild the backend reports on: membership chip + a chip per named role.
-function AlbionAccess({ user }: { user: AuthUser }) {
+function GuildAccess({ user }: { user: AuthUser }) {
   const guilds = Object.entries(user.guilds)
   return (
     <div className="pb-1 space-y-2">
-      <p className="text-sm text-[#e2e4ed]">Market Manager access</p>
+      <p className="text-sm text-[#e2e4ed]">Guild access</p>
       {guilds.length === 0 && (
         <p className="text-xs text-[#9ca3af]">No guild status yet. Try logging in again.</p>
       )}
