@@ -12,7 +12,7 @@ The chunk-size warning about ffmpeg/pdf.js is expected and not an error.
 ```bash
 npm run dev       # vite dev server on :5173
 ```
-Set `FORGE_API_URL=http://localhost:5002` in `.env.local` (at `forge-web/.env.local`) to point the Albion MM backend at a local API server.
+Set `FORGE_API_URL=http://localhost:5002` in `.env.local` (at `forge-web/.env.local`) to point the app at a local forge-api server.
 
 ---
 
@@ -20,7 +20,7 @@ Set `FORGE_API_URL=http://localhost:5002` in `.env.local` (at `forge-web/.env.lo
 - React 19 + TypeScript + Vite + Tailwind CSS v4 (`@tailwindcss/vite` plugin)
 - React Router v7 (BrowserRouter), Redux Toolkit (IP geolocation store), SWR (weather/currency)
 - `eslint-plugin-react-hooks` v7 — React 19's stricter ruleset (see ESLint patterns below)
-- Deployed via GitHub Actions on push to `main` → GitHub Pages, custom domain `forgehaven.io` (CNAME at root)
+- Deployed via GitHub Actions on push to `main` → GitHub Pages, custom domain `forgehaven.io` (CNAME lives in `public/`)
 - FFmpeg packages excluded from Vite `optimizeDeps` (served from `node_modules/@ffmpeg/core/dist/umd/` via `ffmpegCorePlugin` in vite.config.ts; copied to `dist/ffmpeg/` on build)
 
 ---
@@ -37,7 +37,7 @@ Defined in `src/index.css` via `@theme`. **Prefer these over raw hex values:**
 | `forge-text` | `#e2e4ed` | primary text |
 | `forge-muted` | `#6b7280` | secondary/label text |
 
-`index.css` also defines shared utility classes: `forge-card`, `forge-label`, `forge-input`, `forge-input-mono`, `forge-btn`, `forge-btn-active`, `forge-result`, `forge-result-value`, `forge-result-label`, `forge-nav-link`, `forge-nav-link-active`, `forge-bottom-bar`.
+`index.css` also defines shared utility classes: `forge-card`, `forge-label`, `forge-input`, `forge-input-mono`, `forge-btn`, `forge-btn-active`, `forge-btn-accent`, `forge-result`, `forge-result-value`, `forge-result-label`, `forge-nav-link`, `forge-nav-link-active`, `forge-bottom-bar`.
 
 ---
 
@@ -57,8 +57,7 @@ Defined in `src/index.css` via `@theme`. **Prefer these over raw hex values:**
 
 ## Adding a new tool
 1. Create component in `src/forge/tools/<section>/ToolName.tsx`
-2. Add `<Route path="slug" element={<ToolName />} />` inside `src/forge/tools/ToolsLayout.tsx` (NOT `App.tsx` — the tools subtree is lazy-loaded from there)
-3. Add `{ path: '/tools/slug', label: 'Tool Name' }` to the correct section in the `sections` array in `src/forge/tools/ToolsSidebar.tsx`
+2. Add `{ path: 'slug', label: 'Tool Name', Component: ToolName }` to the correct section in `TOOL_SECTIONS` in `src/forge/tools/toolsManifest.ts`. That is the single edit point: both the routes (`ToolsLayout.tsx` via `ALL_TOOLS`) and the sidebar (`ToolsSidebar.tsx`) are generated from it. Never touch `App.tsx` (the tools subtree stays lazy-loaded).
 
 ### Sidebar sections (in order)
 Converters · Text · Media · Lookups · Encoding · Generators · Sysadmin · Network · Crypto
@@ -94,6 +93,10 @@ Converters · Text · Media · Lookups · Encoding · Generators · Sysadmin · 
 | `useNow(ms?)` | Returns current `Date`, updates on interval (default 1000ms) |
 | `useWeather(lat, lon)` | SWR-backed current weather string, 10-min refresh |
 | `useIPInfo()` | Redux-backed `{ data: IPInfo \| null }` from ipapi.co, 5-min TTL cache |
+| `useLocalList(key, idOf)` | localStorage-backed list state (`{ items, toggle, has, move }`), the base of the favourites hooks |
+| `useItemFavourites()` | Starred Albion items (`ItemFavourite` snapshots). Built on `useLocalList`. localStorage: `forgegames_albion_item_favourites_v1` |
+| `useTempUnit()` | `[unit, setUnit]` C/F preference synced across tabs; module also exports `formatTemp`/`formatWind`/`formatPressure`/`formatPrecip`/`formatDist` |
+| `useSidebarCollapse(key)` | Collapsed-section map for a sidebar (`{ collapsed, toggle }`), persisted under the given storage key |
 
 ### CityFavourite type
 ```ts
@@ -132,6 +135,8 @@ windDir(deg)       // → "N" / "NE" / etc.
 fetchCurrentWeather(lat, lon)  // → Promise<CurrentWeather>
 ```
 Weather API: `https://api.open-meteo.com/v1/forecast`
+
+Other shared libs: `src/lib/api.ts` (`forgeFetch` credentialed backend wrapper), `src/lib/ffmpeg.ts` (shared FFmpeg singleton for the media tools), `src/lib/time.ts` (`formatTime` duration formatter), `src/lib/chime.ts` (synthesized Web Audio alarm chime).
 
 ---
 
@@ -183,13 +188,7 @@ const scale = ref.current ? ... : 1
 ---
 
 ## localStorage keys
-| Key | Contents |
-|---|---|
-| `forgetools_favourites` | `string[]` — pinned tool paths |
-| `forgetools_city_favourites` | `CityFavourite[]` — pinned cities |
-| `forgetools_collapsed_sections` | `Record<string, boolean>` — collapsed sidebar sections |
-| `forge_ip_v2` | Cached IPInfo + timestamp (5-min TTL) |
-| `forgegames_ffxi_selectedchar_v1` | Selected registered-character id, shared by all FFXI tools |
+All keys live in the `STORAGE_KEYS` registry in `src/config/storageKeys.ts` (currently 25 keys). Read that file, don't rely on a list here. Register every new key there; game keys are prefixed `forgegames_`, tools keys `forgetools_`.
 
 (`forgegames_save_prefs_v1` and the `useSavePrefs` hook were removed - logged in now means synced.)
 
@@ -202,6 +201,7 @@ const scale = ref.current ? ... : 1
 | `ForgeLayout` | Shared shell for Tools and Games — swipe gesture, sidebar, mobile header, settings modal, content padding. Pass `sidebar`, `settings`, `bottomBar`, `title`, `homePath`, optional `headerExtra`. |
 | `ConfirmButton` | Two-step confirm pattern (label → confirm/cancel). Use for destructive actions. |
 | `ImportPanel` | Paste-a-code import flow with close button. Pair with `ConfirmButton` for export/import/reset controls. |
+| `FileDropZone` | Drag-and-drop + click-to-browse file input surface. Use for any tool that takes an uploaded file. |
 
 ---
 
@@ -384,6 +384,8 @@ Login is only an upgrade (cross-device sync), never a gate.
     (`ffxi/conquest.ts`, shared with FactionConquest) - stale timestamps read as "not done", never
     cleaned up by writes. Eco-Warrior rotation (all three nations before repeats, one per week)
     restarts in-display once all three are done and stale. Wiki data from horizonffxi.wiki.
+  - *SkillchainCalc* (route `ffxi/skillchain-calc`): pure client-side skillchain calculator, no
+    storage/no auth; the chain-resolution engine lives in `SkillchainCalc/engine.ts`.
 - **Shared FFXI helpers**: `ffxi/conquest.ts` (tally clock), `ffxi/nations.ts` (char-API 0-2
   `NationMeta` map; FactionConquest keeps its own 1-4 map with Beastmen), `ffxi/hooks/useCharRank.ts`
   (live nation-rank lookup shown in the character headers).
@@ -410,7 +412,7 @@ albion/
     constants.ts  CITIES / QUALITIES / STATION_TYPES / CITY_BONUSES
     ItemIcon.tsx  <ItemIcon> (forge-api proxy + service-worker cached, see below)
     crafting/     craft engine: craftCost, craftEconomics, craftingApi, itemMeta,
-                  marketFormat, premium, RecipeTreeCard, types, useAllItems, useItemRecipes
+                  marketFormat, RecipeTreeCard, types, useAllItems, useItemRecipes
     prices/       userStore.ts - the user's entered prices (localStorage + server sync)
     settings/     craftSettings.ts (per-user prefs store), api.ts (user-blob GET/PUT), sync.ts
 ```

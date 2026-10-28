@@ -120,7 +120,7 @@ body.fh-page.is-preload *:after {
 #bg:after {
   transform: scale(1.125);
   transition: transform 0.325s ease-in-out, filter 0.325s ease-in-out;
-  background-image: url("/images/background.png");
+  background-image: url("/images/background.webp");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
