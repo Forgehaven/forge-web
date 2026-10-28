@@ -1,0 +1,429 @@
+{
+  "meta": {
+    "source": "UW-Character-Builder legacy web app (github.com/Arlit-Areth/UW-Character-Builder)",
+    "rulebook": "Core Rulebook 5.6.5 + Soul Frag 2.10 + Weapon and Armour Guide 1.4",
+    "updated": "2026-10-28"
+  },
+  "levelTable": [
+    {
+      "level": 1,
+      "threshold": 150,
+      "cpPer": 65,
+      "warrior": 6,
+      "rogue": 4,
+      "scholar": 3
+    },
+    {
+      "level": 2,
+      "threshold": 250,
+      "cpPer": 43,
+      "warrior": 8,
+      "rogue": 5,
+      "scholar": 4
+    },
+    {
+      "level": 3,
+      "threshold": 350,
+      "cpPer": 34,
+      "warrior": 10,
+      "rogue": 6,
+      "scholar": 4
+    },
+    {
+      "level": 4,
+      "threshold": 450,
+      "cpPer": 28,
+      "warrior": 12,
+      "rogue": 7,
+      "scholar": 5
+    },
+    {
+      "level": 5,
+      "threshold": 550,
+      "cpPer": 24,
+      "warrior": 14,
+      "rogue": 8,
+      "scholar": 6
+    },
+    {
+      "level": 6,
+      "threshold": 650,
+      "cpPer": 22,
+      "warrior": 16,
+      "rogue": 9,
+      "scholar": 6
+    },
+    {
+      "level": 7,
+      "threshold": 750,
+      "cpPer": 19,
+      "warrior": 18,
+      "rogue": 10,
+      "scholar": 7
+    },
+    {
+      "level": 8,
+      "threshold": 850,
+      "cpPer": 17,
+      "warrior": 20,
+      "rogue": 11,
+      "scholar": 8
+    },
+    {
+      "level": 9,
+      "threshold": 950,
+      "cpPer": 16,
+      "warrior": 22,
+      "rogue": 12,
+      "scholar": 8
+    },
+    {
+      "level": 10,
+      "threshold": 1050,
+      "cpPer": 15,
+      "warrior": 24,
+      "rogue": 13,
+      "scholar": 9
+    },
+    {
+      "level": 11,
+      "threshold": 1150,
+      "cpPer": 14,
+      "warrior": 26,
+      "rogue": 14,
+      "scholar": 10
+    },
+    {
+      "level": 12,
+      "threshold": 1250,
+      "cpPer": 13,
+      "warrior": 28,
+      "rogue": 15,
+      "scholar": 10
+    },
+    {
+      "level": 13,
+      "threshold": 1350,
+      "cpPer": 12,
+      "warrior": 30,
+      "rogue": 16,
+      "scholar": 11
+    },
+    {
+      "level": 14,
+      "threshold": 1450,
+      "cpPer": 12,
+      "warrior": 32,
+      "rogue": 17,
+      "scholar": 12
+    },
+    {
+      "level": 15,
+      "threshold": 1550,
+      "cpPer": 11,
+      "warrior": 34,
+      "rogue": 18,
+      "scholar": 12
+    },
+    {
+      "level": 16,
+      "threshold": 1650,
+      "cpPer": 11,
+      "warrior": 36,
+      "rogue": 19,
+      "scholar": 13
+    },
+    {
+      "level": 17,
+      "threshold": 1750,
+      "cpPer": 10,
+      "warrior": 38,
+      "rogue": 20,
+      "scholar": 14
+    },
+    {
+      "level": 18,
+      "threshold": 1850,
+      "cpPer": 10,
+      "warrior": 40,
+      "rogue": 21,
+      "scholar": 14
+    },
+    {
+      "level": 19,
+      "threshold": 1950,
+      "cpPer": 10,
+      "warrior": 42,
+      "rogue": 22,
+      "scholar": 15
+    },
+    {
+      "level": 20,
+      "threshold": 2050,
+      "cpPer": 10,
+      "warrior": 44,
+      "rogue": 23,
+      "scholar": 16
+    }
+  ],
+  "occupations": {
+    "Mercenary": {
+      "class": "warrior"
+    },
+    "Ranger": {
+      "class": "warrior"
+    },
+    "Templar": {
+      "class": "warrior"
+    },
+    "Nightblade": {
+      "class": "rogue"
+    },
+    "Assassin": {
+      "class": "rogue"
+    },
+    "Wytchhunter": {
+      "class": "rogue"
+    },
+    "Mage": {
+      "class": "scholar"
+    },
+    "Druid": {
+      "class": "scholar"
+    },
+    "Bard": {
+      "class": "scholar"
+    }
+  },
+  "schools": [
+    "Healing",
+    "Elemental",
+    "Psionics",
+    "Nature",
+    "Protections",
+    "Dark",
+    "Light",
+    "Draconic",
+    "Sigil",
+    "Necromancy",
+    "Wytchcraft",
+    "Dredgecraft"
+  ],
+  "exclusiveSpheres": {
+    "Light": [
+      "Paladin",
+      "Lightweaver"
+    ],
+    "Dark": [
+      "Dread Knight",
+      "Darkweaver"
+    ],
+    "Draconic": [
+      "Dragon Knight"
+    ]
+  },
+  "surchargeSpheres": [
+    "Sigil",
+    "Wytchcraft",
+    "Necromancy",
+    "Dredgecraft"
+  ],
+  "spheres": [
+    {
+      "name": "Sphere of Magic: 1st",
+      "costs": {
+        "Mercenary": 100,
+        "Ranger": 100,
+        "Templar": 75,
+        "Nightblade": 75,
+        "Assassin": 100,
+        "Wytchhunter": 75,
+        "Mage": 25,
+        "Druid": 50,
+        "Bard": 50
+      },
+      "favouredCosts": {
+        "Champion": 50,
+        "Demagogue": 50
+      }
+    },
+    {
+      "name": "Sphere of Magic: 2nd",
+      "costs": {
+        "Mercenary": 200,
+        "Ranger": 200,
+        "Templar": 175,
+        "Nightblade": 175,
+        "Assassin": 200,
+        "Wytchhunter": 175,
+        "Mage": 150,
+        "Druid": 175,
+        "Bard": 175
+      },
+      "favouredCosts": {
+        "Champion": 200,
+        "Demagogue": 175
+      }
+    },
+    {
+      "name": "Sphere of Magic: 3rd",
+      "costs": {
+        "Mercenary": 300,
+        "Ranger": 300,
+        "Templar": 275,
+        "Nightblade": 275,
+        "Assassin": 300,
+        "Wytchhunter": 275,
+        "Mage": 200,
+        "Druid": 225,
+        "Bard": 225
+      },
+      "favouredCosts": {
+        "Champion": 300,
+        "Demagogue": 225
+      }
+    }
+  ],
+  "spellCircleCosts": {
+    "1": {
+      "Mercenary": 30,
+      "Ranger": 30,
+      "Templar": 10,
+      "Nightblade": 20,
+      "Assassin": 40,
+      "Wytchhunter": 10,
+      "Mage": 10,
+      "Druid": 10,
+      "Bard": 10
+    },
+    "2": {
+      "Mercenary": 40,
+      "Ranger": 30,
+      "Templar": 10,
+      "Nightblade": 20,
+      "Assassin": 60,
+      "Wytchhunter": 10,
+      "Mage": 10,
+      "Druid": 10,
+      "Bard": 10
+    },
+    "3": {
+      "Mercenary": 80,
+      "Ranger": 60,
+      "Templar": 20,
+      "Nightblade": 40,
+      "Assassin": 80,
+      "Wytchhunter": 20,
+      "Mage": 20,
+      "Druid": 20,
+      "Bard": 20
+    },
+    "4": {
+      "Mercenary": 100,
+      "Ranger": 60,
+      "Templar": 30,
+      "Nightblade": 40,
+      "Assassin": 100,
+      "Wytchhunter": 30,
+      "Mage": 20,
+      "Druid": 20,
+      "Bard": 30
+    },
+    "5": {
+      "Mercenary": 100,
+      "Ranger": 90,
+      "Templar": 40,
+      "Nightblade": 60,
+      "Assassin": 100,
+      "Wytchhunter": 30,
+      "Mage": 30,
+      "Druid": 30,
+      "Bard": 30
+    },
+    "6": {
+      "Mercenary": 120,
+      "Ranger": 90,
+      "Templar": 50,
+      "Nightblade": 60,
+      "Assassin": 120,
+      "Wytchhunter": 40,
+      "Mage": 30,
+      "Druid": 30,
+      "Bard": 40
+    },
+    "7": {
+      "Mercenary": 120,
+      "Ranger": 120,
+      "Templar": 60,
+      "Nightblade": 80,
+      "Assassin": 120,
+      "Wytchhunter": 50,
+      "Mage": 40,
+      "Druid": 40,
+      "Bard": 60
+    },
+    "8": {
+      "Mercenary": 150,
+      "Ranger": 120,
+      "Templar": 70,
+      "Nightblade": 80,
+      "Assassin": 150,
+      "Wytchhunter": 50,
+      "Mage": 40,
+      "Druid": 40,
+      "Bard": 70
+    },
+    "9": {
+      "Mercenary": 150,
+      "Ranger": 150,
+      "Templar": 80,
+      "Nightblade": 100,
+      "Assassin": 150,
+      "Wytchhunter": 60,
+      "Mage": 50,
+      "Druid": 50,
+      "Bard": 80
+    }
+  },
+  "ritualBaseCosts": {
+    "Mercenary": 40,
+    "Ranger": 30,
+    "Templar": 30,
+    "Nightblade": 20,
+    "Assassin": 40,
+    "Wytchhunter": 20,
+    "Mage": 10,
+    "Druid": 10,
+    "Bard": 30
+  },
+  "weaponGroups": {
+    "Simple": [
+      "Dagger/Knife",
+      "2-Handed Staff",
+      "Club",
+      "Thrown Weapon",
+      "Fist"
+    ],
+    "Medium": [
+      "Sword (1H)",
+      "Mace/Hammer (1H)",
+      "Spear (1H)",
+      "Axe (1H)",
+      "Bow",
+      "Claw"
+    ],
+    "Large": [
+      "Great Sword (2H)",
+      "Polearm (2H)",
+      "Axe (2H)",
+      "Crossbow",
+      "Mace/Hammer (2H)"
+    ],
+    "Exotic": [
+      "Stiletto",
+      "Maul (2H)",
+      "Bastard Sword",
+      "Summoned Weapon"
+    ]
+  }
+}

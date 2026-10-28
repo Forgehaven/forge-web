@@ -53,6 +53,15 @@ Defined in `src/index.css` via `@theme`. **Prefer these over raw hex values:**
 | `*` outside /tools | `NotFoundLanding` | forgehaven theme |
 | `*` inside /tools | `NotFound` | plain tools 404 |
 
+### Offline (service worker)
+
+`src/sw.js` is a template; the `serviceWorkerPlugin` in `vite.config.ts` emits `dist/sw.js` with every
+built `assets/*` file plus `PUBLIC_PRECACHE` (index.html, manifests, logos) and a version hash. Registered
+in `main.tsx` for prod builds only. Pages are network first, falling back to the cached `index.html` offline or after 3s; same-origin
+GETs are cache first; cross-origin (API, fonts) is untouched. FFXI maps, ffmpeg and other `public/` files
+are not precached. Cache lookups use `ignoreVary` (servers sending `Vary: Origin` otherwise miss for module
+scripts). Test offline with `vite preview`, load once, stop the server, reload.
+
 ---
 
 ## Adding a new tool
@@ -187,7 +196,7 @@ const scale = ref.current ? ... : 1
 ---
 
 ## localStorage keys
-All keys live in the `STORAGE_KEYS` registry in `src/config/storageKeys.ts` (currently 25 keys). Read that file, don't rely on a list here. Register every new key there; game keys are prefixed `forgegames_`, tools keys `forgetools_`.
+All keys live in the `STORAGE_KEYS` registry in `src/config/storageKeys.ts` (currently 26 keys). Read that file, don't rely on a list here. Register every new key there; game keys are prefixed `forgegames_`, tools keys `forgetools_`.
 
 (`forgegames_save_prefs_v1` and the `useSavePrefs` hook were removed - logged in now means synced.)
 
@@ -387,6 +396,43 @@ Login is only an upgrade (cross-device sync), never a gate.
 - **Shared FFXI helpers**: `ffxi/conquest.ts` (tally clock), `ffxi/nations.ts` (char-API 0-2
   `NationMeta` map; FactionConquest keeps its own 1-4 map with Beastmen), `ffxi/hooks/useCharRank.ts`
   (live nation-rank lookup shown in the character headers).
+
+## Underworld LARP (`src/forge/games/underworld/`)
+
+Routes: `/games/underworld` (splash), `underworld/planner` (Character Planner), `underworld/reference`
+(Data Reference). Planner + reference are `lazyWithReload` chunks in GamesLayout (`src/lib/lazyWithReload.ts`)
+so FFXI pages never load the ~450KB rules JSON.
+
+- **Rules data is JSON** in `data/*.json` (rules, races, skills, vocations, spells) plus `data/sources.json`
+  (official PDF manifest). `data/index.ts` types and re-exports it; edit the JSON, not TS. Per-occupation
+  costs are maps keyed by occupation name, never positional arrays (`engine.test.ts` enforces full keys).
+  Seeded from the community builder (github.com/Arlit-Areth/UW-Character-Builder); `meta.rulebook` is null
+  until verified against the PDFs. Update process: root skill `underworld-rulebook-sync` +
+  `node scripts/uw-rulebooks.mjs` (reports new/changed PDFs; `--download DIR`, `--write`).
+- **Engine** (`engine.ts`, pure): a `Build` is choices + `blankets` (one `YYYY-MM` per blanket, max 2 per
+  month) + ordered `purchases` each pinned to a step (`at`: 0 = creation, n = after blanket n) + `spells`.
+  `evaluate()` replays purchases in timeline order, checking prereqs, racial cap (ceil(level/2)), tier
+  levels, choices and the CP budget at that step; invalid purchases are flagged and skipped so dependents
+  flag too (no cascade-delete). `evaluate(build, probe)` answers "can I buy X at step N" for the catalog.
+- **Two modes** (`build.useTimeline`, default off): simple mode keeps its own picks in `build.simple`
+  (`{blankets, purchases}`), evaluated via `simpleView()` + `evaluate(view, probe, loose=true)` (no month
+  rules, overspend = negative CP left). Timeline mode uses `blankets`/`purchases`. The two sets are
+  independent; `activePurchases`/`withPurchases`/`unbuy` target whichever mode is on.
+- Rules text renders through `components/Prose.tsx` (blank line = paragraph, newline = line, leading
+  "Label:" bolded). Line breaks live in the JSON; only whitespace was ever added to the seeded text.
+  Month pickers use `components/MonthSelect.tsx` (native type=month is a text box in Firefox).
+- **Saving** (`hooks/useBuildStore.ts`, one localStorage key `forgegames_uw_planner_v1`): the working
+  copy is always mirrored locally. Save goes to the device (device saves list) when logged out or when the
+  current build is a device save, otherwise to forge-api `/game/uwlarp/builds` (account saves, cloud icon;
+  compare-and-set on `updated_at`, conflict offers overwrite or load). "Move to account" uploads a device
+  save. A generation counter drops slow responses for a build the user already switched away from, and
+  `sanitize()` coerces every draft/server blob before the engine sees it. Only builds go to the API.
+- **Spell pyramid** (Core p.105-106): `pyramidError()` enforces the book order (k-th slot needs min(k+1,5)
+  in the circle below; 2 more than the next circle forces buying upward; 5 wide until full, then up to 10).
+  `sortedPurchases()` re-sequences slots within a step so click order does not matter.
+- **Data Reference** tabs include Armour & Weapons (`data/equipment.json` + `images/armour-locations.webp`
+  from the Weapon and Armour Guide 1.4). Entries verified against a book carry `ref` (printed page).
+- `components/MournfallCard.tsx`: promo for Mournfall (Ottawa chapter) on the splash, planner and reference.
 
 ## Auth (Discord OAuth) - app-wide, optional
 - `DISCORD_CLIENT_ID = '1519734763139633354'` hardcoded in `src/config/apiUrls.ts` (public value).

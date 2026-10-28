@@ -46,6 +46,13 @@ const sections: { section: string; games: GameEntry[] }[] = [
       { path: `${G}/ffxi/friend-viewer`,  label: 'Friend Viewer' },
     ],
   },
+  {
+    section: 'Underworld LARP',
+    games: [
+      { path: `${G}/underworld/planner`,   label: 'Character Planner' },
+      { path: `${G}/underworld/reference`, label: 'Data Reference' },
+    ],
+  },
 ]
 
 export interface GamesSidebarProps {

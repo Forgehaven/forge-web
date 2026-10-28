@@ -1,0 +1,103 @@
+{
+  "meta": {
+    "source": "Underworld LARP Weapon and Armour Guide v1.4",
+    "rulebook": "Weapon and Armour Guide 1.4",
+    "updated": "2026-10-28"
+  },
+  "colours": {
+    "ref": "Weapon and Armour Guide 1.4 p.4",
+    "intro": "A weapon must have 75% of its striking surface coloured. The colour tells other players what the weapon represents in game. Duct tape, sword socks, cloth tape or latex paint all work; duct tape is the easiest for a first build.",
+    "list": [
+      { "colour": "Silver / Grey", "swatch": "#9ca3af", "meaning": "Normal, Iron, Silver" },
+      { "colour": "Blue", "swatch": "#3b82f6", "meaning": "Psionic" },
+      { "colour": "Red", "swatch": "#ef4444", "meaning": "Natural Weaponry and Hand to Hand" },
+      { "colour": "White (or a white stripe on any of the above)", "swatch": "#f9fafb", "meaning": "Magic version of the above" }
+    ]
+  },
+  "weapons": {
+    "ref": "Weapon and Armour Guide 1.4 p.7-8",
+    "rows": [
+      { "group": "Simple", "name": "Dagger/Knife", "striking": "≥ 50%", "lengthIn": "10/22", "lengthCm": "25.5 / 55.75", "core": "0.5\" Rigid PVC", "damage": "1" },
+      { "group": "Simple", "name": "2-Handed Staff", "striking": "> 50%", "lengthIn": "54/78", "lengthCm": "137.25 / 198.0", "core": "1.25\" Rigid PVC", "damage": "1" },
+      { "group": "Simple", "name": "Club", "striking": "≥ 50%", "lengthIn": "20/35", "lengthCm": "50.75 / 89.0", "core": "0.75\" Rigid PVC", "damage": "1" },
+      { "group": "Simple", "name": "Thrown Weapons", "striking": "100%", "lengthIn": "4/10", "lengthCm": "10.25 / 25.5", "core": "Coreless", "damage": "1" },
+      { "group": "Simple", "name": "Fist", "striking": "100%", "lengthIn": "11/13", "lengthCm": "28.0 / 33.0", "core": "Coreless", "damage": "1" },
+      { "group": "Medium", "name": "Sword", "striking": "≥ 50%", "lengthIn": "20/45", "lengthCm": "50.75 / 114.5", "core": "0.75\" Rigid PVC", "damage": "2" },
+      { "group": "Medium", "name": "1-Handed Mace/Hammer", "striking": "Head 8 / 1750 cu in (2\"x2\"x2\" to 12\"x12\"x12\")", "lengthIn": "20/45", "lengthCm": "50.75 / 114.5", "core": "0.75\" Rigid PVC", "damage": "2" },
+      { "group": "Medium", "name": "1-Handed Spear", "striking": "≤ 50% *", "lengthIn": "30/55", "lengthCm": "76.25 / 139.75", "core": "1.25\" Rigid PVC", "damage": "2" },
+      { "group": "Medium", "name": "1-Handed Axe", "striking": "≤ 50% *", "lengthIn": "21/43", "lengthCm": "53.5 / 109.25", "core": "0.75\" Rigid PVC", "damage": "2" },
+      { "group": "Medium", "name": "Arrow", "striking": "≥ 3\" / 7.5cm", "lengthIn": "-", "lengthCm": "-", "core": "-", "damage": "2 Body" },
+      { "group": "Medium", "name": "Claw", "striking": "≥ 75%", "lengthIn": "22/28", "lengthCm": "56 / 71.25", "core": "0.75\" Rigid PVC", "damage": "2" },
+      { "group": "Large", "name": "2-Handed Great Sword", "striking": "≥ 50%", "lengthIn": "43/75", "lengthCm": "109.25 / 190.5", "core": "1\" Rigid PVC", "damage": "4" },
+      { "group": "Large", "name": "2-Handed Polearm", "striking": "≤ 50% *", "lengthIn": "55/77", "lengthCm": "139.75 / 195.5", "core": "1\" Rigid PVC", "damage": "4" },
+      { "group": "Large", "name": "2-Handed Axe", "striking": "≤ 50% *", "lengthIn": "40/77", "lengthCm": "101.75 / 195.5", "core": "1\" Rigid PVC", "damage": "4" },
+      { "group": "Large", "name": "Bolt (2-Handed Crossbow)", "striking": "≥ 3\" / 7.5cm", "lengthIn": "-", "lengthCm": "-", "core": "-", "damage": "4 Body" },
+      { "group": "Large", "name": "2-Handed Mace/Hammer", "striking": "Head 91 / 3900 cu in (4.5\"x4.5\"x4.5\" to 15.5\"x15.5\"x15.5\")", "lengthIn": "40/61", "lengthCm": "101.75 / 155.0", "core": "1\" Rigid PVC", "damage": "4" },
+      { "group": "Exotic", "name": "Stiletto", "striking": "≥ 50%", "lengthIn": "11/13", "lengthCm": "28.0 / 33.0", "core": "Coreless", "damage": "1 Body" },
+      { "group": "Exotic", "name": "2-Handed Maul", "striking": "Head 512 cu in / 5.75 cu ft (8\"x8\"x8\" to 21.5\"x21.5\"x21.5\")", "lengthIn": "60/72", "lengthCm": "152.5 / 183.0", "core": "1.5\" Rigid PVC", "damage": "5" },
+      { "group": "Exotic", "name": "1 or 2 Hand Bastard Sword", "striking": "≥ 50%", "lengthIn": "40/56", "lengthCm": "101.75 / 142.25", "core": "1\" Rigid PVC", "damage": "2 (1H) / 4 (2H)" }
+    ],
+    "notes": [
+      "* Striking surface must be a minimum of 4\" long.",
+      "Lengths are overall minimum/maximum. Fiberglass cores: up to 28\" use a 5/16\" core; 28\" to 55\" use 1/2\" or two 5/16\" cores; over 55\" use 5/8\" or two 5/16\" cores."
+    ]
+  },
+  "sections": [
+    {
+      "title": "General",
+      "ref": "Weapon and Armour Guide 1.4 p.3",
+      "text": "This guide overrides the Core Rulebook on weapons, armour and shields.\n\nEverything must be inspected by a Weapons & Armour Marshal the first time it's brought to a Guild and gets a signed, dated safety sticker. Weapons and shields are rechecked every three months; armour passes an annual inspection every Spring.\n\nGuilds may add stricter rules but can't remove any. Everything must fit the dark fantasy and horror theme, and armour must be judged safe before it's scored (for example, metal spikes may be denied where foam ones are fine)."
+    },
+    {
+      "title": "Weapon construction",
+      "ref": "Weapon and Armour Guide 1.4 p.4-6",
+      "text": "Only the striking zone at the top of a weapon (blade, axe head and so on) may be used to hit; never the flat or the pommel. No melee weapon except the Staff may have striking zones at both ends.\n\nCores must be a single unbroken length of PVC or fiberglass rod, with no more than a 45 degree curve. PVC cores need at least 1/2\" of foam all round and at least 1\" on striking surfaces; you must not be able to feel the core when the foam is compressed. Fiberglass weapons need a secure, durable handle.\n\nThrusting weapons need an open cell foam tip (fist weapons and stilettos are exempt). Thrusts use the lightest touch. No exposed foam or core, no weighting, and blades and pommels must be securely attached. LEDs and electronics are case by case: embedded under the striking surface, secured, and only on items with a matching in-game tag.\n\nStilettos: coreless, closed cell foam, at least 2\" thick, with a 1\" black stripe down both sides.\nFist weapons: coreless, closed cell foam, at least 2\" thick, coloured with red duct tape.\nMaces, hammers and mauls: need an open cell foam head that clearly reads as that weapon."
+    },
+    {
+      "title": "Bows, arrows and rocks",
+      "ref": "Weapon and Armour Guide 1.4 p.7",
+      "text": "Only fiberglass and graphite shafts. No compound bows; bows and crossbows max 30 lb at full draw. Boffer arrows can be homemade or commercial high or low speed arrows; crossbow bolts are built the same as arrows.\n\nArrows and bolts are inspected every event and by you before every use; wet or frozen arrows can't be reused until dry.\n\nNever aim at the head or groin. Only half-draw within 15 feet of your target.\n\nRocks: roughly spherical open or closed cell foam, sealed, grey, between baseball and volleyball size."
+    },
+    {
+      "title": "Shields",
+      "ref": "Weapon and Armour Guide 1.4 p.9",
+      "text": "Cores may be wood (1/2\" plywood or joined solid wood), plastics, or foam.\n\nNo dimension longer than 4', and no more than 10 square feet on one side. Square or rectangular shields max 4' x 2'6\"; round shields max 3'6\" diameter; bucklers max 15\" diameter.\n\nEdges need 1/2\" to 1\" of foam so no hard edge can be felt. The face needs no foam for standard use, but at least 1/2\" for Red Armband combat. The shield must not bend under a normal strike, and any protrusions must be rounded or covered."
+    },
+    {
+      "title": "How armour is scored",
+      "ref": "Weapon and Armour Guide 1.4 p.9-10",
+      "text": "A Marshal awards Armour Points (AP) per location at log-in based on coverage, grade, materials and quality.\n\nBlue zones on the chart need 50% coverage for full points; every other location needs 75%. Less than that scores nothing for that location.\n\nDeductions: soft metals (aluminum, titanium, copper) lose a full point; lightweight alloys (zinc, roofing tin, street signs), very poor craftsmanship, and leather or cork layered to reach minimum size are also penalised. Mixed grades on one location are scored at the lowest grade. Each layer takes at most one penalty per location (the higher one).\n\nZero points: obvious modern clothing or gear (leather trench coats, hockey padding), anything below the grade's minimums (leather under 4oz / 1.6mm, plate under 1mm), or materials that don't match the grade."
+    },
+    {
+      "title": "Special situations",
+      "ref": "Weapon and Armour Guide 1.4 p.13",
+      "text": "Armoured skirts, pteruges and faulds count for locations 18 and 19 as if they wrap the inside of the thighs.\n\nGarrote protection needs at least 2 AP of armour with a base value of 2 AP on location 4 (neck); boosted lower grades don't count.\n\nElbows and knees (on locations 14, 15, 20 and 21) are optional and don't count toward coverage, though covering them can help your percentage.\n\nReal leather footwear and gloves may be scored as Grade A at the Marshal's discretion."
+    }
+  ],
+  "grades": {
+    "ref": "Weapon and Armour Guide 1.4 p.10-12",
+    "rows": [
+      { "grade": "A", "points": "1", "materials": "Leather, layered leather, cork leather", "text": "Leather must be at least 4oz / 1.6mm. Layered leather: no more than two layers, each at least 2oz / 0.8mm, and takes a 0.5 deduction per location." },
+      { "grade": "B", "points": "2", "materials": "Studded leather, hardened leather, steel-boned leather corsets, wood", "text": "Same leather thickness as Grade A, and may not be layered.\nStudded: studs, grommets or rings no more than 2\" apart.\nHardened: boiled or cured until rigid, holding 5 lb without bending.\nCorsets: steel boning no more than 2\" apart.\nWood: real wood (not chipboard or plywood), varnished or lacquered." },
+      { "grade": "C", "points": "3", "materials": "Chainmail (steel and aluminum)", "text": "At least 18-gauge wire with 1/4\" inner diameter in European 4-in-1 or a more complex weave; 16-gauge at 3/8\", or any aspect ratio of 6 or less, also scores full value.\nMicro mail (thinner than 18ga) and aluminum mail score 2 points per location; micro mail can't be aluminum." },
+      { "grade": "D", "points": "4", "materials": "Steel plate, sectional metal armour", "text": "Plate at least 1.0mm with rolled or ground-smooth edges.\nBrigandine (non-overlapping plates of at least 2 sq in on a backing): 3.5 points per location.\nLamellar (overlapping plates of at least 2 sq in): full value; smaller plates are graded as scalemail.\nScalemail (scales under 2 sq in over chain): 3.5 points per location.\nAluminum can't be Grade D except scalemail, which takes a 1-point deduction." }
+    ]
+  },
+  "locations": {
+    "ref": "Weapon and Armour Guide 1.4 p.14",
+    "note": "Blue zones (shoulders, arms, hands and calves) need 50% coverage; everything else needs 75%.",
+    "list": [
+      { "n": 1, "name": "Upper Skull" }, { "n": 2, "name": "Eyes" }, { "n": 3, "name": "Lower Face / Jaw" },
+      { "n": 4, "name": "Neck" }, { "n": 5, "name": "Right Pectoral" }, { "n": 6, "name": "Left Pectoral" },
+      { "n": 7, "name": "Right Ribs" }, { "n": 8, "name": "Left Ribs" }, { "n": 9, "name": "Right Abdomen" },
+      { "n": 10, "name": "Left Abdomen" }, { "n": 11, "name": "Groin" }, { "n": 12, "name": "Right Shoulder", "blue": true },
+      { "n": 13, "name": "Left Shoulder", "blue": true }, { "n": 14, "name": "Right Forearm", "blue": true },
+      { "n": 15, "name": "Left Forearm", "blue": true }, { "n": 16, "name": "Right Hand", "blue": true },
+      { "n": 17, "name": "Left Hand", "blue": true }, { "n": 18, "name": "Right Thigh" }, { "n": 19, "name": "Left Thigh" },
+      { "n": 20, "name": "Right Calf", "blue": true }, { "n": 21, "name": "Left Calf", "blue": true },
+      { "n": 22, "name": "Right Foot" }, { "n": 23, "name": "Left Foot" }, { "n": 24, "name": "Back of Neck" },
+      { "n": 25, "name": "Upper Back" }, { "n": 26, "name": "Mid Back" }, { "n": 27, "name": "Lower Back" },
+      { "n": 28, "name": "Gluteus" }
+    ]
+  }
+}

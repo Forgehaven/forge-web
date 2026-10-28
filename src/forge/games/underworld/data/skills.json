@@ -1,0 +1,1773 @@
+{
+  "meta": {
+    "source": "UW-Character-Builder legacy web app (github.com/Arlit-Areth/UW-Character-Builder)",
+    "rulebook": "Core Rulebook 5.6.5 + Soul Frag 2.10",
+    "updated": "2026-10-28"
+  },
+  "favouredCosts": {
+    "Champion": {
+      "Alchemy": 90,
+      "Artifice": 85,
+      "Blacksmith": 75,
+      "Chemistry": 100,
+      "Create Scroll": 50,
+      "Tradesman": 40,
+      "Trapper": 85,
+      "Anatomy": 40,
+      "Demonic/Angelic Arts": 40,
+      "Elemental Attunement": 25,
+      "First Aid": 60,
+      "Mysticism": 50,
+      "Necromantic Arts": 40,
+      "Physician": 45,
+      "Read & Write": 50,
+      "Read Magic": 30,
+      "Read Magic: Advanced": 50,
+      "Read Magic: Ritual": 50,
+      "Advanced Ritual Casting": 275,
+      "Ambidexterity": 40,
+      "Florentine": 50,
+      "Flurry of Blows": 45,
+      "Heavy Armour": 10,
+      "Self Mutilate": 15,
+      "Shield": 50,
+      "Slay/Parry": 120,
+      "Slay/Parry: Master": 140,
+      "Slay/Parry: Subsequent": 120,
+      "Slay/Parry: Master Subsequent": 140,
+      "Specialization +1: Weapon Group": 160,
+      "Specialization +1: Weapon Specific": 100,
+      "Weapon Group Proficiency: Medium": 40,
+      "Weapon Group Proficiency: Large": 70,
+      "Weapon Specific Proficiency: Exotic": 110,
+      "Weapon Refocus": 70,
+      "Critical +2: Specific": 140,
+      "Critical +2: Group": 180,
+      "Dodge": 170,
+      "Dodge: Additional": 170,
+      "Execute": 170,
+      "Execute: Master": 190,
+      "Execute: Subsequent": 170,
+      "Execute: Master Subsequent": 190,
+      "Garrotte": 140,
+      "Sap": 55,
+      "Vital Blow": 85
+    },
+    "Demagogue": {
+      "Alchemy": 70,
+      "Artifice": 120,
+      "Blacksmith": 110,
+      "Chemistry": 80,
+      "Create Scroll": 40,
+      "Tradesman": 40,
+      "Trapper": 85,
+      "Anatomy": 40,
+      "Demonic/Angelic Arts": 45,
+      "Elemental Attunement": 25,
+      "First Aid": 60,
+      "Mysticism": 50,
+      "Necromantic Arts": 45,
+      "Physician": 45,
+      "Read & Write": 40,
+      "Read Magic": 15,
+      "Read Magic: Advanced": 25,
+      "Read Magic: Ritual": 40,
+      "Advanced Ritual Casting": 200,
+      "Ambidexterity": 75,
+      "Florentine": 110,
+      "Flurry of Blows": 100,
+      "Heavy Armour": 65,
+      "Self Mutilate": 15,
+      "Shield": 100,
+      "Slay/Parry": 200,
+      "Slay/Parry: Master": 220,
+      "Slay/Parry: Subsequent": 200,
+      "Slay/Parry: Master Subsequent": 220,
+      "Specialization +1: Weapon Group": 200,
+      "Specialization +1: Weapon Specific": 180,
+      "Weapon Group Proficiency: Medium": 80,
+      "Weapon Group Proficiency: Large": 130,
+      "Weapon Specific Proficiency: Exotic": 150,
+      "Weapon Refocus": 40,
+      "Critical +2: Specific": 180,
+      "Critical +2: Group": 200,
+      "Dodge": 200,
+      "Dodge: Additional": 200,
+      "Execute": 200,
+      "Execute: Master": 220,
+      "Execute: Subsequent": 200,
+      "Execute: Master Subsequent": 220,
+      "Garrotte": 150,
+      "Sap": 60,
+      "Vital Blow": 100
+    }
+  },
+  "categories": [
+    {
+      "cat": "Production",
+      "skills": [
+        {
+          "name": "Alchemy",
+          "costs": {
+            "Mercenary": 80,
+            "Ranger": 50,
+            "Templar": 70,
+            "Nightblade": 40,
+            "Assassin": 40,
+            "Wytchhunter": 50,
+            "Mage": 60,
+            "Druid": 40,
+            "Bard": 50
+          },
+          "frag": 0,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "Purchasing this skill opens up the world of Alchemy to your character. Each level of Alchemy purchased allows your character to create new Alchemical recipes from the in-game list of known alchemies. Alchemies with an asterisk beside them require special components to create, which must be found in-game.\n\nAn Alchemist can also create mundane role play related effects with little effort. By spending 10 minutes gathering common and easily found herbs and ingredients, the Alchemist can create elixirs to cure many role-played ailments. These only cure mundane ill effects and cannot be used to mimic any spell effect or ability. It requires no skill to willingly drink an Alchemical concoction or to pour an elixir down an unconscious victim's throat.\n\nTo use any non-ingested Alchemical creation, it must be shaken vigorously and prepared with a three count. You may only have one non-ingested Alchemical creation prepared at a time and you must prepare your own. Non-ingested Alchemy only remains prepared for 10 minutes, after which it must be prepared again before being used.\n\nIdentify Alchemy: Each Alchemist has a basic knowledge of plants and herbs that allows them to identify known Alchemical concoctions after having examined the substance for one minute.\nApply Ingested Alchemy (Level 2): For an ingested Alchemy to take effect the Alchemist must somehow attach the Alchemy tag onto or under the item holding the food/drink.\nApply Contact Alchemy (Level 4): The Alchemist must spend one minute applying the contact elixir to the item. Contact alchemy may be applied to weapons or any other object.\nReverse Engineer (Level 5): The Alchemist may reverse engineer Alchemy into its basic state, destroying the Alchemy but returning half its Raw Material value.\nThrow Gas Globe (Level 6): The declaration for all thrown Alchemy is \"<type> Gas\". Orange packets are used to represent Alchemical gas globes.\nApply Contact on a 30 Count (Level 7): The Alchemist now only needs thirty seconds to apply contact alchemy to items.\nPrepare Alchemy on a 2 Count (Level 10): The Alchemist may now prepare alchemy on a 2 count."
+        },
+        {
+          "name": "Artifice",
+          "costs": {
+            "Mercenary": 75,
+            "Ranger": 75,
+            "Templar": 80,
+            "Nightblade": 90,
+            "Assassin": 100,
+            "Wytchhunter": 90,
+            "Mage": 120,
+            "Druid": 110,
+            "Bard": 95
+          },
+          "frag": 0,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [
+            {
+              "name": "Blacksmith",
+              "minCount": 10
+            }
+          ],
+          "desc": "The pinnacle of achievement for a Blacksmith is creating Blueprinted items. Blueprints are physical items that contain special instructions to allow a Legendary Blacksmith to craft powerful items. Given the right exotic material, Catalysts, time and the proper Blueprint, the Artificer can make armour and weapons that possess special and unique properties.\n\nEach Blueprint, and all the requirements, are different and must be found in-game.\n\nAn Artificer may craft 1 Blueprinted item per event per level of Artificing. Only Artificers can read Blueprints. Artificers can read Blueprints even if they cannot read and write."
+        },
+        {
+          "name": "Blacksmith",
+          "costs": {
+            "Mercenary": 65,
+            "Ranger": 65,
+            "Templar": 70,
+            "Nightblade": 80,
+            "Assassin": 90,
+            "Wytchhunter": 80,
+            "Mage": 110,
+            "Druid": 100,
+            "Bard": 85
+          },
+          "frag": 0,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "This production skill allows the character to craft new weapons and armour as well as repairing damaged armour. Crafting new weapons and armour may only be done at logistics.\n\nRefitting (repairing) armour takes 60 seconds for every 10 points of armour to be refit and requires the Blacksmith and target to remain stationary. A Blacksmith can tell how much of a target's armour has been damaged by placing both hands on their torso and stating, \"Blacksmithing 1, Blacksmithing 2, Blacksmithing 3, how much armour are you missing?\"\n\nRepair While Moving (Level 3): The Blacksmith may now repair armour while moving.\nReforge (Level 5): The Blacksmith may Reforge any shield, piece of armour or weapon, back into half of its value in Raw Material.\n+1 Strength (Levels 6 and 10): Hours and hours spent hammering metal have given the Blacksmith the kind of muscles every warrior desires. This Strength stacks with other Strength bonuses, including itself."
+        },
+        {
+          "name": "Chemistry",
+          "costs": {
+            "Mercenary": 90,
+            "Ranger": 60,
+            "Templar": 80,
+            "Nightblade": 50,
+            "Assassin": 50,
+            "Wytchhunter": 60,
+            "Mage": 70,
+            "Druid": 50,
+            "Bard": 60
+          },
+          "frag": 0,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [
+            {
+              "name": "Alchemy",
+              "minCount": 10
+            }
+          ],
+          "desc": "When an Alchemist has mastered everything Alchemy has to teach them, they can learn Chemistry. Chemistry Formulas create powerful alchemical concoctions.\n\nGiven the right exotic material, Catalysts, time and the proper Formula, the Alchemist can make potions and elixirs that possess special and unique properties. Each Formula, and all the requirements, are different and must be found in-game.\n\nA Chemist may brew 1 Chemistry item per event per level of Chemistry. Chemistry is considered 'ritual level'. Only Chemists can read Chemistry Formulas. Chemists can read Chemistry Formulas even if they cannot read and write."
+        },
+        {
+          "name": "Create Scroll",
+          "costs": {
+            "Mercenary": 75,
+            "Ranger": 75,
+            "Templar": 40,
+            "Nightblade": 50,
+            "Assassin": 75,
+            "Wytchhunter": 45,
+            "Mage": 35,
+            "Druid": 45,
+            "Bard": 35
+          },
+          "frag": 0,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [
+            {
+              "name": "Read Magic",
+              "minCount": 1
+            }
+          ],
+          "desc": "This skill allows a character to create Battle Magic Scrolls. To make a Magical Scroll, the character must be able to cast that specific spell from memory.\n\nGlowing Ink (Level 2): This allows the scrollcrafter to create scrolls which can be cast in darkness.\nScavenge Scroll (Level 4): The scribe may carefully salvage the scrollcrafting materials of an existing scroll to turn it into something new, returning half its Raw Material value.\nCreate Tome (Level 6): The scrollcrafter has learned to create powerful Tomes of magic. This Tome may contain one of each Battle Magic scroll in a single sphere and is spirit linked to the first person who memorises from it.\nScroll Mastery (Level 10): The scrollcrafter has now mastered all they need to create any scroll from the core rulebook, even if they cannot cast the sphere that scroll is from, although they will still need to be able to cast a spell of that level. Scrolls created with Scroll Mastery cost an additional 100% of the base Raw Material cost."
+        },
+        {
+          "name": "Tradesman",
+          "costs": {
+            "Mercenary": 40,
+            "Ranger": 40,
+            "Templar": 40,
+            "Nightblade": 40,
+            "Assassin": 40,
+            "Wytchhunter": 40,
+            "Mage": 40,
+            "Druid": 40,
+            "Bard": 35
+          },
+          "frag": 0,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "The Tradesman skill is a catch-all term for all other jobs or occupations. When purchasing this skill, a player must choose their trade. For each level of Tradesman the player has, they will receive either 3 silver worth of product or 5 units of Raw Material at Logistics.\n\nPlayers must choose which type of Raw Material (maximum of one) the skill can produce when it is purchased and have this approved by a Logistics Marshal. An appropriate Tradesman skill may aid in certain role-playing situations as determined by the Shaper running the encounter."
+        },
+        {
+          "name": "Trapper",
+          "costs": {
+            "Mercenary": 75,
+            "Ranger": 65,
+            "Templar": 75,
+            "Nightblade": 45,
+            "Assassin": 55,
+            "Wytchhunter": 65,
+            "Mage": 85,
+            "Druid": 75,
+            "Bard": 75
+          },
+          "frag": 0,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "This skill allows a character to create, set, and disarm traps. To arm or disarm a trap, the Trapper must have a level of Trapper equal to the level of trigger used. Traps and triggers can only be created at Logistics.\n\nAn armed trap may be moved any distance, if it remains in contact with the mover and they move no faster than walking speed. Should the trap be thrown, dropped, or move faster than a walk, the trap goes off instantly.\n\nThis skill also allows the character to create and pick in-game locks. A Trapper can pick a lock with a difficulty rating lower than or equal to their Trapper level, requiring a 1-minute count, once per day per purchase. A player with Trapper may also open locks by physically picking the phys-rep lock without consuming any daily uses.\n\nSalvage (Level 5): The Trapper may break down their locks and traps to repurpose the raw materials, returning half its value in Raw Material."
+        }
+      ]
+    },
+    {
+      "cat": "Scholar",
+      "skills": [
+        {
+          "name": "Anatomy",
+          "costs": {
+            "Mercenary": 40,
+            "Ranger": 40,
+            "Templar": 40,
+            "Nightblade": 40,
+            "Assassin": 40,
+            "Wytchhunter": 40,
+            "Mage": 40,
+            "Druid": 40,
+            "Bard": 35
+          },
+          "frag": 0,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "This skill allows a user to check an individual's vital signs. Anatomy can be used on any living creature to glean information about their health and physical state.\n\nTo use Anatomy, the player must place both hands on the torso of the target, call out \"Anatomy 1, Anatomy 2, Anatomy 3\", and then ask the player, out of game, one of the following questions: \"Are you alive?\", \"Are you in your bleed count?\", \"Are you in your death count?\", \"Are you paralysed?\", \"Are you asleep?\", \"Are you unconscious?\", \"Is there alcohol in your system?\", \"Is there a toxin in your system?\", \"Is there a non-Magical disease in your system?\" and \"How much damage have you taken?\" This skill is usable at will."
+        },
+        {
+          "name": "Mysticism",
+          "costs": {
+            "Mercenary": 50,
+            "Ranger": 50,
+            "Templar": 50,
+            "Nightblade": 50,
+            "Assassin": 50,
+            "Wytchhunter": 50,
+            "Mage": 50,
+            "Druid": 50,
+            "Bard": 50
+          },
+          "frag": 0,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "The art of the Mystic is one that has both amazed and frightened the unaware since the dawn of time. A Mystic excels in the contacting of lost spirits or ghosts to ask for, coerce, steal, or outright force their aid.\n\nMysticism skills must be purchased in order of level and no level may be purchased more than once.\n\nA Mystic who finds themselves close to final death finds themselves with easier access to the Deadlands — if a Mystic has no free deaths left on their character card, they will be given two additional uses of any one skill of their choice that they have purchased.\n\nLevel 1: Dead Sight — view lost souls and ghosts normally invisible to the mundane eye.\nLevel 2: Augury — consult with Spirits via a medium of their choosing.\nLevel 3: Eyes of the Soul — touch a corpse to attempt to lure the Spirit into retelling how it died (1 in 10 chance, costs 1 hour of blindness).\nLevel 4: Foresight — implant subconscious foresight of upcoming danger into a target.\nLevel 5: Manifest — rise as a visible spirit during Death Count.\nLevel 6: Grim Counsel — speak directly to spirits and ghosts; combine with Augury to target a specific spirit.\nLevel 7: Séance — gather Mystics to summon a specific spirit to answer 3 questions.\nLevel 8: Unfetter — Manifest without the 10-foot restriction, remaining within line-of-sight.\nLevel 9: Haunt — attempt to have a spirit choose a home as their connection to the mortal realm.\nLevel 10: Betwixt and Between — immunity to Forget effects, 50% chance to remember deaths, doubles Death Count while Manifesting with a lantern."
+        },
+        {
+          "name": "Demonic/Angelic Arts",
+          "costs": {
+            "Mercenary": 75,
+            "Ranger": 75,
+            "Templar": 60,
+            "Nightblade": 75,
+            "Assassin": 75,
+            "Wytchhunter": 60,
+            "Mage": 55,
+            "Druid": 60,
+            "Bard": 50
+          },
+          "frag": 0,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "Demonic/Angelic Arts allow the user to identify and recognize the various holy and unholy creatures that exist on all the planes of the Heavens and Hells.\n\nThis skill may only be used to answer the following questions: \"Are you a Demonic/Angelic creature?\", \"What kind of Demon/Angel are you?\", \"Are you a greater or lesser Demon/Angel?\", (Angelic only) \"Which God do you serve, if any?\", (Demonic only) \"Are you currently under contract?\" These questions are asked out of game, not to the Demon or Angel directly.\n\nCharacters with Demonic/Angelic Arts take 2 less damage (to a minimum of 1) from attacks by their identified target no matter the type of attack. Only one target may be active at a time. To change targets, the user may ask one of the questions above, or simply state \"Demonic/Angelic Arts 1, 2, 3\" if the new target has already been identified."
+        },
+        {
+          "name": "Elemental Attunement",
+          "costs": {
+            "Mercenary": 25,
+            "Ranger": 25,
+            "Templar": 25,
+            "Nightblade": 25,
+            "Assassin": 25,
+            "Wytchhunter": 25,
+            "Mage": 25,
+            "Druid": 25,
+            "Bard": 25
+          },
+          "frag": 0,
+          "maxPurchases": 3,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [
+            {
+              "name": "Sphere of Magic: 1st",
+              "minCount": 1
+            }
+          ],
+          "desc": "This skill will allow an Elementalist to attune themselves to an additional Element. This additional attunement may be chosen when casting spells that require one.\n\nExample: A Fire Elementalist may purchase Elemental Attunement and choose Ice. The Elementalist can now choose between Ice or Fire when casting spells that require an Elemental type such as \"<type> Strike.\"\n\nThis skill can be purchased multiple times to grant access to additional Elements. The four elements are Fire, Ice, Stone and Lightning.",
+          "ref": "Core 5.6.5 p.53 (requires the Elemental sphere)"
+        },
+        {
+          "name": "First Aid",
+          "costs": {
+            "Mercenary": 60,
+            "Ranger": 60,
+            "Templar": 60,
+            "Nightblade": 60,
+            "Assassin": 60,
+            "Wytchhunter": 60,
+            "Mage": 60,
+            "Druid": 60,
+            "Bard": 55
+          },
+          "frag": 0,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [
+            {
+              "name": "Anatomy",
+              "minCount": 1
+            }
+          ],
+          "desc": "Allows the user to bind wounds sufficiently to stop bleeding and heal some minor wounds. The process takes 1 minute to use and as long as it is being used, the target's Bleed Count is halted. If First Aid is interrupted, or if the wounded target moves or is moved in any way, the skill fails and the wounded target must continue their Bleed Count from where they left off.\n\nAfter a successful 1 minute of First Aid, the wounded target is healed to zero Body, bringing them to unconsciousness and halting their bleeding.\n\nFirst Aid also allows the character to bandage a target, healing one Body for each minute of bandaging up to the maximum allowed by their Physician level. A target in their Bleed Count cannot be bandaged. The player cannot bandage the same target more than once a day. It will not affect Undead in any way, with the exception that a player with Necromantic Arts may use this skill to heal Risen in Undead form."
+        },
+        {
+          "name": "Necromantic Arts",
+          "costs": {
+            "Mercenary": 75,
+            "Ranger": 75,
+            "Templar": 60,
+            "Nightblade": 75,
+            "Assassin": 75,
+            "Wytchhunter": 60,
+            "Mage": 55,
+            "Druid": 60,
+            "Bard": 55
+          },
+          "frag": 0,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "Necromantic Arts allows a user to recognize and identify whether or not standard identifiable signs of Undeath are present in an individual. It will not verify that something is alive, only whether or not it is Undead.\n\nThis skill may only be used to answer the following questions: \"Are you Undead?\", \"What kind of Undead are you?\", \"Are you lesser, greater or ancient Undead?\", \"How much damage have you taken (only to Undead)?\"\n\nCharacters with Necromantic Arts take 1 less damage (to a minimum of 1) from attacks by their identified target no matter the type of attack. Only one target may be active at a time. To change targets, the user may ask one of the questions above, or simply state \"Necromantic Arts 1, 2, 3\" if the new target has already been identified."
+        },
+        {
+          "name": "Physician",
+          "costs": {
+            "Mercenary": 45,
+            "Ranger": 45,
+            "Templar": 45,
+            "Nightblade": 45,
+            "Assassin": 45,
+            "Wytchhunter": 45,
+            "Mage": 45,
+            "Druid": 45,
+            "Bard": 40
+          },
+          "frag": 0,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [
+            {
+              "name": "First Aid",
+              "minCount": 1
+            }
+          ],
+          "desc": "After having mastered the art of Anatomy and First Aid, a character is ready to uncover the secrets of the living body. Every level of Physician will increase the amount of Body healed through First Aid bandaging by one, to a maximum of 11.\n\nLevel 1 Barber: Perform First Aid on a moving target and extend their Bleed Count by 1 minute.\nLevel 2 Pharmacist: Identify and cure non-Magical diseases (1 minute roleplay, once per 5 days per patient).\nLevel 3 Physicker: Identify and purge toxins; target must be lying down unmoving for 1 minute.\nLevel 4 Doctor: Perform minor surgeries (10 minutes, patient unconscious 30 minutes after); extend a dying target's Death Count by 5 minutes via CPR.\nLevel 5 Surgeon: Perform major surgeries including re-attachment of lost limbs, removal of foreign life forms, and organ transplants.\nLevel 6 Stasis Director: With a fellow physician, postpone death indefinitely by actively role playing keeping the patient's vitals in check.\nLevel 7 Vital Warden: Perform a major surgery which restores all the target's hit points.\nLevel 8 War Surgeon: Bandage at a rate of 2 Body per minute when working alone.\nLevel 9 Specialist: Use intensive care single-handedly; perform anatomy checks while using any other physician skill.\nLevel 10 Master Physician: Major and minor surgery time and patient unconsciousness period halved; a second surgery may be performed within five days."
+        },
+        {
+          "name": "Read & Write",
+          "costs": {
+            "Mercenary": 70,
+            "Ranger": 60,
+            "Templar": 45,
+            "Nightblade": 55,
+            "Assassin": 70,
+            "Wytchhunter": 45,
+            "Mage": 40,
+            "Druid": 50,
+            "Bard": 40
+          },
+          "frag": 0,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "This skill allows the character to read and write. Without this skill, you are illiterate. Without this skill a person can only know the letters to their own name and can count on their fingers. A character with this skill can read the names of Battle Magic spell scrolls, but nothing else."
+        },
+        {
+          "name": "Read Magic",
+          "costs": {
+            "Mercenary": 45,
+            "Ranger": 35,
+            "Templar": 20,
+            "Nightblade": 25,
+            "Assassin": 40,
+            "Wytchhunter": 25,
+            "Mage": 15,
+            "Druid": 15,
+            "Bard": 25
+          },
+          "frag": 0,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [
+            {
+              "name": "Read & Write",
+              "minCount": 1
+            }
+          ],
+          "desc": "This skill allows the user to cast Battle Magic spells from scrolls. They are limited to casting only Battle Magic from spell level 1 to level 4.\n\nTo activate the scroll, the caster must have enough light to properly read the scroll. They must then read and speak the incantation of the spell. When used, a Battle Magic scroll is consumed and destroyed."
+        },
+        {
+          "name": "Read Magic: Advanced",
+          "costs": {
+            "Mercenary": 50,
+            "Ranger": 45,
+            "Templar": 30,
+            "Nightblade": 35,
+            "Assassin": 50,
+            "Wytchhunter": 35,
+            "Mage": 25,
+            "Druid": 25,
+            "Bard": 35
+          },
+          "frag": 0,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [
+            {
+              "name": "Read Magic",
+              "minCount": 1
+            }
+          ],
+          "desc": "This skill is the same as Read Magic, except that it allows the user to cast Battle Magic spells from spell level 5 to level 9."
+        },
+        {
+          "name": "Read Magic: Ritual",
+          "costs": {
+            "Mercenary": 90,
+            "Ranger": 80,
+            "Templar": 50,
+            "Nightblade": 60,
+            "Assassin": 90,
+            "Wytchhunter": 60,
+            "Mage": 40,
+            "Druid": 40,
+            "Bard": 50
+          },
+          "frag": 0,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [
+            {
+              "name": "Read Magic: Advanced",
+              "minCount": 1
+            }
+          ],
+          "desc": "This skill allows the user to read Ritual Magic scrolls."
+        },
+        {
+          "name": "Advanced Ritual Casting",
+          "costs": {
+            "Mercenary": 300,
+            "Ranger": 300,
+            "Templar": 275,
+            "Nightblade": 275,
+            "Assassin": 300,
+            "Wytchhunter": 275,
+            "Mage": 200,
+            "Druid": 225,
+            "Bard": 225
+          },
+          "frag": 0,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [
+            {
+              "name": "Ritual Slot",
+              "minCount": 1
+            }
+          ],
+          "desc": "This skill demonstrates an advanced understanding of ritual magics. The player may now cast rituals from the Advanced Spheres, Covenant and Enchantment, which do not have Battle Magic spells.\n\nA caster is limited to one ritual circle for every Sphere of magic they can cast, plus one. Any character with Advanced Ritual Casting may add two to this limit.\n\nCovenant is a specialised ritual-only sphere focused on assisting like-minded individuals, establishing guild-like groups called \"Covenants\" and creating a Sanctum for them to operate within.\n\nEnchantment is a ritual-only advanced sphere that primarily facilitates the creation of magical items, including rings, cloaks, weapons, wands, and extending the duration of rituals cast from other spheres.",
+          "ref": "Core 5.6.5 p.53; Soul Frag 2.10 p.58"
+        }
+      ]
+    },
+    {
+      "cat": "Warrior",
+      "skills": [
+        {
+          "name": "Ambidexterity",
+          "costs": {
+            "Mercenary": 20,
+            "Ranger": 30,
+            "Templar": 35,
+            "Nightblade": 40,
+            "Assassin": 30,
+            "Wytchhunter": 45,
+            "Mage": 75,
+            "Druid": 75,
+            "Bard": 75
+          },
+          "frag": 0,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "This skill allows a character to wield two one-handed weapons in combat. The player may wield a Medium or Simple Weapon they have proficiency with in their main hand and a Simple Weapon in their off hand."
+        },
+        {
+          "name": "Florentine",
+          "costs": {
+            "Mercenary": 40,
+            "Ranger": 40,
+            "Templar": 45,
+            "Nightblade": 70,
+            "Assassin": 65,
+            "Wytchhunter": 70,
+            "Mage": 110,
+            "Druid": 110,
+            "Bard": 110
+          },
+          "frag": 0,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [
+            {
+              "name": "Ambidexterity",
+              "minCount": 1
+            }
+          ],
+          "desc": "This skill improves a character's training in the art of two weapon fighting. The player may now wield any one-handed weapon they have proficiency with in their main and off hand."
+        },
+        {
+          "name": "Flurry of Blows",
+          "costs": {
+            "Mercenary": 40,
+            "Ranger": 50,
+            "Templar": 55,
+            "Nightblade": 75,
+            "Assassin": 65,
+            "Wytchhunter": 75,
+            "Mage": 125,
+            "Druid": 100,
+            "Bard": 125
+          },
+          "frag": 0,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "Through discipline and training, your character has learned the secret of tapping into raw emotion and harnessing it into strength defying attacks. This skill will allow the player to swing for +5 additional damage of the character's normal swinging type for the next 3 swings, hit or miss.\n\nThe Flurry will stay active for 1 minute. If all 3 swings are not used by the end of the minute, they are lost. To activate this skill, the player must call \"Flurry of Blows\".\n\nThis skill does not stack with other per-day use skills, abilities or spells, or itself. This skill is usable once per day per purchase."
+        },
+        {
+          "name": "Heavy Armour",
+          "costs": {
+            "Mercenary": 15,
+            "Ranger": 20,
+            "Templar": 20,
+            "Nightblade": 40,
+            "Assassin": 45,
+            "Wytchhunter": 45,
+            "Mage": 65,
+            "Druid": 60,
+            "Bard": 65
+          },
+          "frag": 0,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "This skill will allow the character to wear multiple layers of armour and increase their Armour Points far past the normal maximum. With this skill, the player may stack two types of armour on one location and add their AP values.\n\nA player is still limited to the AP that their out-of-game reps allow. Armour of the same type (eg: chain on chain) will not stack."
+        },
+        {
+          "name": "Self Mutilate",
+          "costs": {
+            "Mercenary": 15,
+            "Ranger": 15,
+            "Templar": 15,
+            "Nightblade": 15,
+            "Assassin": 15,
+            "Wytchhunter": 15,
+            "Mage": 15,
+            "Druid": 15,
+            "Bard": 15
+          },
+          "frag": 0,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "This skill represents the character's ability to overcome the instinct of self-preservation. A character may not willingly accept or cause themselves 1 Body or more worth of damage without this skill, and must actively fight any attempt to harm them, even if it is in their best interest.\n\nWithout Self Mutilate, you may still enter a fight even without armour, but you must fight back or defend yourself and not simply allow yourself to be injured. This skill must also be purchased for a character to actively kill themselves or to consent to their own demise."
+        },
+        {
+          "name": "Shield",
+          "costs": {
+            "Mercenary": 50,
+            "Ranger": 75,
+            "Templar": 60,
+            "Nightblade": 110,
+            "Assassin": 120,
+            "Wytchhunter": 95,
+            "Mage": 140,
+            "Druid": 140,
+            "Bard": 140
+          },
+          "frag": 0,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "This skill allows a character to properly use a shield or buckler. A shield will stop strikes from weapons only. Shields will also block Slays, using them up without harming the shield user, even if the shield is broken by the Slay.\n\nA buckler is a small shield strapped to the forearm that acts like a normal shield but can be used while holding something in the same hand. A buckler cannot be larger than 15 inches in diameter and cannot be disarmed while strapped to the forearm.\n\nShields will not stop packet delivered or Spellstrike attacks. Without this skill, a player may use a shield if they hold it in both hands and do not use any other skills or abilities. A character with this skill may wield two shields at the same time, but only if both are held by their handles."
+        },
+        {
+          "name": "Slay/Parry",
+          "costs": {
+            "Mercenary": 100,
+            "Ranger": 120,
+            "Templar": 130,
+            "Nightblade": 170,
+            "Assassin": 150,
+            "Wytchhunter": 170,
+            "Mage": 250,
+            "Druid": 200,
+            "Bard": 250
+          },
+          "frag": 0,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": true,
+          "_weaponChoice": "specific",
+          "prereqs": [
+            {
+              "name": "Specialization +1: Weapon Group|Specialization +1: Weapon Specific",
+              "minCount": 1
+            }
+          ],
+          "desc": "This skill allows a character to use one Slay or Parry, per day, with a single weapon that the character is proficient in, chosen at purchase. Each additional purchase of Slay/Parry requires an additional purchase of the weapon specialisation. The player chooses whether to use this skill as a Slay or as a Parry each time they use it.\n\nA Slay is a powerful attack which does 50 points of damage — nothing besides Slay stacking may change this number. To use a Slay, the attacker must declare \"You are not prepared!\" and strike their opponent, then call \"50 Slay!\"\n\nA Parry enables the player to parry any weapon blow, as well as touch cast spells, by calling \"Parry\". Parry cannot block Massive damage, Spellstrikes, or Surprise Attacks."
+        },
+        {
+          "name": "Slay/Parry: Master",
+          "costs": {
+            "Mercenary": 120,
+            "Ranger": 140,
+            "Templar": 150,
+            "Nightblade": 190,
+            "Assassin": 170,
+            "Wytchhunter": 190,
+            "Mage": 270,
+            "Druid": 220,
+            "Bard": 270
+          },
+          "frag": 0,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": true,
+          "_weaponChoice": "group",
+          "prereqs": [
+            {
+              "name": "Specialization +1: Weapon Group",
+              "minCount": 1
+            }
+          ],
+          "desc": "This skill is the same as Slay/Parry, except that it is purchased for an entire Weapon Group rather than a specific weapon. The Slay or Parry may be used with any of the weapons within that Weapon Group."
+        },
+        {
+          "name": "Slay/Parry: Subsequent",
+          "costs": {
+            "Mercenary": 100,
+            "Ranger": 120,
+            "Templar": 130,
+            "Nightblade": 170,
+            "Assassin": 150,
+            "Wytchhunter": 170,
+            "Mage": 250,
+            "Druid": 200,
+            "Bard": 250
+          },
+          "frag": 0,
+          "maxPurchases": 9,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": true,
+          "_weaponChoice": "specific",
+          "prereqs": [
+            {
+              "name": "Slay/Parry",
+              "minCount": 1,
+              "primaryGate": true
+            },
+            {
+              "name": "Specialization +1: Weapon Group|Specialization +1: Weapon Specific",
+              "minCount": 1
+            }
+          ],
+          "desc": "Requires Slay/Parry to be purchased first. Each purchase requires an additional Weapon Specialization (Group or Specific). Functions identically to Slay/Parry for a single weapon the character is proficient in, chosen at purchase."
+        },
+        {
+          "name": "Slay/Parry: Master Subsequent",
+          "costs": {
+            "Mercenary": 120,
+            "Ranger": 140,
+            "Templar": 150,
+            "Nightblade": 190,
+            "Assassin": 170,
+            "Wytchhunter": 190,
+            "Mage": 270,
+            "Druid": 220,
+            "Bard": 270
+          },
+          "frag": 0,
+          "maxPurchases": 9,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": true,
+          "_weaponChoice": "group",
+          "prereqs": [
+            {
+              "name": "Slay/Parry: Master",
+              "minCount": 1,
+              "primaryGate": true
+            },
+            {
+              "name": "Specialization +1: Weapon Group",
+              "minCount": 1
+            }
+          ],
+          "desc": "Requires Slay/Parry: Master to be purchased first. Each purchase requires an additional Weapon Group Specialization. Functions identically to Slay/Parry: Master for an entire Weapon Group."
+        },
+        {
+          "name": "Specialization +1: Weapon Group",
+          "costs": {
+            "Mercenary": 120,
+            "Ranger": 140,
+            "Templar": 150,
+            "Nightblade": 170,
+            "Assassin": 150,
+            "Wytchhunter": 170,
+            "Mage": 250,
+            "Druid": 200,
+            "Bard": 250
+          },
+          "frag": 0,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": "group",
+          "prereqs": [
+            {
+              "name": "Weapon Group Proficiency: Medium|Weapon Group Proficiency: Large",
+              "minCount": 1
+            }
+          ],
+          "desc": "This skill grants the player a +1 damage bonus with any weapon from a chosen Weapon Group that the character is proficient in, selected at purchase. This skill cannot be purchased for the Exotic weapon group.",
+          "ref": "Core 5.6.5 p.54-55 (no group proficiency exists for Exotic)"
+        },
+        {
+          "name": "Specialization +1: Weapon Specific",
+          "costs": {
+            "Mercenary": 100,
+            "Ranger": 120,
+            "Templar": 130,
+            "Nightblade": 150,
+            "Assassin": 130,
+            "Wytchhunter": 150,
+            "Mage": 230,
+            "Druid": 180,
+            "Bard": 230
+          },
+          "frag": 0,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": "specific",
+          "prereqs": [
+            {
+              "name": "Weapon Group Proficiency: Medium|Weapon Group Proficiency: Large|Weapon Specific Proficiency: Exotic",
+              "minCount": 1
+            }
+          ],
+          "desc": "This skill grants the player a +1 damage bonus with a single weapon that the character is proficient in, chosen at purchase. If purchased for Summoned Weapons it will apply to all Summoned Weapons within an individual sphere."
+        },
+        {
+          "name": "Weapon Group Proficiency: Medium",
+          "costs": {
+            "Mercenary": 40,
+            "Ranger": 40,
+            "Templar": 40,
+            "Nightblade": 50,
+            "Assassin": 50,
+            "Wytchhunter": 50,
+            "Mage": 80,
+            "Druid": 80,
+            "Bard": 80
+          },
+          "frag": 0,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "This skill allows the player to properly wield the following one-handed weapons: Bow, Sword, Mace, Spears, Battle Axe, and any other non-Exotic weapon with a base damage of 2. Bows do Body damage."
+        },
+        {
+          "name": "Weapon Group Proficiency: Large",
+          "costs": {
+            "Mercenary": 70,
+            "Ranger": 70,
+            "Templar": 70,
+            "Nightblade": 100,
+            "Assassin": 100,
+            "Wytchhunter": 100,
+            "Mage": 130,
+            "Druid": 130,
+            "Bard": 130
+          },
+          "frag": 0,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "This skill allows the player to properly wield the following two-handed weapons: Crossbow, Sword, Axe, Mace, Pole Arm, and any other non-Exotic weapon with a base damage of 4.\n\nBonus damage from Strength will be applied to Large Weapon swings at a rate of +1 damage for every 1 point of Strength, rather than the standard +1 damage for every 2 points. Strength bonuses will not increase Crossbow damage. Crossbows do Body damage."
+        },
+        {
+          "name": "Weapon Specific Proficiency: Exotic",
+          "costs": {
+            "Mercenary": 100,
+            "Ranger": 100,
+            "Templar": 100,
+            "Nightblade": 130,
+            "Assassin": 130,
+            "Wytchhunter": 130,
+            "Mage": 150,
+            "Druid": 150,
+            "Bard": 150
+          },
+          "frag": 0,
+          "maxPurchases": 4,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": "exotic",
+          "prereqs": [],
+          "desc": "This skill allows the player to properly wield one of the following weapons: Stiletto (1 Body damage), two-handed Maul (5 damage), Bastard Sword (2 damage if wielded in one hand or 4 damage if wielded in both hands), or any other weapon that does Body damage or is summoned through magical means.\n\nBonus damage from Strength will be applied to Maul swings at a rate of +1 damage for every 1 point of Strength, rather than the standard +1 damage for every 2 points. This skill can be purchased multiple times to allow a character to become proficient in multiple Exotic Weapons."
+        },
+        {
+          "name": "Weapon Refocus",
+          "costs": {
+            "Mercenary": 40,
+            "Ranger": 40,
+            "Templar": 40,
+            "Nightblade": 40,
+            "Assassin": 40,
+            "Wytchhunter": 40,
+            "Mage": 40,
+            "Druid": 40,
+            "Bard": 40
+          },
+          "frag": 0,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "This skill allows the player to revisit their local training ground and upgrade their Weapon Specific Specialization +1 or Critical +2 or Slay/Parry to a Group Specialization +1 or Critical +2 or Slay/Parry: Master. This skill may only be used as an upgrade, not to downgrade a Group skill to a Weapon Specific skill."
+        }
+      ]
+    },
+    {
+      "cat": "Rogue",
+      "skills": [
+        {
+          "name": "Critical +2: Specific",
+          "costs": {
+            "Mercenary": 150,
+            "Ranger": 125,
+            "Templar": 130,
+            "Nightblade": 120,
+            "Assassin": 100,
+            "Wytchhunter": 130,
+            "Mage": 230,
+            "Druid": 180,
+            "Bard": 130
+          },
+          "frag": 0,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": "specific",
+          "prereqs": [
+            {
+              "name": "Weapon Group Proficiency: Medium|Weapon Group Proficiency: Large|Weapon Specific Proficiency: Exotic",
+              "minCount": 1
+            }
+          ],
+          "desc": "This skill allows the player to swing for +2 damage when striking a target from behind and +½ damage from the front, with a single weapon that the character is proficient in, chosen at purchase.\n\nThe attack must hit the target on the back of their body (Upper Back, Mid Back, or Lower Back locations) to grant the +2 damage. The damage call is \"<damage> Critical\" when striking from behind. This skill is always active."
+        },
+        {
+          "name": "Critical +2: Group",
+          "costs": {
+            "Mercenary": 170,
+            "Ranger": 145,
+            "Templar": 150,
+            "Nightblade": 140,
+            "Assassin": 120,
+            "Wytchhunter": 150,
+            "Mage": 250,
+            "Druid": 200,
+            "Bard": 150
+          },
+          "frag": 0,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [
+            {
+              "name": "Weapon Group Proficiency: Medium|Weapon Group Proficiency: Large",
+              "minCount": 1
+            }
+          ],
+          "desc": "This skill is the same as Critical +2: Specific, except that it is purchased for an entire Weapon Group rather than a specific weapon. The Critical may be used with any of the weapons within that Weapon Group.",
+          "ref": "Core 5.6.5 p.54-55 (no group proficiency exists for Exotic)"
+        },
+        {
+          "name": "Dodge",
+          "costs": {
+            "Mercenary": 170,
+            "Ranger": 140,
+            "Templar": 150,
+            "Nightblade": 100,
+            "Assassin": 120,
+            "Wytchhunter": 130,
+            "Mage": 250,
+            "Druid": 200,
+            "Bard": 80
+          },
+          "frag": 0,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [
+            {
+              "name": "Critical +2: Specific|Critical +2: Group|Feint",
+              "minCount": 1
+            }
+          ],
+          "desc": "This skill allows the player to dodge any attack except a Surprise Attack, Gaze Attack, Power Word, Area of Effect, Massive damage attack or other unreasonable damage-causing incident, such as falling off a cliff. Dodge is a Conscious defense. This skill is usable once per day per purchase."
+        },
+        {
+          "name": "Dodge: Additional",
+          "costs": {
+            "Mercenary": 170,
+            "Ranger": 140,
+            "Templar": 150,
+            "Nightblade": 100,
+            "Assassin": 120,
+            "Wytchhunter": 130,
+            "Mage": 250,
+            "Druid": 200,
+            "Bard": 80
+          },
+          "frag": 0,
+          "maxPurchases": 9,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": true,
+          "_weaponChoice": null,
+          "prereqs": [
+            {
+              "name": "Dodge",
+              "minCount": 1,
+              "primaryGate": true
+            },
+            {
+              "name": "Critical +2: Specific|Critical +2: Group|Feint",
+              "minCount": 1
+            }
+          ],
+          "desc": "Requires Dodge to be purchased first. Each purchase requires an additional Critical +2 (Specific or Group) or Feint. Usable once per day per purchase."
+        },
+        {
+          "name": "Execute",
+          "costs": {
+            "Mercenary": 170,
+            "Ranger": 130,
+            "Templar": 150,
+            "Nightblade": 120,
+            "Assassin": 100,
+            "Wytchhunter": 130,
+            "Mage": 250,
+            "Druid": 200,
+            "Bard": 150
+          },
+          "frag": 0,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": true,
+          "_weaponChoice": "specific",
+          "prereqs": [
+            {
+              "name": "Critical +2: Specific|Critical +2: Group",
+              "minCount": 1
+            }
+          ],
+          "desc": "This skill will strike the victim's vital organs, mortally wounding them, with a single weapon that the character is proficient in, chosen at purchase. Each additional purchase of Execute requires an additional purchase of an appropriate Critical skill.\n\nAn Execute must strike the target's torso and directly damage their Body points, rather than armour, to be successful. A successful Execute will instantly reduce a victim's Body points to -1 and drop them into their Bleed Count.\n\nThe call for this skill is \"Execute\". If used from behind and strikes between the target's shoulder blades, the call will be \"Surprise Execute\".\n\nExecute may only be used in combination with the skills Shiv, Silent Strike, and Penetration. This skill is usable once per day per purchase."
+        },
+        {
+          "name": "Execute: Master",
+          "costs": {
+            "Mercenary": 190,
+            "Ranger": 150,
+            "Templar": 170,
+            "Nightblade": 150,
+            "Assassin": 120,
+            "Wytchhunter": 150,
+            "Mage": 270,
+            "Druid": 220,
+            "Bard": 170
+          },
+          "frag": 0,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": true,
+          "_weaponChoice": null,
+          "prereqs": [
+            {
+              "name": "Critical +2: Group",
+              "minCount": 1
+            }
+          ],
+          "desc": "This skill is the same as Execute, except that it is purchased for an entire Weapon Group rather than a specific weapon. The Execute may be used with any of the weapons within that Weapon Group."
+        },
+        {
+          "name": "Execute: Subsequent",
+          "costs": {
+            "Mercenary": 170,
+            "Ranger": 130,
+            "Templar": 150,
+            "Nightblade": 120,
+            "Assassin": 100,
+            "Wytchhunter": 130,
+            "Mage": 250,
+            "Druid": 200,
+            "Bard": 150
+          },
+          "frag": 0,
+          "maxPurchases": 9,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": true,
+          "_weaponChoice": "specific",
+          "prereqs": [
+            {
+              "name": "Execute",
+              "minCount": 1,
+              "primaryGate": true
+            },
+            {
+              "name": "Critical +2: Specific|Critical +2: Group",
+              "minCount": 1
+            }
+          ],
+          "desc": "Requires Execute to be purchased first. Each purchase requires an additional Critical +2 (Specific or Group). Usable once per day per purchase."
+        },
+        {
+          "name": "Execute: Master Subsequent",
+          "costs": {
+            "Mercenary": 190,
+            "Ranger": 150,
+            "Templar": 170,
+            "Nightblade": 150,
+            "Assassin": 120,
+            "Wytchhunter": 150,
+            "Mage": 270,
+            "Druid": 220,
+            "Bard": 170
+          },
+          "frag": 0,
+          "maxPurchases": 9,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": true,
+          "_weaponChoice": null,
+          "prereqs": [
+            {
+              "name": "Execute: Master",
+              "minCount": 1,
+              "primaryGate": true
+            },
+            {
+              "name": "Critical +2: Group",
+              "minCount": 1
+            }
+          ],
+          "desc": "Requires Execute: Master to be purchased first. Each purchase requires an additional Critical +2: Group. Usable once per day per purchase."
+        },
+        {
+          "name": "Garrotte",
+          "costs": {
+            "Mercenary": 100,
+            "Ranger": 85,
+            "Templar": 120,
+            "Nightblade": 85,
+            "Assassin": 60,
+            "Wytchhunter": 65,
+            "Mage": 150,
+            "Druid": 150,
+            "Bard": 95
+          },
+          "frag": 0,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "This skill allows a player to kill a target by simulating the use of a Garrotte or razor wire around the target's neck. To use a Garrotte attack, the attacker must place both hands on the shoulders of the victim from behind and call \"Surprise Garrotte\". If the attack succeeds, the victim is silenced and drops anything they were holding.\n\nGarroting takes 20 seconds to take effect — the attacker must call \"Garrotte 1, Garrotte 2, etc.\" After 20 seconds, the victim falls into their Death Count.\n\nThe player must have a tagged Garrotte phys-rep held in one hand for the duration. If the victim is wearing a gorget (covering the front of the neck worth at least 2 AP), the Garrotte fails. A defending player may resist a Garrotte if the defender alone has at least +2 more Strength than the attacker. This skill is usable at will."
+        },
+        {
+          "name": "Sap",
+          "costs": {
+            "Mercenary": 55,
+            "Ranger": 45,
+            "Templar": 50,
+            "Nightblade": 35,
+            "Assassin": 35,
+            "Wytchhunter": 35,
+            "Mage": 60,
+            "Druid": 60,
+            "Bard": 40
+          },
+          "frag": 0,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "Sap is a Surprise Attack which allows a character to knock out a victim by touching them in the Upper Back armour location with a coreless, red hand to hand weapon.\n\nThe attacker must be holding the tagged weapon they are Sapping with but does not physically strike the target. Upon a successful strike, the victim loses 1 Body point and is knocked unconscious for 10 minutes.\n\nThe base damage for Sap is 1 — this damage may only be increased by Strength. The call for Sap is \"<damage> <type> Sap\". A Sapped character will awaken only once the Sap Body point damage is healed or 10 minutes have passed. No skills, spells, or abilities may be used in conjunction with Sap, except to change the damage type. This skill is usable once per day per purchase."
+        },
+        {
+          "name": "Vital Blow",
+          "costs": {
+            "Mercenary": 85,
+            "Ranger": 65,
+            "Templar": 75,
+            "Nightblade": 50,
+            "Assassin": 55,
+            "Wytchhunter": 65,
+            "Mage": 120,
+            "Druid": 100,
+            "Bard": 75
+          },
+          "frag": 0,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "This skill allows the player to deliver a devastating blow to a target's vital organs. A Vital Blow will damage the target for half their total Body, not their current Body, rounded up. This damage cannot be altered in any way.\n\nTwo successful Vital Blows within 1 hour will immediately drop the target to 0 Body.\n\nA Vital Blow must strike the target's torso and directly damage their Body points, rather than armour, to be successful. If used from behind and strikes between the target's shoulder blades, the call will be \"Surprise Vital Blow\". Vital Blow will not affect creatures which are non-biological in nature. This skill is usable once per day per purchase."
+        }
+      ]
+    },
+    {
+      "cat": "Warrior Class Frag Skills",
+      "skills": [
+        {
+          "name": "Battlefield Repair",
+          "costs": null,
+          "frag": 25,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "With this skill a Warrior can repair any recently destroyed or shattered shield so long as they have access to the wreckage. If given the destroyed remains and the shield was destroyed within the last hour, a Warrior can perform a Battlefield Repair on it.\n\nA repair takes 1 minute for every 10 threshold the shield had. If the repair is interrupted or an hour passes since its destruction and the shield is not fully repaired, the skill will fail and be used for the day.\n\nLastly, this skill may be used to restore 1 \"resist\" on a Master Crafted shield. Master Crafted shields which do not have their resists repaired within the time limit will lose that resist forever. This skill is usable once per day per purchase.",
+          "cp": 30,
+          "_fragOnly": true
+        },
+        {
+          "name": "Cripple",
+          "costs": null,
+          "frag": 30,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "This skill allows the warrior to attack a target's limb with a devastating crippling attack. If the attack is successful, Cripple does one Body to the target and cripples the struck limb for 5 seconds. If the limb is an arm, the target will be disarmed and unable to use that arm. A crippled leg denies the target the ability to move for the duration.\n\nCripple must strike a limb to be successful. The damage call for this ability is \"Cripple!\" If the weapon's damage type is not normal, the damage type precedes \"Cripple\".\n\nThere is no numerical value, so when determining if the attack is stopped by a threshold, only the damage threshold type is taken into account. Cripple cannot be stacked with any other ability and is usable once per day per purchase.",
+          "cp": 40,
+          "_fragOnly": true
+        },
+        {
+          "name": "Decapitate",
+          "costs": null,
+          "frag": 75,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": true,
+          "_weaponChoice": null,
+          "prereqs": [
+            {
+              "name": "Slay/Parry",
+              "minCount": 1
+            }
+          ],
+          "desc": "This powerful ability attempts to separate the head from the body of a target and kill them in a single shot. Decapitate can only be used with a melee weapon the warrior is capable of Slaying with.\n\nThe warrior must declare \"You are not prepared!\" then strike their opponent on the torso. The damage call is \"10 Body Decapitate\". If the target's Body is damaged they are immediately dropped into their Death Count. Creatures with no discernible heads are immune.\n\nUnlike a Slay, Decapitate does not remain active if the initial strike misses. The numerical damage cannot be changed, but the damage type may be altered. This skill is usable once per day per purchase and requires 1 Slay purchase for every purchase of Decapitate.",
+          "cp": 150,
+          "_fragOnly": true
+        },
+        {
+          "name": "Dirt in the Eye",
+          "costs": null,
+          "frag": 30,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "This skill allows the warrior to temporarily blind a target by throwing dirt in their eyes. This is a packet-delivered attack and will not be successful if used with a weapon or if touch cast.\n\nThe warrior must first touch a packet to the ground then successfully hit the target. The call for this ability is \"Physical Dirt in the Eye!\" Dirt in the Eye will blind the target for ten seconds. This skill cannot be stacked with any other ability or spell and is usable once per day per purchase.",
+          "cp": 45,
+          "_fragOnly": true
+        },
+        {
+          "name": "Disembowel",
+          "costs": null,
+          "frag": 75,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [
+            {
+              "name": "Specialization +1: Weapon Group|Specialization +1: Weapon Specific",
+              "minCount": 1
+            }
+          ],
+          "desc": "This ability allows the warrior to create a grievous gash in the target's torso. The attack must strike the target's torso from the front. The call is \"5 Body Disembowel\" (or whatever damage type the weapon deals).\n\nIf a target struck with this attack does not drop everything and use both hands to hold onto their lower stomach, they suffer a Death effect after 10 seconds. If the target does hold onto their guts, they have 1 minute before the Death effect. Healing the 5 Body damage before the time passes will stop the Death effect entirely. Disembowel does not affect creatures with alien physiology.\n\nThe weapon used must be the same as the weapon with the prerequisite Specialization. This ability is useable once per day per purchase.",
+          "cp": 100,
+          "_fragOnly": true
+        },
+        {
+          "name": "Trip",
+          "costs": null,
+          "frag": 20,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "A combat skill for warriors. To activate, the player must successfully strike the target's leg with a weapon and call \"1 Body Trip!\" If successful, the target must fall safely to the ground. The target may stand up again as soon as they have touched their torso to the ground. The damage type is based on the weapon used. Usable once per day per purchase.",
+          "cp": 30,
+          "_fragOnly": true
+        },
+        {
+          "name": "Whirlwind of Blows",
+          "costs": null,
+          "frag": 40,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": true,
+          "_weaponChoice": null,
+          "prereqs": [
+            {
+              "name": "Flurry of Blows",
+              "minCount": 1
+            }
+          ],
+          "desc": "This skill enables a warrior to plant one foot, call \"Whirlwind of Blows\" and gain +5 damage to their swings.\n\nThis effect continues indefinitely so long as one foot remains planted. The planted foot may swivel, but the skill ends if the planted foot is moved or raised.\n\nThis skill may stack with other skills, abilities or spells unless otherwise stated. This skill is usable once per day per purchase and requires 1 Flurry of Blows purchase for every purchase of Whirlwind of Blows.",
+          "cp": 75,
+          "_fragOnly": true
+        }
+      ]
+    },
+    {
+      "cat": "Rogue Class Frag Skills",
+      "skills": [
+        {
+          "name": "Blindfighter",
+          "costs": null,
+          "frag": 15,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "Once per day per purchase, the character may resist a Blind effect.",
+          "cp": 15,
+          "_fragOnly": true
+        },
+        {
+          "name": "Escape",
+          "costs": null,
+          "frag": 20,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "Once per day per purchase, the character may break free of any physical binding, as well as Leg Snare and Net traps. Examples of bindings are shackles, rope, manacles, etc. Doing so requires a 10 count which may be done in silence. Escape may not be used to free the rogue from locked areas, such as prison rooms or crow's cages.",
+          "cp": 50,
+          "_fragOnly": true
+        },
+        {
+          "name": "Riposte",
+          "costs": null,
+          "frag": 75,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "The rogue with Riposte can use this ability against any attack that could be parried. After suffering an attack, a character with this ability may call \"Riposte!\" if they are holding a weapon. Doing so not only blocks the attack but also deals back to the original target the same damage and effects that were Riposted, which automatically hits.\n\nRipostes can block missile damage, but the damage is not reflected back. The damage from a Riposte counter can be defended against with skills (Parry, Dodge, etc.) and spells (Magic Armour, etc.) but is considered to have been a successful strike. Riposte may be used once a day per purchase.",
+          "cp": 150,
+          "_fragOnly": true
+        },
+        {
+          "name": "Sucker Punch",
+          "costs": null,
+          "frag": 30,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "This skill allows the rogue to sneak in a devastating attack to an unprepared opponent, stunning them for a short time. If the attack is successful, the target takes one Body, is blinded and is stunned for 5 seconds.\n\nWhile stunned, a victim is unable to take any action, including blocking, moving and the use of skills, minus the ability to call \"interrupt\" against Killing Blows and any counts against them. Automatic defenses such as Shield Magic will still operate, but ones requiring conscious thought such as Advanced Shield Magic will not. This skill may use the \"Surprise\" suffix if the attack is delivered from behind and between the target's shoulder blades.\n\nThe rogue must strike the opponent on the torso with a red hand-to-hand or claw rep. The call is \"Sucker Punch!\" This skill cannot be stacked with any other skill and is usable once per day per purchase.",
+          "cp": 65,
+          "_fragOnly": true
+        },
+        {
+          "name": "Thieves Cant",
+          "costs": null,
+          "frag": 20,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "This skill allows rogues access to a fundamental secret language understood by thieves universally. Thieves Cant is a fully coded language that is ever changing and evolving, so it can never be permanently broken by authorities.\n\nUpon purchase, the Rogue will receive an Out-of-Game decoder which will allow them to read and write messages in Thieves Cant. This code may not be given in written form to any other player. Rogues with this skill will always be updated with a new decoder packet by the Logistics Marshal should any change occur. You must possess the skill Thieves Cant to read Thieves Cant. Once purchased, this skill is always active.",
+          "cp": 25,
+          "_fragOnly": true
+        },
+        {
+          "name": "Tumble",
+          "costs": null,
+          "frag": 30,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "Agility and dexterity are the tools of the rogue. By rolling with the punches, a rogue can tumble to take half damage (rounded down) from one single Area of Effect or Massive damage effect of their choice.\n\nThe source of damage must contain a numerical damage amount. This skill has no effect on other negative effects such as paralyze, death, stun, etc.\n\nTumble cannot stack with any other skill, including additional uses of Tumble, nor can any other method of damage reduction be applied prior to or after use. The defensive call is \"Tumble!\" This skill is usable once per day per purchase.",
+          "cp": 65,
+          "_fragOnly": true
+        }
+      ]
+    },
+    {
+      "cat": "Scholar Class Frag Skills",
+      "skills": [
+        {
+          "name": "Combat Wizardry",
+          "costs": null,
+          "frag": 50,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [
+            {
+              "name": "Self Mutilate",
+              "minCount": 1
+            }
+          ],
+          "desc": "When a mage purchases Combat Wizardry, their spell casting is no longer interrupted by Body damage. They may also speak while maintaining concentration. This skill is considered \"always on\".",
+          "cp": 50,
+          "_fragOnly": true
+        },
+        {
+          "name": "Harvest",
+          "costs": null,
+          "frag": 50,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "Once per day per purchase, when a mage casts a spell and it is blocked by a spell defense, they may call \"Harvest!\" and regain that spell in memory to cast again. This ability only functions if the spell is defended against with a magical protection like Shield Magic, or a Resist Magic natural ability or racial.",
+          "cp": 50,
+          "_fragOnly": true
+        },
+        {
+          "name": "Mortician",
+          "costs": null,
+          "frag": 75,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [
+            {
+              "name": "Anatomy",
+              "minCount": 1
+            }
+          ],
+          "desc": "This macabre ability allows the Mortician to examine a finalled corpse to determine what led to its demise. The skill will never identify a specific killer. It takes 10 seconds of examining the corpse to reveal the answer to each question: \"Were you killed by magic, alchemy, or physical means?\", \"What was the sphere of magic/specific alchemy/weapon group that killed you?\", \"How long have you been a corpse?\", \"Has your body been moved?\", \"Were you taken by Surprise?\"\n\nMorticians can also manipulate bodies to make future Morticians receive false information. Additionally, Morticians can look at a living or dead person's mole, birthmark or third nipple and determine whether it is a natural mark or one created supernaturally via Wytchcraft.",
+          "cp": 25,
+          "_fragOnly": true
+        },
+        {
+          "name": "Refocus",
+          "costs": null,
+          "frag": 30,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "Once per day per purchase with Refocus, when a mage casts a spell and misses their target with a spell packet, they may call \"Refocus!\" and regain that spell in memory to cast again.",
+          "cp": 30,
+          "_fragOnly": true
+        },
+        {
+          "name": "Spell Parry",
+          "costs": null,
+          "frag": 35,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "The Spell Parry skill allows a mage to counter a Battle Magic spell cast at them by using up a spell of the same sphere and level that they have memorized.\n\nIf targeted and affected by a spell, the mage may expend a spell of the same sphere and level in memory and call \"Spell Parry <spell name>!\", nullifying the incoming spell but losing the spell in memory. If the mage whose spell was Spell Parried also possesses this skill, they may also call \"Spell Parry!\" to force their original spell through, expending another memorized spell.\n\nThere is no limit to how often this ability may be used so long as the mage has spells in memory to counter. This ability only functions against magic spells cast from memory or via a magic item. It has no effect against natural abilities or monster racials.",
+          "cp": 35,
+          "_fragOnly": true
+        },
+        {
+          "name": "Spell Switch",
+          "costs": null,
+          "frag": 50,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "Once per day per purchase, the mage may exchange one spell they have memorized for another spell at a lower level. Spells may be switched with different spheres the caster knows, but they can never be equal or higher level.\n\nTo use this ability the mage must declare: \"Spell Switch: <spell being sacrificed> <new spell>\". The new spell must be cast within 60 seconds of Spell Switch being used or both spells are lost.",
+          "cp": 50,
+          "_fragOnly": true
+        },
+        {
+          "name": "Spell Versatility",
+          "costs": null,
+          "frag": 0,
+          "maxPurchases": 45,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "Spell Versatility is a Mage skill tied to an existing spell slot the character already owns. After purchasing Spell Versatility, the mage no longer has to memorize a specific spell for that slot and may cast spells \"on the fly\" from any of their spheres that can fill the slot. The Mage must still have the scrolls for any spells they wish to use with them at reset to study. Once a spell has been cast from the slot it is used until next reset.\n\nCost: The frag cost is half the level of the slot being augmented + 5, and the CP cost is the same. This skill must be purchased per slot.",
+          "cp": 0,
+          "costNote": "see description",
+          "_fragOnly": true
+        }
+      ]
+    },
+    {
+      "cat": "Frag Skills",
+      "skills": [
+        {
+          "name": "Arcane Spirit",
+          "costs": null,
+          "frag": 10,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "Each purchase of this skill will allow a character to have 10 additional levels of rituals on their spirit, beyond the usual cap of 50 levels of rituals, total.",
+          "cp": 10,
+          "_fragOnly": true
+        },
+        {
+          "name": "Battlefield Medic",
+          "costs": null,
+          "frag": 50,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [
+            {
+              "name": "First Aid",
+              "minCount": 1
+            }
+          ],
+          "desc": "This skill reduces the time it takes to stabilise a patient using First Aid. The Battlefield Medic takes only 40 seconds instead of 60 to bring a target from their Bleed Count to 0 Body.\n\nIf the Battlefield Medic is assisted by someone with First Aid, the time comes down to 30 seconds. If two Battlefield Medics work to stabilise a patient together, it takes 20 seconds. This skill may only be purchased once.",
+          "cp": 75,
+          "_fragOnly": true
+        },
+        {
+          "name": "Cold Dead Hands",
+          "costs": null,
+          "frag": 30,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "Characters with Cold Dead Hands will continue to hold onto whatever they were carrying if they become unconscious, asleep, or fall into their Bleed or Death counts. This does not render the character immune to disarming effects, including Garrotte.\n\nIn order for items to be removed from the character's Cold Dead Hands, a standard loot count must be performed.",
+          "cp": 20,
+          "_fragOnly": true
+        },
+        {
+          "name": "Create Alcohol",
+          "costs": null,
+          "frag": 10,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "With this skill, a character can create potent brews and drinks. For the first purchase, your character can create up to 3 Alcohol tags from a pool of 3 Stamina, divided up as the character wishes.\n\nAlcohol tags can only be created at Logistics but may have any name the brewer wishes.\n\nFor each subsequent purchase, the character will have +3 Stamina added to their pool and create +1 Alcohol tag. Each Alcohol tag has 5 servings.\n\nA character with Create Alcohol can determine the Stamina damage value of an alcoholic beverage by examining it. Alcohol is considered a poison for the purpose of defending against or removing it.",
+          "cp": 25,
+          "_fragOnly": true
+        },
+        {
+          "name": "Heavy Drinker",
+          "costs": null,
+          "frag": 10,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "This ability is purchasable by any character class and doubles their stamina total. This skill cannot be purchased more than once.",
+          "cp": 20,
+          "_fragOnly": true
+        },
+        {
+          "name": "Intuition",
+          "costs": null,
+          "frag": 50,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "Whether from a sudden tingling feeling or the sensation of being watched, characters with Intuition are aware when they respond to Sense calls (or when they avoid a Sense call they would otherwise respond to due to Possuming or another effect).\n\nCharacters will know the direction and rough location of what sensed them, but not exactly who or what did it. They will not know what the Sense call was looking for, only that it found them.",
+          "cp": 50,
+          "_fragOnly": true
+        },
+        {
+          "name": "Looting",
+          "frag": 5,
+          "cp": 15,
+          "costs": {
+            "Mercenary": 15,
+            "Ranger": 15,
+            "Templar": 15,
+            "Nightblade": 10,
+            "Assassin": 15,
+            "Wytchhunter": 15,
+            "Mage": 15,
+            "Druid": 15,
+            "Bard": 15
+          },
+          "maxPurchases": 5,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "prereqs": [],
+          "_fragOnly": true,
+          "desc": "This skill trains the player in the art of both hiding and finding. This skill allows the target to subtract ten seconds from the standard 60-second loot count for every level of Looting they have purchased, to a minimum of ten seconds.\n\nThis skill will also add ten seconds per level to any person trying to loot the player with the Looting skill.\n\nIf a player with Looting is being looted, they need not inform the looter how long they will have to loot for OOG. Should the searching player search for the appropriate additional time, the target must give the searching player all items as per standard searching rules. This ability can be purchased a maximum of five times."
+        },
+        {
+          "name": "Paragon",
+          "frag": 100,
+          "cp": 0,
+          "costs": null,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "prereqs": [],
+          "_fragOnly": true,
+          "_paragon": true,
+          "desc": "Paragons are those who have proven to be faithful adherents of their God, without having devoted their lives to their service. Being a Paragon allows a character to add one Light or Dark spell, no higher than 7th circle depending on the God served, to their repertoire. Once the spell is chosen, the choice is permanent.\n\nThe Paragon may then memorize that spell in the place of one of their regular spell slots. The Paragon must have a holy symbol to memorize and cast the spell.\n\nRequires Lead Shaper Approval. CP cost equals the level of the chosen spell slot + 10. Requires at least 1 spell slot. This skill may only be purchased once ever."
+        },
+        {
+          "name": "Possum",
+          "costs": null,
+          "frag": 25,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "After lying still for 10 seconds, a character may activate Possum and become immune to Sense Life calls. This works for up to an hour or until the character moves or is moved. OOG movement to get comfortable, breathe, swat mosquitos, etc., will not end the effect. This ability is usable once per day per purchase.",
+          "cp": 30,
+          "_fragOnly": true
+        },
+        {
+          "name": "Teacher",
+          "costs": null,
+          "frag": 50,
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "Purchasing this skill allows a character to teach another character a Vocation or non-Renowned Frag Sphere that they currently have on their character sheet, once. If the Teacher wishes to teach further students, they must pay the frag cost, but not the CP cost, again for each thing taught.\n\nTeachers may only teach players from the Teacher's home guild. The amount of time and steps required to learn a Vocation or Sphere are determined by the Teacher.",
+          "cp": 15,
+          "_fragOnly": true
+        }
+      ]
+    }
+  ]
+}

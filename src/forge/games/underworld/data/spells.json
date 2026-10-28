@@ -1,0 +1,1525 @@
+{
+  "meta": {
+    "source": "UW-Character-Builder legacy web app (github.com/Arlit-Areth/UW-Character-Builder)",
+    "rulebook": "Core Rulebook 5.6.5 + Soul Frag 2.10",
+    "updated": "2026-10-28"
+  },
+  "spells": [
+    {
+      "sphere": "Elemental",
+      "level": 1,
+      "name": "Elemental Missile",
+      "incant": "I invoke <type> to inflict Missile. 10 Magic <type>!",
+      "desc": "This spell will create a small Elemental Missile that will do 10 Magic <type> upon a successful hit."
+    },
+    {
+      "sphere": "Elemental",
+      "level": 1,
+      "name": "Swampwalk",
+      "incant": "I invoke <type> to inflict Swampwalk.",
+      "desc": "This spell causes the earth beneath the target's feet to become viscous and muddy. For the duration of the spell, the target's movement is slowed to one step every three seconds. The effect follows the target until the spell ends. This spell in no way affects anyone other than the target."
+    },
+    {
+      "sphere": "Elemental",
+      "level": 2,
+      "name": "Elemental Affinity",
+      "incant": "I invoke <type> to grant Affinity <type(s)>.",
+      "desc": "This self-cast spell will grant the caster affinity with Elementals of any and all of their attuned elements. Any Elementals of an attuned type will treat the caster as a friend so long as the caster does not engage in any activity that the Elemental would deem hostile.\n\nThe caster can state \"Active Elemental Affinity <type(s)>\" when approaching Elementals to indicate this."
+    },
+    {
+      "sphere": "Elemental",
+      "level": 2,
+      "name": "Elemental Rebuke",
+      "incant": "I invoke <type> to inflict Elemental Rebuke. 1 Magic <type>!",
+      "desc": "This spell will push a single target with the strength of +5 total (10 feet) and do 1 Magic <type> damage. The target will be pushed away in the opposite direction of the caster. It may be stopped with equal or greater strength.\n\nAlthough the push has a physical effect, it is considered magical in nature, in regards to defenses. Any strength bonus the caster has is not added to the total strength of the spell. This spell cannot be used to rip the target from any bindings; it is a pushing effect, not a ripping effect."
+    },
+    {
+      "sphere": "Elemental",
+      "level": 3,
+      "name": "Elemental Blade",
+      "incant": "I invoke <type> to grant Blade.",
+      "desc": "This spell sits on the target's Spirit and will cause the target's next three weapon strikes to become imbued with the caster's Element. It will add +5 damage to the weapon's normal damage and will change the damage type to \"Magic <type>\" for the next three strikes.\n\nThe target must call the altered damage when they strike. Example: \"7 Magic Stone\". This effect will remain on the target's Spirit for the duration of the spell and must be used on the next three physical strikes that they make."
+    },
+    {
+      "sphere": "Elemental",
+      "level": 3,
+      "name": "Elemental Vulnerability",
+      "incant": "I invoke <type> to grant Elemental Vulnerability.",
+      "desc": "This self-cast spell will imbue the caster's next spell from the Elemental Battle Magic sphere with a numeric damage amount to do x2 its normal damage. The next spell must be cast within 10 minutes of the Vulnerability.\n\nIf the caster's next spell allows the caster to do numeric damage multiple times, the x2 damage only applies to the first attack which successfully strikes the target. The caster should call the appropriate x2 damage, as the target will not be aware that it needs to be doubled. This spell is caster only."
+    },
+    {
+      "sphere": "Elemental",
+      "level": 4,
+      "name": "Control Lesser Elemental",
+      "incant": "I invoke <type> to inflict Control Lesser Elemental.",
+      "desc": "This spell will grant control over any Lesser Elemental of the types the caster is attuned to. The Elemental will do anything the caster desires, including suicidal actions. Only one command may be followed at a time. This spell will function as an Elemental Affinity against Greater Elementals."
+    },
+    {
+      "sphere": "Elemental",
+      "level": 4,
+      "name": "Elemental Shield *",
+      "incant": "I invoke <type> to grant Elemental Shield.",
+      "desc": "This spell will protect the recipient from the next Elemental-based attack which hits them, so long as it employs the word \"Elemental\" in its call."
+    },
+    {
+      "sphere": "Elemental",
+      "level": 5,
+      "name": "Elemental Conduit",
+      "incant": "I invoke <type> to grant Elemental Conduit.",
+      "desc": "This spell allows one memorized spell from the Elemental Battle Magic sphere to be cast as a Spellstrike. Once Elemental Conduit is cast, the caster has 10 minutes to use one of their memorized Elemental spells in Spellstrike form.\n\nTo use a Spellstrike, the caster must strike with a melee weapon and call \"Spellstrike <spell name>\". If the weapon hits, the spell has struck the target as it if was touch cast or hit the target with a packet.\n\nA memorized spell used in this way is lost from memory as if it had been cast normally."
+    },
+    {
+      "sphere": "Elemental",
+      "level": 5,
+      "name": "Elemental Strike",
+      "incant": "I invoke <type> to inflict Strike. 25 Elemental <type>!",
+      "desc": "This spell causes an Elemental Strike of <type> to leap from the caster's fingertips, inflicting 25 Elemental <type> damage to any target it hits. Elemental damage cannot be defended against with a Shield Magic; it requires an Elemental Shield."
+    },
+    {
+      "sphere": "Elemental",
+      "level": 6,
+      "name": "Elemental Sunder",
+      "incant": "I Invoke <type> to inflict Sunder.",
+      "desc": "This spell will inflict 50 Magic damage on a target but will only damage the target's armour. Body points will remain unharmed. Any type of armour will be affected. If the target has less than 50 armour, the extra damage will be lost."
+    },
+    {
+      "sphere": "Elemental",
+      "level": 6,
+      "name": "Greater Elemental Blade",
+      "incant": "I invoke <type> to grant Greater Blade.",
+      "desc": "This spell will act as an Elemental Blade but the duration is extended to all the attacks on one specific opponent. There is no limit to the number of physical attacks that the Greater Elemental Blade will alter, so long as the spell's target does not change opponents.\n\nIf the spell's target, at any time, switches opponents, the spell will terminate. If the user leaves the battle for more than one minute, the spell will terminate. The battle is considered over when one of the two people fighting becomes unconscious or dead, or they spend more than one minute without attacking."
+    },
+    {
+      "sphere": "Elemental",
+      "level": 7,
+      "name": "Advanced Elemental Shield *",
+      "incant": "I invoke <type> to grant Advanced Elemental Shield.",
+      "desc": "This spell acts like Elemental Shield, except that the wearer of this spell may choose what attack to defend against. When this spell defense is used the target must call out \"Advanced Elemental Shield\", and a visible flash of white energy can be seen as the spell protection dissipates.\n\nOnly one Elemental Shield or Advanced Elemental Shield may be worn at any given time. It will not protect the wearer from any damage that contains the suffix \"Magic\" in its damage call. Since the choice to activate this defense is a conscious one, it will not function against surprise attacks."
+    },
+    {
+      "sphere": "Elemental",
+      "level": 7,
+      "name": "Elemental Chain",
+      "incant": "I invoke <type> to inflict Elemental Chain. 30 Magic <type>, 20 Magic <type> 10 Magic <type>!",
+      "desc": "This spell will allow the caster to throw three spell packets total (or touch cast three times), the first of which does 30 Magic damage, then 20 Magic damage and finally 10 Magic damage. No target may be hit with more than one of the three packets.\n\nIf there are fewer than three targets available, the remaining parts of the chain are lost. No more than three seconds may pass between each chain."
+    },
+    {
+      "sphere": "Elemental",
+      "level": 8,
+      "name": "Elemental Storm",
+      "incant": "I invoke <type> to inflict Storm. 5 Magic <type>, 5 Magic <type>, 5 Magic <type> … (Repeat)",
+      "desc": "The caster must plant their feet when this spell is cast. As long as neither foot is moved, the caster may throw packets doing 5 Magic <type> each. The spell will end if the caster moves their feet, is hit with a Dispel Magic or takes damage to Body."
+    },
+    {
+      "sphere": "Elemental",
+      "level": 8,
+      "name": "Greater Elemental Vulnerability",
+      "incant": "I invoke <type> to grant Greater Elemental Vulnerability.",
+      "desc": "This spell acts the same as the Elemental Vulnerability spell, except that it does x4 rather than x2 damage, and will also change the damage type from Magic to Elemental. This spell does not stack with Elemental Vulnerability.\n\nElemental damage cannot be defended against with a Shield Magic; it requires an Elemental Shield."
+    },
+    {
+      "sphere": "Elemental",
+      "level": 9,
+      "name": "Elemental Annihilation",
+      "incant": "I invoke <type> to inflict Elemental Annihilation!",
+      "desc": "This spell will cause a target that has been successfully struck to enter their Bleed Count. If the target successfully uses a defense against the Elemental Annihilation, they will not enter their Bleed Count but will suffer a 5 second magical stun effect.\n\nNo defenses below ritual level may be used to avoid the stun. While stunned, a victim is unable to take any action, including blocking, moving and the use of skills, minus the ability to call \"interrupt\" against Killing Blows and any counts against them.\n\nAutomatic defenses such as Shield Magic will still operate, but ones requiring conscious thought such as Advanced Shield Magic will not."
+    },
+    {
+      "sphere": "Elemental",
+      "level": 9,
+      "name": "Elemental Tempest",
+      "incant": "I invoke <type> to inflict Tempest. 50 Magic <type>!",
+      "desc": "This spell causes a bolt of magical energy to rush from the caster's hands, inflicting 50 Magic damage on any target it strikes."
+    },
+    {
+      "sphere": "Healing",
+      "level": 1,
+      "name": "Recover",
+      "incant": "I invoke Healing to grant Recover.",
+      "desc": "This spell can only be cast on a wounded target that is at less than 2 Body. Doing so will raise their Body points to 2. This does not function on those in their Death Counts or on Undead."
+    },
+    {
+      "sphere": "Healing",
+      "level": 1,
+      "name": "Repel Undead",
+      "incant": "I invoke Healing to inflict Repel Undead.",
+      "desc": "This spell applies a repel effect to a target Lesser Undead for 10 minutes. During this time the targeted Undead is physically pushed away from the caster if it attempts to get closer than 10 feet. The Undead may cast spells and throw weapons or other objects at the caster.\n\nIf the repelled Undead cannot retreat any further and the caster approaches the Undead within 10 feet, the spell will end. The caster must hold out one of their hands with the palm out (as a policeman's \"stop\" signal) and must maintain this gesture if the spell is to remain in effect. This spell has no effect against the living."
+    },
+    {
+      "sphere": "Healing",
+      "level": 2,
+      "name": "Cleanse",
+      "incant": "I invoke Healing to grant Cleanse.",
+      "desc": "This spell will cure any disease except those that have specific cures. It will also cure nausea and plague. Diseases cured can be mundane and magical but the spell will not affect powerful diseases such as lycanthropy, vampirism, etc."
+    },
+    {
+      "sphere": "Healing",
+      "level": 2,
+      "name": "Cure Wounds",
+      "incant": "I invoke Healing to grant Cure Wounds. 5 Healing!",
+      "desc": "This spell will heal the recipient by 5 Body points. It will not add Body points beyond the target's maximum Body. It will heal a target out of its Bleed Count, but will have no effect on someone in their Death Count. Cure Wounds will cause 20 points of Body damage to any Undead creature."
+    },
+    {
+      "sphere": "Healing",
+      "level": 3,
+      "name": "Potion of Sweetwater",
+      "incant": "I invoke Healing to create Potion of Sweetwater.",
+      "desc": "This spell creates a Potion of Sweetwater, which has two possible uses. First, it will turn any liquid (including alchemy and other potions) into pure, clean drinking water. One potion of Sweetwater will convert one pint-sized container into water.\n\nAdditional Potions of Sweetwater may be combined to change larger volumes of liquid. The second use of Potions of Sweetwater is to store Healing spells by creating healing potions. Once a Potion of Sweetwater has been created, any other curative spell within the Battle Magic Healing sphere of 8th level or lower may be cast on it.\n\nDoing so will convert the Sweetwater potion into a potion with the same effect of the spell that was cast on it. This new potion will last three months. Both the Potion of Sweetwater tag and the healing spell tag should be affixed to the potion together.\n\nThe following spells may be turned into potions this way: Recover, Cleanse, Cure Wounds, Recuperate, Cure Serious Wounds, Bolster, Restore Limb, Cure Mortal Wounds, Heal and Purify."
+    },
+    {
+      "sphere": "Healing",
+      "level": 3,
+      "name": "Recuperate",
+      "incant": "I invoke Healing to grant Recuperate.",
+      "desc": "This spell will heal 5 Body points every 5 minutes until the target reaches full health, or takes damage to Body. The first 5 points of healing will occur after the first 5 minutes' pass. Then every 5 minutes after that another 5 Body will be healed.\n\nThis spell has no effect on Undead. The maximum duration of Recuperation is 5 days. While under its effects the target must state \"Visibly Regenerating\" every minute and whenever a new person approaches them."
+    },
+    {
+      "sphere": "Healing",
+      "level": 4,
+      "name": "Cure Serious Wounds",
+      "incant": "I invoke Healing to grant Cure Serious Wounds. 10 Healing!",
+      "desc": "This spell will heal the recipient by 10 Body points. It will not add Body points beyond the target's maximum Body. It will heal a target out of its Bleed Count, but will have no effect on someone in their Death Count. Cure Serious Wounds will cause 40 points of Body damage to any Undead creature."
+    },
+    {
+      "sphere": "Healing",
+      "level": 4,
+      "name": "Dawnblade",
+      "incant": "I invoke Healing to grant a Dawnblade.",
+      "desc": "This spell will allow the caster's weapons to \"Spellstrike Dawnblade. 20 Magic Body!\" damage three times within 10 minutes. These strikes will only harm Undead and have no effect against the living. This spell is caster only."
+    },
+    {
+      "sphere": "Healing",
+      "level": 5,
+      "name": "Bolster *",
+      "incant": "I invoke Healing to grant Bolster.",
+      "desc": "This caster-only spell will heal the caster 15 Body points. Additionally, any healing that exceeds the caster's maximum Body points will grant them temporary Body points equal to the excess. These additional Body points can be dispelled and, if damaged, the temporary Body is removed before any other Body points.\n\nOnce depleted, or after 5 days, the effect ends. These Body points cannot be healed by any means. Temporary Body point effects from any source cannot stack. Bolster is considered a spell protection and healers may select it as pre-cast during logistics, allowing them to enter game with 15 additional temporary Body. This spell has no effect on Undead, Gargylen, or Fauns."
+    },
+    {
+      "sphere": "Healing",
+      "level": 5,
+      "name": "Restore Limb",
+      "incant": "I invoke Healing to grant Restore Limb.",
+      "desc": "This spell will restore one severed, fractured or missing limb from the target immediately. Thereafter it will restore another missing limb (if any) every 5 minutes until either all limbs are restored or until the duration expires.\n\nOnly limbs which were missing at the time of casting will be restored. Once a limb is restored, the original detached limb will crumble to dust."
+    },
+    {
+      "sphere": "Healing",
+      "level": 6,
+      "name": "Cure Mortal Wounds",
+      "incant": "I invoke Healing to grant Cure Mortal Wounds. 20 Healing!",
+      "desc": "This spell will heal the recipient by 20 Body points. It will not add Body points beyond the target's maximum Body. It will heal a target out of its Bleed Count, but will have no effect on someone in their Death Count. Cure Mortal Wounds will cause 80 points of Body damage to any Undead creature."
+    },
+    {
+      "sphere": "Healing",
+      "level": 6,
+      "name": "Peaceful Repose *",
+      "incant": "I invoke Healing to grant a Peaceful Repose.",
+      "desc": "Once cast, Peaceful Repose will remain on the target's spirit for 5 days. If, during that time, the target enters their Death Count, Peaceful Repose will activate at the final second of that count and will extend the count by one additional minute.\n\nA secondary effect of Peaceful Repose is that will grant protection against any Necromantic \"Raise Undead\" spells and effects once during the initial Death Count, but will not provide that protection in the final \"additional\" minute of Death Count granted by the spell.\n\nIf Peaceful Repose protects against a Raise Undead spell during the first 5 minutes, it will not grant an additional minute to the Death Count. It will only protect against \"Raise Undead\" effects once. When either effect is triggered, the spell will end."
+    },
+    {
+      "sphere": "Healing",
+      "level": 7,
+      "name": "Death Ward *",
+      "incant": "I invoke Healing to grant a Death Ward.",
+      "desc": "This spell will act as a defense against the next effect with \"Death\" in its name that strikes the wearer. Death Ward may be stacked with other types of spell defenses and will activate automatically when the next appropriate effect strikes the wearer."
+    },
+    {
+      "sphere": "Healing",
+      "level": 7,
+      "name": "Healing Hands",
+      "incant": "I invoke Healing to grant Healing Hands.",
+      "desc": "This spell is cast on a target. The next appropriate spell that is used on that target will be spread to anyone else holding that target's hands. This may continue to chain to an unlimited amount of targets, as long as they are all holding hands.\n\nOnce this occurs, the spell will end. This spell may not be cast on Undead targets. Healing transferred in this manner does not multiply if more than one person in the chain touches a single person - the healing done will always mirror the amount provided by the original spell.\n\nSpells which may be used with Healing Hands are: Recover, Cleanse, Cure Wounds, Recuperate, Cure Serious Wounds, Restore Limb, Cure Mortal Wounds, Heal, Purify, and Life. Healing Hands does not pass through dying targets, so if someone in the chain is in their Death Count, the spell will affect them (if applicable) but not spread further."
+    },
+    {
+      "sphere": "Healing",
+      "level": 8,
+      "name": "Heal",
+      "incant": "I invoke Healing to grant Heal.",
+      "desc": "This spell will restore the target to their full Body points. It will destroy any Lesser Undead and inflict 25 Healing/100 Magic Body damage on Greater Undead."
+    },
+    {
+      "sphere": "Healing",
+      "level": 8,
+      "name": "Purify",
+      "incant": "I invoke Healing to grant Purify.",
+      "desc": "This spell will cure the target of certain magical, alchemical and mundane ailments. Afflictions cured are limited to silence, blindness, sleep, paralysis, and all toxins and diseases. Purify will not remove curses, Ritual-level afflictions or effects which require numerical healing to be cured. The target must be willing for this spell to work."
+    },
+    {
+      "sphere": "Healing",
+      "level": 9,
+      "name": "Life",
+      "incant": "I invoke Healing to grant Life.",
+      "desc": "This spell will bring one creature back from the dead so long as it is in its Death Count. It will bring the creature back to fully Body points, removing any physical injuries, toxins, and diseases which do not normally persist through resurrection or require a specific cure.\n\nShould the body be in more than one piece, the spell must be cast on the majority of the body and the recipient will be brought back in that location. When Life is cast, the body reforms with the Spirit and all other pieces of the body elsewhere crumble to dust.\n\nThe Spirit must be present with the body or body part when Life is cast for it to take effect. Life will have no effect on Undead, only on creatures which are living."
+    },
+    {
+      "sphere": "Healing",
+      "level": 9,
+      "name": "Safeguard",
+      "incant": "I invoke Healing to grant a Safeguard.",
+      "desc": "This spell requires a 10-ft diameter circle to be drawn on the ground prior to use. A rope may be used. So long as the caster remains in the centre of the circle, Safeguard will pulse 1 Magic Healing to everyone in the circle every second that passes.\n\nThe circle is not a barrier and anyone is free to enter and exit. This healing will inflict 4 Magic Body points of damage against Undead within the circle every second. If the caster moves from the center of the circle, the spell will end prematurely."
+    },
+    {
+      "sphere": "Nature",
+      "level": 1,
+      "name": "Goodberry",
+      "incant": "I invoke Nature to create Goodberry.",
+      "desc": "This spell will transform up to three pieces of non-Magical fruit into health-giving Goodberries. The caster must have at least one to three pieces of edible fruit, no bigger than a grape, at the time of casting.\n\nThese Goodberries will last 1 hour, or until eaten. Each Goodberry will bring an unconscious person currently in their Bleed Count to 1 Body point immediately if ingested. Be mindful if the target has food allergies and never feed anybody anything if they are not aware of what it is, nor should you place items in people's mouths OOG. You do not have to actually eat the Goodberry rep OOG if you don't want to."
+    },
+    {
+      "sphere": "Nature",
+      "level": 1,
+      "name": "Snare",
+      "incant": "I invoke Nature to inflict Snare.",
+      "desc": "This spell causes a magical vine to emerge from the ground and wrap itself tightly around the target's right foot, forcing the target to keep that foot upon the ground, unable to move. The vines may be cut through with a two minute count.\n\nThe Snare may be ripped free from by the victim if a +2 or greater strength is used. This however, will cause them to take 2 points of damage straight to Body regardless of threshold. It takes three seconds to rip free from the Snare."
+    },
+    {
+      "sphere": "Nature",
+      "level": 2,
+      "name": "Charm Animal",
+      "incant": "I invoke Nature to inflict Charm Animal.",
+      "desc": "This spell will act as a Charm spell against any natural animal. During the spell's duration, the Charmed animal will respond to the caster as if it was a \"friend\", pack member or master. The exact relationship will depend on the animal in question, for example a wolf would consider the caster a member of its pack, a soldier ant will see the caster as worker ant, and other animals may see the caster as a parent or cub. The type of relationship that appears upon casting is random."
+    },
+    {
+      "sphere": "Nature",
+      "level": 2,
+      "name": "Repel",
+      "incant": "I invoke Nature to inflict Repel.",
+      "desc": "This spell causes the target to be pushed away from the caster to a distance of 10 feet. The target may throw spells, weapons, or other objects at the caster, but may not cross the 10 foot boundary by any means (phasing, teleporting, etc.) so long as the caster maintains concentration.\n\nThe caster must hold out one of their hands with the palm out (as a policeman's \"stop\" signal) and must maintain this gesture if the spell is to remain in effect. While doing this, the caster may move freely but may not engage in combat or use any skill, ability, or spell.\n\nIf a repelled creature cannot retreat any further and the caster approaches the creature within the ten feet, the spell will fail and is lost. Note that some creatures that possess the ability \"Innate Repel\" may use both hands on two separate targets."
+    },
+    {
+      "sphere": "Nature",
+      "level": 3,
+      "name": "Claws",
+      "incant": "I invoke Nature to grant Claws.",
+      "desc": "This spell causes the target to grow a vicious set of claws. These claws act as natural weapons, cannot be disarmed and grant the natural ability to use them. They swing for 2 Normal and may be used to block, as well as attack.\n\nStrength bonuses, either natural or spell-granted, will add to the damage as well, but nothing else will affect the damage of the Claws. If this spell is cast on another the caster is responsible for providing the weapon reps or the spell fails, likewise if the claw reps are dropped the spell will end.\n\nThe target may refuse the weapon reps, which will cause the spell to fail. Magic may be cast while claws are active, however spells cannot be touch-cast through the claws. You may temporarily release a claw rep in order to cast spells via packets.\n\nThe Claws spell is stackable. If a second set is cast while the first is still active, the duration will not reset but the claws will gain +1 damage and become silver. If a third set is cast while the second is still active, they again another +1 damage and become magical.\n\nAdditional castings will each add another +1, but the duration will always be equal to the original casting."
+    },
+    {
+      "sphere": "Nature",
+      "level": 3,
+      "name": "Moonlight Mantle *",
+      "incant": "I invoke Nature to grant Moonlight Mantle.",
+      "desc": "This caster-only spell envelops the caster in an invisible cloak of Magical Body points, providing an additional 10 temporary Body points. For all intents and purposes, these Body points behave entirely like real Body points except for the fact that they can be dispelled.\n\nOnce they are gone, they cannot be healed and the spell ends. There are no flashes or any other perceptual indications that a Moonlight Mantle is present in combat. Such mantles count as Body when the recipient is struck by effects that bypass armour.\n\nAdditionally, a Moonlight Mantle may be intentionally used-up in order to heal a target victim (as per Healing Magic). The Mantle will heal an amount in Body points equal to how many points remain within the Mantle.\n\nThe Mantle may not be partially used in this manner; it is all or nothing. Once the Mantle has been used to heal someone the spell is terminated and the Mantle is gone. The incant to transfer a Moonlight Mantle is \"Transfer Moonlight Mantle\" and may only be touch-cast."
+    },
+    {
+      "sphere": "Nature",
+      "level": 4,
+      "name": "Bind",
+      "incant": "I invoke Nature to inflict Bind.",
+      "desc": "This spell causes the target to have their hands pulled to their side and be bound there by a glowing white band of Druidic energy one inch in thickness. The band is impervious to damage from weapons or spells, but it may be negated with a Dispel Magic (which will also affect the person who is bound).\n\nThe Bind may be cut through with a 4 minute count. The bound target may rip free from the Bind with +4 Strength or greater. Doing so will cause the target to take 4 points of damage straight to Body regardless of threshold.\n\nIt takes three seconds to rip free. While bound, a person may walk, run, and otherwise move freely. They cannot however, use their hands in any means and therefore cannot cast, fight, or use the vast majority of their skills.\n\nThe Magic of the Bind also shorts out any attempts by the target to touch cast on themselves, but Magic items may be used."
+    },
+    {
+      "sphere": "Nature",
+      "level": 4,
+      "name": "Root Lance",
+      "incant": "I invoke Nature to inflict Root Lance. 15 Normal!",
+      "desc": "This spell will cause a sharp, barbed root to tear from the ground and up into the target's body. This packet-delivered attack will cause 15 points of Normal damage upon a successful strike and if damages the target into Body it will also affect them with a Magic Snare.\n\nRoot Lance cannot be cast upon stone floors, inside man-made buildings or wherever there is no dirt, earth or soil."
+    },
+    {
+      "sphere": "Nature",
+      "level": 5,
+      "name": "Regeneration",
+      "incant": "I invoke Nature to grant Regeneration.",
+      "desc": "This healing spell will restore 1 Body point per minute for a period of 10 minutes. The first Body point is healed 60 seconds after the spell is cast, the next 60 after that, etc. Although this spell will not give the target more Body points than their maximum, if during the 10 minutes the target reaches full Body and is wounded again, the regeneration will continue for the remaining duration.\n\nRegeneration will still continue to work if the target drops into their Bleed Count but not the target's Death Count. While under its effects the target must state \"Visibly Regenerating\" every minute that they heal a Body point from the spell and whenever a new person approaches them."
+    },
+    {
+      "sphere": "Nature",
+      "level": 5,
+      "name": "Swarm",
+      "incant": "I invoke Nature to inflict Swarm.",
+      "desc": "This spell surrounds the target with a swarm of biting insects. These insects will cause the target to be unable to cast spells. Any damage calls from the target will be reduced by 1, to a minimum of 1 damage, and every 10 seconds the target will take 1 Body damage.\n\nThese effects will continue until the target (or an ally) spends ten seconds batting away the insects. Multiple targets swatting will not lower this count. This spell has no effect against non-living targets, such as Undead, golems and incorporeal Spirits."
+    },
+    {
+      "sphere": "Nature",
+      "level": 6,
+      "name": "Release",
+      "incant": "I invoke Nature to grant Release.",
+      "desc": "This spell will immediately release the target from any magical or natural bindings that are physically constricting the target in any manner. All bindings will be removed, even if more than one has been applied.\n\nIt does not function against \"man-made\" bindings such as manacles, nooses or chains and will not open doors."
+    },
+    {
+      "sphere": "Nature",
+      "level": 6,
+      "name": "Strength of the Bear",
+      "incant": "I invoke Nature to grant Strength of the Bear.",
+      "desc": "This spell will grant its target +3 Strength for an hour. This strength bonus will stack with any other strength bonus the target may have, but cannot be stacked with itself."
+    },
+    {
+      "sphere": "Nature",
+      "level": 7,
+      "name": "Barkskin *",
+      "incant": "I invoke Nature to grant Barkskin.",
+      "desc": "This spell gives the target 40 points of Magical armour. This armour is Magical in nature and may not be Refit. Magical armour is removed before physical armour. While the target has Barkskin on their spirit, they suffer from a x2 vulnerability to Fire damage.\n\nIf the armour is Breached the remaining fire damage will carry over to the target."
+    },
+    {
+      "sphere": "Nature",
+      "level": 7,
+      "name": "Web",
+      "incant": "I invoke Nature to inflict Web.",
+      "desc": "This spell creates a Magical Web that immobilizes the target from the neck down. Creatures so trapped are unable to do anything with the exception of talking, reading, and skills that require no movement.\n\nTrapped creatures may also activate Magical items if the items are touching them, though few items would be beneficial, for the victim cannot use their hands to direct the activated item by throwing packets.\n\nCreatures with a Strength bonus of +6 may rip free from the web, taking three seconds and doing 6 Body in the process regardless of threshold; otherwise they may be cut out which takes 6 minutes of time to completely remove the sticky strands. Webbed creatures cannot be moved."
+    },
+    {
+      "sphere": "Nature",
+      "level": 8,
+      "name": "Nature's Restoration",
+      "incant": "I invoke Nature to grant Nature's Restoration.",
+      "desc": "This spell affects any living creature which can be put to sleep. The creature must be willing unless they are a normal animal, in which case the spell works regardless. If successful, the spell puts the target into a restorative sleep for 10 minutes.\n\nIf the target sleeps for the full 10 minutes, they are completely healed, cured of any diseases or toxins and may restore one lost or fractured limb. While asleep, any diseases or toxins in their system will be paused and will resume as normal after the target wakes up prematurely.\n\nPhysicians may operate on the target without waking them. This spell does not halt a Bleed Count or a Death Count. The target may be awoken by any means that will wake someone from a magical sleep."
+    },
+    {
+      "sphere": "Nature",
+      "level": 8,
+      "name": "Polymorph Other",
+      "incant": "I invoke Nature to inflict Polymorph Other <Type>.",
+      "desc": "This spell will briefly turn its target (and all their possessions) into a small animal in size and appearance. The caster may choose what kind of animal in <Type>, but it should be roughly the size of a chicken or a small dog.\n\nThis, understandably, causes the mind of the target to become muddled. The target must sit down for the duration of the spell and can use no skills. The target may interrupt killing blows, and other forcible gestures that require a count, but cannot otherwise move or defend themselves.\n\nThe target will keep their normal Body but for the duration of the spell they will have no armour. This spell only works on living creatures."
+    },
+    {
+      "sphere": "Nature",
+      "level": 9,
+      "name": "Faerie Fire",
+      "incant": "I invoke Nature to inflict Faerie Fire.",
+      "desc": "This spell causes an aura of light to instantly be created around the struck target. The light emanates from the victim, thereby following them wherever they go, lasting 10 minutes in duration. The light inflicts the cumulative effects of x2 damage from all attacks, the inability to be healed in any form, and also causes blindness."
+    },
+    {
+      "sphere": "Nature",
+      "level": 9,
+      "name": "Suspension",
+      "incant": "I invoke Nature to grant Suspension.",
+      "desc": "Suspension places a target that is in their Death Count in a state of suspended animation until the spell has ended or until the caster wishes to terminate the spell. Dispel Magic will continue the Death Count where it left off.\n\nThis spell does not make the target immune to magic, so a Life spell will work on it. This spell does not prevent the target from forfeiting their Death Count at any time and choosing to resurrect immediately."
+    },
+    {
+      "sphere": "Protections",
+      "level": 1,
+      "name": "Mage Robes *",
+      "incant": "I invoke Protection to grant Mage Robes.",
+      "desc": "This spell will surround the caster in a semi-transparent robe of armour. This robe is Magical in nature and may be Dispelled as normal. Mage Robes grants the caster +10 Magical Armour Points. This bonus armour will not stack with the Mage Leathers or Mage Plate spells but may stack with any other armour the caster is wearing.\n\nMagical armour is removed before physical armour. While the caster has Mage Robes on their spirit, they suffer from a x2 vulnerability to Lightning damage. If the armour is Breached the remaining Lightning damage will carry over to the target. This spell is caster only."
+    },
+    {
+      "sphere": "Protections",
+      "level": 1,
+      "name": "Magic Shield",
+      "incant": "I invoke Protection to grant Magic Shield.",
+      "desc": "This spell calls into existence a Magical Shield, usable only by the caster. It also gives the caster the Shield skill-proficiency for the duration of the spell. The size of the shield must be chosen upon casting and must be larger than a buckler but no larger than the maximum size of a physical shield.\n\nThe shield is spirit linked to the caster and will remain with the caster until the duration expires or the caster wills the spell to end. This Magic Shield will have every benefit and detriment of a real shield, with the exception that it cannot be shattered (destroyed), disarmed by any skill, and any Slay that strikes it will remain active.\n\nIt can, however, be Dispelled. If possible, the shield should have white tape visible on its surface to represent that it is Magical."
+    },
+    {
+      "sphere": "Protections",
+      "level": 2,
+      "name": "Magic Armour *",
+      "incant": "I invoke Protection to grant Magic Armour.",
+      "desc": "This spell protects the target from the next single physical strike or spell packet attack with the prefix \"physical\" in its damage call. It cannot be saved and will go off on the first successful hit, even if the recipient does not wish it to.\n\nWhen this spell defense is used, the target must call out \"Magic Armour,\" and a visible flash of white energy can be seen as the spell-protection dissipates. A Magic Armour will not protect against the physical touch of a touch cast spell or a Spellstrike.\n\nIt will not protect the wearer from any damage that contains the suffix \"Elemental\" in its damage call. Only one Magic Armour or Advanced Magic Armour may be worn at any given time."
+    },
+    {
+      "sphere": "Protections",
+      "level": 2,
+      "name": "Ward Stone",
+      "incant": "I invoke Protection to create a Ward Stone.",
+      "desc": "This spell will turn a normal stone into a Ward Stone, granting the bearer a 1 Normal Threshold. Once cast, the Ward Stone will become spirit linked to the first creature that touches it. That spirit link and the Ward Stone itself will become dispelled after the spell's duration expires or the creature dies.\n\nWard Stones may be stacked with other Ward Stones and with thresholds granted by other Protections spells and rituals. For example, four Ward Stones will give the bearer a 4 Normal Threshold. Ward Stones must have the spell tag affixed to them and therefore must be large enough for this to be done."
+    },
+    {
+      "sphere": "Protections",
+      "level": 3,
+      "name": "Render Weapon",
+      "incant": "I invoke Protection to create Render Weapon.",
+      "desc": "The Render Weapon spell will allow a targeted weapon to resist the next magical, alchemical or physical attempt to shatter or destroy it by stating \"Render\". Once an effect has been resisted, the spell ends. A weapon may only have one Render Weapon spell cast on it at any given time."
+    },
+    {
+      "sphere": "Protections",
+      "level": 3,
+      "name": "Stone Form",
+      "incant": "I invoke Protection to grant Stone Form.",
+      "desc": "This spell turns the target into a statue for as long as the target remains motionless. As soon as the target chooses to move, the spell is broken. For the duration of the spell, the target is immune to all non-Magical physical attacks, or spell packets with the prefix \"physical\".\n\nThey are also immune to all non ritual-magic sources of forced movement. While the spell is in effect, the target may not speak or use any skills. All other attacks, such as spells or Magic, affect the target normally.\n\nDue to safety concerns, you cannot use this spell in a manner which would trap someone else's limbs."
+    },
+    {
+      "sphere": "Protections",
+      "level": 4,
+      "name": "Mage Leathers *",
+      "incant": "I invoke Protection to grant Mage Leathers.",
+      "desc": "This spell will surround the caster in semi-transparent leather armour. These leathers are Magical in nature and may be Dispelled as normal. Mage Leathers grants the caster +20 Magical Armour Points. This bonus armour will not stack with the Mage Robe or Mage Plate spells but may stack with any other armour that the caster is wearing.\n\nWhile the caster has Mage Leathers on their spirit, they suffer from a x2 vulnerability to Lightning damage. If the armour is Breached the remaining Lightning damage will carry over to the target. This spell is caster only."
+    },
+    {
+      "sphere": "Protections",
+      "level": 4,
+      "name": "Tenacity *",
+      "incant": "I invoke Protection to grant Tenacity.",
+      "desc": "This spell will allow the target to carry on with an incantation through adversity. If the target accidentally miscants or has their concentration interrupted by Body damage or any other interruption, they may call \"Tenacity!\" and re-incant the spell. Only one Tenacity may be worn at any given time."
+    },
+    {
+      "sphere": "Protections",
+      "level": 5,
+      "name": "Hold Portal",
+      "incant": "I invoke Protection to create Hold Portal.",
+      "desc": "A Hold Portal spell creates a Magical barrier surrounding any target window or doorway. The entire portal is covered by an impermeable field that is visible to all. Nothing besides normal air may pass through the barrier, although astral beings may do so.\n\nOnce cast, the portal will be held until it is dispelled (via Dispel Magic), the duration expires, or the caster chooses to end it. This barrier will not block gaze-attacks. The target window or doorway does not need to have a windowpane or door present for this to function; an archway or window hole will suffice.\n\nThe caster must attach a white H to the portal to indicate that the spell is active. Only one Hold Portal may be cast on a window or doorway at a time."
+    },
+    {
+      "sphere": "Protections",
+      "level": 5,
+      "name": "Shield Magic *",
+      "incant": "I invoke Protection to grant Shield Magic.",
+      "desc": "This spell will protect the target once from the next Battle Magic spell or spell-like attack with 'Magic' in the call. It will protect the target from Spellstrikes but not weapon strikes, even those with 'Magic' in the call.\n\nIt cannot be saved and will activate even if the target wishes to accept the spell. The only exception to this is if the spell is touch cast onto the target and the target chooses to accept it, such as in the case of most healing spells.\n\nUnconscious or incapacitated targets cannot choose to accept a touch cast spell. When this spell defense is used the target must call out \"Shield Magic\", and a visible flash of white energy can be seen as the spell-protection dissipates.\n\nOnly one Shield Magic, Advanced Shield Magic, or Reflect Magic may be worn at any given time. It will not protect the wearer from any damage that contains the suffix \"Elemental\" in its damage call."
+    },
+    {
+      "sphere": "Protections",
+      "level": 6,
+      "name": "Advanced Magic Armour *",
+      "incant": "I invoke Protection to grant Advanced Magic Armour.",
+      "desc": "This spell acts like a Magic Armour, except that the wearer of this spell may choose what attack to defend against. When this spell defense is used the target must call out \"Advanced Magic Armour\", and a visible flash of white energy can be seen as the spell-protection dissipates. Only one Magic Armour or Advanced Magic Armour a may be worn at a time."
+    },
+    {
+      "sphere": "Protections",
+      "level": 6,
+      "name": "Dispel Magic",
+      "incant": "I invoke Protection to inflict Dispel Magic.",
+      "desc": "This spell will terminate any spell of ninth level or lower, unless specifically stated otherwise in the description. A Shield Magic or Reflect Magic will protect a living target from a Dispel Magic. If the spell is cast on a creature, all active spells on the creature are lost.\n\nMagic items that contain Battle Magic spells, Healing potions and Battle Magic scrolls are inoperative for 10 minutes. Dispel Magic has no effect on ritual magic."
+    },
+    {
+      "sphere": "Protections",
+      "level": 7,
+      "name": "Mage Plate *",
+      "incant": "I invoke Protection to grant Mage Plate.",
+      "desc": "This spell will surround the caster in semi-transparent plate armour. This plate is Magical in nature and may be Dispelled as normal. Mage Plate grants the caster +30 Magical Armour Points. This bonus armour will not stack with the Mage Robe or Mage Leathers spells but may stack with any other armour the caster is wearing.\n\nWhile the caster has Mage Plate on their spirit, they suffer from a x2 vulnerability to Lightning damage. If the armour is Breached the remaining Lightning damage will carry over to the target. This spell is caster only."
+    },
+    {
+      "sphere": "Protections",
+      "level": 7,
+      "name": "Reflect Magic *",
+      "incant": "I invoke Protection to grant Reflect Magic.",
+      "desc": "This spell behaves exactly like Shield Magic, except that when Reflect Magic is triggered, the magical effect that hit the user will be reflected back at the attacker. When this spell defense is used the target must call out \"Reflect\" and the attacker will be struck automatically with the reflected magic.\n\nWhen a magical effect is successfully reflected, the user of Reflect Magic becomes the caster of the reflected spell as if they had cast it themselves. The spell and its target (the original caster) cannot be changed, but things like its duration become under the control of the new caster.\n\nOnly one Reflect Magic, Shield Magic, or Advanced Shield Magic may be worn at any given time."
+    },
+    {
+      "sphere": "Protections",
+      "level": 8,
+      "name": "Advanced Shield Magic *",
+      "incant": "I invoke Protection to grant Advanced Shield Magic.",
+      "desc": "This spell acts like a Shield Magic, except that the wearer of this spell may choose what attack to defend against. When this spell defense is used the target must call out \"Advanced Shield Magic\", and a visible flash of white energy can be seen as the spell-protection dissipates.\n\nOnly one Reflect Magic, Shield Magic, or Advanced Shield Magic may be worn at any given time. It will not protect the wearer from any damage that contains the suffix \"Elemental\" in its damage call."
+    },
+    {
+      "sphere": "Protections",
+      "level": 8,
+      "name": "Iron Skin",
+      "incant": "I invoke Protection to grant Iron Skin.",
+      "desc": "This spell grants the target a 5 Normal threshold for ten minutes. Any attack that does 5 or fewer points of Normal damage is replied to with \"No Effect\". The target takes no damage from these attacks.\n\nThis spell also makes the target immune to Saps for the duration of the spell. All attacks that are not normally damaging in nature (e.g. sleep) affect the target normally."
+    },
+    {
+      "sphere": "Protections",
+      "level": 9,
+      "name": "Anti-Magic Field",
+      "incant": "I invoke Protection to grant Anti-Magic Field.",
+      "desc": "This spell will make the caster immune to all Battle Magic spells, so long as the caster holds both arms out to their sides and palms facing outwards. During this time, the caster can speak but must otherwise maintain Concentration.\n\nWhile in this position, the caster calls \"No Effect\" to all Magic that targets them, both positive and negative. This Anti-Magic Field will not protect against any Magic spell with the suffix \"Elemental\" in its damage call."
+    },
+    {
+      "sphere": "Protections",
+      "level": 9,
+      "name": "Circle of Protection",
+      "incant": "I invoke Protection to create Circle of Protection.",
+      "desc": "This spell creates a 10-foot diameter spherical barrier, centered on the caster. This barrier will continue into the ground to complete a magical sphere around the caster, with the caster in the exact center.\n\nThis barrier is frictionless and cannot be dispelled by Battle Magic spells. The Circle of Protection must be visually represented by a rope, a heavily drawn circle in the dirt, or any other method which distinctly creates a visible circle.\n\nThis physical representation must be placed before the spell is cast or the spell will fail. If, during the casting, a creature or object is on the barrier wall, the caster will decide if they are pushed out or pulled in as the Circle wall raises.\n\nAfter the Circle is successfully cast, no physical object may pass through the barrier, including the caster. The caster may choose to end the spell at any time. If the caster's spirit leaves the circle for any reason, the spell will end.\n\nOnce active, the Circle of Protection will act as a physical barrier preventing the passage of all physical objects (including gas, liquid, etc.) and Battle Magic spells. This barrier functions in both directions.\n\nGaze attacks and ritual magic will pierce through the circle as well as other powerful ritual-level effects. Multiple castings by the same caster can be used to increase the size of the Circle by an additional 10 feet at any time after the initial Circle is cast. A Circle of Protection will not function as a ritual circle."
+    },
+    {
+      "sphere": "Psionics",
+      "level": 1,
+      "name": "Ego Whip",
+      "incant": "By force of will I inflict Ego Whip. 2 Magic Body!",
+      "desc": "This spell will do 2 points of Magic Body damage. This spell deals x4 damage to Angelic / Demonic creatures, but will not affect Undead, or other non-living creatures."
+    },
+    {
+      "sphere": "Psionics",
+      "level": 1,
+      "name": "Sense Angelic / Demonic",
+      "incant": "By force of will I grant Sense Angelic / Demonic.",
+      "desc": "This spell will allow the caster the ability to sense whether any Angelic or Demonic creatures are in the area. Once the spell has been cast, the caster has the duration of the spell to \"Sense Angelic / Demonic\" once before the spell ends.\n\nThe caster must choose either Angelic or Demonic at the time of the spell-casting. The \"Sense\" must be said in a normal speaking voice. Any Angelic or Demonic creatures in the area will respond with \"here\" if they are within hearing range."
+    },
+    {
+      "sphere": "Psionics",
+      "level": 2,
+      "name": "Ethereal Walk",
+      "incant": "By force of will I grant Ethereal Walk.",
+      "desc": "This spell will allow the caster to disappear from their current location and reappear 10 feet away. At the time of casting, the caster must put their weapon or hand on their head (to show they are out-of-game), then walk 10 feet in a straight line at a normal walking pace and immediately go back in-game.\n\nThere is no hold called for this spell. The time it takes for the caster to walk 10 feet is the time it takes to Ethereally Walk. The caster must immediately pick a direction and begin walking in a straight line.\n\nThis spell does not allow the caster to bypass any obstacle that would normally impede their walk. If the caster cannot continue walking normally in a straight line due to an obstacle, then the spell immediately ends and the caster reappears.\n\nThe caster will still set off any traps they set off during their walk and, if the trap would affect the person who triggered it, they will be damaged and the Ethereal Walk will end. While in this brief ethereal state, the player cannot speak, cast, use abilities or do anything else other than walk. Ethereal Walk cannot break line of sight."
+    },
+    {
+      "sphere": "Psionics",
+      "level": 2,
+      "name": "Mind Meld",
+      "incant": "By force of will I grant Mind Meld.",
+      "desc": "Mind Meld may be used to communicate telepathically as long as the caster is touching the temples, forehead or shoulders of the target and concentrates on the task. The Meld takes 10 seconds to initiate.\n\nOnce established, either participant may choose to convey speech in the form of words, emotions or pictures. Both participants may choose to fabricate any thought, emotion or picture. There is no way to confirm the validity of either participant's actions, through the use of Mind Meld.\n\nNo other actions by either party may be taken while a Mind Meld is in effect. Mind Meld is not able to cause erasure or editing of memory. During a Mind Meld, the caster may choose to heal the target's Body points by casting Psionic \"Ego\" spells through the meld.\n\nThese spells must be touch cast properly, including the incant, but the damage is converted to healing instead. The caster cannot break free of the Mind Meld during the initiation period, although if the target breaks the link, the Meld is terminated.\n\nIf, during the Meld, the target or caster is rendered unconscious or dead, the link is considered to have been terminated by the target. Mind Meld cannot be forced upon a target. If the target is not willing, the spell simply fails.\n\nThe target may terminate the Mind Meld at any time, without penalty, and the caster may terminate it likewise, at any time after the 10 seconds has elapsed."
+    },
+    {
+      "sphere": "Psionics",
+      "level": 3,
+      "name": "Hallucinate",
+      "incant": "By Force of will I inflict Hallucinate.",
+      "desc": "This spell causes wild and unrealistic hallucinations to flood the mind of its victim. It is up to the victim to roleplay these hallucinations. For example, victims might miscant, swing at enemies that are not there, or fail to recognise their friends.\n\nThe effect can only be removed by a Dispel Magic or by waiting ten minutes. The victim does not realise this spell was cast on them until the effect ends. This effect stacks. For each additional Hallucinate the victim is hit with, the hallucinations will become more vivid, more disturbing, encompass more senses, etc. Each time the victim is hit with another stack of Hallucinate, the duration will be reset to 10 minutes and the victim will experience the full number of stacks for the remainder of the duration.\n\nHallucinate will stack with other forms of Hallucinate, such as Hallucinoid alchemy, up to a maximum of 5 stacks.\n\n1 stack: The victim experiences visual hallucinations, seeing things that are not there.\n2 stacks: The victim experiences auditory and physical hallucinations, such as hearing voices or feeling like something is touching them.\n3 stacks: The victim has difficulty speaking or understanding complex speech and may begin to speak in gibberish at times.\n4 stacks: The victim cannot distinguish friend from foe, seeing everyone around them as entirely different people.\n5 stacks: The victim's reality is entirely replaced by a hallucination, putting them in a completely different world with different people and objects, and so on."
+    },
+    {
+      "sphere": "Psionics",
+      "level": 3,
+      "name": "Psionic Knife",
+      "incant": "By force of will I create Psionic Knife.",
+      "desc": "This spell focuses the caster's mental energy into one small, blade-shaped force, which can be used in combat. Once the spell is cast, the caster may wield a dagger-sized phys-rep (blue) swinging for 2 Magic.\n\nThis does no extra damage to demons, but does affect Undead. While this spell is in effect, the caster may not cast any spells. At any time during the duration of this spell, the caster may channel any Psionic spell currently in memory through the weapon by calling \"Spellstrike <Spell-Name>\".\n\nThis reduces the damage that the knife can swing for by 1. If the damage of the knife is reduced to zero, the hour runs out, or the caster wishes, the spell ends. Should the caster drop the weapon or become disarmed, the weapon will dissipate and the spell will end.\n\nThe caster is responsible for bringing their own blue weapon phys-rep, the spell will fail without the proper rep. Summoned weapons may be used with natural weaponry like Savar'Aving Claws, but will not grant the user the Florentine skill needed to fight with both.\n\nPurchasing an Exotic Weapon Specialization: Summoned Weapons will increase the damage of any weapon conjured by this spell by 1 per purchase, but the summoned weapon will still dissipate when a number of Spellstrikes equal to its base damage are used."
+    },
+    {
+      "sphere": "Psionics",
+      "level": 4,
+      "name": "Ego Flay",
+      "incant": "By force of will I inflict Ego Flay. 5 Magic Body!",
+      "desc": "This spell will do 5 points of Magic Body damage. This spell deals x4 damage to Angelic / Demonic beings but will not affect Undead, or other non-living creatures."
+    },
+    {
+      "sphere": "Psionics",
+      "level": 4,
+      "name": "Sleep",
+      "incant": "By force of will I inflict Sleep.",
+      "desc": "This spell causes the target to fall instantly into a deep sleep. The person will sleep for the duration of the spell, unless someone shakes them continuously for one minute, or if they take damage into Body.\n\nThe target will awaken enough only to interrupt Killing Blows then fall back into deep sleep. The target will not snore. This spell has no effect on Undead or non-living creatures."
+    },
+    {
+      "sphere": "Psionics",
+      "level": 5,
+      "name": "Ego Rend",
+      "incant": "By force of will I inflict Ego Rend. 10 Magic Body!",
+      "desc": "This spell will do 10 points of Magic Body damage. This spell deals x4 damage to Angelic / Demonic beings but will not affect Undead, or other non-living creatures."
+    },
+    {
+      "sphere": "Psionics",
+      "level": 5,
+      "name": "Silence",
+      "incant": "By force of will I inflict Silence.",
+      "desc": "While under the effects of Silence, the target cannot make any sound that comes out of their head, including speech, grunting, coughing or the use of wind instruments. Casting spells becomes impossible; although the player must still call out any damage they may do using weapons. This spell may be countered with Dispel Magic."
+    },
+    {
+      "sphere": "Psionics",
+      "level": 6,
+      "name": "Charm",
+      "incant": "By force of will I inflict Charm.",
+      "desc": "This spell causes the target to treat the caster as their best friend. Although it does not turn the target into a mindless automaton that follows every order the caster gives, the target will be required to stay with their \"friend\" and listen to any \"suggestions\" the caster may give.\n\nIf the caster attacks the Charmed individual, the spell will be broken. However, friends of the caster may attack the victim and the spell may remain intact if the caster can give adequate reason as to why they are not defending the target.\n\nA Charmed creature will not attack their old friends unless given enough reason. However, if the target is told to \"defend me\" and their old friends attack the caster; this would be considered adequate reason.\n\nThis spell will not force the target to act in a way that is contrary to their nature (a pacifist killing someone, etc.). The spell will not force the target to tell the truth or reveal secrets, unless it is already in their nature to do so to their best friend.\n\nThis spell will not force the target to do anything obviously suicidal unless it would be in the target's nature to do so. This spell will not work on Undead or other mindless creatures. A target may be Charmed to multiple people at the same time.\n\nIf this would cause a conflict, the most recent Charm will override any previous Charms. This does not cure the previous Charms; it only makes them inactive as long as they are in conflict with the most recent Charm. The victim does not realise this spell was cast on them until the effect ends."
+    },
+    {
+      "sphere": "Psionics",
+      "level": 6,
+      "name": "Ego Burn",
+      "incant": "By force of will I inflict Ego Burn. 15 Magic Body!",
+      "desc": "This spell will do 15 points of Magic Body damage. It will do x4 damage if the target is Angelic / Demonic. This spell will not harm Undead."
+    },
+    {
+      "sphere": "Psionics",
+      "level": 7,
+      "name": "Circle of Protection: Demonic / Angelic",
+      "incant": "By force of will I create Circle of Protection: Demonic (or) Angelic.",
+      "desc": "This spell will summon into existence a Circle of Protection. This is protection against either the Demonic or the Angelic (chosen at the time of casting). It will affect both Lesser and Greater demons/angels.\n\nThis Circle must be physically represented by the caster and cannot be larger than 10 feet in diameter. While this Circle is up, no creature of the chosen type can enter or leave. This Circle can be used to trap as well as repel.\n\nIf the Circle is used to trap a creature, it will last for 5 days for a Lesser demon/angel or 1 hour for a Greater demon/angel, or until the creature is killed. The Circle is immune to all spells and effects originating from the chosen creature type including Dispel Magic.\n\nThis does not apply to any other creatures that can dispel the circle normally. The caster may leave the circle."
+    },
+    {
+      "sphere": "Psionics",
+      "level": 7,
+      "name": "Psionic Blade",
+      "incant": "By force of will I create Psionic Blade.",
+      "desc": "This spell acts exactly as the Psionic Knife spell, except as follows: the caster may use a phys-rep up to Sword size, the Psionic Blade's starting damage is 4 Magic and the caster may Spellstrike any spell memorized regardless of Sphere.\n\nShould the caster drop the weapon, or become disarmed, the weapon will dissipate and the spell will end."
+    },
+    {
+      "sphere": "Psionics",
+      "level": 8,
+      "name": "Forget",
+      "incant": "By force of will I inflict Forget.",
+      "desc": "Forget causes the target's memory to be erased of all that occurred within the last 10 minutes. If a Dispel Magic is cast on the target or the target receives a Charm Break within one hour, the memories will be restored.\n\nOne hour after the casting, the effects are permanent and cannot be restored save via Ritual Magic. If the victim dies (not just enters their Death Count) before the hour has ended, the Forget is cured.\n\nThis spell can be freely resisted by any conscious target. The target will be fully aware their memories have been removed but will have no idea how, why or by whom. Multiple Forget spells can be cast at once to increase the duration. Each casting will add 10 minutes to the period the victim forgets."
+    },
+    {
+      "sphere": "Psionics",
+      "level": 8,
+      "name": "Paralysis",
+      "incant": "By force of will I inflict Paralysis.",
+      "desc": "The spell Paralysis will immobilize the target, rendering them unable to move at all. This spell will not work on creatures which have no nervous system such as Undead, Golems, Elementals, etc."
+    },
+    {
+      "sphere": "Psionics",
+      "level": 9,
+      "name": "Exorcism",
+      "incant": "By force of will I inflict Exorcism.",
+      "desc": "This spell will destroy any lesser Demon or Angel, sending it back to the plane from whence it came, trapping it there for a year and a day. Against greater Demons and Angels, this spell will do 216 points of Magic Body damage.\n\nThis spell, if cast at a target who is possessed by a Demon, will only affect the Demon, and not the target. This spell will also send a ghost from a Haunt fully back to the Deadlands, removing their foothold in the physical world."
+    },
+    {
+      "sphere": "Psionics",
+      "level": 9,
+      "name": "Mimic",
+      "incant": "By force of will I grant Mimic.",
+      "desc": "This spell allows the caster to copy a spell whose incantation they have heard, other than a Mimic spell. Within 1 minute of hearing the spell they wish to mimic, the caster must incant the Mimic spell.\n\nWithin the next 3 seconds, they can cast the spell as if it was one of their own. The caster may mimic a spell that they originally cast. The caster does not need to know the sphere that they are mimicking.\n\nThis spell may only mimic Battle Magic spells from the core rulebook. It cannot be used to imitate magic items, Spellstrikes, monster abilities, or anything else that does not use the full, spoken incant of a spell."
+    },
+    {
+      "sphere": "Dark",
+      "level": 1,
+      "name": "Bless *",
+      "incant": "I channel <God> to grant Blessing.",
+      "desc": "This spell calls down upon the target the blessing of whichever God the caster worships. If the caster casts Bless on themselves, it will function as a Shield Magic versus the next Divine or Draconic Battle Magic spell to strike the caster.\n\nFrom time to time a character with a Bless on their spirit may find favour with the God(dess) that the caster serves. This can sometimes, decided by a Shaper, have a small positive effect happen to or around them.\n\nThis could be anything from a small warning of danger to minor healing or even minor miracles. The caster may not force a Bless upon a person and it may be resisted without using up a spell-protection, such as Shield Magic.\n\nOne can only be Blessed if one chooses to be and only one Bless can be active at a time. A person can choose to allow a new Bless spell to replace an old one if they wish. They may also end a Bless on themselves any time they choose, but this may offend the god."
+    },
+    {
+      "sphere": "Dark",
+      "level": 1,
+      "name": "Siphon",
+      "incant": "I channel <God> to inflict Siphon.",
+      "desc": "This spell can only be targeted at someone who is currently in their Bleed Count. If successfully cast, the spell will cause the target to enter their Death Count, bypassing their Bleed Count completely, and grant the caster 5 Body points in healing or infliction, by caster's choice.\n\nThis cannot exceed the caster's maximum Body point total nor can it be thrown or transferred to another."
+    },
+    {
+      "sphere": "Dark",
+      "level": 2,
+      "name": "Divine Ward",
+      "incant": "I channel <God> to create Divine Ward.",
+      "desc": "Divine Ward requires the caster to plant or otherwise display their holy symbol foci for the duration of the spell. During this time, the symbol may not be used to cast other Dark spells. The symbol does not have to remain on the person of the caster and, in fact, may be hung upon a door, placed upon a tree or otherwise, so long as it remains stationary.\n\nPlacing the spell tag next to the symbol is encouraged. While the symbol is being used in this way, creatures possessing a spirit may not approach within 10 feet of the symbol unless they are wearing a Bless spell of the deity represented by the Divine Ward.\n\nWhen the spell is cast, anyone not wearing a Bless spell of the appropriate deity will be pushed out of the Ward. If a creature already in the Ward cannot retreat any further, the spell will fail and is lost.\n\nThis barrier may be resisted with Shield Magic, Resist Magic or similar anti-magic defenses spell, and it may also be resisted by expending an active Bless spell from any God or Goddess. Doing so makes the user immune to the effects of this Divine Ward for 10 minutes.\n\nIf the symbol is physically moved the spell ends. The caster of Divine Ward is immune to the effects of the spell."
+    },
+    {
+      "sphere": "Dark",
+      "level": 2,
+      "name": "Soul Whip",
+      "incant": "I channel <God> to inflict Soul Whip. 3 Dark Drain!",
+      "desc": "This spell will summon a black, wispy tendril to strike out at the target, causing 3 Dark points of damage and mending the caster the same amount. Any Mending that exceeds the caster's maximum Body points grants them temporary Body points equal to the excess, up to a maximum of double the caster's original Body points.\n\nTemporary Body points gained from this ability lasts 1 hour. If the target resists the spell or is otherwise unaffected by the damage, the spell fails."
+    },
+    {
+      "sphere": "Dark",
+      "level": 3,
+      "name": "Death Aura",
+      "incant": "I channel <God> to grant Death Aura.",
+      "desc": "This spell will hide the target's spirit in an aura of Undeath. While Death Aura is active the target will not be detectable via Sense Life."
+    },
+    {
+      "sphere": "Dark",
+      "level": 3,
+      "name": "Mass: Blessings",
+      "incant": "I channel <God> to grant Mass Blessing.",
+      "desc": "This area-of-effect spell requires the caster to give a powerful Mass to their flock, calling on their God to Bless those the caster touches. To initiate Mass: Blessings the caster must roleplay a sermon to their God, speaking to those present about their deity's tenets, beliefs and how they relate to the situation at hand for at least one minute.\n\nAfter that minute has passed they may then, while continuing their sermon, touch the foreheads of any who have heard it. One person may be touched in this manner every 10 seconds so long as the sermon continues or the maximum duration of 10 minutes is reached.\n\nEach person who is touched by the caster in this manner will take the effect of a Bless spell. A maximum of 10 Blessings may be granted. Each person may only receive one Blessing per Mass. The caster may not \"force\" the effects of this mass to take place upon anyone, including the unconscious, dying, or otherwise incapacitated."
+    },
+    {
+      "sphere": "Dark",
+      "level": 4,
+      "name": "Banner of the Faithful",
+      "incant": "I channel <God> to create Banner of the Faithful.",
+      "desc": "This spell creates a magic \"flag\" or banner which lasts one hour's time. During that time, any character that has a Bless spell of the same God on their spirit may gain access to the Banner's full abilities.\n\nThe Blessed character must touch the Banner and speak the God's name. Once done, they may attack for +0 Magic damage so long as the Banner stays within their line of sight. This bonus includes ranged weapons.\n\nThe flag is considered a non-spirited item with 1 Body and may be destroyed by any weapon damage, Acid, or Elemental damage. Anyone holding the Banner will take whatever damage it takes. If the banner leaves the target's line of sight for more than 10 seconds, the effect is lost until the Banner is back in their line of sight.\n\nThe banner must be visible as well, which means that it may be necessary to illuminate a banner used in the dark. A Banner may be any shape so long as it is a minimum 2.5' x 1' and no greater than 4'x 6' and must be mounted on a pole with a minimum length of 4' and a maximum of 6'.\n\nThe holy symbol of the God worshipped must be represented on the Banner. When the banner is first created, the caster must state \"Banner up - <God's name>!\". When the banner ends for any reason, the caster must then state \"Banner down - <God's name>!\".\n\nThe caster of Banner of the Faithful is always under the Banner's effect while it exists."
+    },
+    {
+      "sphere": "Dark",
+      "level": 4,
+      "name": "Control Mindless",
+      "incant": "I channel <God> to inflict Control Mindless.",
+      "desc": "This spell grants the caster control over one non-sentient creature. Non-sentient creatures are limited to mindless Undead, lesser mindless constructs, natural animals and victims of Feeblemind. This spell will not work on a target with an active Bless or Dragon Mark but will work on children too young to resurrect, though this is considered abhorrent by most.\n\nThis control will allow the caster to command the target to do anything, including suicidal actions. Control will last for 1 minute, unless the target is undead in which case it will last 10 minutes. If Control Mindless is used on a living target it will leave a scar of the Cleric's God's holy symbol somewhere on its body.\n\nThe scar will fade after one year or may be removed early through divine intervention."
+    },
+    {
+      "sphere": "Dark",
+      "level": 5,
+      "name": "Mass: Relic",
+      "incant": "I channel <God> to grant Relic.",
+      "desc": "This 10 minute mass magically enhances an item, typically a weapon, in the name of the God of the caster. Once the mass is complete, the object or weapon is made rendered as per the spell and is given a Magic aura.\n\nThe weapon or object will become attuned to the first creature bearing the Bless of the caster's God that touches it after the mass is completed. If the item is dropped by the attuned creature or passed off to another creature, the spell ends and the item will revert back to its normal form.\n\nThe effects on the object last for 24 hour, starting at the completion of the mass."
+    },
+    {
+      "sphere": "Dark",
+      "level": 5,
+      "name": "Wave of Pain",
+      "incant": "I channel <God> to inflict Wave of Pain, Wave of Pain, Wave of Pain.",
+      "desc": "Before this spell is cast, the caster must plant both feet and then incant. They may then do 5 Dark via packet, touch cast, or a combination, up to five times. Each damage call must be preceded by the phrase \"Wave of Pain\".\n\nIf the caster moves either foot or is struck for damage to Body, any remaining waves are lost and the spell ends."
+    },
+    {
+      "sphere": "Dark",
+      "level": 6,
+      "name": "Dark Lore",
+      "incant": "I channel <God> to grant Dark Lore.",
+      "desc": "This spell allows the caster to summon a Ghost or lost spirit and ask a series of questions in which it is bound to answer truthfully. The caster should have a topic of questioning in mind before casting the spell.\n\nSpirits summoned in this manner will arrive as soon as they possibly can but no later than 12 hours after casting. During this wait the caster should attempt to find a Shaper at their earliest convenience.\n\nThe first few questions are set and must be spoken verbatim after the spirit arrives. These questions are: \"Spirit before me I bind you and command you to identify yourself.\" \"I bring you no ill will; do you wish my spirit harm?\"\n\n\"I seek the knowledge in death regarding <Subject>.\" \"I release you of your binding, you are free to go. Will you leave peacefully?\" OR \"I release you of your binding but request additional information if it pleases you. Will you stay?\"\n\nIf the Cleric fails or incorrectly speaks these questions the spirit may not arrive or may arrive hostile. If the Cleric succeeds, the spirit is bound to answer truthfully, to the best of its knowledge, the four questions asked.\n\nAfter this point the caster may continue asking questions of the spirit if the spirit is willing. The limit of questions is random, generally depending on the demeanor and sensitivity of the caster toward the spirit.\n\nSome spirits are simply uninterested in speaking to the living and will leave after the required questions are answered. The quality of answers will greatly depend upon the spirit called, which in general terms is beyond the ability of the caster's control.\n\nThe use of Dark Lore is not considered Necromantic in nature although it may be mistaken as such to the uneducated."
+    },
+    {
+      "sphere": "Dark",
+      "level": 6,
+      "name": "Unholy Armour *",
+      "incant": "I channel <God> to grant Unholy Armour.",
+      "desc": "This spell gives the target 25 points of Magical amour. This armour is Magical in nature and may not be Refit. Magical armour is removed before physical armour. This spell cannot be stacked with itself.\n\nWhile the Unholy Armour is active, the target will Sense as Demonic, Undead, Wytchcraft, Necromancy and Dark, though they will not be changed into any of those things."
+    },
+    {
+      "sphere": "Dark",
+      "level": 7,
+      "name": "Corruption",
+      "incant": "I channel <God> to inflict Corruption.",
+      "desc": "This spell will cause its target to take x2 damage from all physical weapon attacks for 10 minutes. Additionally, any spell thrown by the caster of Corruption at the target will receive an Echo effect for each spell.\n\nThis Echo effect will allow the caster to strike the target an additional time with the same spell if the first spell was successfully defended against in any way. This is done by calling \"Echo!\" immediately after the spell was defended against."
+    },
+    {
+      "sphere": "Dark",
+      "level": 7,
+      "name": "Dark Bolt",
+      "incant": "I channel <God> to inflict Dark Bolt. 20 Dark",
+      "desc": "This spell causes a bolt of darkness to spring from the caster's fingers towards the target. The spell will take full effect on Undead creatures and living creatures alike. The bolt does 20 points of Dark damage straight to Body.\n\nThis damage will be halved if the target has any active Bless spell on their person."
+    },
+    {
+      "sphere": "Dark",
+      "level": 8,
+      "name": "Chains and Bonds",
+      "incant": "I channel <God> to inflict Chains and Bonds.",
+      "desc": "This spell creates magical chains, hooks and locks that wrap around the target. These chains will Silence their victim. Their legs are bound together and their arms forced against the sides of their body, making actions impossible.\n\nCreatures with a Strength of 6 may break free from the chains. Doing so takes 3 seconds and causes the victim to take 6 Body in the process. Creatures bound in this way can be picked up and moved."
+    },
+    {
+      "sphere": "Dark",
+      "level": 8,
+      "name": "Unholy Warrior",
+      "incant": "I channel <God> to summon an Unholy Warrior.",
+      "desc": "This powerful spell will allow the Cleric to call upon their God to send forth an Unholy Warrior to strike down one who has wronged them. The Cleric must offer up a sacrifice of a catalyst or an object worth at least 1 gold in value appropriate to the Cleric's god.\n\nOnce cast, the offering is consumed and a being of pure shadow and darkness will manifest before the Cleric within the next 12 hours. When the Unholy Warrior has arrived the Cleric then needs to speak the name of the target as they know it, visualize the target's identity for one minute and finally state how the target has wronged the Cleric or their God.\n\nDuring this count, the Unholy Warrior cannot be the target of spells or effects, nor will they defend the Cleric or themselves until the spell prerequisites are completed. If the Cleric does not complete these requirements within two minutes of their arrival, the Unholy Warrior will leave.\n\nIf the requirements are met, the Unholy Warrior will then dissipate, becoming undetectable to even the most powerful of magic. For the next hour the Unholy Warrior will hunt the target, searching tirelessly and with the innate ability to sense that target's spirit at will.\n\nWhen the target is found, the Unholy Warrior will phase in nearby with a 3-count. It will state to the target that they have wronged a Cleric of <God> and that their life is forfeit. The Unholy Warrior will attack that target to the best of its ability and will not cease until it is destroyed or the target has ended its Death Count.\n\nAn Unholy Warrior will be equal to the level and power of the Cleric who is summoning it. Should the Cleric speak the True Name of the target to the Unholy Warrior or use a Discord catalyst as the offering, that level will increase to the Cleric's level +5.\n\nThe Unholy Warrior's Occupation is determined randomly by the God of the Cleric. Once the target has been destroyed the Unholy Warrior will return to the Cleric and announce its success. Should the Cleric decide after successfully casting the spell that they made a mistake and wish to cancel the Unholy Warrior's summoned duty, they may do so by expending their own bless spell.\n\nEnding the spell in this manner will incur a very harsh repercussion. As punishment for wasting the Dark God's power, the Cleric will find themselves the target of their own Unholy Warrior. No creature may be the target of this spell by the Cleric more than once per month, nor will the Unholy Warrior attack any creature that carries a Bless of the Clerics God. The Unholy Warrior is Celestial in Nature."
+    },
+    {
+      "sphere": "Dark",
+      "level": 9,
+      "name": "Avatar",
+      "incant": "I channel <God> to grant Avatar.",
+      "desc": "This spell turns the Cleric into an \"Avatar\" of their deity, morphing their body into a shadowy dark form. After the spell is cast, the Cleric's shape will change over the course of a 3-count as they grow two feet in height; their physical features become shadowy black and their eyes glow blood red.\n\nThis spell will also summon into existence either a two-handed Dark melee weapon or a one-handed Dark melee weapon and shield. The two-handed Dark weapon has a base damage of 10 Magic, while the one-handed weapon's base damage is 5 Magic.\n\nThe shield has a 60 Magic threshold. The spell also grants the proficiency in Exotic Weapon: Dark <Weapon> and the Shield skill, as long as they are holding the summoned weapons. The Cleric can choose which weapon combination they would like at the time of casting.\n\nIn Avatar form, the Cleric also has the ability to Spellstrike 10 Dark through their summoned weapon of choice a total of three times. They also gain a temporary health boost of 50 Body. Any Body Damage the Cleric receives is removed from the bonus 50 Body points first and this Body cannot be healed.\n\nThe weapons and/or shield will instantly dissipate if the Cleric drops them, is rendered unconscious, or incapacitated. These items may be used with natural weaponry, like a Savar'Aving's Claws. The Cleric may not cast any spells while in Avatar form. When the Avatar ends, the Cleric will perform a 3-count to exit the form."
+    },
+    {
+      "sphere": "Dark",
+      "level": 9,
+      "name": "Death",
+      "incant": "I channel <God> to inflict Death.",
+      "desc": "Death causes the spirit of the target to be ripped forcibly from the Body, putting the target into their Death Count, dropping their Body points to -1 and bypassing their Bleed Count completely."
+    },
+    {
+      "sphere": "Draconic",
+      "level": 1,
+      "name": "Divine Shield *",
+      "incant": "I call upon <Dragon> to grant Divine Shield.",
+      "desc": "Divine Shield functions like a \"Shield Magic\" spell against any spell from the Dark or Light Spheres of Magic. It can be stacked with Shield Magic or Advanced Shield Magic but will have no effect against Divine Ritual Magic.\n\nIf wearing both Shield Magic and Divine Shield simultaneously and struck with a Divine spell, the Divine Shield will always activate first."
+    },
+    {
+      "sphere": "Draconic",
+      "level": 1,
+      "name": "Mark of the Firstborn *",
+      "incant": "I call upon <Dragon> to grant Mark of the Firstborn.",
+      "desc": "This spell causes the symbol of the Firstborn (served by the Dragon Knight who cast it) to appear upon the target. The target must be willing or the spell fails without affect. The mark will appear on the cheek of the target and may be drawn to represent this.\n\nThe symbol must be clearly visible and cannot be hidden. If the Dragon Knight casts Mark of the Firstborn on themselves, it will function as a Shield Magic versus the next divine spell to strike the Dragon Knight.\n\nThe target may end this mark any time they choose, but this may offend the Firstborn."
+    },
+    {
+      "sphere": "Draconic",
+      "level": 2,
+      "name": "Dragon Hide",
+      "incant": "I call upon <Dragon> to grant Dragon Hide.",
+      "desc": "This spell will grant the target an immediate repair of damaged 10 armour points. It will only repair armour pieces, not other things which might be repaired by a Blacksmith with Shaper approval. It will not work on Gargylen."
+    },
+    {
+      "sphere": "Draconic",
+      "level": 2,
+      "name": "Sign of the Firstborn",
+      "incant": "I call upon <Dragon> to create Sign of the Firstborn.",
+      "desc": "Sign of the Firstborn requires the caster to place a symbol of the Dragon they serve at a location of their choice. This symbol can be a banner, flag or simple drawing. Once cast, this symbol cannot be moved.\n\nWhile active, no creature with a spirit may approach within 10 feet of the symbol unless wearing a Mark of the Firstborn. This barrier may be resisted with a Shield Magic or similar spell and if resisted the target becomes immune to the effects of Sign of the Firstborn for 10 minutes.\n\nIf the symbol is physically moved the spell ends. The caster is not immune to the effects of the spell and must be wearing a Mark of the Firstborn to pass."
+    },
+    {
+      "sphere": "Draconic",
+      "level": 3,
+      "name": "Enlightenment of the Firstborn",
+      "incant": "I call upon <Dragon> to grant Enlightenment of the Firstborn.",
+      "desc": "This spell works like a Mark of the Firstborn but over a greater range of targets. Immediately after casting this spell, the Dragon Knight must lead a 10 minute discussion or debate on any topic relating to the Firstborn, their followers or the fight against Gods.\n\nAfter the first minute has passed the Dragon Knight may anoint those present with their symbolic weapon of choice, bestowing onto them the Mark of the Firstborn served. The Dragon Knight must continue the debate while bestowing the Mark and if they stop the spell will fail and all Marks granted will become dispelled.\n\nA Dragon Knight may grant the Mark to one target every 10 seconds or until the 10 minute duration has been reached. A maximum of 10 Marks may be granted. Dragon Knights may not force the Mark an unwilling subject or those who are unconscious, dying or otherwise incapacitated."
+    },
+    {
+      "sphere": "Draconic",
+      "level": 3,
+      "name": "Scales *",
+      "incant": "I call upon <Dragon> to grant Scales.",
+      "desc": "This spell will protect the caster from the next Body Damage attack that strikes them. If stacked with a Magic Armour, Scales will always activate first. It will only protect against physical Body attacks delivered via a weapon strike. When this defense is triggered, the caster must call \"Scales!\""
+    },
+    {
+      "sphere": "Draconic",
+      "level": 4,
+      "name": "Shadow of the Firstborn",
+      "incant": "I call upon <Dragon> to grant Shadow of the Firstborn.",
+      "desc": "For the next hour after casting, the caster will become immune to all \"Sense\" type effects such as \"Sense Life\" from Undead creatures."
+    },
+    {
+      "sphere": "Draconic",
+      "level": 4,
+      "name": "Strength of the Firstborn",
+      "incant": "I call upon <Dragon> to grant Strength of the Firstborn.",
+      "desc": "This spell will grant the target a +3 Strength bonus for 1 hour. This spell will stack with other strength bonuses but not itself."
+    },
+    {
+      "sphere": "Draconic",
+      "level": 5,
+      "name": "Dragon Fear",
+      "incant": "I call upon <Dragon> to inflict Dragon Fear.",
+      "desc": "This spell will cause the affected target to flee in fear. If line of sight between the target and caster remains broken for one minute, the fear effect will end. While under the effects of fear, a victim will do everything in their power to escape the line of sight with the caster.\n\nAt first they may simply attempt to flee, but if physically held within the fear range or are otherwise forced to confront the caster, their reaction will escalate to violence. After the one minute duration has expired, the target will still be unable approach or interact with the caster or come within 100 feet of them, for the next 10 minutes.\n\nRemoving or dispelling the effect of Dragon Fear will negate both the fear and the aversion that follows."
+    },
+    {
+      "sphere": "Draconic",
+      "level": 5,
+      "name": "Dragon's Regeneration",
+      "incant": "I call upon <Dragon> to grant Dragon's Regeneration.",
+      "desc": "While uninterrupted concentration is continued by the caster, they will gain 1 Body point of healing every 60 seconds, for up to 10 minutes. The 1 Body of healing will take effect at the end of each 60 second count, not the beginning.\n\nIf the caster uses any other skill or breaks concentration, the spell will end. Any person with a Mark of the Firstborn may concentrate along with the caster to gain the benefits of this healing as well.\n\nThe caster must keep concentrating in order for others to do this, even if they are at full Body."
+    },
+    {
+      "sphere": "Draconic",
+      "level": 6,
+      "name": "Breath of the Firstborn",
+      "incant": "I call upon <Dragon> to inflict Breath of the Firstborn. 25 Elemental <Type>!",
+      "desc": "This spell will do 25 points of Elemental damage. The elemental type is determined by the caster but there is otherwise no difference in the effects. Should this spell drop the target to negative Body points, the target will forgo their Bleed Count and directly enter their Death Count as per typical elemental damage calls.\n\nIf their target successfully defends against this spell, the Dragon Knight can cause it to strike a second time in an attempt to bypass defenses. The Dragon Knight may then call \"Innate Echo!\", causing the target to be instantly hit by the spell again, although they may still defend against it if possible."
+    },
+    {
+      "sphere": "Draconic",
+      "level": 6,
+      "name": "Dragon's Intuition",
+      "incant": "I call upon <Dragon> to grant Dragon's Intuition.",
+      "desc": "This spell requires 10 minutes of concentration by the caster. At the end of those 10 minutes, the caster will gain insight into the levels of Divine energy in the surrounding lands, typically defined as a five mile radius.\n\nIt will grant a general impression of powerful Divine beings, sources of Divine energy and concentrations of followers but will not give details beyond which God(s) are behind this influence. For example, it may indicate a powerful Divine creature adherent to Raze moving through the area but will not give a description of that creature, or it may state that a concentration of followers of a Cassandra are nearby but not where or who they are."
+    },
+    {
+      "sphere": "Draconic",
+      "level": 7,
+      "name": "Dragon's Toughness *",
+      "incant": "I call upon <Dragon> to grant Dragon's Toughness.",
+      "desc": "This spell will grant 30 of temporary Body points to the caster. These extra Body points will be counted down first when damage is taken, before the caster's natural Body points. This spell cannot be stacked. All lightning based attacks that strike the caster do x2 damage."
+    },
+    {
+      "sphere": "Draconic",
+      "level": 7,
+      "name": "Elemental Fragility",
+      "incant": "I call upon <Dragon> to inflict Elemental Fragility <type>.",
+      "desc": "This spell will cause its target to suffer x4 damage from one elemental type for 10 minutes, chosen at casting. The caster will receive 1/2 damage from that element for 10 minutes."
+    },
+    {
+      "sphere": "Draconic",
+      "level": 8,
+      "name": "Fury of the Firstborn",
+      "incant": "I call upon <Dragon> to grant Fury of the Firstborn.",
+      "desc": "After casting Fury of the Firstborn the caster may state \"Sense Bless\". Every creature with an active Bless spell within earshot must respond \"Here!\" For each person that responds, the caster of Fury of the Firstborn will gain +1 damage for 10 minutes.\n\nThe caster will also gain an immunity to all numeric Dark and Light damage for the duration of the spell. This spell may be combined with Talons of the Firstborn and Spirit of the Firstborn to deadly effect."
+    },
+    {
+      "sphere": "Draconic",
+      "level": 8,
+      "name": "Talons of the Firstborn",
+      "incant": "I call upon <Dragon> to grant Talons of the Firstborn.",
+      "desc": "This spell will change the caster's hands into powerful talons. The talons will be claw size or smaller. Each talon swings for 5 Magic Body, which cannot be augmented by any means, including benefits that apply to summoned weapons, except Fury of the Firstborn.\n\nWhile the talons exist no other weapons or skills which require the hands can be used. No weapon skills can be combined with the talons. Talons of the Firstborn may be combined with Spirit of the Firstborn and Fury of the Firstborn to deadly effect. This spell is caster only."
+    },
+    {
+      "sphere": "Draconic",
+      "level": 9,
+      "name": "Life of the Firstborn *",
+      "incant": "I call upon <Dragon> to grant Life of the Firstborn.",
+      "desc": "This spell functions as a Contingency Life spell. Contingency spells remain on the spirit and automatically activate when certain conditions are met. Life of the Firstborn will activate when the caster has one second left in their Death Count.\n\nAt this time, the spell will cast Life on the caster, bringing the caster back to full Body points instantly. This spell is caster-only and cannot be stacked with itself or any other Contingency Life spell. When activated, the caster should state \"Draconic Contingency Life\"."
+    },
+    {
+      "sphere": "Draconic",
+      "level": 9,
+      "name": "Spirit of the Firstborn",
+      "incant": "I call upon <Dragon> to grant Spirit of the Firstborn.",
+      "desc": "This spell infuses the caster with small piece of the spirit of the dragon they serve. Ethereal draconic wings will erupt from the casters back for a brief second before vanishing, as the caster is empowered with the might of the Firstborn on a 3-count.\n\nThis spell will grant the caster +75 temporary Body, two claws which swing for \"2 Magic\" and the ability to throw one packet of \"50 Elemental <type>\", with the type being the caster's choice. If the Dragon Knight casts Talons of the Firstborn, those claws may be used instead.\n\nAny Body Damage the Dragon Knight receives is removed from the bonus Body points first and this Body cannot be healed. If the caster is dropped to -1 Body while the spell is active, it will end. When Spirit of the Firstborn ends, the Dragon Knight will perform a 3-count to exit the form.\n\nIf their target successfully defends against the 50 Elemental <type> packet, the Dragon Knight can cause it to strike a second time in an attempt to bypass defenses. The Dragon Knight may then call \"Innate Echo!\", causing the target to be instantly hit by the 50 Elemental <type> again, although they may still defend against it if possible."
+    },
+    {
+      "sphere": "Dredgecraft",
+      "level": 1,
+      "name": "Grog",
+      "incant": "I call the Deep to grant Grog.",
+      "desc": "This spell increases the alcoholic strength of a bottle. The spell must be touch-cast onto a bottle phys-rep, either with or without an alcohol tag already attached. Each Grog tag on the bottle increases the Stamina damage of each serving by 1, up to the first 5 servings maximum.\n\nServings beyond the 5th will not be affected. Each time this spell is cast on a drink it becomes a little more foul but remains surprisingly refreshing, and by the 5th cast no one is drinking it for the flavour.\n\nThe spell tag must be taped to the bottle and if concentration is broken before the tag is affixed, the spell fails. An untagged bottle is treated as having 5 servings. Once the tag is attached to the bottle, the effect will last for 1 year after casting."
+    },
+    {
+      "sphere": "Dredgecraft",
+      "level": 1,
+      "name": "Riptide",
+      "incant": "I call the Deep to inflict Riptide.",
+      "desc": "This spell causes a magical current of energy to pull the target down and away. The target is pushed back 10 ft and must kneel on one knee for 3 seconds. During this time the target is unable to move but may still perform actions normally."
+    },
+    {
+      "sphere": "Dredgecraft",
+      "level": 2,
+      "name": "Punch Drunk *",
+      "incant": "I call the Deep to grant Punch Drunk.",
+      "desc": "This spell will protect the caster from the next source of numerical damage to their Body, converting Body damage into Stamina damage. This includes damage that armour fails to block and therefore strikes Body, damage that strikes straight to Body, and magic from Battle Magic spells which goes to Body.\n\nThis does not prevent additional effects from the attack, if there were any. Punch Drunk will not activate if the damage would have been multiplied due to a racial weakness or other effect such as being hit with fire damage while wearing a Barkskin."
+    },
+    {
+      "sphere": "Dredgecraft",
+      "level": 2,
+      "name": "Tread Water",
+      "incant": "I call the Deep to grant Tread Water.",
+      "desc": "This spell will cause the target to feel as though they are treading in water that only they can feel. While this spell is active, they can move no faster than walking pace (1 step per second) and will be unimpeded by effects below ritual level which slow a person down, such as a Hamstring, Dismember or Swampwalk.\n\nThis does not allow them to ignore effects which prevent them from moving entirely, such as a Snare or Paralysis."
+    },
+    {
+      "sphere": "Dredgecraft",
+      "level": 3,
+      "name": "Dram",
+      "incant": "I call the Deep to grant Dram.",
+      "desc": "This caster only spell will allow the caster to receive the effects of a single Ingested alchemy without consuming the tag. This spell does not work on Chemistry or alchemy which costs more than 24 RM to create.\n\nUsing this spell will taint the alchemy, causing it to expire in 5 days. The caster should indicate this by affixing the spell tag to the alchemy tag."
+    },
+    {
+      "sphere": "Dredgecraft",
+      "level": 3,
+      "name": "Sea Legs",
+      "incant": "I call the Deep to grant Sea Legs.",
+      "desc": "The first time the target of this spell receives Stamina damage, they will instead receive Healing equal to the Stamina damage taken."
+    },
+    {
+      "sphere": "Dredgecraft",
+      "level": 4,
+      "name": "Alestorm",
+      "incant": "I call the Deep to inflict Alestorm. [X] Magic!",
+      "desc": "This spell will sober up the caster at the same time as damaging their target. The damage this spell does is however much Stamina the caster is missing, up to 20. The caster regains that much Stamina."
+    },
+    {
+      "sphere": "Dredgecraft",
+      "level": 4,
+      "name": "Curse of Breathless Lung *",
+      "incant": "I call the Deep to grant Curse of Breathless Lung.",
+      "desc": "This spell grants the recipient a Lesser Curse which acts as a contingency defence. When triggered by the target needing to breathe but being unable to do so (such as when a person is drowning or being strangled), for the next 10 minutes the target will be Silenced but will not need to breathe.\n\nDuring this time, they must call \"No Effect\" to effects which are based on causing someone not to breathe, like Garrotte. The curse ends once the contingency is triggered."
+    },
+    {
+      "sphere": "Dredgecraft",
+      "level": 5,
+      "name": "Curse of the Captain",
+      "incant": "I call the Deep to grant Curse of the Captain.",
+      "desc": "This touch-cast spell must be cast on a conscious, willing target. The target will be Charmed to the caster of the spell for the duration and gain +2 Strength. The effect of this Charm compels the target to see the caster not necessarily as a friend, but as a superior.\n\nWhile they are not magically compelled to satisfy every order they are given, they will feel considerable pressure to comply and should act as they would act in the presence of a respected superior. If the target is already cursed with one or more Lesser Curses from this sphere, they may choose to replace one of those curses with Curse of the Captain. This spell is a Charm effect."
+    },
+    {
+      "sphere": "Dredgecraft",
+      "level": 5,
+      "name": "Parley",
+      "incant": "I call the Deep to grant Parley.",
+      "desc": "This spell will make the target believe that any conflict with the caster can and should be resolved verbally. While Parley is active, the target may not attempt to physically harm the caster or instruct others to do so, although they may still feel hostile towards them.\n\nIf the caster is physically hostile towards the target or instructs others to be, the spell will end and the caster will take a Magic Charm effect towards the original target of the spell for 10 minutes. This spell is a Charm effect."
+    },
+    {
+      "sphere": "Dredgecraft",
+      "level": 6,
+      "name": "Cat o' Nine",
+      "incant": "I call the Deep to create Cat o' Nine.",
+      "desc": "This spell is caster-only and requires the use of a 1-handed weapon with which the caster is proficient. The weapon must be held by the caster when the spell is cast. The spell turns the weapon into a spectral cat o' nine tails whip.\n\nThe weapon rep should be sheathed and is considered out of game for the duration of the spell. While the cat o' nine tails is active, packets may be thrown as a physical attack with the same damage and type as the underlying weapon, adding the prefix \"Physical\" to the call.\n\nFor example, if the caster swung a weapon which did 3 Iron damage normally, the call would become \"Physical 3 Iron\". The packet may be blocked in the same way as any physical attack. This spell is stackable.\n\nWith two stacks, the weapon will do Silver damage or, if it already did Silver or Magic damage, will do +1 damage. With three stacks, the weapon will do Magic damage or, if it already did Magic damage, will do +1 damage.\n\nAny additional stacks will increase the weapon damage by +1. The duration will always be equal to the original casting. Tagged skills and abilities, including other spells, cannot be used with the Cat o' Nine, nor can Criticals.\n\nThe spell will end early if the caster takes Body damage, falls asleep or unconscious, or casts a spell other than Cat o' Nine."
+    },
+    {
+      "sphere": "Dredgecraft",
+      "level": 6,
+      "name": "Curse of the Bloated Corpse",
+      "incant": "I call the Deep to inflict Curse of the Bloated Corpse.",
+      "desc": "The target of this curse feels their gut distend painfully as the fluids of death swell within. They take an immediate nausea effect, making them unable to run or use tagged skills for 10 minutes. The target may end their nausea by roleplaying vomiting for an uninterruptible 10 count.\n\nFurther, for the hour after the target is cursed, if they enter their Death Count, their body will erupt with magical effluvial liquid and everyone within 5 ft will take 10 Magic damage. The target's Death Count continues normally afterwards."
+    },
+    {
+      "sphere": "Dredgecraft",
+      "level": 7,
+      "name": "Curse of the Albatross",
+      "incant": "I call the Deep to inflict Curse of the Albatross.",
+      "desc": "This spell may be touch-cast on an object on the person of a willing target, or packet delivered otherwise. If the spell is packet delivered, the caster must declare the intended object after the incant, such as \"Sword, left hand\", and the object must be either a weapon or shield on the target's person.\n\nThe targeted item is now linked to the curse and to the target person, who now has the Lesser Curse of the Albatross. While cursed, the targeted item is now spirit-linked to the targeted person and they will behave as if they had the skill Cold Dead Hands for that object only.\n\nIf the object ever leaves their person, their maximum Body is reduced to 2. If the object is returned to them, their maximum Body goes back to normal, but they are not healed for the difference. The curse will end early if the object is destroyed."
+    },
+    {
+      "sphere": "Dredgecraft",
+      "level": 7,
+      "name": "Hornswoggle",
+      "incant": "I call the Deep to grant Hornswoggle.",
+      "desc": "If the caster hears a miscant which is not saved by Tenacity, including of a spell they themselves cast, they may cast Hornswoggle within 1 minute. This allows the caster of the miscanted spell to refresh 1 memorised spell already cast from memory, up to and including 7th circle spells.\n\nIf the miscant came from the Deep caster themselves, they can only refresh a spell of a circle up to the circle of the miscanted spell, up to 7. This spell cannot be refreshed by itself."
+    },
+    {
+      "sphere": "Dredgecraft",
+      "level": 8,
+      "name": "Curse of the Coward",
+      "incant": "I call the Deep to inflict Curse of the Coward.",
+      "desc": "The target of this spell gains the Lesser Curse of the Coward, cursing them with a reluctance to fight which causes their hands to numb at the prospect of battle. The target takes a chill effect, rendering them unable to use their hands to wield weapons or cast magic until they perform a 10 second count to warm them up.\n\nThe chill effect can be resisted as either a cold effect or a fear effect. This part of the curse will end after 10 minutes if the target does not take the time to warm their hands up. For the full duration of the curse, the target's Strength is reduced by 2, which lowers their weapon damage by -1 (to a minimum of\n\n1) and they cannot willingly be the first to swing a weapon or cast a spell which would start a fight."
+    },
+    {
+      "sphere": "Dredgecraft",
+      "level": 8,
+      "name": "Keelhaul",
+      "incant": "I call the Deep to inflict Keelhaul. 10 Magic Body Stun!",
+      "desc": "This spell will cause magical ropes to appear in the target's mind, dragging them under the keel of an illusionary ship so real that the target can feel the scrape of the barnacles and the stabbing of splintered wood, dealing them 10 Magic Body and stunning the target for 5 seconds as they are trapped in the illusion."
+    },
+    {
+      "sphere": "Dredgecraft",
+      "level": 9,
+      "name": "Curse of the Black Spot *",
+      "incant": "I call the Deep to grant Curse of the Black Spot.",
+      "desc": "This spell will protect the caster with a Lesser contingency curse. If the caster enters their Bleed Count or Death Count via a weapon strike or spell, the attacker will be inflicted with the Curse of the Black Spot.\n\nAs soon as possible, they should phys-rep the black spot on the back of the hand which was holding the weapon or casting the spell that struck down the caster. The spot and curse last until the cursed character dies or the curse is removed.\n\nThose suffering from the Curse of the Black Spot take 1 Magic damage each time they swing, block, or use an active skill with the hand with the spot on it and they cannot cast through that hand. This effect does not stack."
+    },
+    {
+      "sphere": "Dredgecraft",
+      "level": 9,
+      "name": "Watery Grave",
+      "incant": "I call the Deep to inflict Watery Grave.",
+      "desc": "This spell causes the target to plunge into the ground beneath their feet as though it were the sea itself and they find themselves in the inky black of the ocean deep, surrounded by a crushing emptiness.\n\nNothing has ever felt so vast, empty, and smothering as this does. The target goes out of game for 1 minute as they have been engulfed by the deep. After 1 minute, they will reappear in the same location but, unless they can breathe water or do not need to breathe, they will return in their Death Count if they weren't already."
+    },
+    {
+      "sphere": "Light",
+      "level": 1,
+      "name": "Bless *",
+      "incant": "I channel <God> to grant Blessing.",
+      "desc": "This spell calls down upon the target the blessing of whichever God the caster worships. If the caster casts Bless on themselves, it will function as a Shield Magic versus the next Divine or Draconic Battle Magic spell to strike the caster.\n\nFrom time to time a character with a Bless on their spirit may find favour with the God(dess) that the caster serves. This can sometimes, decided by a Shaper, have a small positive effect happen to or around them.\n\nThis could be anything from a small warning of danger to minor healing or even minor miracles. The caster may not force a Bless upon a person and it may be resisted without using up a spell-protection, such as Shield Magic.\n\nOne can only be Blessed if one chooses to be and only one Bless can be active at a time. A person can choose to allow a new Bless spell to replace an old one if they wish. They may also end a Bless on themselves any time they choose, but this may offend the god."
+    },
+    {
+      "sphere": "Light",
+      "level": 1,
+      "name": "Illumination",
+      "incant": "I channel <God> to create Illumination.",
+      "desc": "This spell will create a light source, so long as it is cast on any small object of no larger than 6x6x6 cubic inches in area. The spell will last for 12 hours, until it is dispelled, or until the caster wishes to terminate the light.\n\nA flashlight may be used, but the light produced must be diffused significantly using a gel or cloth so that there is no directional beam. An out-of-game, luminescent, physical representation is required for this spell to be used as a light source.\n\nIf desired, this spell may be used offensively. If cast via spell packet or touch cast on a target, it will blind the target for 10 seconds, so long as it is a creature that relies on sight. It will have no effect on creatures that do not, such as golems, Undead and slimes."
+    },
+    {
+      "sphere": "Light",
+      "level": 2,
+      "name": "Divine Ward",
+      "incant": "I channel <God> to create Divine Ward.",
+      "desc": "Divine Ward requires the caster to plant or otherwise display their holy symbol foci for the duration of the spell. During this time, the symbol may not be used to cast other Light spells. The symbol does not have to remain on the person of the caster, and in fact may be hung upon a door, placed upon a tree or otherwise, so long as it remains stationary.\n\nPlacing the spell tag next to the symbol is encouraged. While the symbol is being used in this way, creatures possessing a spirit may not approach within 10 feet of the symbol unless they are wearing a Bless spell of the deity represented by the Divine Ward.\n\nWhen the spell is cast, anyone not wearing a Bless spell of the appropriate deity will be pushed out of the Ward. If a creature already in the Ward cannot retreat any further, the spell will fail and is lost.\n\nThis barrier may be resisted with Shield Magic, Resist Magic or similar anti-magic defenses spell, and it may also be resisted by expending an active Bless spell from any God or Goddess. Doing so makes the user immune to the effects of this Divine Ward for 10 minutes.\n\nIf the symbol is physically moved the spell ends. The caster of Divine Ward is immune to the effects of the spell."
+    },
+    {
+      "sphere": "Light",
+      "level": 2,
+      "name": "Pin Evil",
+      "incant": "I channel <God> to inflict Pin Evil.",
+      "desc": "This spell has two effects. Firstly, the spell will release the target from any binding effect which pins the target's foot to the ground and requires +2 or lower Strength to rip free from. The second effect works only against Lesser Undead and Lesser Demons.\n\nWhen cast, it will cause the target to keep one foot on the ground, unable to move. The creature may rip free on a 3-count if they have +5 or greater Strength. Ripping free will cause them to take 5 Magic Body damage."
+    },
+    {
+      "sphere": "Light",
+      "level": 3,
+      "name": "Mass: Blessings",
+      "incant": "I channel <God> to grant Mass Blessing.",
+      "desc": "This area-of-effect spell requires the caster to give a powerful Mass to their flock, calling on their God to bless those that the caster touches. To start Mass: Blessings the caster must actively roleplay a sermon to their God speaking to those present about their deity's tenets, beliefs and how they relate to the situation at hand, for one minute.\n\nAfter that minute has passed they may then, while continuing their sermon, touch the foreheads of any who have heard it. One person may be touched in this manner every 10 seconds so long as the sermon continues or the maximum duration of 10 minutes is reached.\n\nEach person who is touched by the caster in this manner will take the effect of a Bless spell. A maximum of 10 Blessings may be granted. Each person may only receive one Blessing per Mass. The caster may not \"force\" the effects of this mass to take place upon anyone, including the unconscious, dying, or otherwise incapacitated."
+    },
+    {
+      "sphere": "Light",
+      "level": 3,
+      "name": "Wave of Healing",
+      "incant": "I channel <God> to grant Wave of Healing, Wave of Healing, Wave of Healing.",
+      "desc": "The caster must plant both feet and then cast this spell. They may then do 5 Magic Healing via packet, touch cast, or a combination, up to five times. If the target has a Bless from the same God as the caster, the healing is raised to 10 Magic Healing.\n\nEach Healing call must be preceded by the phrase \"Wave of Healing\". If the caster moves either foot or is struck for damage to Body, any remaining Healing is lost."
+    },
+    {
+      "sphere": "Light",
+      "level": 4,
+      "name": "Banner of the Faithful",
+      "incant": "I channel <God> to create Banner of the Faithful.",
+      "desc": "This spell creates a magic \"flag\" or banner which lasts one hour's time. During that time, any character that has a Bless spell of the same God on their spirit may gain access to the Banner's full abilities.\n\nThe Blessed character must touch the Banner and speak the God's name. Once done, they may attack for +0 Magic damage so long as the Banner stays within their line of sight. This bonus includes ranged weapons.\n\nThe flag is considered a non-spirited item with 1 Body and may be destroyed by any weapon damage, Acid, or Elemental damage. Anyone holding the Banner will take whatever damage it takes. If the banner leaves the target's line of sight for more than 10 seconds, the effect is lost until the Banner is back in their line of sight.\n\nThe banner must be visible as well, which means that it may be necessary to illuminate a banner used in the dark. A Banner may be any shape so long as it is a minimum 2.5' x 1' and no greater than 4'x 6' and must be mounted on a pole with a minimum length of 4' and a maximum of 6'.\n\nThe holy symbol of the God worshipped must be represented on the Banner. When the banner is first created, the caster must state \"Banner up - <God's name>!\". When the banner ends for any reason, the caster must then state, \"Banner down - <God's name>!\".\n\nThe caster of Banner of the Faithful is always under the Banner's effect while it exists."
+    },
+    {
+      "sphere": "Light",
+      "level": 4,
+      "name": "Freedom",
+      "incant": "I channel <God> to grant Freedom.",
+      "desc": "This spell is an area effect spell that will function on all targets within hearing range who wear a Bless of the same God as the caster. It grants three benefits:\n\n1) it will release the targets from any magical or alchemical (but not physical) bindings instantly,\n2) it will awaken sleeping targets and\n3) it will remove any active stun effects. If a target chooses to be affected by Freedom, it will end their active Bless spell."
+    },
+    {
+      "sphere": "Light",
+      "level": 5,
+      "name": "Destroy Lesser Undead",
+      "incant": "I channel <God> to inflict Destroy Lesser Undead.",
+      "desc": "This packet delivered attack spell will cause 50 points of Magic damage to Greater Undead and will destroy lesser Undead outright."
+    },
+    {
+      "sphere": "Light",
+      "level": 5,
+      "name": "Mass: Relic",
+      "incant": "I channel <God> to grant Relic.",
+      "desc": "This 10 minute mass magically enhances an item, typically a weapon, in the name of the God of the caster. Once the mass is complete, the object or weapon is made rendered as per the spell and is given a Magic aura.\n\nThe weapon or object will become attuned to the first creature bearing the Bless of the caster's God that touches it after the mass is completed. If the item is dropped by the attuned creature or passed off to another creature, the spell ends and the item will revert back to its normal form.\n\nThe effects on the object last for 24 hours, starting at the completion of the mass."
+    },
+    {
+      "sphere": "Light",
+      "level": 6,
+      "name": "Dark Lore",
+      "incant": "I channel <God> to grant Dark Lore.",
+      "desc": "This spell allows the caster to beseech a lost spirit who served their God in life and ask a series of questions. Sprits summoned in this manner will arrive as soon as they possibly can but no later than 12 hours after casting.\n\nDuring this waiting time, the caster should attempt to find a Shaper at their earliest convenience. The first few questions are set and must be spoken verbatim after the spirit arrives. These questions are: \"Spirit before me, I ask that you identify yourself.\"\n\n\"I bring you no ill will; do you wish my spirit harm?\" \"I seek the knowledge in death regarding <Subject>.\" \"I release you of your binding, you are free to go. Will you leave peacefully?\" OR \"I release you of your binding but request additional information if it pleases you. Will you stay?\"\n\nIf the caster fails or incorrectly speaks these questions, the spirit may not arrive or may arrive hostile. If they succeed, the spirit is bound to answer truthfully, to the best of its knowledge, those four questions.\n\nAfter this point the caster may continue asking questions of the spirit if the spirit is willing. The limit of questions is random, generally depending on the demeanor and sensitivity of the caster toward the spirit.\n\nSome spirits are simply uninterested in speaking to the living and will leave after the required questions are answered. The quality of answers will greatly depend upon the spirit called which, in general terms, is beyond the ability of the caster's control. The use of Dark Lore is not considered Necromantic in nature."
+    },
+    {
+      "sphere": "Light",
+      "level": 6,
+      "name": "Shield of Light",
+      "incant": "I channel <God> to create Shield of Light.",
+      "desc": "This spell will summon into being a shield. While in existence, this shield will act as a normal metal shield, granting the caster the ability to use it. If the shield is hit by a packet delivered Dark, Draconic, Necromancy or Wytch spell, it will act like a Shield Magic once.\n\nThe caster may not determine when to use the Shield Magic capabilities; it will simply react to the first spell of the spheres listed that strike it directly. The shield will NOT act as a Shield Magic if it is not directly hit by the spell or if the spell is not from one of the spheres listed.\n\nIf the shield is dropped by the caster or they are rendered unconscious or incapacitated, the shield will dissipate and the spell will end. The shield may be used with natural weaponry like Savar'Aving Claws."
+    },
+    {
+      "sphere": "Light",
+      "level": 7,
+      "name": "Beacon of Light *",
+      "incant": "I channel <God> to grant Beacon of Light.",
+      "desc": "The next time the target of this spell enters their Bleed or Death Count, a light will hover over their body until they are restored to life or their spirit departs to resurrect. The player may represent this with a liquid light or LED light and may state out \"Visible Beacon of Light\" in a normal speaking voice no more than once every 10 seconds.\n\nThe player must remain where they are. They cannot sit or stand unless lying down would be unsafe. The light cannot be covered. It will shine through any attempts to hide it."
+    },
+    {
+      "sphere": "Light",
+      "level": 7,
+      "name": "Light Bolt",
+      "incant": "I channel <God> to inflict Light Bolt. 20 Light!",
+      "desc": "This spell causes a bolt of light to spring from the caster's fingers toward the target. The spell will take full effect on Undead creatures and living creatures alike. The bolt does 20 points of Light damage straight to Body. This damage will be halved if the target has any active Bless on their person."
+    },
+    {
+      "sphere": "Light",
+      "level": 8,
+      "name": "Holy Warrior",
+      "incant": "I channel <God> to summon a Holy Warrior.",
+      "desc": "This powerful spell will allow the Cleric to call upon their God to send forth a Holy Warrior to strike down one who has wronged the Cleric in some manner. The Cleric must offer up a sacrifice of a catalyst or an object worth at least 1 gold in value appropriate to the Cleric's god.\n\nOnce cast, the offering is consumed and a being of pure light and energy will manifest before the Cleric within the next 12 hours. Once the Holy Warrior has arrived, the Cleric then needs to speak the name of the target as they know it, visualize the targets identity for one minute, and finally state how the target has wronged the Cleric or their God.\n\nDuring this count, the Holy Warrior cannot be the target of spells or effects, nor will they defend the Cleric or themselves until the spell prerequisites are completed. If the Cleric does not complete these requirements within two minutes of their arrival, the Holy Warrior will leave.\n\nIf the requirements are met, this Holy Warrior will then dissipate, becoming undetectable to even the most powerful of magic. For the next hour the Holy Warrior will hunt the target, searching tirelessly and with the innate ability to sense that targets spirit at will.\n\nWhen the target is found, the Holy Warrior will phase in with a 3-count. It will state to the target that they have wronged a Cleric of <God> and that their life is forfeit. The Holy Warrior will attack that target to the best of its ability and will not cease until it is destroyed or that target has ended its Death Count.\n\nA Holy Warrior will be equal in level and power to the Cleric who is summoning it. Should the Cleric speak the True Name of the target to the Holy Warrior or use a Discord catalyst as the offering, that level increases to the Cleric's level +5.\n\nThe Holy Warrior's Occupation is determined randomly by the God of the Cleric. Once the target has been destroyed the Holy Warrior will return to the Cleric and announce its success. Should the Cleric decide, after successfully casting the spell, that they made a mistake and wish to cancel the Holy Warrior's summoned duty, they may do so by expending their own bless spell.\n\nEnding the spell in this manner will incur a very harsh repercussion. As punishment for risking the life of an innocent the Cleric will find themselves the target of their own Holy Warrior. No creature may be the target of this spell by the same Cleric, more than once per month nor will the Holy Warrior attack any creature that carries a Bless of the Cleric's God. The Holy Warrior is a Celestial creature."
+    },
+    {
+      "sphere": "Light",
+      "level": 8,
+      "name": "Tooth for a Tooth",
+      "incant": "I channel <God> to grant Tooth for a Tooth.",
+      "desc": "For 10 minutes after this spell has been cast, the Cleric may activate the spell to reflect the next 3 weapon, packet or touch-cast effects or attacks which strike them by stating \"Activate Tooth for a Tooth\".\n\nThis will function for 3 effects in a row from the time the spell is activated, and then will end. The caster will still take the effect of these effects, but so will the attacker. The Cleric must state \"Tooth for a Tooth Reflect!\" for each of the 3 effects individually.\n\nThe Cleric cannot activate the spell as a reaction to an attack which has hit them. The tag for this spell should not be destroyed until the duration expires. At any time after the spell has been activated, the Cleric may choose to bestow one of the 3 reflects onto a target individual who has a Bless of the same God.\n\nThe duration is the same as the Cleric's original duration; however long the Cleric has left is the duration of the target. This will allow the target to reflect the next effect which hits them as per the normal effect of Tooth for a Tooth.\n\nAccepting one of the uses will expend the target's Bless. A target who is not the Cleric may have only a single use at a time."
+    },
+    {
+      "sphere": "Light",
+      "level": 9,
+      "name": "Avatar",
+      "incant": "I channel <God> to grant Avatar.",
+      "desc": "This spell turns the Cleric into an \"Avatar\" of their deity, morphing their Body into a glowing light form on a 3-count. After the spell is cast, the caster's body will pulse energy and they must state \"Active Avatar\" out-of-game to anyone who sees them.\n\nThis spell will also summon into existence either a two-handed Light melee weapon or a one-handed Light melee weapon and shield. The two-handed Light weapon has a base damage of 10 Magic, while the one-handed weapon's base damage is 5 Magic.\n\nThe shield has a 60 Magic threshold. The spell also grants the proficiency in Exotic Weapon: Light <Weapon> and the Shield skill, as long as they are holding the summoned weapons. The Cleric can choose which weapon combination they would like at the time of casting.\n\nIn Avatar form, the Cleric also has the ability to Spellstrike 10 Light through their summoned weapon of choice a total of three times. They also gain a temporary health boost of 50 Body. Any Body Damage the Cleric receives is removed from the bonus 50 Body points first and this Body cannot be healed.\n\nThe weapons and/or shield will instantly dissipate if the Cleric drops it, is rendered unconscious, or incapacitated. Summoned weapons may be used with natural weaponry like Savar'Aving Claws. The Cleric may not cast any spells while in Avatar form. When the Avatar ends, the Cleric will perform a 3-count to exit the form."
+    },
+    {
+      "sphere": "Light",
+      "level": 9,
+      "name": "Cleansing Light",
+      "incant": "I channel <God> to grant Cleansing Light.",
+      "desc": "This spell will act as a Life spell, with a couple of exceptions. Cleansing Light does not share Life's restriction on casting only on targets in their Death Count. It can be cast on a person with just a single point of Body Damage or one in their Bleed Count or Death Count and each would receive its full benefit.\n\nThis spell also places a Bless of the Cleric's deity upon the recipient, if they desire it."
+    },
+    {
+      "sphere": "Necromancy",
+      "level": 1,
+      "name": "Black Plague",
+      "incant": "I invoke Necromancy to inflict Black Plague.",
+      "desc": "The spell will inflict the victim with a magic plague. The target cannot run, is sickened with disease, and should role-play accordingly. The target can only heal up to 1 Body, no matter the source of healing, until the disease is cured.\n\nIf the target is over 1 Body when plagued, any additional healing attempted will have no effect. The duration of this effect is 5 days. While active, the victim will slowly bleed from the eyes, nose, ears and mouth."
+    },
+    {
+      "sphere": "Necromancy",
+      "level": 1,
+      "name": "Feign Death",
+      "incant": "I invoke Necromancy to grant Feign Death.",
+      "desc": "This spell makes the caster appear to be dead (final death). The spell will fool all skills, abilities and spells that relate to determining the health status of the target or detecting the living. The caster may choose to end the spell at any time during the duration. This spell is caster only."
+    },
+    {
+      "sphere": "Necromancy",
+      "level": 2,
+      "name": "Control Lesser Undead",
+      "incant": "I invoke Necromancy to inflict Control Lesser Undead.",
+      "desc": "This spell will temporarily over-ride any existing control over a lesser Undead. For one hour, that Undead will obey all commands of the necromancer, including suicide. Commands must be simple, such as \"Defend me!\", \"Kill them!\" or \"Don't allow anyone to pass\". At the end of the hour the control fades."
+    },
+    {
+      "sphere": "Necromancy",
+      "level": 2,
+      "name": "Leech",
+      "incant": "I invoke Necromancy to inflict Leech. 10 Body Drain!",
+      "desc": "This spell will transfer 10 Body from any lesser Undead to the caster via Mending. The caster does not need to be in control of the Undead for it to function. Any Body that exceeds the caster's maximum Body points grants them temporary Body points equal to the excess, up to a maximum of double the caster's original Body points.\n\nTemporary Body points gained from this ability lasts 1 hour. Lesser Undead will not notice its casting and will not respond as if it had been the target of a hostile spell, however Leech will still activate defenses on the target such as Resist Magic and Shield Magic.\n\nIf a defense is activated, the Undead will respond as if the caster attacked them."
+    },
+    {
+      "sphere": "Necromancy",
+      "level": 3,
+      "name": "Necrotic Bolt",
+      "incant": "I invoke Necromancy to inflict Necrotic Bolt. 5 Infliction!",
+      "desc": "This purple and black bolt of raw infliction energy does 5 points of Infliction damage to the target. This bolt will heal Undead by 5 points, but not past their current maximum Body point total. The Bolt will deal x2 damage (10) directly to the Body of any living target it strikes."
+    },
+    {
+      "sphere": "Necromancy",
+      "level": 3,
+      "name": "Wake the Dead",
+      "incant": "I invoke Necromancy to inflict Wake the Dead.",
+      "desc": "This spell must be cast on a target still within its Death Count. If successful, the caster will be able to bend the corpse's spirit to their will for a short time and force it to answer a single question.\n\nThis is extremely painful for the spirit as it is twisted and forced into its dead body. The spirit may be unwilling but is forced to answer as if affected by a Charm effect. The spell will not force the target to tell the truth or reveal secrets, unless it is already in their nature to do so to their best friend.\n\nWhile someone is affected by Wake the Dead, their Death Count will continue and they may be Lifed as normal. The target of this spell will not remember the interaction. This spell will fail if used on a target who is Manifesting or whose soul is more than 10 ft from their body."
+    },
+    {
+      "sphere": "Necromancy",
+      "level": 4,
+      "name": "Carnivorous Worms",
+      "incant": "I invoke Necromancy to inflict Carnivorous Worms.",
+      "desc": "This spell shoots forth a wriggling mass of necrotic worms at the target. The magic worms immediately dig themselves into the skin of the target, chewing and eating as they go. The spell can be resisted by effects that resist diseases.\n\nThe worms eat the target from the outside, dealing 1 Magic Body damage per minute. Damage begins 1 minute after the target is struck by the spell. The target will suffer from -2 Strength immediately. The only way to remove the worms is by removing the disease via magic or a Physician, Dispel Magic or entering one's Death Count.\n\nA Physician cannot pause the damage while removing the disease. This spell can be stacked. If the target enters their Death Count while this spell is active, the caster can eat the worms to mend themselves 5 Body.\n\nThe worms can be consumed up to 1 minute after the target's body dissipates. If the target dissipates to resurrect, the worms will still infest the clothing and belongings they left behind for 1 minute.\n\nShould anyone besides the caster touch the worms after the original target enters their Death Count, they too will be infected with Carnivorous Worms. The target should stay there, out of game, for this minute to marshal any possible infections.\n\nIf the spell was stacked, anyone else who is infected receives the stacked version. If the target receives a Life effect during their Death Count, the worms will be killed."
+    },
+    {
+      "sphere": "Necromancy",
+      "level": 4,
+      "name": "Vampiric Blade",
+      "incant": "I Invoke Necromancy to create a Vampiric Blade.",
+      "desc": "This spell summons a magic dagger (purple) that gleams with Necrotic energy. The weapon deals \"1 Magic Body Drain\" and Mends the caster for the equivalent amount of damage dealt. Any Body that exceeds the caster's maximum Body points grants them temporary Body points equal to the excess.\n\nTemporary Body points gained from this ability lasts 1 hour. This Temporary Body, like all Temporary Body, does not stack. In order to Mend the wielder, Body damage must be done with the strike. This damage cannot be increased or augmented by any means and no skills may be used with the blade.\n\nThe dagger, if wielded by someone other than the caster, or if it's dropped, disarmed, or dispelled will dissipate. The caster is responsible for bringing their own purple dagger phys-rep; the spell will fail without the proper rep."
+    },
+    {
+      "sphere": "Necromancy",
+      "level": 5,
+      "name": "Fracture",
+      "incant": "I invoke Necromancy to Fracture your <limb>",
+      "desc": "Fracture will cause a limb of the caster's choice (arm or leg) to break and become useless. If the caster does not specify which limb is to be broken, then the victim is free to choose. The broken limb may be used for nothing, not even locomotion.\n\nOn humanoids, arms or legs count as limbs although pincers, tentacles etc. qualify as limbs on many other creatures. This spell can be countered by Restore Limb, but not Dispel Magic, or may be treated with non-magical means such as medical skills."
+    },
+    {
+      "sphere": "Necromancy",
+      "level": 5,
+      "name": "Raise Skeleton",
+      "incant": "I invoke Necromancy to Raise a Skeleton.",
+      "desc": "This spell must be cast on a target still within its Death Count. If successful, it will raise a mindless Mortal Lesser Skeleton under the control of the caster. The control over the Undead is absolute, including self-destructive orders, and must be simple one sentence commands given by the caster.\n\nAny new commands will override the last. Though mindless, the Skeleton is empowered by this spell, and can fight effectively. It can wield weapons and wear armour to augment its capabilities.\n\nThis special Skeleton is a Physical Undead with 40 Body, +2 Strength, Undead State, and a +0 Magic Threshold. It swings all weapons for base \"2 Magic\" or \"2 Magic Body\" if it is using a Body weapon. It has the following notable abilities from Undead State:\n- Can \"Sense Life\" once per minute.\n- Healed by Infliction\n- x4 Magic Body damage from Healing, regardless of Sphere. This is considered a racial vulnerability\n- Takes 1 Arcane damage per second if outside and uncovered during the day (6 AM - 6 PM)\n- Immune to all poisons, diseases, and alchemy/chemistry, with the exception of Acid damage, Sticky Paste, Rusting Dust, and any alchemy/chemistry that can be applied to a weapon to increase its damage\n- Immune to charming/mind-altering effects, silence effects, unconsciousness and suffocation\n- Immune to physical effects that target vital organs, such as Execute, Vital Blow, Disembowel, etc., but not external body parts such as Hamstring, Dismember, Decapitate, etc.\n- Takes half damage from Body weapons (state \"Reduce\" when hit to indicate this)\n\nAfter one hour, the Skeleton will turn to dust and the spell's target will depart to resurrect. While the target is raised as a Skeleton, their Death Count will continue. If the Skeleton is reduced to 0 Body during the target's Death Count, they may receive a Life effect as normal.\n\nOtherwise, the target must resurrect as normal. Because of the nature of this spell, the target can't choose to resurrect as an Undead.",
+      "ref": "Soul Frag 2.10 pp.117-118"
+    },
+    {
+      "sphere": "Necromancy",
+      "level": 6,
+      "name": "Enhance Undead",
+      "incant": "I invoke Necromancy to grant Enhance Undead.",
+      "desc": "This spell, when cast on an Undead, will grant it +4 Strength and one Lesser Resist Magic. It will mend the Undead up to 50 Body. It will have no effect on targets that are not lesser Undead. This enhancement will last as long as the Undead does."
+    },
+    {
+      "sphere": "Necromancy",
+      "level": 6,
+      "name": "Necrotic Blast",
+      "incant": "I invoke Necromancy to inflict Necrotic Blast. 10 Infliction!",
+      "desc": "This purple and black bolt of raw infliction magic does 10 points of Infliction damage to the target."
+    },
+    {
+      "sphere": "Necromancy",
+      "level": 7,
+      "name": "Death's Grasp",
+      "incant": "I Invoke Necromancy to inflict Death's Grasp.",
+      "desc": "After casting this spell and successfully striking, the Necromancer must hold his arm toward the target, make a fist and concentrate on maintaining the spell. The target struck is immediately affected by a Garrotte attack that can only be countered by interrupting the caster by dealing Body damage, casting a Dispel Magic on the necromancer or target, or the target breaking out of the spell with +2 or greater Strength.\n\nThe caster must keep his arm forward for the entire duration (20 seconds) and count the Garrotte attack as if they were using the skill (Garrotte 1, Garrotte 2 ...). If 20 seconds pass, the target has been killing-blowed and enters their Death Count. The spell will succeed even if the target is wearing a gorget."
+    },
+    {
+      "sphere": "Necromancy",
+      "level": 7,
+      "name": "Raise Netherwisp",
+      "incant": "I invoke Necromancy to Raise a Netherwisp.",
+      "desc": "This spell must be cast on a target still within its Death Count. If successful, it will create a semi-incorporeal Lesser Undead Netherwisp under the control of the caster. The target's body remains where it is but will now require two Life effects to take it out of its Death Count. The target is immune to further castings of Raise Netherwisp for the next hour.\n\nThe Netherwisp takes on a skeletal or wraith-like form of the Necromancer's choosing, no bigger than a housecat. While the spell is active the Netherwisp must be represented by a doll or stuffed toy appropriate to this appearance. The Netherwisp has high animal intelligence.\n\nIt is Spirit Linked to the Necromancer, senses as both Undead and Necromancy, cannot speak or make any sound, has no Spirit, and cannot die unless the Necromancer themselves dies and resurrects. Although it has no Body Points and cannot be physically harmed via numerical damage, it can be affected by magic that targets Lesser Undead such as Destroy Undead effects and barriers which bar entry to Undead. If the Necromancer avoids resurrection via the Requiem spell, the Netherwisp reappears with them.\n\nOnly one Netherwisp may be active at a time. The caster may choose to end the spell at any time before it automatically ends after 5 days.\n\nWhile active the Netherwisp grants the following benefits:\n- If the caster takes the effect of a Battle Magic-level Healing or Infliction spell or magical effect, they may Resist the effect by stating \"Resist Magic\". Doing this destroys the Netherwisp. This is a conscious defense.\n- The caster may destroy the Netherwisp and use it to empower an active Feign Death, Vampiric Blade, Unlife, Walk the Deadlands, or Requiem spell they have cast by stating \"Magic Netherwisp.\" The spell's duration is doubled. This will not increase Death Counts. A spell whose duration has been extended this way cannot be extended further via another Netherwisp.\n- The caster may sacrifice the Netherwisp to strengthen a Vampiric Blade spell they have cast. The necromancer states \"Magic Netherwisp\", and the Blade's damage becomes \"3 Magic Body Drain\". A Vampiric Blade can only be affected by one Netherwisp.",
+      "ref": "Soul Frag 2.10 p.119"
+    },
+    {
+      "sphere": "Necromancy",
+      "level": 8,
+      "name": "Unlife",
+      "incant": "I invoke Necromancy to grant Unlife.",
+      "desc": "This spell will temporarily infuse the caster's spirit with necromancy, granting them Undead style abilities. The caster does not become genuinely Undead. It can only be cast between the hours of 6 PM - 6 AM. The caster gains the following:\n- Healed via Infliction magic\n- x4 Magic Body damage from Healing, regardless of Sphere. This is not considered a racial vulnerability\n- +0 Magic Threshold\n- Immune to all poisons, diseases, and alchemy/chemistry, with the exception of Acid damage, Sticky Paste, Rusting Dust, and any alchemy/chemistry that can be applied to a weapon to increase its damage\n- Immune to Charm and Sleep Effects but not mind altering effects such as Paralysis or Ego Whip\n- Immune to physical effects that target vital organs, such as Execute, Vital Blow, Disembowel, etc., but not external body parts such as Hamstring, Dismember, Decapitate, etc.\n- No spells or abilities that specifically target Undead will function on them, except Control Greater Undead which will act like a Charm spell\n- Senses as Undead and not as Living, as well as sensing as Necromancy\n- Most mindless Lesser Undead will ignore them if no hostile action is taken against them\n- The caster will be recognizable as an Undead version of themselves\n\nThe caster can end the spell at any time, but if they are under the effect of Control Greater Undead, they can only end the spell if directed to.\n\nThe caster should indicate that they are in Unlife with at least one of:\n- Undead or skull mask, either full or half face\n- Undead-looking makeup, such as paint on the lips to look skeletal or black around the eyes",
+      "ref": "Soul Frag 2.10 pp.119-120"
+    },
+    {
+      "sphere": "Necromancy",
+      "level": 8,
+      "name": "Walk the Deadlands",
+      "incant": "I invoke Necromancy to grant Walk the Deadlands.",
+      "desc": "In order for this spell to function the Necromancer must killing blow themselves and enter a five minute Death Count. During those five minutes, the Necromancer gains the Mysticism skill \"Manifest\" with one single exception - they are not anchored to their corpse.\n\nAble to walk freely in the Deadlands, the player must use an orange glowstick to represent their altered status. They are invisible to mortal eyes while in this state unless seen by a Mystic with the Dead Sight ability.\n\nWhile in the Deadlands the necromancer's corpse remains in the mortal plane, slowly dying. Everything in the mortal plane will be visible to them and they can hear sounds as well. No physical or magical barriers may stop them unless that barrier is specifically designed to stop ghosts or Undead.\n\nHowever, while in the Deadlands, nothing on the mortal plane can be manipulated and all sounds the Necromancer makes will not be heard by the living. If the necromancer returns to their corpse's location and ends the spell before the five minutes expire, the body will gasp and shudder, returning to life with 2 Body points but suffering no other ill effect.\n\nIf for whatever reason the necromancer does not or cannot return to their corpse before the spell ends their spirit becomes lost in the Deadlands and they must resurrect. The Death Count during this ability will last for five minutes regardless of race and nothing will extend it or stop the Necromancer from resurrecting if they do not return in time."
+    },
+    {
+      "sphere": "Necromancy",
+      "level": 9,
+      "name": "Requiem",
+      "incant": "I invoke Necromancy to grant Requiem.",
+      "desc": "In order to prepare this spell, the Necromancer must do 1 Body point of damage to themselves and spill their blood on the ground in a small circle. The spell is then cast with one foot inside that circle and remains on the necromancer for one hour.\n\nDuring that hour, if the Necromancer's spirit leaves their body through death via any means, their body will explode into maggots and worms. Instead of resurrecting they will appear at the circle of blood without having taken a death.\n\nFor 10 minutes the Necromancer will remain unconscious and vulnerable with 1 Body point. If the Necromancer is moved away from the circle of blood, they will enter their Death Count and only a Life effect will revive them.\n\nAt the end of the 10 minutes they will awaken with 2 Body. Items will not travel with the necromancer; they remain behind as if they had been slain. The player must write the time that the Requiem was cast on its spell tag."
+    },
+    {
+      "sphere": "Necromancy",
+      "level": 9,
+      "name": "Wasting Death",
+      "incant": "I Invoke Necromancy to inflict Wasting Death. 50 Infliction!",
+      "desc": "This powerful necromantic spell causes the target to suffer 50 Infliction damage. If this puts the target into their Bleed Count, they instead skip their Bleed Count and immediately enter their Death Count."
+    },
+    {
+      "sphere": "Sigil",
+      "level": 1,
+      "name": "Sigil of Rest",
+      "incant": "I craft a Sigil of Rest.",
+      "desc": "Once this Sigil is cast, the target must rest unmoving for one minute. After that time they are affected by \"2 Healing\" and a full restore of all lost Stamina points. If the target moves, is moved or takes additional Body damage, the spell will end."
+    },
+    {
+      "sphere": "Sigil",
+      "level": 1,
+      "name": "Sigil of Shock",
+      "incant": "I craft a Sigil of Shock.",
+      "desc": "Once activated this Sigil will allow its wearer to touch cast \"1 Magic Lightning!\" damage once every 10 seconds, for a period of 10 minutes. This magic slowly builds up a charge its wearer's hands and cannot be used more than once every 10 seconds, nor can it be packet-delivered.\n\nIt cannot be combined with other skills or spells, including hand to hand damage. If less than 1 minute has passed since activating Sigil of Shock, the wearer can expend the remainder of the Sigil to Spellstrike 10 Magic Lightning once."
+    },
+    {
+      "sphere": "Sigil",
+      "level": 2,
+      "name": "Sigil of Armour",
+      "incant": "I craft a Sigil of Armour.",
+      "desc": "This Sigil will reduce all incoming damage by 1 from all sources, to a minimum of 1. This damage reduction will only apply to damage done to armour points, it does not reduce incoming body damage. This Sigil can be drawn multiple times to reduce the damage further but requires a separate casting for each reduction of 1.\n\nThere can be no more than five active Sigils of Armour on any one person. This reduction applies before any thresholds."
+    },
+    {
+      "sphere": "Sigil",
+      "level": 2,
+      "name": "Sigil of Bravery *",
+      "incant": "I craft a Sigil of Bravery.",
+      "desc": "This Sigil will protect its wearer from Fear effects. If struck with such an attack, the Sigil wearer may declare \"Sigil: Bravery!\" and take no effect. The Sigil will vanish when used."
+    },
+    {
+      "sphere": "Sigil",
+      "level": 3,
+      "name": "Sigil of the Forge",
+      "incant": "I craft a Sigil of the Forge.",
+      "desc": "This Sigil will instantly repair 10 armour points worn by the target at the time of casting. Every minute after casting, it will repair an additional 10 armour points until the target reaches full armour points, takes a single point of damage to their armour, or 10 minutes pass.\n\nIt will also mend Gargylen at the same rate a basic Blacksmith would, for up to 10 minutes, but will end if the target takes any damage or falls into their Bleed count."
+    },
+    {
+      "sphere": "Sigil",
+      "level": 3,
+      "name": "Sigil of the Pocket *",
+      "incant": "I craft a Sigil of the Pocket.",
+      "desc": "This Sigil acts like a magic pocket with a size of at most 6x6x3 inches. Items touching this Sigil will vanish into it. It can hold no more than a normal sized pouch and if the Sigil is dispelled or the duration expires, the items will appear at the feet of the caster.\n\nIf an item does not fit into the pouch, nothing will happen. The caster must possess an OOG pouch and write \"SIGIL POCKET\" on the outside. All items placed into the Sigil Pocket must be placed into the OOG pouch.\n\nItems inside a Sigil Pocket cannot be sensed. Only one pouch can be active at a time."
+    },
+    {
+      "sphere": "Sigil",
+      "level": 4,
+      "name": "Sigil of the Barrier *",
+      "incant": "I craft a Sigil of the Barrier.",
+      "desc": "Once cast, this Sigil will reduce the incoming damage done by the next single crossbow bolt, arrow, thrown weapon, or numerical packet-delivered physical attack. When they are struck with such an effect, the Sigil wearer states \"Minimize!\" The Sigil will vanish when used."
+    },
+    {
+      "sphere": "Sigil",
+      "level": 4,
+      "name": "Sigil of the Bound Man",
+      "incant": "I craft a Sigil of the Bound Man.",
+      "desc": "Once the Sigil is drawn and the spell is cast, the target's arms are held stiffly behind their backs as if tied. The caster may command them to sit, stand, and walk as directed. They may not make the target run and cannot make them walk over a cliff or into an environmental condition that will damage them/kill them.\n\nThey could, however, make them walk up a gallows, or in front of an executioner's block. This is a charm effect and can be resisted as such. When the caster casts the spell, the target may choose to use any spell defenses or resistances they may have. If attacked or damaged in any way, the spell will end."
+    },
+    {
+      "sphere": "Sigil",
+      "level": 5,
+      "name": "Sigil of the Lizard",
+      "incant": "I craft a Sigil of the Lizard.",
+      "desc": "This Sigil will restore all severed and fractured limbs after the target rests quietly for five minutes. Once the Sigil is drawn and the spell is cast, the target must rest for five minutes. During that time, they cannot use any skills, cannot defend themselves, or move farther than 10 feet from the spot it was activated.\n\nAfter that time, they will heal 5 Body and all lost or fractured limbs will be restored. If the target is not affected by healing magic (like a Gargylen) but still affected by restore limb, then the restore limb effect will still take place."
+    },
+    {
+      "sphere": "Sigil",
+      "level": 5,
+      "name": "Sigil of the Weapon Master",
+      "incant": "I craft a Sigil of the Weapon Master.",
+      "desc": "This Sigil will grant its wearer the weapon proficiency skill of the weapon that is drawn as the Sigil, with the exception of Exotic weapons. If its wearer already possesses the weapon skill the Sigil will grant +1 damage instead.\n\nA second stack will allow the wearer to pick either an extra +1 damage, or cause the weapon to swing for Silver damage for the duration. A third stack will allow the wearer to pick either an extra +1 damage, or cause the weapon to swing for Magic damage for the duration.\n\nEven if the weapon is already silver or the wearer already has the weapon proficiency, no stack step may be skipped. This spell may be stacked a maximum of three times. This spell will not create a weapon, merely grant proficiency."
+    },
+    {
+      "sphere": "Sigil",
+      "level": 6,
+      "name": "Sigil of Flechette",
+      "incant": "I craft a Sigil of Flechette.",
+      "desc": "Once active, this Sigil allows its wearer to touch the Sigil and draw forth up to three magical throwing weapons. They do not all need to be drawn forth at the same time. These summoned weapons do 10 Magic Body each and dissipate upon impact.\n\nPurchasing an Exotic Weapon Specialization: Summoned Weapons will increase the damage of the Flechettes by 1 per purchase. No other means will augment the damage. Weapon reps for Sigil of Fletchette can be any thrown type and should be blue in colour to indicate they cannot be picked up once thrown."
+    },
+    {
+      "sphere": "Sigil",
+      "level": 6,
+      "name": "Sigil of Inversion *",
+      "incant": "I craft a Sigil of Inversion.",
+      "desc": "This Sigil will reverse the next non-divine or non-Draconic damaging spell or magical effect to hit the target's Body and turn it into Mending appropriate for the wearer's race. This effect triggers whenever the effect would hit Body (even partially) on the Sigil bearer but will not if it only damages armour.\n\nEg: if the Sigil wearer was a Gargylen who wore 15 points of armour, or none at all, and was hit by an Elemental Strike, instead of taking 25 points of Magic damage, the full 25 points of damage would be converted to Mending because at least some of the damage hit to Body points.\n\nThis spell can be stacked with other magical protections such as Shield Magic and, if it is, the wearer may decide which activates first. When this Sigil is used its wearer must state \"Sigil Inversion!\""
+    },
+    {
+      "sphere": "Sigil",
+      "level": 7,
+      "name": "Sigil of Dispel",
+      "incant": "I craft a Sigil of Dispel.",
+      "desc": "This Sigil will function as a Dispel Magic spell and will terminate any spell of ninth level or lower, unless specifically stated otherwise in the description. All active spells are lost. Magic items that contain Battle Magic spells, potions extended by Sweetwater and Battle Magic scrolls are inoperative for 10 minutes. Sigil of Dispel has no effect on ritual magic."
+    },
+    {
+      "sphere": "Sigil",
+      "level": 7,
+      "name": "Sigil of Hatred",
+      "incant": "I craft a Sigil of Hatred.",
+      "desc": "For the duration of this spell, the Sigil wearer will do +2 Magic damage to members of the racial group drawn. If a member of this race performs a Killing Blow on the Sigil wearer, they will take a \"Sigil Contingency: Magic Death\" on the second to last second of the Killing Blow.\n\nThe racial group will be one of the following: Angels/Demons, Animals, Bestial, Brood, Constructs, Draconic, Dwarves, Elementals, Elves, Fae, Goblinoids, Humanoids, Magical Beasts, Plants, Spirit, Undead (excluding vampires), Vermin. This Sigil will not stack with itself."
+    },
+    {
+      "sphere": "Sigil",
+      "level": 8,
+      "name": "Sigil of Delay *",
+      "incant": "I craft a Sigil of Delay.",
+      "desc": "Upon being hit by an instantaneous Battle Magic spell effect, the wearer may declare \"Sigil of Delay!\" and postpone the spell's effect for 1 minute. Once the full minute has passed, the effect carries on as normal.\n\nAny new protective spells gained in this minute will resolve before the delayed effect if applicable. While a spell is stored, a Dispel Magic may be cast on the Sigil to dispel both the Sigil as well as the captured spell."
+    },
+    {
+      "sphere": "Sigil",
+      "level": 8,
+      "name": "Sigil of Warding",
+      "incant": "I craft a Sigil of Warding.",
+      "desc": "This Sigil must be drawn on the arm where it is intended to be used. If that arm becomes dismembered, the Sigil will end. This spell allows the wearer of the Sigil to use the selected arm from the elbow down as a shield, negating all physical damage from melee weapon strikes that strike the arm between the wrist and elbow.\n\nGrabbing weapons will still inflict Body damage. Damage greater than 30 will break through the Sigil, causing the Sigil to end and the wearer to take the full damage of that strike. While active, the wearer's forearm will glow blue and the wearer must state \"Active Warding\" to those that see them.\n\nThe wearer may wear a bracer on the selected arm, as long as the Sigil is visible as well. The selected arm's hand may still be used for other activities, like wielding a weapon or spellcasting, while this Sigil is active."
+    },
+    {
+      "sphere": "Sigil",
+      "level": 9,
+      "name": "Sigil of Magical Storage",
+      "incant": "I craft a Sigil of Magical Storage.",
+      "desc": "When this Sigil is activated, for the next 10 minutes it will absorb the first spell that is touch-cast on the Sigil itself. This spell will then be available for the Sigil wearer to use for 24 hours.\n\nAny spell levels 1 to 9 from Sigil or any core rulebook sphere can be absorbed in this fashion and the wearer simply needs to state \"Activate Sigil: <Spell Name>\". The spell operates like normal and the Sigil wearer is considered to be the caster.\n\nWhen this Sigil absorbs a spell that spell is considered to have been cast and is lost from the caster's memory. Only one spell can be absorbed per Sigil of Magical Storage and only one of these Sigils can be active on any one person at a time.\n\nSpells absorbed with this sigil will fail if the target already possesses an active version on their spirit. Eg: You cannot store a Magic Armour spell if you are wearing an active Magic Armour."
+    },
+    {
+      "sphere": "Sigil",
+      "level": 9,
+      "name": "Sigil of the Phoenix *",
+      "incant": "I craft a Sigil of the Phoenix.",
+      "desc": "While active, this Sigil will have one of two possible effects:\n\n1) This Sigil can be activated to allow its wearer to swing for 5 Magic Fire with any weapon they are holding for 60 seconds. Activating the Sigil in this manner will also heal its wearer of all lost Body points, remove all toxins, restore all limbs, remove any charms and dispel any negative magical effects on their spirit. It will not cleanse ritual magic or toxins with specific antidotes.\n2) If the wearer of this Sigil falls into their Bleed Count, the Sigil will immediately activate granting the same bonus as #1 including the full healing. This effect will also activate automatically during the final \"count\" of a killing blow. Eg: If the killing blow is a 10 second version, it will activate at the 10th second. When either of these uses are activated the wearer must state \"Sigil: Phoenix!\". Once one of the effects is activated, the Sigil ends."
+    },
+    {
+      "sphere": "Wytchcraft",
+      "level": 1,
+      "name": "Blood Curse",
+      "incant": "I summon a Hex to inflict a Blood Curse.",
+      "desc": "A Wytch in possession of your blood is a terrible thing indeed. A Wytch with both your blood and True Name is something beyond terror. Once this spell is cast on a target, any additional spells cast on the same target will allow the Wytch to Echo the spell if the Wytch knows their True Name.\n\nThis Echo effect will allow the caster to strike the target an additional time with the same spell if the first spell was successfully defended against in any way. This is done by calling \"Echo!\" immediately after the spell was defended against.\n\nThis second spell happens automatically and does not require the Wytch to expend a spell slot. This Echo effect continues to occur for every spell cast by the Wytch on the target until the curse is removed.\n\nBlood Curse is a Lesser Curse. In addition, if the Wytch possesses one liter of the target's blood and has it on their person, any spells cast on the target of a Blood Curse will gain the Penetrating prefix - allowing the spell to ignore all non-ritual protections, all non-racial defenses and all armour.\n\nDoing so will consume one liter of the target's blood for each use of Penetration. Penetration may be combined with the Echo effect above, but may only be used once per liter of blood possessed. The blood may be obtained prior to casting the spells and follows standard blood rules."
+    },
+    {
+      "sphere": "Wytchcraft",
+      "level": 1,
+      "name": "Talisman *",
+      "incant": "I summon a Hex to create a Talisman.",
+      "desc": "This spell allows the Wytch to create a protective talisman out of any item that could be worn as jewellery. While being worn, this talisman grants the target 5 points of Magical Armour and wards the bearer against certain evil spirits.\n\nThis armour cannot be repaired but can stack with other physical or Magical Armour. The talisman is not destroyed when the armour is used up, but the magical effect on it dissipates. This talisman can be worn or given freely by the Wytch.\n\nMultiple castings of this spell cannot be stacked on the same item at the same time. Multiple talismans may be worn at the same time and the Magical Armour will stack. The Player must attach this spell tag to the item after casting. Once the Magical Armour is consumed, the tag is to be destroyed."
+    },
+    {
+      "sphere": "Wytchcraft",
+      "level": 2,
+      "name": "Blindness",
+      "incant": "I summon a Hex to inflict Blindness.",
+      "desc": "With spit and malice, a Wytch may cause the target's eyes to grow milky white, filling with cataracts. With a successful attack, the Wytch causes blindness in the target. This will blind the target for ten seconds, forcing the target to close their eyes OOG for the duration of the effect.\n\nPlayers in an unsafe or unstable environment (e.g. fighting near a fire pit) may keep their eyes open, but must look down at their feet and away from their attacker for the skill's duration."
+    },
+    {
+      "sphere": "Wytchcraft",
+      "level": 2,
+      "name": "Curse of Evil Eye",
+      "incant": "I summon a Hex to inflict Curse of Evil Eye. Power Word: Directed <Target>.",
+      "desc": "One of the Wytch's most feared powers is the Evil Eye. With a glance, the Wytch can cause terrible luck in some and despair in others. By staring intensely at a target, the Wytch can curse those with misfortune causing them to take an additional point of damage from all sources directed at them.\n\nThis additional damage is counted by the Wytch for all sources of damage regardless of source or where it strikes. In order to use this spell the Wytch must be able to see the target, although it is not necessary that the target see the Wytch.\n\nThe Wytch must then incant the spell and point at the target. Although no spell packet is required to be thrown, once the incant and point has been completed, the target is considered to be stuck by a packet automatically.\n\nEvil Eye does not require a spell packet to use. Curse of Evil Eye is a Lesser Curse."
+    },
+    {
+      "sphere": "Wytchcraft",
+      "level": 3,
+      "name": "Repulsion",
+      "incant": "I summon a Hex to inflict Repulsion <item>.",
+      "desc": "This spell attacks the target's mind, and forces them to believe that an item they are holding becomes a writhing pile of maggots, worms, and bugs. If successful, this spell will cause a target to drop the item identified in the incant and retreat away from it at least ten feet.\n\nNothing short of a Dispel Magic will force a target to believe otherwise. The target cannot be forced to touch the item and will defend himself to the best of his abilities to maintain his distance. Repulsion is considered a Fear effect and can be resisted as such, along with standard anti-magical defenses."
+    },
+    {
+      "sphere": "Wytchcraft",
+      "level": 3,
+      "name": "Curse of Weakness",
+      "incant": "I summon a Hex to inflict Curse of Weakness.",
+      "desc": "This spell will penetrate a victim's muscles and bones, making them weak and feeble. Weakness will sap the strength from a target causing a loss of -8 Strength, which lowers the target's weapon swings by -4 (to a minimum of 1).\n\nThis effect can be stacked with multiple castings. Curse of Weakness is a Lesser Curse."
+    },
+    {
+      "sphere": "Wytchcraft",
+      "level": 4,
+      "name": "Horror",
+      "incant": "I summon a Hex to inflict Horror.",
+      "desc": "This fear-based spell influences the mind of the target, causing it to view the Wytch as hideous and offensive, causing the target to avoid the Wytch at all costs. Under the effect of Horror, the target may not come within ten feet of the Wytch and, while aware the Wytch is there, will not attack the Wytch for any reason.\n\nIf the Wytch approaches the target, the target will retreat if possible. If no retreat is possible, the spell is not broken, but the target will move away at the next opportunity. If the Wytch takes any hostile gesture toward the target, such as attacking them or casting spells at them, the spell will end."
+    },
+    {
+      "sphere": "Wytchcraft",
+      "level": 4,
+      "name": "Requital",
+      "incant": "I summon a Hex to grant Requital.",
+      "desc": "This spell allows the Wytch to draw life energy from a distant source and use it to heal themselves. By casting this spell, the Wytch can Mend themself of all missing Body points. However, doing so has a cost: every casting negatively affects the local area the Wytch is in.\n\nA mother may deliver a stillborn baby, a calf may die, a hailstorm may destroy some crops, etc. The actual effect is decided by plot and likely unknown to the Wytch. The negative effect will never be one that gives irrefutable proof that the Wytch is at fault.\n\nAll castings of this spell must be reported to a plot member the next time they see one. It is not necessary to go out of game for this."
+    },
+    {
+      "sphere": "Wytchcraft",
+      "level": 5,
+      "name": "Contingency: Sleep *",
+      "incant": "I summon a Hex to create a Contingency Sleep.",
+      "desc": "This spell allows the Wytch to imbue any non-magical object with a powerful sleep enchantment. This enchantment will activate when a set contingency happens. At that point, the target of the contingency will be affected by a magical sleep.\n\nThe call for contingency activating is \"Wytchcraft Contingency: Sleep\". This sleep spell will drop the target into a deep slumber for the duration of 10 minutes. They will not snore.\n\nThe victim can be woken via Dispel Magic, Body damage or one minute of vigorous shaking. The condition of the contingency is decided by the Wytch upon casting. Only one contingency condition may be set on the item and that condition must be activated by a creature touching the item and possessing a spirit.\n\nThe condition may not exceed ten words and must involve the item being damaged, destroyed or consumed in some manner. Once activated, the contingency is used up and must be cast again on the item. Some examples of Contingency: Sleep are:\nCondition: \"The first person to bite it\"\nCondition: \"The first person to strike it\"\nCondition: \"The first person to trip it\"",
+      "ref": "Soul Frag 2.10 pp.130-131"
+    },
+    {
+      "sphere": "Wytchcraft",
+      "level": 5,
+      "name": "Curse of Tongue Rot",
+      "incant": "I summon a Hex to inflict Curse of Tongue Rot.",
+      "desc": "This powerful Lesser Curse will cause the victim's tongue to rot in their mouth, dissolving into a disgusting black chunky liquid. The target takes one Magic Body and is silenced. If the damage is negated the target will not be silenced and the spell will fail."
+    },
+    {
+      "sphere": "Wytchcraft",
+      "level": 6,
+      "name": "Eye for an Eye *",
+      "incant": "I summon a Hex to grant Eye for an Eye.",
+      "desc": "This spell envelops the Wytch in a pulsing black aura which will duplicate any physical attack and its damage, along with its effects (if any) back onto the target that struck the Wytch, once. The damage type duplicated on the attacker will always be \"Normal\" damage regardless of the damage type the attacker used, though Body damage will be returned as Body damage.\n\nEg: If the attacker strikes with Wytch with \"10 Magic Body\", they will receive \"10 Normal Body\" reflected back at them, regardless of the attacker's armour points. Eye for an Eye is considered an Advanced Defense, meaning that it may be used at any time the Wytch chooses and does not automatically activate on the first strike.\n\nEven though the damage is duplicated back to the target, the Wytch will still take the damage and effects of the attack by default, but may choose to defend against it like normal in hopes of negating it, if they so desire.\n\nThis spell will not duplicate spells or abilities which do no physical damage. The source of the rebounded damage is considered to be the Wytch, not the person striking them. To use this spell, the Wytch must state clearly \"Eye for an Eye reflect!\". This spell is caster only."
+    },
+    {
+      "sphere": "Wytchcraft",
+      "level": 6,
+      "name": "Trap Demonic / Angelic",
+      "incant": "I summon a Hex to create a Trap.",
+      "desc": "Tapping into their Demonic power, the Wytch can temporarily trap a Lesser Demonic or Angelic creature inside a circle of blood. After casting this spell, the Wytch has one minute to spill one Body Point worth of their own blood into the form of a circle.\n\nOnce the circle is complete, the next Lesser Demonic or Angelic creature that steps or is summoned inside will be trapped for one hour's time. The creature will be unable to leave the circle or cast/attack through the circle.\n\nThis spell gives no control over the trapped creature. Once a creature is successfully trapped, the Wytch has three options.\n\n1) They may ask the Lesser Angel/Demon one question which the Angel/Demon must answer truthfully. Once answered, the spell immediately ends and the creature is released.\n2) The Wytch may choose to banish the Angel/Demon, sending it back to its own plane of existence for 1 year.\n3) The Wytch may choose to simply leave the Angel/Demon in the trap for the duration of the spell. Should the circle be crossed or breached by anything or anyone, the spell will end and anything trapped inside will be freed. The Wytch may drop this circle at any time. The circle perimeter must be represented by a rope or a similarly identifying prop."
+    },
+    {
+      "sphere": "Wytchcraft",
+      "level": 7,
+      "name": "Control Lesser Demon / Angel",
+      "incant": "I summon a Hex to inflict Control Lesser Demon (or) Angel.",
+      "desc": "This spell grants the caster control over one Lesser Angel or Demon. For the hour, the target will do anything asked of it, including sacrificing itself. The specific abilities and limitations of command will depend upon the type of creature controlled. It has no effect against Greater Demons or Angels."
+    },
+    {
+      "sphere": "Wytchcraft",
+      "level": 7,
+      "name": "Dark Entrails",
+      "incant": "I summon a Hex to grant Dark Entrails.",
+      "desc": "By digging through the entrails of a living being, the Wytch can gain insight into their own future. This spell requires a living creature with a spirit which is currently in their Bleed Count. After casting the spell, the Wytch has one minute to find a living creature that is in their Bleed Count.\n\nBy digging through the flesh of the target's stomach, the Wytch can remove the entrails and glean from them a vision of the future. The act of reading takes ten seconds and will cause the target to enter their Death Count, bypassing their Bleed Count completely.\n\nFor the next 5 days, the Wytch has one dodge which they may use to avoid any one attack. This dodge ability will have no effect on surprise or AOE (Area of Effect) attacks. The Wytch may not have more than one dodge on their spirit at a time. The defensive call is \"Dodge.\""
+    },
+    {
+      "sphere": "Wytchcraft",
+      "level": 8,
+      "name": "Curse of Pain",
+      "incant": "I summon a Hex to inflict Penetrating Curse of Pain.",
+      "desc": "This spell is considered both a Penetrating spell as well as a Lesser Curse. For the duration of this spell, the target will take 5 Magic damage whenever they use a tag skill, or whenever they swing a weapon for damage.\n\nAll other actions, such as blocking attacks with a shield, drinking potions or running away will not cause the damage to occur."
+    },
+    {
+      "sphere": "Wytchcraft",
+      "level": 8,
+      "name": "Race Change: Toad",
+      "incant": "I summon a Hex to inflict Race Change: Toad.",
+      "desc": "This spell allows the Wytch to temporarily polymorph their target to that of an ugly, wart-covered toad. This polymorph is considered a temporary race change for the target. While in the form of a toad, the target may not use any skills or abilities.\n\nThis includes any racial abilities they may have possessed in their previous form. The target toad has 5 Body and may only move by hopping. All items and clothing are polymorphed with the target and cannot be accessed until the spell has expired or the magic dispelled.\n\nLicking the toad will cause alchemical hallucinations effects similar to the Alchemy Hallucinoid. This spell will only work on creatures with a spirit and the creature may be no larger than an Ogre."
+    },
+    {
+      "sphere": "Wytchcraft",
+      "level": 9,
+      "name": "Dark Pact",
+      "incant": "I summon a Hex to grant a Dark Pact.",
+      "desc": "With this spell, a Wytch tries to convince a dying target to strike a deal with the devil. If a target has entered their Death Count, the Wytch may cast this spell on their body. The spell itself offers to grant the target a Life spell in exchange for the target's full True Name.\n\nThe decision to accept or deny this request is done by the target's spirit. The target may choose to deny the offer and continue on their way towards resurrection. If the target denies the offer, the spell slot is returned to the Wytch.\n\nIf the target chooses to accept the offer, the target's True Name will be revealed to the Wytch and the target automatically. No deception can be made by the target as the spell binds them to speak the truth and only the Wytch can hear the target speak.\n\nRegardless of whether or not the target consciously knows their own True Name, their spirit always knows. If the target accepts the Pact, they know that the spell has been cast on them, but not who cast it.\n\nOnce the name has been revealed, the target immediately takes the effect of a Life spell and is returned to the world of the living. Once Lifed, the target who accepted the Dark Pact must write their character's True Name on the Dark Pact spell tag and then sign it, out-of-game.\n\nThis becomes the Wytch's proof that they know the name in-game. This spell will pause the target's Death Count for 30 seconds to give the target time to decide. The Wytch may only cast this spell on a particular target once every 24 hours."
+    },
+    {
+      "sphere": "Wytchcraft",
+      "level": 9,
+      "name": "Shatter Your Skull",
+      "incant": "I summon a Hex to Shatter Your Skull.",
+      "desc": "This is perhaps most powerful Battle Magic spell in a Wytch's arsenal. By summoning the Demonic powers of the abyss, the Wytch is able to project a massive force of Demonic Magic capable of instantly shattering a target's skull.\n\nOnce shattered, the target immediately drops into their Bleed Count, which will only last 10 seconds, regardless of how long their Bleed Count would normally last."
+    }
+  ]
+}

@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { SECTION_TITLES } from './src/config/sections'
 import { readFileSync, copyFileSync, writeFileSync, mkdirSync } from 'fs'
 import { resolve } from 'path'
+import { createHash } from 'crypto'
 
 const FFMPEG_DIR = resolve(import.meta.dirname, 'node_modules/@ffmpeg/core/dist/umd')
 
@@ -46,6 +47,30 @@ function ffmpegCorePlugin(): import('vite').Plugin {
   }
 }
 
+// Offline support: emits sw.js with every built asset precached. FFXI maps,
+// ffmpeg and large public images stay network-only.
+const PUBLIC_PRECACHE = [
+  '/index.html', '/manifests/games/manifest.json', '/manifests/tools/manifest.json',
+  '/images/logo.png', '/images/logo-192.png', '/images/logo-512.png', '/images/logo-apple.png',
+]
+
+function serviceWorkerPlugin(): import('vite').Plugin {
+  return {
+    name: 'service-worker',
+    apply: 'build',
+    generateBundle(_, bundle) {
+      const files = [...PUBLIC_PRECACHE, ...Object.keys(bundle).filter(f => f.startsWith('assets/')).map(f => `/${f}`)]
+      const version = createHash('sha256').update(files.join()).digest('hex').slice(0, 12)
+      const body = readFileSync(resolve(import.meta.dirname, 'src/sw.js'), 'utf-8')
+      this.emitFile({
+        type: 'asset',
+        fileName: 'sw.js',
+        source: `const PRECACHE = ${JSON.stringify(files)}\nconst VERSION = '${version}'\n${body}`,
+      })
+    },
+  }
+}
+
 export default defineConfig(({ mode }) => {
   // loadEnv reads .env* files for local dev; process.env overrides for CI
   const env = { ...loadEnv(mode, process.cwd(), ''), ...process.env }
@@ -56,7 +81,7 @@ export default defineConfig(({ mode }) => {
       ? 'https://api.forgehaven.io'
       : env.FORGE_API_URL || 'https://api.forgehaven.io'
   return {
-    plugins: [react(), tailwindcss(), headScripts(), ffmpegCorePlugin()],
+    plugins: [react(), tailwindcss(), headScripts(), ffmpegCorePlugin(), serviceWorkerPlugin()],
     define: {
       __API_URL__: JSON.stringify(apiUrl),
     },

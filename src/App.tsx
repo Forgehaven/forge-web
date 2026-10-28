@@ -1,4 +1,4 @@
-import { lazy, Suspense, useInsertionEffect } from 'react'
+import { Suspense, useInsertionEffect } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { store } from './store'
@@ -9,25 +9,7 @@ import { AuthProvider } from './auth/AuthProvider'
 
 import './index.css'
 import { SECTION_TITLES } from './config/sections'
-
-// On stale deployments, lazy chunk hashes change and the old file returns HTML.
-// Reload once to pick up the new index.html and fresh chunk names.
-function lazyWithReload<T extends React.ComponentType<unknown>>(
-  factory: () => Promise<{ default: T }>
-) {
-  return lazy(() =>
-    factory().catch(() => {
-      const key = 'chunk-reload-attempted'
-      if (!sessionStorage.getItem(key)) {
-        sessionStorage.setItem(key, '1')
-        window.location.reload()
-        return new Promise<{ default: T }>(() => {})
-      }
-      sessionStorage.removeItem(key)
-      throw new Error('Chunk failed to load after reload.')
-    })
-  )
-}
+import { lazyWithReload } from './lib/lazyWithReload'
 
 const ToolsLayout = lazyWithReload(() => import('./forge/tools/ToolsLayout'))
 const GamesLayout = lazyWithReload(() => import('./forge/games/GamesLayout'))

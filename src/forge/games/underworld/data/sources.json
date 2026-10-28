@@ -1,0 +1,76 @@
+{
+  "index": "https://underworldlarp.com/rulebooks/",
+  "checked": "2026-10-28",
+  "rulebooks": [
+    {
+      "id": "core",
+      "title": "Core Rulebook",
+      "version": "5.6.5",
+      "url": "https://underworldlarp.com/wp-content/uploads/2018/10/Underworld-LARP-Core-Rulebook-5.6.5.pdf",
+      "lastModified": "2025-05-29",
+      "bytes": 4078744,
+      "sha256": "75d0f208630a30562092ed169056374165ea2c1c333235c33e9ee8c8e703417f",
+      "covers": [
+        "rules",
+        "races",
+        "skills",
+        "vocations",
+        "spells"
+      ],
+      "parsed": true
+    },
+    {
+      "id": "soulfrag",
+      "title": "Soul Frag Rulebook",
+      "version": "2.10",
+      "url": "https://underworldlarp.com/wp-content/uploads/2018/10/Underworld-LARP-SoulFrag-Book-2.10.pdf",
+      "lastModified": "2026-03-27",
+      "bytes": 3075774,
+      "sha256": "e2048b1f973bbca930d4ed689bfce8c084132b52c4d3536f29872de29d810f7f",
+      "covers": [
+        "races",
+        "skills",
+        "vocations",
+        "spells"
+      ],
+      "parsed": true
+    },
+    {
+      "id": "synergy",
+      "title": "Synergy Rules",
+      "version": "1.8",
+      "url": "https://underworldlarp.com/wp-content/uploads/2019/02/Synergy-Rulebook-1.8.pdf",
+      "lastModified": "2025-07-21",
+      "bytes": 419710,
+      "sha256": "0d064570e6468f1cc0fe7777514a56ebb66d40d24432e2e5a13953e7cfa41eb6",
+      "covers": [
+        "skills"
+      ],
+      "parsed": false
+    },
+    {
+      "id": "weapons",
+      "title": "Weapon and Armour Guide",
+      "version": "1.4",
+      "url": "https://underworldlarp.com/wp-content/uploads/2022/05/Underworld_LARP_Weapon_and_Armour_Guide_v1.4.pdf",
+      "lastModified": "2022-05-06",
+      "bytes": 599349,
+      "sha256": "b539e78bc2c874d5d79adaf6ad1c4c7f00d1dcfe69ac5556464d2780d84040fe",
+      "covers": [
+        "equipment"
+      ],
+      "parsed": true
+    },
+    {
+      "id": "monsters",
+      "title": "Monster Abilities",
+      "version": "3.4",
+      "url": "https://underworldlarp.com/wp-content/uploads/2025/02/UW-MONSTER-ABILITIES-3.4.pdf",
+      "lastModified": "2026-10-23",
+      "bytes": 573768,
+      "sha256": "860c147acf7f093caa9efe45b3f3e98e56cd9947de9c037f4d8718dd27b4d4f3",
+      "covers": [],
+      "parsed": false
+    }
+  ]
+}

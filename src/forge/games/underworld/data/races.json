@@ -1,0 +1,1195 @@
+{
+  "meta": {
+    "source": "UW-Character-Builder legacy web app (github.com/Arlit-Areth/UW-Character-Builder)",
+    "rulebook": "Core Rulebook 5.6.5 + Soul Frag 2.10",
+    "updated": "2026-10-28"
+  },
+  "races": {
+    "Savar'Aving": {
+      "cpBonus": 0,
+      "fragCost": 0,
+      "lore": "The Savar'Aving are a matriarchal race of cat-people who resemble humanoid hunting cats. Their society is ruled by women and views male Savar'Aving as second-class citizens. It is rare to find a dominant male Savar'Aving who is free and even more rare for him to survive for long.\n\nThe Savar'Aving are a strong, proud race with deep ties to nature. They have recently suffered a catastrophic plague of necromantic origin that killed many of their people and then turned them into Undead. The few Savar'Aving that survive today struggle to put to rest their Undead sisters and attempt to rebuild their once great society.\n\nThe Savar'Aving were originally known simply as the Savar, but those who survived the plague began to call themselves Savar'Aving to remind themselves that, no matter what fate throws at them, they will triumph.\n\nLife Span: 40-60 years.\nLanguage: Hindi.\nRacial Characteristics: Their distinguishing characteristics are make-up appropriate for the type of cat being played, and possibly the use of a prosthetic feline nose if make-up is sub-par or your subspecies is similar looking to another race. Completely black cats may not be played.",
+      "auto": [
+        {
+          "name": "Natural Claws",
+          "kind": "advantage",
+          "desc": "Savar'Aving are all born with retractable claws. These claws can be retracted or extended on a 3 count. While the claws are extended, the Savar'Aving may not use any other weapons or shields. Savar'Aving receive a free proficiency in <Medium Weapons Group Proficiency: Claws> and may use one claw weapon in their good hand and nothing in their off hand.\n\nThey may buy specializations with them as Medium Weapon Specialization: Claws. Should a Savar'Aving purchase the skill \"Ambidexterity\", they may use a second claw weapon in their off-hand. Savar'Aving claws act like normal medium weapons, with the exception that they cannot be destroyed or disarmed.\n\nClaws otherwise act like regular weapons for the purposes of augmentation; they may be made Master Crafted, Legendary, have alchemy applied to them, and so on. Augmentations must be done per claw. If the augmentation would normally be destroyed, destroying it simply returns the claws to their natural state. If the Savar'Aving resurrects, their claws will lose any augmentations applied to them."
+        },
+        {
+          "name": "Plagued",
+          "kind": "disadvantage",
+          "desc": "While the worst of the plague seems to have passed, its effects on the Savar'Aving people still linger. As a result, all living Savar'Aving take x4 damage from Infliction. As with all racial vulnerabilities, Infliction damage will bypass any thresholds a Savar'Aving might have.\n\nFurthermore, should a Savar'Aving enter their Death Count via Infliction, they will immediately rise as a mindless lesser Undead. Once a Savar'Aving enters this form, their Death Count is immediately over and they cannot be brought back through any means, magical or otherwise.\n\nThe Savar'Aving's Body points will be restored. This Undeath does not grant the Savar'Aving any of the special abilities of Undead, but they will have a Magic threshold and immunity to effects that target the mind or living body, such as charms, poisons and saps.\n\nHowever, they will still suffer all the negative effects such as Control Undead and x4 damage from the Healing Sphere. While in this form, the Savar'Aving may not use their spells or abilities and may only swing base weapon damage.\n\nThey are berserked and will attack anyone or anything around them for up to 10 minutes or until destroyed, at which point they will become a pile of ash."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Cat-Like Reflexes",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Savar'Aving",
+          "prereqs": [],
+          "desc": "A Savar'Aving with this ability can use their claws to swat away a single spell. By striking a spell packet with one of their claws, the Savar'Aving can call \"Innate Cat-Like Reflexes!\" and deflect the spell. This call can be made after the packet is blocked, as long as it is called within 3 seconds.\n\nIf the packet then hits the Savar'Aving or anyone else, the spell will affect that person. This ability is usable once per day per purchase. As always, claw swings must be done safely according to the rules of weapon combat."
+        }
+      ]
+    },
+    "Gargylen": {
+      "cpBonus": 0,
+      "fragCost": 0,
+      "lore": "The Gargylen are a sentient race of half-construct, half-living gargoyles. Originally slaves, they have since broken free from the oppressive yoke of their mage creators. This construct race has proven that they have free will and are sentient.\n\nThey have also developed a method of reproduction. Very little is known about them, and they have no recognized territory or homeland. A Gargylen's skin is stone grey and often hardened, making them less susceptible to conventional weapons.\n\nAll Gargylen are horned and although some have wings, they are all flightless. They are an enigma, and questions surround their purpose or moral standings. Most seem to possess an instinctual need to protect the innocent, although this is certainly not the case with all Gargylen.\n\nGargylen came into existence in the in-game year 2240 (1998), so Gargylen characters can be no older than that. Gargylen babies mature into adults in six months.\n\nLifespan: Immortal.\nLanguage: Common (English).\nRacial Characteristics: Grey skin with large horns protruding from the forehead.\n\nNote: wings are optional, but will not allow flight.",
+      "auto": [
+        {
+          "name": "Alternative Healing",
+          "kind": "advantage",
+          "desc": "A Gargylen may be healed as if their body was made of armour. Every 1 minute of Blacksmithing will heal the Gargylen 10 Body. See the Blacksmithing skill for more detail. Should the Gargylen enter their \"Bleed\" count, any use of the Blacksmith skill to heal/Refit will pause the \"Bleed\" count much like the First Aid skill does.\n\nIf the Blacksmith is interrupted, or stops Refitting the Gargylen, the attempt will fail and the Gargylen will continue their \"Bleed\" count from where they last left off. Any successful Refit while in the \"Bleed\" count will heal the Gargylen to 1 Body."
+        },
+        {
+          "name": "Healing Limitation",
+          "kind": "disadvantage",
+          "desc": "Although a Gargylen possesses the same living organs as most other races, they are still part construct. As a result, the normal methods of healing and first aid will not function. A Gargylen may only heal damaged Body points with the Blacksmithing skill.\n\nGargylen cannot have Body points restored by magic, Alchemy, or the First Aid/Physician skills, although First Aid may still be used to halt a Gargylen's Bleed Count and raise them to 0 Body. Mending used on Gargylen will take the same amount of time as standard blacksmithing would to heal them for the same amount (up to 10 Body per minute). A Life Spell will still function as normal."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Stone Skin",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Gargylen",
+          "prereqs": [],
+          "desc": "A Gargylen who has purchased this skill has learned a finer degree of control over their crafted body. When the skill is used, the Gargylen's skin becomes as hard as stone, making them less susceptible to all weapons. The Gargylen must declare \"Innate Stone Skin\" and proceed to complete a 30 second count.\n\nOnce this count is completed, for the duration of 1 hour a Gargylen gains temporary Body points based on the Gargylen's level. At 1st level the Body bonus is 20 Body points, at 5th level it is 30 and at 10th level it is 40. These Body points act as normal Body points with the exception that they are damaged and removed first from the Gargylen's Body point Total and cannot be healed or refit.\n\nWhile Stone Skin is active, the Gargylen suffers x2 damage from all Battle Magic spells and magic abilities that replicate a Battle Magic spell which damage into Body, such as Ego Rend, Necrotic Blast, etc. This x2 damage will extend past the bonus Body points allotted by Stone Skin and will carry over onto the Gargylen's permanent Body points. After all of the Stone Skin Body points are removed, the x2 vulnerability will end (although any damage from the final strike that rolls over into the Gargylen's normal Body will still include the vulnerability).\n\nStone Skin may be ended by the Gargylen with an uninterruptible 30 second count. A Gargylen's Stone Skin will not affect, in any way, their Armour Points or any other magical or non-magical protections. This skill is usable once per day, per purchase."
+        },
+        {
+          "name": "Body Point Bonus (Gargylen)",
+          "maxPurchases": 2,
+          "bodyBonus": 5,
+          "strBonus": 0,
+          "raceReq": "Gargylen",
+          "prereqs": [],
+          "desc": "This skill represents extra constitutional training the Gargylen has gone through, beyond what is standard for their race and grants +5 Body. This skill can only be purchased twice throughout the character's entire existence."
+        }
+      ]
+    },
+    "Mountain Dwarf": {
+      "cpBonus": 0,
+      "fragCost": 0,
+      "lore": "Mountain Dwarves are famed miners and smiths, though they may specialize in any number of trades. All dwarves sport a full beard and, although they are generally shorter than humans, they are on average stockier and hairier.\n\nLife Span: 250-300 years.\nLanguage: German.\nRacial Characteristics: All Mountain Dwarves have a full beard at least 6 inches in length, adorned with gems and/or jewellery, regardless of whether they are male or female. If a Dwarf's beard is ever cut, it will grow back within a few minutes.",
+      "auto": [
+        {
+          "name": "Resist Toxin",
+          "kind": "advantage",
+          "desc": "Allows the user to \"Racial Resist Toxin\" any toxin, alchemy, or disease, be it Magical or non-Magical in nature, once per day. The user may choose which toxin to resist and when. As a racial benefit, it may be used to \"Resist\" Chemistry."
+        },
+        {
+          "name": "Restriction: Gas Globes & Magic Items",
+          "kind": "disadvantage",
+          "desc": "Dwarves have a hard time using magic items and alchemical gas globes, partially due to their clumsy and thick fingers and also because of their distaste for both. In dwarven culture, magic items with activation words are considered \"cheating\" and frowned upon.\n\nGas globes are rarely used among dwarves due to their resistance to toxin. All dwarves must activate magical items twice in order to get a single use out of them. This does not use up two charges; instead they must state the incant twice in succession instead of once.\n\nThis disadvantage does not apply to magic items which are \"always on\" or otherwise do not have activation requirements. Also, gas globes must be prepared for double the count it normally takes before they can be thrown."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Body Point Bonus (Mountain Dwarf)",
+          "maxPurchases": 3,
+          "bodyBonus": 5,
+          "strBonus": 0,
+          "raceReq": "Mountain Dwarf",
+          "prereqs": [],
+          "desc": "This skill represents extra constitutional training the Mountain Dwarf has gone though, beyond what is standard for their race and grants +5 Body. This skill can only be purchased three times."
+        }
+      ]
+    },
+    "Dark Elf": {
+      "cpBonus": 0,
+      "fragCost": 0,
+      "lore": "Dark Elves are an underground dwelling race that is sensitive to sunlight. Because of this, Dark Elves shun the surface world during daylight hours and often live underground. The Dark Elves are mistrusted by the other races, mainly because of their dark reputation for deception and murder, as well as their natural aptitude with Alchemy.\n\nLife Span: 700-1000 years.\nLanguage: Latin.\nRacial Characteristics: Short pointed ears with black tips. Grey makeup covering the eyes that extends to the temples. Black veins around the outer edges of the eyes and extending from around the mouth, outwards along the cheeks and downwards towards the neck.\n\nOptional: Veins down the neck, black lipstick.",
+      "auto": [
+        {
+          "name": "Natural Chemists",
+          "kind": "advantage",
+          "desc": "Dark Elves have a natural affinity for alchemy and are trained from an early age to use it offensively against rivals. All Dark Elves are capable of throwing alchemical gas globes and do not need to purchase any skills to do so."
+        },
+        {
+          "name": "Diurnal Vulnerability",
+          "kind": "disadvantage",
+          "desc": "Between the hours of 6 AM and 6 PM and while outside of darkness, Dark Elves may not be healed by any means other than by First Aid, Physician, and Life effects. If a Dark Elf enters an enclosed structure that includes a minimum of three walls plus ceiling for more than 10 minutes, they will regain their susceptibility to all forms of healing.\n\nBetween the hours of 6 PM and 6 AM, Diurnal Vulnerability does not apply no matter the amount of light present."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Spite Blood",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Dark Elf",
+          "prereqs": [],
+          "desc": "Generations of living underground and eating the local flora has caused Dark Elven blood to gain a slight toxicity. Drawing a small amount of blood and enhancing it with their talents as natural alchemists allows Dark Elves to produce a single dose of lethal toxin in the form of an alchemical gas globe.\n\nIt takes 1 minute to draw enough blood to create a globe and does 1 Body point of damage to the Dark Elf. The globe can only be used by the Dark Elf who created it. When thrown, the Spite Blood globe will do 10 Acid damage. A Dark Elf who has purchased Spite Blood multiple times may stack together up to three doses to create a single gas globe of increasing damage.\n\nThese doses must be stacked at the time of creation and cannot be combined once manufactured. A single dose will do 10 damage, two doses mixed together will do 25 damage and finally 3 doses combined will do 50 damage. Spite Blood gas globes are considered blood for the purposes of Wytchcraft, vampires, etc. When thrown, the call is \"Innate X Acid\" and can be resisted with standard anti-toxin defenses / resistances.\n\nEach purchase of this ability allows the creation of 1 dose per day. This alchemy will last for 5 days. This skill is usable once per day per purchase."
+        }
+      ]
+    },
+    "High Elf": {
+      "cpBonus": 0,
+      "fragCost": 0,
+      "lore": "High Elves are a long-lived race that make their home primarily in cities. All High Elves are graceful, artistic and magically inclined. Although wise, they are perceived by other races as arrogant and rude. Life Span: 700-1000 years. Language: French. Racial Characteristics: Short pointed ears.",
+      "auto": [
+        {
+          "name": "Magical Aptitude",
+          "kind": "advantage",
+          "desc": "This skill gives the High Elf one free Battle Magic spell-slot on character creation. This free spell-slot can be used to store any spell they can cast, up to their highest-level spell-slot. This free spell-slot in no way contributes to their pyramid or the prerequisites needed to raise it.\n\nAside from that limitation, this free spell slot functions in every other way like a normal purchased slot.\n\nExample: A High Elf Mage with 1 purchased 4th level spell-slot may use Magical Aptitude to gain an additional 4th level or lower spell, determined at their reset."
+        },
+        {
+          "name": "Death's Doors",
+          "kind": "disadvantage",
+          "desc": "High Elves have always held a deep spiritual attunement to the forests and the land. Recent events have weakened this attunement, and in doing so have weakened the High Elves connection to the Spirit world. Should a High Elf enter their Death Count they will have 2 minutes less to receive a Life Spell than the time allotted to other races."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Resist Psionics",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "High Elf",
+          "prereqs": [],
+          "desc": "Allows the user to \"Racial Resist Psionics\" any effect from the Psionics Sphere of Magic as well as all mind altering attacks. Mind altering attacks are considered effects which change your emotional state or control your mind in any way.\n\nExamples of mind altering effects are a Hobling's Taunt ability, a Bard's Songs of Aversion and Love, Confusion, Sleep, Enrage, Feeblemind, Forget, and Hallucinate, plus Ritual mind altering spells and monster effects which are mind altering. This may be used once per day per purchase."
+        }
+      ]
+    },
+    "Wild Elf": {
+      "cpBonus": 0,
+      "fragCost": 0,
+      "lore": "Wild Elves do their best to co-exist with nature, believing that the beasts and land are here for far more than simple exploitation. They consider few things worse than taking more than you need from the world. Examples of this would be mining expeditions, industrial forestry or commercial fishing.\n\nWhile they are intelligent enough to understand the ways of civilization and industrial progress, they choose to live a life outside of it. Wild Elves have no formal cities or homeland and tend to live in nomadic tribes.\n\nLife Span: 700-1000 years.\nLanguage: Italian.\nRacial Characteristics: Short pointed ears. Tribal tattoos on the face.",
+      "auto": [
+        {
+          "name": "Chosen Enemy",
+          "kind": "advantage",
+          "desc": "Upon character creation, the Wild Elf must choose one Chosen Enemy racial group against which they are additionally effective. The reasons for this vary from Wild Elf to Wild Elf. Some Wild Elves despise a race that at some point has done great harm to them, their family or the natural balance of the forest.\n\nOthers have learned to hunt their Chosen Enemy to support their tribe, with no particular emotional investment. A player can choose as their Chosen Enemy racial group one of the following: Angels/Demons, Animals, Bestial, Brood, Constructs, Draconic, Dwarves, Elementals, Elves, Fae, Goblinoids, Humanoids, Plants, Spirits, Undead (excluding vampires), Vermin.\n\nThe Chosen Enemy ability will grant the Wild Elf a +1 damage bonus on any melee or ranged weapon while fighting against their Chosen Enemy. This bonus will increase +1 for every 3 levels the Wild Elf gains. +1 at first level, +2 at fourth level, +3 at 7th level and so on.\n\nThis damage bonus will not carry over to any other racial group, but does apply to any race within the racial group. For example, a Wild Elf with Chosen Enemy: Elves does bonus damage against Dark Elves, High Elves, Wild Elves, etc. If the Wild Elf isn't certain whether a creature fits into their Chosen Enemy category, they may state, \"Chosen Enemy <Type>?\" and the creature will respond with yes or no.\n\nSome creatures are able to hide what kind of creature they are. In those cases, Chosen Enemy does not work. Chosen Enemy cannot be changed after character creation."
+        },
+        {
+          "name": "Armour Restriction (Wild Elf)",
+          "kind": "disadvantage",
+          "desc": "Viewed as abhorrence to nature, a Wild Elf will never equip Armour made primarily of steel, iron, or any other metal. This disadvantage does not apply to metal buckles, fasteners or studs used to hold or reinforce the Armour. This penalty does not apply to metal weapons, items and objects not used as Armour, but proper role-play should still be observed."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Nature's Cache",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Wild Elf",
+          "prereqs": [],
+          "desc": "Once a day per purchase, a Wild Elf is able to construct a small temporary shelter for themselves and up to 4 allies chosen at the time of creation. This 10 foot by 10 foot area provides multiple benefits and lasts 1 hour or less.\n\nIt can only be constructed outdoors, but functions on any terrain. To use it the Wild Elf should affix their Nature's Cache tag to a location, which then becomes the center of the cache and state \"Innate Nature's Cache\".\n\nHidden Scent: Those inside the cache are undetectable by hostile animals and insects.\n\nForage: The Wild Elf can spend 10 minutes searching for healing herbs, which will provide 10 Healing points total, divided up as desired, to all within the shelter. These herbs will expire with the shelter if unused.\n\nThe Pack: For the hour after the cache ends, all members of the camp will gain +1 damage with weapons against any opponent with which they all have simultaneous line of sight. This damage bonus does not stack with other uses of The Pack.\n\nNatural Intuition: While in the cache, the Wild Elf may query the surrounding lands, detecting its current state of being and any areas of impurity or corruption. This is a difficult task and is not always successful. The Wild Elf should attempt to find a Shaper prior or during the use of Nature's Cache. If no Shaper is available, the lands are unclear with their answer."
+        },
+        {
+          "name": "Body Point Bonus (Wild Elf)",
+          "maxPurchases": 1,
+          "bodyBonus": 5,
+          "strBonus": 0,
+          "raceReq": "Wild Elf",
+          "prereqs": [],
+          "desc": "This skill represents extra constitutional training the Wild Elf has gone though, beyond what is standard for their race and grants +5 Body. This skill can only be purchased once throughout the character's entire existence."
+        }
+      ]
+    },
+    "Wood Fae": {
+      "cpBonus": 0,
+      "fragCost": 0,
+      "lore": "Distant cousins to the Faerie Folk, Wood Fae are rumoured to have been born of magic within the forests of the world. This may account for many of the Wood Fae having an affinity to natural creatures. Quite contrary to their faerie folk cousins, the Wood Fae have an extreme dislike for all forms of charms and will go to nearly any length to oppose mind-altering spells or effects.\n\nThey are not only averse to practicing Charming Magics themselves but are even able to remove Charming effects from others. They are for the most part very carefree and friendly. They generally live a polyamorous lifestyle, though they rarely keep one mate for more than 10 years.\n\nLife Span: 1000-1200 years.\nLanguage: Gaelic.\nRacial Characteristics: Long pointed ears, and small horns that grow out of their foreheads.",
+      "auto": [
+        {
+          "name": "Lust for Life",
+          "kind": "advantage",
+          "desc": "A Wood Fae's natural attunement to the forest and all things living has given them a lust for life that other races lack. Should a Wood Fae drop into their Bleed Count they are given a full two minutes before entering their Death Count rather than the standard one minute."
+        },
+        {
+          "name": "Iron Aversion",
+          "kind": "disadvantage",
+          "desc": "Wood Fae will take x2 damage from any source using the suffix \"Iron\" in its damage call. Carrying iron items is permitted, but doing so will cause great discomfort and should be roleplayed accordingly. This disadvantage applies to damage taken to both Armour and Body.\n\nAs with all racial vulnerabilities, iron damage will bypass any thresholds a Wood Fae might have."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Charm Break",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Wood Fae",
+          "prereqs": [],
+          "desc": "This ability has two functions. Firstly, it can allow the user to \"Racial Resist Charm\" all charm-based attacks. Charm-based attacks are considered effects which instill friendship or loyalty. Specific examples of charms are a Bard's Songs of Love, Charm, and Dominate plus Ritual charm spells and monster effects which are charm-based.\n\nResisting in this manner uses up the ability. The second function is the ability to break an active charm effect on another person. This can only be accomplished through 10 seconds of talking to the Charmed character then declaring \"Innate Charm Break\" while touching them.\n\nDoing this uses up the skill for the day and creates a visible effect like any racial resistance does when it is used. Charm Break is usable once per day per purchase."
+        }
+      ]
+    },
+    "Orc": {
+      "cpBonus": 0,
+      "fragCost": 0,
+      "lore": "Orcs, or \"Green-Skins\" as they are commonly called, are a fierce and combative goblinoid race. Orcs normally organize themselves into tribes and clans that consist of ogres, kobolds and other goblinoid races. Orcs appreciate strength and skill in combat above all things. They are less intelligent than a human is, but generally stronger and more disciplined.\n\nLife Span: 30-40 years.\nLanguage: Russian.\nPhysical Characteristics: Green skin (varying tones).",
+      "auto": [
+        {
+          "name": "Immune to Fear",
+          "kind": "advantage",
+          "desc": "Whether brave or stupid, Orcs cannot suffer the effects of fear. The immunity is always active. Orcs should call 'No Effect' when fear effects are used on them."
+        },
+        {
+          "name": "Charmable",
+          "kind": "disadvantage",
+          "desc": "The same mental toughness that grants Orcs immunity to fear also causes them to be susceptible to Charm effects. The Charm spell and Charm alchemy, as well as any Charm monster abilities will completely control the Orc. This means that instead of only being susceptible to friendly suggestions, the Orc will blindly follow any commands, including suicidal orders.\n\nThese commands may include anything from killing a loved one to suicide. The commands can include forcing the victim to tell the truth as they know it (which may or may not be the OOG truth known by the player). A note to victims of this effect: You are never expected to do anything that makes you uncomfortable OOG.\n\nThis includes but is not limited to being forced to do unsafe acts, actions of an inappropriate sexual nature or anything else that makes you uncomfortable for any reason, OOG. Although the potency of the effect is increased, its duration is not and the Orc will have full memory of all events when the charm wears off or is remove by standard means.\n\nNote that this only applies to effects that copy the Charm spell specifically, not all charm-like effects such as Taunt, Song of Love, Dominate, etc."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Orcish Constitution",
+          "maxPurchases": 1,
+          "bodyBonus": 5,
+          "strBonus": 1,
+          "raceReq": "Orc",
+          "prereqs": [],
+          "desc": "Purchasing this racial grants an orc the combination of Strength Point Bonus and Body Point Bonus. Furthermore, when an Orc has 50% or less of their total natural Body points (rounded down) they gain +1 damage to all melee weapon swings. This skill may only be purchased once."
+        }
+      ]
+    },
+    "Ajaunti": {
+      "cpBonus": 0,
+      "fragCost": 0,
+      "lore": "An extravagant, passionate and amicable people, the Ajaunti (\"Aja\" for short) are a nomadic and colourful race. Where and when the Aja culture came to be is a mystery. Full of life, love and celebration, the Aja place high value in songs, dancing, and storytelling.\n\nLife never stops moving, so the Aja never stop moving either. Wanderers by choice and welcoming of strangers, Aja \"clans\" slowly criss-cross the continent in large caravans, following the weather and the winds of fate. The Ajaunti are always willing to share their wine, campfires and wisdom with any willing to join them.\n\nLife Span: 60-80 years.\nLanguage: Romanian.\nRacial Characteristics: As an Ajaunti, it is required for the PC to talk with a thick middle European accent and dress with a flamboyant & extravagant fashion sense.",
+      "auto": [
+        {
+          "name": "Eyes of the Mother",
+          "kind": "advantage",
+          "desc": "When the Blood Curse which prevented all Ajaunti from casting magic was removed, it was replaced with a boon by an unknown benefactor. Perhaps it was a benevolent God who felt pity on the Ajaunti for what was done to them, or perhaps it was the Ancestors of the Aja themselves.\n\nWhatever the source, Ajaunti cannot be surprised with violence, as if a greater power is always watching over them. All Aja are immune to the Surprise prefix. The defensive call for this ability is \"Racial Foresight!\". It may be used at will."
+        },
+        {
+          "name": "Lost in Memories",
+          "kind": "disadvantage",
+          "desc": "When an Ajaunti dies, they have the normal 1 in 10 chance of remembering their death. If they fail to remember, Aja lose 24 hours of memories, not the standard 1 hour. In addition, if an Aja forgets their death there is a 50% chance that they will bring something back with them.\n\nWhen this occurs, the Aja will know it has happened upon resurrecting but will not know any further details. This can take 3 forms, chosen by a Shaper:\n1) A cursed item returns on their body. These items are always negative and can only be removed by effects which remove Greater Curses. The item's history and specifics of the curse will be decided by the Shaper.\n2) A restless spirit materialises within 1 day's travel of where the Aja resurrected. This ghost will attempt to find the Aja and will seek their aid in putting their spirit to rest.\n3) A hostile spirit from the Deadlands arrives. It instinctively knows where the Aja can be found and will locate the Aja within 24 hours, seeking to destroy them."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Ancestor's Wisdom",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Ajaunti",
+          "prereqs": [],
+          "desc": "When heroism is required, the Ajaunti gift for inspiration can rake the coals of greatness in others. To initiate Ancestor's Wisdom, the Ajaunti must tell a story of how one of their ancestors overcame adversity or performed an act of heroism to inspire those who listen. The story must last at least one minute but may go longer if desired.\n\nAfter the minute has passed, the Ajaunti may then choose one or more targets from the audience to receive a boon from the ancestors. This is done by touching the forehead of the listener and declaring \"Innate Ancestor's Wisdom (Type)\". The nature of the story told will determine what wisdom the Ajaunti is trying to pass along to their audience and all recipients must be granted the same type of boon.\n\nIf a second Ajaunti is present during the story, they may add to the story to increase the potency of the boon. The Ajaunti assisting in the story must either speak for one additional minute or must play music during the tale. The assistant does not need to expend their own use of Ancestor's Wisdom to participate.\n\nIf over 10 Aja members of the same clan (including the Aja using Ancestor's Wisdom plus their assistant) are present for the ceremony, it will become even more powerful. These additional clan members may participate or may simply observe. Ancestor's Wisdom may be used once a day per purchase, but each type of ceremony may only be performed once a month.\n\nThere are four types of ceremonies that the Ajaunti may choose to perform:\nCeremony of Courage: Performing this ceremony will extend the Bleed and/or Death Counts of up to 3 targets for the next hour. If a single Aja performs the ceremony it will add a minute to the target(s) Bleed Counts. If assisted, it adds a minute to both Bleed and Death Counts. If 10 or more clan members are involved, it will double the duration of both counts (2 minutes/10 minutes for most species).\nCeremony of Celebration: This ceremony will create a permanent item for each target of the ceremony. Examples would be wedding gifts for a couple getting married, medals for acts of bravery, a knife in a coming of age ceremony, etc. These items will gain no effect beyond being permanent and they cannot have been magically enchanted to begin with. They are vulnerable to damage like normal but a bride's crown of flowers will never wilt, a medal will never tarnish, writing on paper will never fade, etc. If they are kept by the recipient for 1 year they will turn into catalysts of a type and emotion desired by the owner. Players who have items made for them in this way must visit NPC camp for the tags at some point prior to the event ending. A single Aja can create 1 item. If they have an assistant, they can create 2. If 10 or more clan members participate, the items will become catalysts instantly.\nCeremony of Hex Breaking: This ceremony will allow an Ajaunti to remove any one curse that is afflicting a target. It will permanently remove any Lesser Curse. If an assistant is used, the Ceremony of Hex Breaking may temporarily remove Greater Curses for 1 hour. If 10 or more clan members are present, then the ceremony may effect up to 3 targets simultaneously and has a chance to permanently remove Greater Curses with shaper approval. The target does not have to be conscious for this effect to take place, though they cannot be in their Death Count.\nCeremony of Mourning: This ceremony grants the ability to communicate with the ghost of a departed (final death) spirit for 10 minutes, so long as the final death occurred within the past year. The spirit must be willing to participate and a Shaper or marshal is required to perform this ceremony. Spirits spoken to in this manner cannot recall anything about their death and they cannot speak, but they can hear and respond with body language. If an assistant is used, the ghost can speak. If more than 10 members of the clan are present, the spirit remains for an hour. This is considered a great favour to ask of an Aja and it is not without risk - sometimes the act draws the attention of other restless spirits, who will be attracted to the Aja who performed, hours after the ceremony is completed.",
+          "ref": "Core 5.6.5 pp.32-33"
+        }
+      ]
+    },
+    "Einher": {
+      "cpBonus": 0,
+      "fragCost": 0,
+      "lore": "A semi-nomadic Northern people, the Einher are very superstitious by nature. Though the Einher enjoy being shockingly vulgar, they are very serious about any conduct that may disrespect them or their kin. As such, they tend to avoid disrespecting others, unless they are looking for a fight.\n\nFor an Einher it is important to know the difference between a friendly jab at someone and the sort of thing that blood will be shed for. The Einher have an irrational fear of fog, whether magical or natural. They will suffer from the effects of paranoia and/or hallucination if confronted by fog.\n\nThe thicker it is, the worse the effects. This fear is strictly roleplayed. The Einher detest Ice Elves. Throughout their history, the Ice Elves have attempted to force the worship of Pandora upon them, causing much bad blood between the two civilizations.\n\nLife Span: 60-80 years.\nLanguage: Swedish.\nRacial Characteristics: Einher must wear two or more of the following: furs, kilts, and braided hair.",
+      "auto": [
+        {
+          "name": "Resist Cold",
+          "kind": "advantage",
+          "desc": "Resist Cold allows the user to \"Racial Resist Cold\" one cold-based effect. As a Racial Ability, it may be used to \"Resist\" Ritual Magic. This skill is automatically given on character creation, cannot be purchased for multiple uses, and is only usable once per day."
+        },
+        {
+          "name": "Hell's Embrace",
+          "kind": "disadvantage",
+          "desc": "The Einher live for battle. It is their belief that if they die their final death in combat, their souls travel to a great hall where they will fight and drink for eternity. It is every Northman's fear that they will die alone outside of combat.\n\nEinher who die outside of combat have a 50% chance of taking two deaths on their character card for the one they take in game. An Einher who has died outside of combat will first flip a coin to determine if the death taken is counted as one or two, then the deaths are applied to their character card, and finally, if required, an additional flip(s) to see if they succumb to final death."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Berserker Rage",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Einher",
+          "prereqs": [],
+          "desc": "A Northman can incite in himself a powerful Berserker Rage. The character must cry out \"Innate BERSERK!\" for a ten-count, i.e., \"Berserk 1, berserk 2, berserk 3...\" while working themselves into a frothing frenzy. For the duration of one combat, the character gains +1 Strength, +5 Body, and is immune to Fear effects.\n\nFrom the point at which the fight ends, it takes 5 minutes for the effects of Berserk to wear off. The character cannot end the rage sooner and must continue to fight so long as opponents are visible. Multiple uses of this skill may be expended to stack its effects, although this will not increase the duration. This skill is usable once per day, per purchase."
+        },
+        {
+          "name": "Body Point Bonus (Einher)",
+          "maxPurchases": 1,
+          "bodyBonus": 5,
+          "strBonus": 0,
+          "raceReq": "Einher",
+          "prereqs": [],
+          "desc": "This skill represents extra constitutional training the Einher has gone though, beyond what is standard for their race and grants +5 Body. This skill can only be purchased once throughout the character's entire existence."
+        },
+        {
+          "name": "Strength Point Bonus (Einher)",
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 1,
+          "raceReq": "Einher",
+          "prereqs": [],
+          "desc": "This skills represents raw physical power, increasing the character's Strength rating by +1. This skill can only purchased once throughout the character's entire existence."
+        }
+      ]
+    },
+    "Hobling": {
+      "cpBonus": 0,
+      "fragCost": 0,
+      "lore": "A typically small, peaceful people with furry feet and hands, bushy eyebrows, and fuzzy sideburns, Hoblings, in general, are a peace and comfort-loving race. Most are horrified by violence and are easily scared off by the slightest danger.\n\nHowever, there are still a great many that find themselves in awe of the world and travel it attempting to learn about (and experience) everything. They are fun-loving and mischievous, enjoying anything that is exciting despite whatever possible danger there may be.\n\nThese are the Hoblings most often encountered by the other races, since they travel the world over. These Hoblings are often considered an annoyance by other races, but the Hoblings still greatly enjoy the company of any people and love to tell and listen to stories of adventures. All these Hoblings really wish to do is have fun and enjoy life to its fullest.\n\nLife Span: 170-200 years.\nLanguage: Japanese.\nRacial Characteristics: Large fuzzy sideburns and eyebrows. Furry hands and feet are optional but encouraged.",
+      "auto": [
+        {
+          "name": "Taunt",
+          "kind": "advantage",
+          "desc": "This skill allows the Hobling to Taunt a target, inciting them into combat. The target will immediately attack the taunting Hobling, ignoring all other targets until the Hobling is on the ground unmoving, out of line-of-sight, or physically unobtainable.\n\nThe target is still free-willed and able to fight with strategy and cunning but they must attack immediately, and must target the taunting Hobling. After the Hobling is down or has left line-of-sight, the target may then choose to stop combat if they wish.\n\nIn order for this racial to be effective, the Hobling must actually taunt the target with 2 insults, declare \"Innate Taunt\" then hit with a successful packet strike. This skill is automatically given on character creation, cannot be purchased for multiple uses and is only usable once per day.\n\nHobling Taunt is considered a Psionic attack but is a racial and cannot be resisted by anything short of another racial ability. Some example taunts are: \"Go soak your head in a bucket. Then some fool might mistake it for a helm and therefore mistake you for a knight\" and \"You have something on your face. Oh wait! That is your face!\""
+        },
+        {
+          "name": "Small Size",
+          "kind": "disadvantage",
+          "desc": "Hoblings can only purchase proficiency and specializations from the Simple weapon and Exotic weapon groups. No exotic weapon may be used that is greater than 16 inches but other weapons (such as staves in the Simple Group) are not affected."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Racial Dodge",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Hobling",
+          "prereqs": [],
+          "desc": "Allows the subject to dodge any attack, calling \"Racial Dodge\", so long as it is not a trap of any kind, or some other unreasonable damage-causing incident, such as falling off a tower. This skill is usable once per day per purchase.\n\nIt is not possible to dodge a Surprise Attack, Power Word, Area of Effect or Massive damage. You must be conscious to dodge."
+        }
+      ]
+    },
+    "Human": {
+      "cpBonus": 50,
+      "fragCost": 0,
+      "lore": "Humans are the most populous of the sentient, civilized races. They range widely in appearance, culture and diversity. Life Span: 60-80 years. Language: Common (English).",
+      "auto": [
+        {
+          "name": "Character Point Bonus",
+          "kind": "advantage",
+          "desc": "Humans begin with 50 extra CP upon character creation. This bonus CP does not count towards a character's level."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Body Point Bonus (Human)",
+          "maxPurchases": 1,
+          "bodyBonus": 5,
+          "strBonus": 0,
+          "raceReq": "Human",
+          "prereqs": [],
+          "desc": "This skill represents extra constitutional training the Human has gone though, beyond what is standard for their race and grants +5 Body. This skill can only be purchased once throughout the character's entire existence."
+        }
+      ]
+    }
+  },
+  "fragRaces": {
+    "Am'Rath": {
+      "tier": "Uncommon",
+      "fragCost": 75,
+      "cpBonus": 0,
+      "lore": "The Am'Rath tribes are a version of humanity in its rawest and most primitive form. They are resilient, vicious and unforgiving opponents. A semi-organized and war-like people, they have divided themselves into tribes with differing priorities and leadership.\n\nSome tribes are deeply spiritual and shamanistic, some are focused on expansion and conquest, others are little more than rampaging Am'Raths.\n\nLife Span: 40-60 years.\nLanguage: Primordial Common (English).\nRacial Characteristics: Bone fetishes and/or beads worn throughout hair and facial hair, colourful tribal tattoos.",
+      "auto": [
+        {
+          "name": "Simple Weapon Damage Bonus",
+          "kind": "advantage",
+          "desc": "Am'Raths gain +1 damage to all weapons in the simple weapon group."
+        },
+        {
+          "name": "Simple Weapon Restriction",
+          "kind": "disadvantage",
+          "desc": "To an Am'Rath, all melee weapons outside the Simple Weapon group are considered \"exotic\" for purposes such as proficiencies, slays and specializations. Ranged weapons are not included in this disadvantage."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Clobber",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Am'Rath",
+          "prereqs": [],
+          "desc": "This physical attack can be used with any melee strike and will cause 25 points of damage, the damage type based on the weapon used. If the attack misses, the skill is used. It may be augmented with magic and alchemy. It is used by calling out \"Innate Clobber!\" before the attack. Clobber may be used once per day per purchase."
+        }
+      ]
+    },
+    "Faun": {
+      "tier": "Uncommon",
+      "fragCost": 75,
+      "cpBonus": 0,
+      "lore": "Fauns are a benevolent and care-free race, often mistaken for Fae. In fact, they were once forest spirits, given mortal, Bestial form. Most Fauns are friendly and compassionate, yet shy and reserved. Fauns have a natural affinity for forests and will feel drawn toward them as a habitat.\n\nLife Span: 1000-1200 years.\nLanguage: Punjabi.\nRacial Characteristics: Black on the underside of the nose, philtrum and upper lip. Ram horns, antlers or wooden branches. White dots on cheekbones. Faun ears (low hanging or \"floppy\" large ears).",
+      "auto": [
+        {
+          "name": "Companion",
+          "kind": "advantage",
+          "desc": "A Faun may declare another living creature a \"companion\" each day. This companion is decided at reset and cannot be changed until the next reset. If their companion enters their Death Count a Faun may place both hands on their body and pause the Death Count.\n\nAfter 60 seconds of concentration, their companion will be affected by an \"Innate Magic Life\" effect from the Nature sphere. This ability may be used once per day."
+        },
+        {
+          "name": "Restriction to Nature Healing",
+          "kind": "disadvantage",
+          "desc": "When it comes to magical healing, Fauns cannot be healed by any magic outside of the Nature sphere. This includes all Body Point healing and healing effects other than Mending. Natural and alchemical versions of these effects will work.\n\nAdditionally, consuming a Goodberry will heal a Faun for 2 Body when they are in their Bleed Count, instead of the regular 1 Body. Life spells from outside the Nature sphere will work on Fauns but not as effectively — the Faun will receive the normal benefits of a Life spell, except that they will only be healed to 1 Body, not full Body. Life effects from Nature sources will operate as normal."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Forest Revival",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Faun",
+          "prereqs": [],
+          "desc": "Fauns may, once per day per purchase, fully heal their Body by placing both hands on any living tree within a forest and concentrating for 60 seconds. During this time they may not use any other skills and are considered to be \"concentrating\" as per spell-casting. Body Points are gained immediately at the end of the 60 second count."
+        }
+      ]
+    },
+    "Minotaur": {
+      "tier": "Uncommon",
+      "fragCost": 75,
+      "cpBonus": 0,
+      "strBonusPerFiveLevels": 1,
+      "lore": "Minotaurs were a once proud and noble race, residing deep within the Fae Realm. Cursed by the Elder Fae, they were transformed into monstrous brutes with the body of a human and the head of a bull, and driven underground for many centuries.\n\nMost Minotaurs are extremely superstitious due to torturous games played on them by the Fae.\n\nLife Span: 50-60 years.\nLanguage: Welsh.\nRacial Characteristics: Brown makeup and large bull horns. White or light tan makeup around the mouth and the bottom of the nose in a muzzle shape covering at least 25% of the face. Black line extending from the nose to the top of the lips, and black lips.",
+      "auto": [
+        {
+          "name": "Enhanced Strength",
+          "kind": "advantage",
+          "desc": "Minotaurs are incredibly strong. They will gain +1 Strength every five levels, starting at level 1, giving them +2 Strength at level 6, +3 Strength at level 11, and so on."
+        },
+        {
+          "name": "Fae Susceptibility",
+          "kind": "disadvantage",
+          "desc": "Centuries of mind manipulation by the Fae have altered Minotaurs' reactions to mind magic. If a Fae hits a Minotaur with a magical mind effect of any kind, the Minotaur will become enraged for one minute. During this time, they may not attack the source of the magic.\n\nOnce the minute is complete, the Minotaur will no longer be enraged and the mind-altering effect will affect them as normal. The mind alteration's duration begins at this point. Fae able to induce this effect include True Fae, Redcaps and even the thin blooded relatives such as Carnal Fae and Wood Fae but not other Minotaurs."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Fae Ward",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Minotaur",
+          "prereqs": [],
+          "desc": "Long standing wars with creatures of the Fae Realm have given Minotaurs a natural ability to protect and ward themselves against pesky Fae meddling. A Minotaur with this ability may craft a special magical Fae Ward, capable of preventing entry by any Fae creature, including those with only trace amounts of Fae blood in their veins. The Fae Ward must be carved on an object containing at least a small amount of iron and must be at least 1 square foot in size.\n\nThe carving of the Fae Ward takes 10 minutes of roleplaying to draw. Once erected, no Fae creature, pure or thin of blood, may cross within 10 feet of the Ward. This includes True Fae, Redcaps and even the thin blooded relatives such as Carnal Fae and Wood Fae but does not include other Minotaurs.\n\nThe Ward lasts for 5 days unless it is moved, defaced or destroyed at which point the magic of the Fae Ward is lost and must be re-carved. No Fae can move or interfere with the ward in any way. This ability is usable once per day per purchase.",
+          "ref": "Soul Frag 2.10 pp.8-9"
+        }
+      ]
+    },
+    "Kobold": {
+      "tier": "Uncommon",
+      "fragCost": 75,
+      "cpBonus": 0,
+      "lore": "Kobolds are often stupid but crafty creatures. They appear as dog-like Goblinoid creatures with red skin, large incisors and black fingernails. Kobolds have become a universal pest in every corner of the world. They have a natural affinity for blowing themselves up with explosives and are well known for their love of shiny things.\n\nLife Span: 170-200 years.\nLanguage: Pig Latin.\nRacial Characteristics: Red makeup on exposed skin, high-pitched annoying voice, black underside of nose around nostrils, horizontal black lines across bridge of nose.",
+      "auto": [
+        {
+          "name": "Innate Sap",
+          "kind": "advantage",
+          "desc": "A Kobold receives one free Sap skill every other level, starting at first level. These Innate Saps are identical to the purchased skill. This racial does not hamper the Kobold's ability to purchase the Sap skill. The call for this is \"Innate Sap\"."
+        },
+        {
+          "name": "Frailty",
+          "kind": "disadvantage",
+          "strBonus": -2,
+          "desc": "Kobolds are frail and weak creatures. A Kobold has a -2 strength penalty. This means they swing for one less damage, to a minimum of one."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "KABOOM!",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Kobold",
+          "prereqs": [],
+          "desc": "Kobolds are natural Trappers. They excel in the craft above and beyond any other race. A Kobold may use this natural affinity to make an extraordinary, unique trap, even without the Trapper skill.\n\nThis is similar to an Explosive Trap. For every 1 RM used to create the trap, it will do 2 points of damage to everyone within 5 feet of the trap when it is triggered. If the Kobold has 4 levels of Trapper, this amount is raised to 3 points damage per 1 RM.\n\nKobolds may use any kind of RM to create these traps. Kobolds will receive one KABOOM! trap tag per day per purchase. The player must then affix the appropriate RM to the tag to determine the damage caused by the trap.\n\nThis can be done at any time. Once the RM is attached to the KABOOM! tag, the trap is created and the timer must be set. The timer can be set for any time between 1 and 60 seconds, but this must be decided on trap creation, and will start counting down from then.\n\nThe detonation cannot be triggered early. All normal Trapper rules apply to this trap, except:\n- The Kobold who made the KABOOM! trap can run with it without setting it off early\n- The KABOOM! may be thrown without automatically detonating it, but if the timer is damaged or turned off in the throw, the KABOOM! becomes a dud and is used up without exploding\n- KABOOM! traps cannot be scavenged for RM\n- The phys-rep should be made of foam and a minimum of 1 foot cubic square in size. It should look like a bomb a kobold would make - scavenged and ugly. It still requires a timer like a regular Timer Trap",
+          "ref": "Soul Frag 2.10 pp.9-10"
+        }
+      ]
+    },
+    "Ogre": {
+      "tier": "Uncommon",
+      "fragCost": 75,
+      "cpBonus": 0,
+      "bodyBonusPerLevel": 2,
+      "lore": "Typically massive, lumbering brutes, Ogres can best be described as monstrous. With superior strength and constitution, Ogres are the muscle and brute force in every Greenskin army. While not the brightest of thinkers, they are cunning, and what they can't out-think they will out-smash.\n\nLife Span: 10-12 years.\nLanguage: Polish.\nRacial Characteristics: Yellow skin and prosthetic tusks, red or white war paint covering at least 25% of the face.",
+      "auto": [
+        {
+          "name": "Ogre Constitution",
+          "kind": "advantage",
+          "bodyBonus": 5,
+          "strBonus": 2,
+          "desc": "Because of their incredible size and strength, Ogres begin with +2 Strength, and +5 Body. Furthermore, Ogres gain an additional +2 Body per level."
+        },
+        {
+          "name": "Untempered Rage",
+          "kind": "disadvantage",
+          "desc": "If an Ogre takes more than 15 points of damage directly to their Body from any single effect from any source, they immediately fly into a mindless rage. They will immediately attack everyone nearby, friends and foes alike. This onslaught may only be stopped by dropping the Ogre into its Death count.\n\nAny effects that would incapacitate the Ogre, such as sleep magic/alchemy or unconsciousness, will still function, but the rage will carry on if they are revived prior to the duration expiring. After 10 minutes have passed since the attack, the effect will wear off. If the ogre is struck for more than 15 Body points while Untempered Rage is active, it will not change the duration remaining.",
+          "ref": "Soul Frag 2.10 p.10"
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Ogre Smash",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Ogre",
+          "prereqs": [],
+          "desc": "By summoning all of their great strength into a single melee attack, an Ogre can target an opponent's weapon or shield, causing grievous amounts of damage to it. Weapons and shields struck by this attack are affected by a \"Shatter\" effect, destroying them unless they are immune or have resistance.\n\nTo activate, the Ogre must let out a blood curdling war cry followed by the call \"Innate Physical Smash!\" This ability will only stay active for 10 seconds and is considered used even if the attack misses. Usable once per day per purchase."
+        }
+      ]
+    },
+    "Squamata": {
+      "tier": "Uncommon",
+      "fragCost": 75,
+      "cpBonus": 0,
+      "lore": "\"Squamata\" is a general term to describe a number of green-skinned lizard-like races: the Boggrel (frog people), the Gremmel (lizard people), and the Shak'tar (snake people). Although quite distinctive in regards to culture, personality and even physical appearance, these races all share the same advantages and disadvantages.\n\nLife Span: 40-50 years.\nLanguage: Samoan.\nRacial Characteristics: Makeup must look like a type of colourful lizard (Gremmel), frog/toad (Boggrel), or snake (Shak'tar) in a minimum of two colours.",
+      "auto": [
+        {
+          "name": "Seal Pores",
+          "kind": "advantage",
+          "desc": "Squamata's pores are sealed to prevent toxic substances from entering the bloodstream, making them immune to packet-delivered alchemical attacks, stating \"No Effect\". This defense will not function against ingested or contact alchemy. Chemistry Gas Globes may also be resisted in this manner."
+        },
+        {
+          "name": "Soft Underbelly",
+          "kind": "disadvantage",
+          "desc": "All Squamata take x2 damage from all physical weapon damage with \"Body\" in the call. As with all racial vulnerabilities, physical Body weapon damage will bypass any thresholds a Squamata might have."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Venomous Spit",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Squamata",
+          "prereqs": [],
+          "desc": "This ability allows the Squamata to spit an alchemical Venom attack at a target. For 10 minutes, the victim will be in constant pain. They cannot cast spells unless they have the Combat Wizardry skill and are considered to be taking damage for the purposes of skills or abilities that can be stopped by taking Body damage.\n\nThe only exception to this is that a Physicker can still cure themselves of Venom. After 10 minutes, the Venom will have worked its way through the target's system and they will take \"Alchemical 25 Body Poison\". This effect does not stack.\n\nThis effect can be cured by any means that removes a poison from a target.\n\nTo prepare their Venom, the Squamata must state, \"Preparing Alchemical Venom 1, preparing Alchemical Venom 2, preparing Alchemical Venom 3\". The Squamata then has 1 minute to spit the Venom at their target, calling \"Alchemical Venom\", otherwise the ability is lost and considered used up. The Squamata cannot speak while they have the Venom in their mouth. This ability is useable once per day per purchase.",
+          "ref": "Soul Frag 2.10 pp.11-12"
+        }
+      ]
+    },
+    "Avian": {
+      "tier": "Rare",
+      "fragCost": 150,
+      "cpBonus": 0,
+      "lore": "Avians are a race of mountain-dwelling bird people. They are tinkerers and inventors, one of the few races to circumvent magic with simple and basic steam-based machinery. Avians are linked to the Shadow Plane through generations of its use by their ancestors and their spirits have become tainted with its presence.\n\nLife Span: 70-90 years.\nLanguage: Hebrew.\nRacial Characteristics: Feathered eyebrows and hair and yellow nails.",
+      "auto": [
+        {
+          "name": "Spirit Anchor",
+          "kind": "advantage",
+          "desc": "Spirit Anchor allows an Avian to anchor their spirit to a specific location and be able to \"shadow step\" to it on a 10 second count, stating \"Innate Spirit Anchor 1, Innate Spirit Anchor 2...\", once per day. This magical transportation is done via travel though the Plane of Shadow, a dark and dangerous place. The anchor itself is an in-game item that must be represented by an active glow-stick or LED attached to a \"mechanical\" steam-machinery based item.\n\nThis item must be approved by a Shaper, cannot be magical in nature and can be destroyed by normal means. The Avian is transported with everything they currently carry but they cannot transport other spirits or items larger than they can physically carry, including creatures in their Bleed or Death Counts.\n\nIf the Spirit Anchor is destroyed, a new one can be created by the Avian without cost after an hour's work. The new Anchor must be approved by a Shaper like the first. If an Avian attempts to transport themselves to a destroyed anchor, they will die.\n\nThey will resurrect as normal, only all their belongings will reappear at the resurrection circle with them. If this death finals the Avian, all their belongings will appear at the resurrection circle without them. An Avian may also \"disconnect\" from their current Anchor and undergo the same 1 hour process as a destroyed one.\n\nAn Avian must be able to see to use this ability, and must have full unobstructed vision. A spirit anchor may be used through a Garrotte, assuming the player resists or calls no effect on the Garrotte.",
+          "ref": "Soul Frag 2.10 p.13"
+        },
+        {
+          "name": "Shadow Mark",
+          "kind": "disadvantage",
+          "desc": "Avians' spirits are irrevocably tied to the Shadow Plane. Both dying and near-death experiences scar Avians with shadow energy, either temporarily or permanently. These scars manifest physically on the Avian in the form of grey slash marks across the eye socket.\n\nIf an Avian enters its Death Count, they gain a Shadow Mark within 1 hour (giving the player the time to rep this). This Mark will last until the next skill reset. If an Avian dies, they will resurrect with a permanent Mark.\n\nPermanent Marks can never be removed or lost, even if Spiritual Resolve is purchased.\n\nEach Mark adds +5 seconds to the Avian's Anchor count, +1 damage from all magic sources and -1 Strength. These negatives only affect the Avian between 6 PM and 6 AM.\n\nWhen an Avian dies their final death, their body will materialize near the location of death, devoid of Shadow Marks. This Shadow double has only one purpose - the death and destruction of all things the Avian cared for in life. It will last for a minimum of 1 hour or until destroyed.\n\nThroughout the hour the Shadow double's emotions will drain until it is nothing but a husk, driven by a desire for destruction that will bring it no pleasure. The Shadow double will have all stats and abilities that the Avian had upon death, plus a full memory of its life. The Avian player will usually have the opportunity to NPC the Shadow double if they desire.\n\nThe Shaper and player must agree for the Shadow double to last longer than 1 hour.",
+          "ref": "Soul Frag 2.10 p.14"
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Create Goggles",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Avian",
+          "prereqs": [],
+          "desc": "This ability allows the Avian to create a mechanical set of Goggles which only they can use. By spending 10 minutes gathering together pieces of scrap and old junk the Avian can state \"Innate Create Goggles\" and make them magical. The player must provide the phys-rep.\n\nOnce created, an Avian has 10 seconds to infuse these Goggles with any 1st to 3rd Circle spell effect from the core rulebook. This is done automatically, with the Avian simply choosing the spell, it need not be cast into the Goggles. The Goggles function in the same manner as a 1/day magical item and detect as magical.\n\nThese Goggles will last 5 days before the magic fades and the Goggles fall apart. A new pair can be made at this time, with the same or a different spell. Purchasing this ability a second time will grant all spells up to 6th circle and a 3rd purchase will grant up to 9th circle.\n\nNo more than one set of Goggles may exist at any time unless this ability is purchased a 4th time. Any purchases beyond 3rd go toward building new sets of Goggles, following the same rules for spell levels that applied to the first set of Goggles (a 4th purchase allows a second set of Goggles with spell levels 1-3, a 5th purchase upgrades them to 1-6, etc.).\n\nWhen using the Goggles, the Avian does not need to know the Sphere, nor possess any of the requirements to cast the spell, but only the Avian may use their Goggles. Each pair of Goggles may be used once per day but the spell inside may only be changed every 5 days. If the Goggles are destroyed, they may be remade after the next reset, but the spell will be the same as before.",
+          "ref": "Soul Frag 2.10 p.13"
+        }
+      ]
+    },
+    "Blackmane": {
+      "tier": "Rare",
+      "fragCost": 150,
+      "cpBonus": 0,
+      "lore": "Blackmanes were once exceptionally powerful spirits of the Deadlands, cursed to possess the unwilling bodies of the living over and over for eternity. They are bound to Arthos as wandering spirits who claim by force the flesh of mortals whose spirit has been separated from their body.\nLanguage: Common (English).\nRacial Characteristics: The racial requirements of the possessed race. Additionally, they can manifest dripping orange veins around the eyes at will.",
+      "auto": [
+        {
+          "name": "Deadlands Possession",
+          "kind": "advantage",
+          "desc": "Blackmanes must possess a body to exist in this world. On an OOG level, the player can choose any race within the Core rulebook other than human and will gain the racial appearance requirements and the automatic racial that comes with that race. Gender may be changed along with the race if desired. In Game, the racial choice is based on random chance and distance to the nearest living NPC that is currently spiritually walking or manifesting within the Deadlands.\n\nWhen a Blackmane dies, the body it was possessing dies as well, leaving behind a finalled corpse even if the Blackmane has not finalled. The spirit of the Blackmane is forced into the spiritless body of a new NPC who is actively manifested in the Deadlands. That unaware and innocent spirit now becomes a Ghost for eternity and the Blackmane resurrects in that stolen new body.\n\nThis newly possessed body is what the Blackmane will now resurrect with. A Blackmane's facial features will alter to that of the Blackmane's player OOG and will NOT match the facial features of its former owner.\n\nThis process repeats until the Blackmane is flipping a coin for their final death and fails, at which point the current husk they are inhabiting suffers its final death and the Blackmane becomes unplayable. Exactly what happens to the spirit of the Blackmane is up to Shaper discretion, as the true fate of a Blackmane's spirit upon final death is unknown in-game.\n\nWhile they are tied to a mortal body, Blackmanes are not considered Undead. They are \"alive\" for all intents and purposes. Unless the Blackmane is manifesting orange veins around their eyes, they will appear and sense for all purposes as the race they are possessing.\n\nPlease note: this may not be done to the body of a PC unless both players agree out of game in the presence of your guild's lead Shaper or ownership.",
+          "ref": "Soul Frag 2.10 p.15"
+        },
+        {
+          "name": "Favoured Vulnerability",
+          "kind": "disadvantage",
+          "desc": "All harmful spells from the favoured spheres (Light/Dark/Draconic) do x4 damage and have a x2 duration (if applicable). Blackmanes cannot be the target of any beneficial favoured magic or gain the Favoured or Paragon skills."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Spirit Fusing",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Blackmane",
+          "prereqs": [],
+          "desc": "Blackmanes can fuse their spirits to material objects, spending 1 minute to create spirit links naturally with any item they are touching which is not Favoured (Dark, Light or Draconic) in nature. These spirit links may be changed each reset if desired and the same item may be relinked indefinitely. Blackmanes may have 1 active Spirit Fusing per purchase of the racial ability.\n\nAdditionally, Blackmanes may \"steal\" an existing spirit link that belongs to another person so long as that person is within their Death count. This stolen spirit link cannot be a Champion's occupational item, due to the Blackmane's vulnerability. Successfully doing so requires the Blackmane to touch the spirit linked item for a 1-minute count, but if the target's Death count expires before the 1-minute count completes, the Spirit Fusing instantly completes.\n\nThere is no limit to the number of stolen spirit links a Blackmane may have active at any time as they do not count against their Spirit Fusing limit, but stealing a spirit link during a Death count requires an unused Spirit Fusing charge, so the Blackmane must keep a charge open for this theft to occur. That charge will return at reset even if the stolen spirit link continues to exist on the Blackmane. A stolen spirit link will stay active through resets without using a charge of the ability, unless the Blackmane does not want it to.\n\nWhen a spirit link is stolen by a Blackmane via Spirit Fusing, the original owner of that spirit link will know the item was stolen and will mentally see a visual image of the Blackmane \"thief\" upon resurrection, even if they forget their death. This vision will include the Blackmane's face and physical appearance (clothing, etc.) at the time the Spirit Fusing theft was initiated. If the stolen item's spirit link to the Blackmane ends, the item will no longer be spirit linked to anyone.\n\nSpirit linked items confer the following benefits: the item linked cannot travel more than 5 ft away from the spirit it is linked to for any reason. If it is more than 5 ft away, it will vanish and reappear, touching the spirit it is linked to. This effect does not end when the spirit is in their Death Count.\n\nThe item that is spirit linked will dissipate when the spirit it is linked to dies and will reappear in the resurrection circle with them. If they suffer final death, the ritual is removed from the item, and the item remains where the death occurred.",
+          "ref": "Soul Frag 2.10 pp.15-16"
+        }
+      ]
+    },
+    "Draconian": {
+      "tier": "Rare",
+      "fragCost": 150,
+      "cpBonus": 0,
+      "lore": "Draconians are rumoured to have descended from a bloodline infused with Draconic magic. Morally and philosophically, Draconians are usually matched closely with the Dragon whose colour they share. Almost all Draconians find Divine Magic and the Gods morally reprehensible. Draconians appear as humanoid dragons of various colours.\n\nLife Span: Immortal.\nLanguage: Old English.\nRacial Characteristics: At least two large horns protruding from the forehead and scales done in sequins, makeup or prosthetic covering 40% of the face and all other exposed skin.",
+      "auto": [
+        {
+          "name": "Natural Threshold",
+          "kind": "advantage",
+          "desc": "Draconians have a thick layer of scales which become harder than steel as they age. They gain a natural (normal) threshold of one for every three levels, starting at level 1, giving them a 2 Normal threshold at level 4, 3 Normal threshold at level 7, and so on."
+        },
+        {
+          "name": "Weak Spirit",
+          "kind": "disadvantage",
+          "desc": "Due to the nature of their existence, Draconian spirits are considered weaker than normal. They get one \"free\" death before they must begin flipping, instead of the normal two."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Reflect Divine",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Draconian",
+          "prereqs": [],
+          "desc": "Once a day per purchase, a Draconian may use a natural ability to reflect Divine Magic back on its originator, calling \"Racial Reflect Divine\". The Draconian has the option of not reflecting the spell if they so choose. Because this is a racial ability, it affects both Battle Magic and ritual spells as well as anything with \"Light\" or \"Dark\" in the call.\n\nIt can be stacked with magical protections such as Shield Magic. Usable once per day per purchase."
+        }
+      ]
+    },
+    "Fire Elf": {
+      "tier": "Rare",
+      "fragCost": 150,
+      "cpBonus": 0,
+      "lore": "This hardy, desert-native branch of elvendom goes by the name Cindus'Thalan, or Fire Elf. Fire Elves are regarded by many other races as inhospitable, hard-headed, and merciless. Having a population much more numerous than their few fertile lands can provide, most Fire Elves wander in small tribes following the rains.\n\nLife Span: 700-1000 years.\nLanguage: Arabic.\nRacial Characteristics: Red eye shadow and eye sockets with optional orange and yellow highlights, elf ears (with red tips), loose-fitting and light-weight desert clothing.",
+      "auto": [
+        {
+          "name": "Resist Fire",
+          "kind": "advantage",
+          "desc": "Fire Elves are extremely resilient to heat. Once a day they may call \"Racial Resist Fire\" to any magic or elemental attack involving fire or heat, and take no damage from it."
+        },
+        {
+          "name": "Armour Restriction (Fire Elf)",
+          "kind": "disadvantage",
+          "desc": "Fire Elves are limited to 10AP worth of physical armour at level 1. That amount rises by +5AP per level. The fire elf may physically wear more armour but will receive no benefit beyond those numbers."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Endurance",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Fire Elf",
+          "prereqs": [],
+          "desc": "When struck by an effect that would drop a Fire Elf into their Bleed Count via a number based attack (melee, magic, acid, etc.) the Fire Elf may call \"Racial Endurance!\" and remain at 2 Body points, regardless of how much damage they have taken. Endurance cannot be used against numeric attacks that drop a character into their Death Count, such as Elemental attacks. Usable once per day per purchase."
+        }
+      ]
+    },
+    "Goblin": {
+      "tier": "Rare",
+      "fragCost": 150,
+      "cpBonus": 0,
+      "lore": "Filthy, disgusting and mischievous, Goblins are generally regarded by all civilized races to be a plague upon the lands. Traditionally the frontline fodder of the \"Greenskin\" forces, Goblins excel in trapping, torture and treachery. They love the taste of kobold flesh.\n\nLife Span: 40-60 years.\nLanguage: Ukrainian.\nRacial Characteristics: Green skin, long pointed green ears, and thin black veins on the neck and around the mouth.",
+      "auto": [
+        {
+          "name": "Parasites (Advantage)",
+          "kind": "advantage",
+          "desc": "The racial parasites that live in all Goblins come with a surprising advantage. Goblins can vomit these parasites onto creatures to keep them from bleeding out. If a Goblin spends 10 seconds vomiting on a target in their Bleed Count, they will be stabilised and go to 0 Body.\n\nDuring the 10 seconds, the Goblin should ask the target out of game if they're currently infected with Goblin Parasites. They can also explain what just happened during that time. If the target is already infected with Goblin Parasites, the skill will fail.\n\nSuccessfully doing this causes an infection similar to the one Goblins experience. The new infection will consume one half of all healing that is administered to the infected individual (rounded down) to a minimum of 1. Within the body of a Goblin, these parasites are so hardy that they can never be removed.\n\nThe only cures for the parasites in non-Goblins are a Surgeon capable of removing foreign life forms, the individual entering their Death Count, since the parasites need a living host, or ingesting a dose of Heavy Acid. These parasites are considered foreign life forms, not toxins or diseases. This ability may be used at will but the Goblin must consume some type of organic matter larger than an apple in between uses.\n\nThis does not need to be done OOG, but appropriately sized food reps must be present. This ability cannot be used on other Goblins.",
+          "ref": "Soul Frag 2.10 p.18"
+        },
+        {
+          "name": "Parasites (Disadvantage)",
+          "kind": "disadvantage",
+          "desc": "Goblins, constantly living in filth and muck, have become host to racial parasites that feed off their spirit and vitality. These microscopic parasites are incurable even through resurrection and will always consume one half of all healing that is administered to the Goblin (rounded down) to a minimum of 1."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Amorphic Mucus",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Goblin",
+          "prereqs": [],
+          "desc": "All Goblins are equipped with a gland that produces mucus which, when coughed up, has the ability to replicate certain types of alchemy. To use this skill the Goblin must excrete and cough up the Amorphic venom on a 10 second count.\n\nAfter being excreted, the Amorphic Mucus must be put in contact with any alchemical gas globe for 1 minute. If successful, the mucus will harden and take on the exact same properties of the alchemy it was exposed to but will expire in 1 hour.\n\nOnly one Amorphic Mucus may be prepared at any given time. Usable once per day per purchase."
+        }
+      ]
+    },
+    "Risen": {
+      "tier": "Rare",
+      "fragCost": 150,
+      "cpBonus": 0,
+      "lore": "A hybrid race, the Risen are capable of both stepping into the world of the living and that of Undeath. Risen start life at Undeath, likely as one of the thousands created by long dead necromancers or forced to rise out of ancient cursed graveyards.\n\nHand picked by other Risen and forcefully put through a secretive process only known as the Harrowing, the mindless Undead is transformed into a new form.\nLanguage: Common (English).\nRacial Characteristics: While in living form a Risen is a sad reflection of their original race. In Undead form a Risen is recognized as a fast moving rotting corpse.",
+      "auto": [
+        {
+          "name": "Dual Race",
+          "kind": "advantage",
+          "desc": "A Risen's automatic advantage is dependent on which form they are in.\nUndead Form: 0 Silver Threshold levels 1-5 (6PM-6AM only), 0 Magic Threshold levels 6+ (6PM-6AM only), heals from Infliction, +2 Strength Bonus, considered a sentient Greater Zombie.\nLiving Form: Heals from Healing, senses as Life, no advantages of the original living race."
+        },
+        {
+          "name": "Dual Race (Disadvantage)",
+          "kind": "disadvantage",
+          "desc": "Undead Form: Senses as both Undead and Necromancy, x4 Magic Body damage from Healing spells, Daytime Vulnerability (1 Arcane damage per second if uncovered and outdoors 6AM-6PM), susceptible to spells targeting Undead, requires 2 Life effects to take out of Death Count.\nLiving Form: All as if living, senses as original pre-Undead race."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Spirit Skinning",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Risen",
+          "prereqs": [],
+          "desc": "Any creature that has a spirit, is capable of resurrection, and is in their Bleed Count or unable to interrupt a killing blow, may be Spirit Skinned. The Risen must state \"Innate Spirit Skinning,\" and then perform a Killing Blow. If the Killing Blow is not interrupted, then the effects of this ability will instantly place the target into their Death Count and transfer part of their spirit into the Risen. A spirit skinning is a process with a visible component, the description of which is: \"Visible white energy is ripped from the target's body and consumed by the Risen\".\n\nIf successful, the Risen must immediately begin to transform to their living form by stating \"Innate Arcane Race Change. Transform to living 1, transform to living 2, transform to living 3.\" This transformation is automatic and cannot be stopped once the Risen has Spirit Skinned a target.\n\nIf this ability is used while the Risen is already in their Living Form then a Spirit Recall will stack onto their spirit. A Risen may transform into their living form by using a Spirit Recall on their spirit, by stating \"Innate Recall Spirit Skinning.\" This will transform the Risen again into their living form, as if they had just cast the ability on a target.\n\nA Risen can, at will, change back into their Undead form by stating \"Innate Arcane Race Change. Transform to Undead 1, transform to Undead 2, transform to Undead 3.\" The living flesh begins to rot and a moment later the Risen is once again in their Undead form.\n\nThere is no limit to the number of times a Risen can transform back to their Undead form nor is there any skill or ability that will physically force a Risen back into their Undead form save for a successful resurrection. A Risen may use Spirit Skinning at will. However, the maximum number of Spirit Recalls on their spirit is equal to the number of times they have purchased the Spirit Skinning ability.\n\nThese Spirit Recalls expire in 5 days, but the living form obtained from Spirit Skinning is indefinite. Risen players may start their first game in either their living or Undead form, but they may not transform back into their living form without purchasing this ability. A Risen's transformation cannot be interrupted.",
+          "ref": "Soul Frag 2.10 pp.19-20"
+        }
+      ]
+    },
+    "Wolven": {
+      "tier": "Rare",
+      "fragCost": 150,
+      "cpBonus": 0,
+      "lore": "The Wolven race has only been known to exist for a few hundred years, rumoured to have been brought into existence by ancient druids to defend their sacred henges and groves. Wolven look towards the eldest in their communities to solve disputes, consider respect to be the highest of virtues, and are natural hunters.\n\nLife Span: 40-60 years.\nLanguage: Greek.\nRacial Characteristics: Appropriate make-up for the type of canine being played, large pointed ears and a tail.",
+      "auto": [
+        {
+          "name": "Natural Hide",
+          "kind": "advantage",
+          "desc": "Wolven are born with a natural thick hide. To represent this, a Wolven will gain 2 AP (Armour Points) per level, starting with 2 AP at level 1. This armour works in every respect to normal armour save that it cannot be refit.\n\nFor a Wolven to repair their Natural Hide, they must heal it as though it were Body. A Wolven can never cure more Natural Hide AP than they have. Natural Hide AP will be removed after normal and Magical Armour but before Body points.\n\nNormal armour may be worn on top of Natural Hide.",
+          "ref": "Soul Frag 2.10 p.20"
+        },
+        {
+          "name": "Vulnerability to Fire",
+          "kind": "disadvantage",
+          "desc": "Wolven have a natural fear of and vulnerability to fire. A Wolven will take x2 damage from all sources of fire, including Magical and Elemental. Should a Wolven take fire damage to Body, they will suffer a Cower effect from the source of that damage.\n\nThe Wolven must attempt to flee the source of their fear and cower behind any large physical object (cannot be a person) for 10 seconds before they regain their nerve. If no such object exists, they will simply flee to the best of their ability. If the Wolven finds an object to cower behind they may use skills and abilities like normal while the 10 second timer activates.\n\nThe Wolven cannot attack the source that damaged them until the effect is removed or ends. If the Wolven becomes cornered in a way that they cannot escape and are attacked by the source of the cower, the cower effect will immediately end. This effect cannot be resisted or dispelled in any way and should be role-played appropriately.\n\nAs with all racial vulnerabilities, fire damage will bypass any thresholds a Wolven might have.",
+          "ref": "Soul Frag 2.10 p.21"
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Sense Undead",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Wolven",
+          "prereqs": [],
+          "desc": "Allows the player to sense Undead. To sense the Undead, the Wolven must roleplay that they are sniffing (\"scenting\") the air for 10 seconds uninterrupted, then state \"Innate Sense Undead\" in a normal speaking voice. Any Undead who hear the \"Sense Undead\" will respond \"Here\" in a normal speaking voice.\n\nThis ability does not grant the detector any information on the type of Undead. This will not allow Wolven to sense vampires. Usable at will.",
+          "ref": "Soul Frag 2.10 p.21"
+        },
+        {
+          "name": "Strength Bonus (Wolven)",
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 1,
+          "raceReq": "Wolven",
+          "prereqs": [],
+          "desc": "This skill represents raw physical power, increasing the character's Strength rating by +1. This skill can only be purchased once throughout the character's entire existence."
+        }
+      ]
+    },
+    "Yokai": {
+      "tier": "Rare",
+      "fragCost": 150,
+      "cpBonus": 0,
+      "lore": "Once a pack of fox Wolven known as the Charmolipi, the Yokai are a cursed race doomed by a selfless sacrifice to exist within the shattered state between demonic and mortal. Buried inside of each of them is a demon that hungers for blood, subdued only by their nomadic lifestyle and sheer force of inner will.\n\nLife Span: 80-100 years.\nLanguage: Greek and Japanese.\nRacial Characteristics: White makeup base on face with red and black around eyes and red lips. White with red or black canine ears. Red whisker lines on face. Nose black at the bottom with a thin black line on the philtrum. At least one burned demonic symbol on face.",
+      "auto": [
+        {
+          "name": "Foxfire",
+          "kind": "advantage",
+          "desc": "The Yokai have been infused with demonic energy and can focus it into short bursts of destructive power through their physical attacks. After stating \"Innate Foxfire\" the Yokai will gain a Magic Fire aura for 10 minutes. This enchants the Yokai's spirit to deal +0 Magic Fire using any melee weapon the Yokai is proficient with for the duration. This ability is usable once per day."
+        },
+        {
+          "name": "The Stranger Within",
+          "kind": "disadvantage",
+          "desc": "Yokai are simultaneously mortal and demonic. As such, Yokai will sense as demonic in response to \"Sense Demonic\" calls. They will also count as a Greater Demon for the purposes of skills such as Angelic/Demonic Arts and Exorcism. Finally, Yokai take x2 damage from Psionic spell damage, bypassing any thresholds they may have."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Enemy of my Enemy",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Yokai",
+          "prereqs": [],
+          "desc": "While some Yokai may be ashamed of being part demon, most embrace it as a point of pride because they still maintain control over it. Yokai can tap into that power and use it against other demons. Once per day per purchase a Yokai may strike a Lesser Demon with a packet attack and call \"Innate Arcane Control Lesser Demon\".\n\nFor the next hour the target will do anything asked of it, including sacrificing itself. The specific abilities and limitations of the target will depend upon the type of demon being controlled. This ability has no effect against Greater Demons.\n\nWhile a Yokai has a Lesser Demon under their control via Enemy of my Enemy they will be viewed by all other demons as a demon themselves. Weaker demons may avoid hostility so long as the Yokai does not threaten them, as they fear the power that the Yokai is wielding. Greater Demons have a notoriously quick temper but if they're cunning, the Yokai may be able to sweet-talk their way through an encounter with one. This altered perception lasts for as long as Enemy of my Enemy remains active on a target and is considered a change in roleplay, not a Charm effect.",
+          "ref": "Soul Frag 2.10 pp.21-22"
+        }
+      ]
+    },
+    "Carnal Fae": {
+      "tier": "Obscure",
+      "fragCost": 250,
+      "cpBonus": 0,
+      "lore": "With grey skin and yellow veins, Carnal Fae tend to stand out in a crowd. They are a practical race, with a tendency towards self-preservation and a grim sense of humour. Although once mostly Fae-blooded, the millennia of exile has diluted their connection to the Dark Fae.\n\nLife Span: 5000-6000 years.\nLanguage: Gaelic.\nRacial Characteristics: Long pointed ears, grey skin and yellow veins which spider web over their body.",
+      "auto": [
+        {
+          "name": "Destroy Light",
+          "kind": "advantage",
+          "desc": "This racial ability will allow the Carnal Fae to extinguish any magical or non-magical light source. The call for this ability is \"Innate Destroy Light\". If targeting a stationary light source not held by someone, a packet must be thrown and land within 5 feet of the light source to extinguish it.\n\nIf held by a creature with a spirit, only the creature must be hit. This skill may be used once per day."
+        },
+        {
+          "name": "Vulnerability to Iron",
+          "kind": "disadvantage",
+          "desc": "A Carnal Fae cannot touch cold iron without experiencing extreme discomfort. If damage is called and a Carnal Fae is struck with an iron weapon, the Carnal Fae will take iron damage x4. As with all racial vulnerabilities, iron damage will bypass any thresholds a Carnal Fae might have."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Greater Resist Magic",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Carnal Fae",
+          "prereqs": [],
+          "desc": "This racial ability will allow the Carnal Fae to resist any single incoming magical attack. This absorbs the attack, causing no ill effects to the Carnal Fae. This racial ability will stop any magical attack regardless of power, including ritual, Draconic and Arcane Magic, excluding ritual backlashes and flaws.\n\nThe defensive call for this ability is \"Racial Greater Resist Magic\". This skill may be used once per day per purchase."
+        }
+      ]
+    },
+    "Faceless": {
+      "tier": "Obscure",
+      "fragCost": 250,
+      "cpBonus": 0,
+      "lore": "The Faceless are a dark and morbid race, ex-slaves of a demon master long thought to be dead. Appearing as mostly human, Faceless wear elaborate masks to cover a scarred or blank face underneath. All Faceless have amnesia, as their freedom came at a price — no memories of what came before it.\n\nLife Span: Immortal.\nLanguage: Common (English).\nRacial Characteristics: Venetian (carnival) style masks at all times covering at least the top 3/4ths of the face. The face under the mask is either featureless and pure white or a gruesome mess of scars.",
+      "auto": [
+        {
+          "name": "Permanent Non-Detection",
+          "kind": "advantage",
+          "desc": "The Faceless cannot be detected by any means, natural or magical. They do not need to answer to calls of \"Sense Life\" or similar. Their presence is even hidden from that of ultra-powerful beings such as Gods and Dragons."
+        },
+        {
+          "name": "Demonic Spirit",
+          "kind": "disadvantage",
+          "desc": "The Faceless have been tainted by demonic powers. As such, Faceless take x4 damage from sources of Psionic damage and this is considered a racial vulnerability. As with all racial vulnerabilities, Psionic damage will bypass any thresholds a Faceless might have.\n\nAlso, Banish and Exorcism spells will not return a Faceless to their home plane but they will drop the Faceless into their Death Count akin to a Death effect."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Unmasked",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Faceless",
+          "prereqs": [],
+          "desc": "A Faceless may choose to remove their mask, releasing substantial anti-magical powers as a result, calling \"Innate Unmask <Sphere>\". Doing so gives the Faceless immunity to one sphere of magic of their choosing other than Psionics for 10 minutes after the mask is removed. This immunity includes ritual magic and magical barriers from the relevant sphere but cannot grant immunity to magical damage from enchanted weapons.\n\nWhile their mask is not being worn, a Faceless will lose their \"Non-Detection\" racial and instead will detect as everything. Only a Faceless can remove their own mask, and it cannot leave their person. Not wearing their mask is draining for a Faceless, and it may only be done once per day per purchase.\n\nMultiple purchases may be used at the same time to become immune to multiple spheres.",
+          "ref": "Soul Frag 2.10 p.23"
+        }
+      ]
+    },
+    "Gnome": {
+      "tier": "Obscure",
+      "fragCost": 250,
+      "cpBonus": 0,
+      "lore": "Passionately curious and natural inventors, Gnomes are the less robust, more scholarly cousins of the Dwarves. Their cultural distaste for magic has driven them to pursue physical arts and sciences with an obsessive devotion. Gnomes have a distrust for all Fae. Gnomish society is a meritocracy valued based on contributions to inventive progress.\n\nLife Span: 400-500 years.\nLanguage: Finnish.\nRacial Characteristics: Freckles and colourful hair, plus a squeaky voice and gnomish style clothing (tinker/mechanic).",
+      "auto": [
+        {
+          "name": "Scavenger",
+          "kind": "advantage",
+          "desc": "Gnomes have a natural talent for finding useful scrap, repurposing junk into amazing gadgets. At each Logistics, Gnomes may collect 5 universal RM."
+        },
+        {
+          "name": "Psychosomatic Static",
+          "kind": "disadvantage",
+          "desc": "Gnomes hate magic and magical items in particular, including spell foci. This manifests in a bizarre psychological condition. If a Gnome comes into contact with a magic item they will begin to itch violently, as if they were allergic to it, and must scratch themselves frantically.\n\nThis itching will continue so long as the Gnome is touching the item or has it anywhere on their person. While the itching continues the Gnome is unable to speak, cast or use any skills, but can move at normal speed. This prevents a Gnome from activating magic items that have per day/hour/etc. abilities, as they cannot speak the activation words.\n\nGnomes may handle magic items that don't require activation, such as magical swords and armour, but they will continuously experience their allergic reaction while doing so. It is important to note that this allergy isn't real - it's all in the mind of the Gnome. It will activate when the Gnome a) knows that an item is magical or b) believes it is magical.\n\nThe Gnome cannot actively detect magical items and confirm their existence out of game, but they may react to items which simply seem magical. For example, if a wand covered in runes is glowing, a Gnome will believe it to be magical in nature. Gnomish hatred of magic is a racial disadvantage and is therefore impossible to overcome.\n\nGnomes cannot be tricked into using magic, disbelieve in magic or otherwise avoid this racial hatred in any way. Gnomes are always able to distinguish Gnomish Devices from magical items.",
+          "ref": "Soul Frag 2.10 p.25"
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Gnomish Device",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Gnome",
+          "prereqs": [],
+          "desc": "Through skilled tinkering a Gnome can create fantastical gadgets which mimic magic items without being magical. For each purchase of Gnomish Device, a Gnome is able to build and maintain one additional Device. The Gnome may choose from 3 lists of 10 Devices during Logistics, provided by the Shaper team.\n\nThese lists are divided into Offensive, Defensive and Utility themed Devices. After choosing a list the Gnome's player will then roll randomly on whichever list they chose. They may see the lists prior to choosing a list.\n\nThe result of the roll will determine which Device the Gnome receives. If the Gnome does not like the Device they receive, they can pay 5 RM per digits difference between the item they rolled and the item they want. For example: Wozzbur rolls a 7 after selecting the Defensive list.\n\nWozzbur sees a Device he wants more, which is Device #3 on the list. Wozzbur can pay 20 RM (5 RM x 4) to select that Device instead.\n\nEach Gnomish Device has one per day power and one negative effect that is either constant or activates along with the power. After the initial use, a Gnome may choose to feed RM to the Device to use it again. For every 5 RM of any type used to power their Device it will receive a new daily use of that power.\n\nIf more than 5 RM is used on the Device at one time it will not be divided; any additional RM past 5 will be wasted. Each Device can be \"recharged\" up to 5 times per day.\n\nGnomish Devices do not expire, but during Logistics a Gnome may abandon an old Device and select a new one from the Device lists. Devices may not be switched mid-event and may only be used by their creator. Device powers are not considered racial and will use prefixes based on their design - alchemical, elemental, magic, etc. Although some Devices will use magic prefixes for the sake of clarity, they will not detect as magical nor are they magical in-game.",
+          "ref": "Soul Frag 2.10 pp.24-25"
+        }
+      ]
+    },
+    "Ice Elf": {
+      "tier": "Obscure",
+      "fragCost": 250,
+      "cpBonus": 0,
+      "lore": "Perhaps the most isolated, xenophobic and secretive of all Elven races, the Ice Elves call the tundras of the frozen north their homeland. All Ice Elves are tied to the dark goddess Pandora on a spiritual level. Acceptance of pain as a method to grow stronger is a core feature in almost every Ice Elf's upbringing.\n\nLife Span: 700-1000 years.\nLanguage: Portuguese.\nRacial Characteristics: Pointed ears with blue tips. Pale, blue-tinged skin with dark blue markings and ice-like designs around the eyes and upper face.",
+      "auto": [
+        {
+          "name": "Scion of Suffering",
+          "kind": "advantage",
+          "desc": "Ice Elves are conditioned to carry on when physical pain would leave any other race unable to do more than cry for help. When at 0 or 1 Body, Ice Elves remain conscious and able to perform all actions they normally could at 2 Body, without falling unconscious. Use of this ability does not require the skill Self Mutilate."
+        },
+        {
+          "name": "Pandora's Touch",
+          "kind": "disadvantage",
+          "desc": "Ice Elves are marked from birth by the dark magics of Pandora. If \"Sense Dark\" calls are used, they must respond. Ice Elves have a permanent aura on their spirit of \"Active Dark Magic\" at all times, which will respond to certain effects, such as Wytch Marks.\n\nFinally, like Angels they are vulnerable to Psionic magic, and take x2 from Psionic damage. Exorcism effects do not affect them.",
+          "ref": "Soul Frag 2.10 p.26"
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Memories in Flesh",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Ice Elf",
+          "prereqs": [],
+          "desc": "Once a day an Ice Elf may recall a lesson by carving into their skin with a blade a phrase, an image, a symbol, etc., that reminds them of their lesson. Doing so takes 5 minutes of focused concentration and will return the use of any tagged (daily, hourly, etc.) character ability or skill, including class abilities, that has been used since last reset. This ability may only be used when the Ice Elf is at full Body.\n\nIt will not return any skill or ability more than once per day even if the character has multiple purchases of the skill or multiple purchases of Memories in Flesh. Memories in Flesh will not refresh magic items or ritual spells on spirit. If Memories in Flesh is used to return a spell slot, that spell slot can only be used to cast the original spell memorised for that slot.\n\nUsing this racial ability will lower the Ice Elf to 1 Body at the end of the 5 minutes of concentration. This ability may be used once a day per purchase, which will allow additional uses for different skills/abilities.",
+          "ref": "Soul Frag 2.10 p.26"
+        }
+      ]
+    },
+    "Sidhe": {
+      "tier": "Obscure",
+      "fragCost": 250,
+      "cpBonus": 0,
+      "lore": "Sidhe are a race of \"pure\" fae, unlike the diluted blood of Wood Fae and Carnal Fae. Mischievous and meddling by nature, even the best intentions of a Sidhe rarely come without strings attached. Sidhe are potent spell casters tied to the sun and moon. \"Day Sidhe\" are usually optimistic, where \"Night Sidhe\" tend to be more distrustful.\n\nLife Span: 5000-6000 years.\nLanguage: Gaelic.\nRacial Characteristics: Long pointed ears and large horns. Contour the hairline and cheekbones in white/gold/orange/yellow for Day Sidhe or black/blue/grey/purple for Night Sidhe.",
+      "auto": [
+        {
+          "name": "Formless Casting",
+          "kind": "advantage",
+          "desc": "This racial allows a Sidhe to cast Battle Magic spells without requiring a free casting hand or the need to speak. Out of Game, the player must still correctly state the spell's incant and is still required to hit their target with a spell packet (if needed) however in-game the Sidhe will remain motionless and silent during casting. In other words, the rulebook process for casting a spell remains the same (incant + packet strike), it is only the In Game actions which change.\n\nSpell packets are still visible in game, visibly originating from the Sidhe, and any defences which the spell triggers will still create the normal flash of light when they go off. This racial ability functions at will for Day Sidhe between 6 AM - 6 PM and for Night Sidhe between 6 PM - 6 AM. To activate this power, a Sidhe must state \"Formless Casting\" prior to any incants.",
+          "ref": "Soul Frag 2.10 pp.26-27"
+        },
+        {
+          "name": "Fleeting Death Count",
+          "kind": "disadvantage",
+          "desc": "Unlike other true fae, Sidhe do not have a vulnerability to iron. However, their spirits on the mortal realm are weak. Sidhe have a 10 second Death Count which cannot be extended or paused in any way.\n\nDuring these 10 seconds the Sidhe can stand on their feet as a spirit and cast any one spell from memory. After they choose to cast a spell, they cannot be Lifed. They cannot speak during this time (minus their one incant) and both feet must remain planted after they have stood up.\n\nThey are completely invulnerable for this period and appear as a ghostly version of themselves, unable to physically interact with people or objects. A Sidhe may choose to target themselves with a Life spell, throw a final spell at their enemy or assist an ally. This spell must still be incanted correctly and the target must be struck with a packet if required.\n\nOnly a magical Life effect (cast by the Sidhe themselves or another) will revive them. Non-magical Life effects will have no impact. The 10 second window only exists for the Sidhe if they are in their matching time cycle - day for Day Sidhe, night for Night Sidhe - however there is no limit to the amount of times the 10 second window may be used during those periods.\n\nIf they are not in their matching time cycle, they will bypass their Death Count and resurrect immediately.",
+          "ref": "Soul Frag 2.10 p.27"
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Magic Echo",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Sidhe",
+          "prereqs": [],
+          "desc": "Sidhe have the ability to \"Echo\" a spell that they have cast against a target. If their target successfully defends against a spell, the Sidhe can cause it to strike a second time in an attempt to bypass defenses. By using this racial, a Sidhe can force their opponent to defend a second time or take the effect.\n\nWhen the target is hit by a spell and calls an appropriate defense, the Sidhe may then call \"Innate Echo!\", causing the target to be instantly hit by the spell again. This skill cannot be used to Echo magic items. Usable once per day per purchase."
+        }
+      ]
+    },
+    "Vulcan Dwarf": {
+      "tier": "Obscure",
+      "fragCost": 250,
+      "cpBonus": 0,
+      "lore": "A hardy and quick-tempered race, the fire-infused Vulcan Dwarves make their home within mountains, particularly volcanoes. When the Black Dragon Styphon awoke, their subterranean kingdom was sieged by Undead and the majority of their population was enslaved.\n\nSome Vulcan Dwarves have managed to escape their volcanic home and have begun to explore the surface world.\n\nLife Span: 400-500 years.\nLanguage: Danish.\nRacial Characteristics: Red beards shorter than 6 inches in length, black eye sockets with black veins that spiral out from their sockets.",
+      "auto": [
+        {
+          "name": "Volcanic Skin",
+          "kind": "advantage",
+          "desc": "Vulcan Dwarves have an extremely thick skin due to their acclimatization within an active volcano. The possession of this thick skin gives a Vulcan Dwarf the ability to resist any single Body damage attack, once per day, by calling \"Racial Resist\".\n\nResisting an attack this way will also allow the Vulcan Dwarf to resist any effects that would have affected the Vulcan Dwarf if the attack was successful."
+        },
+        {
+          "name": "Crippling Vulnerability to Cold",
+          "kind": "disadvantage",
+          "desc": "Vulcan Dwarves take x4 damage from Ice. Furthermore, if a Vulcan Dwarf is dropped into their Bleed Count via an Ice attack they will explode into chunks of frozen body parts and enter their Death Count, removing the Bleed Count entirely.\n\nOnly a Life spell or some other form of miracle will bring them back to life at that point. As with all racial vulnerabilities, Ice damage will bypass any thresholds a Vulcan Dwarf might have."
+        }
+      ],
+      "purchased": [
+        {
+          "name": "Endure Fire",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "raceReq": "Vulcan Dwarf",
+          "prereqs": [],
+          "desc": "Vulcan dwarves have the ability to endure massive amounts of heat. Once per day per purchase a Vulcan Dwarf is able to endure elemental and magical fire for 10 minutes. During those 10 minutes they will subtract 25 damage from all sources of fire and heat to a minimum of 0.\n\nEach time this ability is purchased an additional -25 is added and an additional use is gained. This ability is activated by stating \"Racial Endure Fire\"."
+        }
+      ]
+    }
+  },
+  "cultures": {
+    "Taliss Pride": {
+      "races": [
+        "Savar'Aving"
+      ],
+      "lore": "The Taliss Pride are a pride of guerilla warriors from Felnir tasked during the necromantic plague to combat not just the undead but the sources of necromancy, especially Malagant and his minions, functioning similar to traditional wytch hunters. Originally hunting exclusively within Felnir's forests, they have now spread beyond it.\n\nThe Taliss Pride seek out churches of Malagant or other powerful necromancers with an intent to destroy any source of undeath without hesitation or mercy. Sometimes they are forced to operate outside the law and they will not hesitate to do so.",
+      "indoctrination": "If invited to petition, a Savar'Aving is given a special brew to drink once a month for a year which slowly infuses their claws with magic, allowing them to better combat the undead. This is a long process and the magical effect will not be strong enough to make a discernible difference until the final, most potent brew is offered.\n\nDuring the year, the initiate is expected to fight and destroy undead using a variety of tactics. The bigger the kill, the more dangerous the mission, the more Taliss will be impressed. The Taliss also value stealth, ambushes and similar tactics.\n\nIf accepted, a Savar'Aving's claws will become permanently magical against undead and the brew is no longer required.",
+      "racialCharacteristicAddition": "A noticeable snow-white streak of fur, at least 6 inches long, either on the face or starting on the face and moving into the hairline. If the fur pattern naturally included streaks, the Taliss streak should replace one of them.",
+      "purchased": [
+        {
+          "name": "Redeemer's Claws",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqs": [],
+          "desc": "A Taliss Pride member's Claws always swing for +0 Magic damage against Undead (identified via Necromantic Arts or witnessed taking damage from Healing). If they already swing for Magic damage, they swing for +1 additional damage. This ability is always on but does not stack.\n\nOnce per day per purchase, if a Taliss Savar takes Infliction damage from an Undead (identified as above), they may call \"Innate Redeemer's Claws\" to seal the Infliction in their Claws for a time. For one minute they do not take the damage or any effect from the attack.\n\nIf the Undead who delivered the attack is reduced to 0 Body before the end of the minute, the delayed Infliction is harmlessly released without touching the Taliss's spirit. If not, the Taliss takes the full effect after the minute ends. Only one Infliction attack may be delayed at a time."
+        }
+      ]
+    },
+    "Granite Sentries": {
+      "races": [
+        "Gargylen"
+      ],
+      "lore": "After the Duesworn Fellowship joined the Amaranthian Legion and began building permanent fortifications, Gargylen smiths were tasked with ensuring their guards were as fortified as possible to defend their new homeland. They created the highest quality armor they could to improve protection, but wondered: could the armor be used to augment the Gargylen themselves?\n\nAlthough the process was difficult and dangerous, the Gargylen smiths developed a method of grafting increasingly stronger pieces of armor onto their test subjects with the help of Mountain Dwarven smiths and the knowledge of lesser Gargylen physiology carried by the Forgeborn. Coupled with intense training, these new augmentations allowed the bearers to maintain a permanent form of their previously temporary Stone Skin abilities.\n\nThose with the most powerful augments and grueling training regimens even began to shrug off certain types of attacks altogether. Unfortunately, this newly fortified form left the Granite Sentries permanently vulnerable to magics that dealt damage directly to the Body.",
+      "indoctrination": "While any Gargylen can become a Granite Sentry, they must first gain the approval of a Forgeborn smith trained in the augmentation process. Assuming the Forgeborn agrees, the Gargylen must prove their fortitude by withstanding each of the excruciating and lengthy augmentation sessions, while awake with their Stone Skin active.\n\nThe process takes a year to complete. Every two months, the grandmaster smith will graft new pieces of armor into the Gargylen's layers of Stone Skin. The armor used as material components must be provided by the Gargylen subject.\n\nNo more than one step can be completed every two months as the changes must be given time to heal, and the Gargylen must train to effectively utilize their new augmentations.\n\nThe first step requires a set of leather armor tags worth at least 50 Armour Points. The second step requires a set of chainmail armor tags worth at least 75 Armour Points. The third step requires a set of plate armor tags worth at least 100 Armour Points.\n\nThe fourth step requires a Master Crafted metal shield. The fifth and final step requires Legendary armour tags worth at least 25 Armour Points (excluding the +1/zone bonus granted by Legendary status) that have an active Blueprint applied.\n\nAll five sets of armour are required even if the Gargylen never advances their Granite Skin to the full extent.",
+      "racialCharacteristicAddition": "Any exposed skin must have granite-like flecks of black and white.",
+      "purchased": [
+        {
+          "name": "Granite Skin",
+          "maxPurchases": 5,
+          "bodyBonus": 5,
+          "strBonus": 0,
+          "prereqs": [],
+          "desc": "The Gargylen gains +5 permanent Body points but suffers double damage from all spells that damage the Body. The amount of permanent Body points gained can be increased with additional purchases. With two purchases, the total permanent Body points gained increases to +10; three purchases increases the total permanent Body points gained to +15 and grants a +5 Normal threshold; four purchases increases the total permanent Body points gained to +20; and finally, five purchases increases the total permanent Body points gained to +25 and grants a +0 Silver threshold."
+        }
+      ]
+    },
+    "Clan Icebreaker": {
+      "races": [
+        "Mountain Dwarf"
+      ],
+      "lore": "A small clan from the frigid ice floes south of the Walking Sea, these hearty Dwarves sometimes travel south in search of adventure. While they originally stayed in the area due to the rich marble veins found in the islands, they've grown fond of the challenges and isolation.\n\nTo help them survive in their inhospitable climate they commonly chew the leaf of the Rockbud plant which permanently damages their vitality but enables them to withstand the extreme cold. They dwell underground in sheltered cave systems near the shoreline and come up to fish and hunt. They have a reputation for disliking long conversations and being extremely close-knit.",
+      "indoctrination": "Elders of Clan Icebreaker prefer isolation, so finding one to mentor under can be difficult, though not impossible. Once an Elder is found, they may be convinced to teach their ways by means of up to a year's service. The applicant will be tasked to bring them the hearts of three Rimesnapper lobsters.\n\nRimesnapper lobsters feed on Rockbud plants, which are a type of seaweed that grows on the shores of the colder regions of the Elemental plane of Ice. A secret Icebreaker recipe brews Rimesnapper hearts into a tea which transforms a Mountain Dwarf's famous vitality into a means of summoning frost over their weaponry.\n\nThe applicant Dwarf will be given a special fishing lure by the Elder and told to find a pond. When the lure enters the water, the water will begin to freeze. After 30 minutes the water will be frozen over completely and open a rift to the plane of Ice near a Rimesnapper fish, which will be drawn through the rift, into the material plane.\n\nThe Dwarf (and friends) must fight the horse-sized, aggressive lobster, which uses Elemental Ice and its massive claws to defend itself. Once three hearts are collected in this manner, they may be returned to the Elder and brewed into tea.",
+      "racialCharacteristicAddition": "Light blue around the eyes and white streaks in the beard.",
+      "purchased": [
+        {
+          "name": "Ice Blade",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqs": [],
+          "desc": "By stating \"Innate Ice Blade\", a Clan Icebreaker Dwarf can summon elemental ice to cover their weapon. This mimics the effect of Greater Elemental Blade, adding +5 damage in addition to the weapon's normal damage and changing the damage type to \"Magic Ice\" against one specific target.\n\nThis effect will remain on the target's spirit until they change targets, go more than one minute without attacking, or they or their target are no longer conscious. This ability can stack with the spell \"Elemental Blade\". This ability is useable once per day per purchase."
+        }
+      ]
+    },
+    "House Mortuus": {
+      "races": [
+        "Dark Elf"
+      ],
+      "lore": "Darkness rules within Antioch, both literally and figuratively. But even in a city famous for wickedness being a way of life, there is one noble house whose presence can intimidate even clerics of Raze – House Mortuus. Less a true noble house and more of mage's guild which studies necromancy and undeath exclusively, they have nonetheless been given noble status within the Dark Elven capital.\n\nInitiation to the House is open to any Dark Elf who desires it, no matter who they might serve in body or spirit, so long as they are driven to furthering the study of necromancy. On rare occasions, even non-magi are welcomed into the fold.",
+      "indoctrination": "Although House Mortuus is based out of Antioch, its members do not need to live there. House Mortuus is in constant need of agents in the field, performing experiments, collecting magic items and watching over initiates who seek to join the House.\n\nIf a Dark Elf shows promise they may be invited to join. During the year, the petitioner will be expected to collect knowledge and lore specific to necromancy, donate necromantic magic items, catalysts, ritual scrolls and similar, as well as show promise as a necromancer themselves or assist those who are.\n\nThis is a cutthroat process, and it would not be frowned upon for one petitioner to outright murder a competitor. Once finally accepted into the House an elaborate necromantic ritual is cast on the petitioner by members of House Mortuus, which permanently changes their biology and makes them naturally capable of controlling necromantic energies.",
+      "racialCharacteristicAddition": "Purple veins instead of black.",
+      "purchased": [
+        {
+          "name": "Death Clad",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqs": [],
+          "desc": "Masters of undeath, members of House Mortuus can clothe themselves in necromantic energies that would mutilate anyone else. When a House Mortuus Dark Elf takes Infliction damage, they can state \"Innate Death Clad\", taking no damage and instead gaining Magical armour equal to twice the Infliction they would have taken.\n\nEg: If the Dark Elf is hit by a spell that deals 10 Infliction, they would instead gain +20 Magical armour. This armour cannot be refit and is removed before physical armour. It can stack with other sources of Magical armour but not itself.\n\nWhile the Dark Elf has any amount of Magical armour from this ability, Lesser Undead will ignore them so long as the Dark Elf takes no hostile action against them. They should state \"Innate Undead Affinity\" when passing Undead to indicate this.\n\nThe Magical armour lasts for 1 hour or until destroyed. This ability is usable once per day per purchase."
+        }
+      ]
+    },
+    "Domaine Magique": {
+      "races": [
+        "High Elf"
+      ],
+      "lore": "Prior to the destruction of Suvant, the elvish kingdom contained a small but well-respected mage's guild. After Suvant's fall, some of the mages who were outside of the city during its fall chose to rebuild within Day'ten but many others have chosen to travel the world, teaching what they know to other High Elves and to continue their own pursuit of magical knowledge.\n\nGiven the High Elves' natural affinity for magic, only they may learn the Ritual Affinity of the Domaine Magique.",
+      "indoctrination": "Joining the Domaine Magique is a straightforward process and one which should be familiar to most magi. First, one must petition a current member and offer to become their apprentice. Members of the Domaine Magique will not simply train anyone who requests it.\n\nAn applicant must prove that they possess not only great potential as a student but will also be a valuable asset to their mentor as they pursue their own studies. The prospective student will be expected to assist their mentor when needed and, once a month for one year, they must also demonstrate their skill in ritual magic at a level of difficulty which pushes their ability to its maximum.\n\nSometimes this test will be to the benefit of their mentor in their own field of study and quite often it will be a dangerous endeavour. After a year of apprenticeship, if the mentor deems the student worthy, a ritual will be cast upon them, twisting their natural defence against psionics into a similar defence for ritual magic.",
+      "racialCharacteristicAddition": "Milky white fingernails and lips.",
+      "purchased": [
+        {
+          "name": "Ritual Affinity",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqs": [],
+          "desc": "Once per day per purchase, the user can perform one of three abilities: Resist the effects of a ritual flaw against themselves (but not backlash); Gain an extra ritual spell slot that can be used solely to act as a secondary caster in a ritual; Decrease the effective level of a ritual which they are casting (primary or secondary) by 1, as long as at least one other High Elf is participating and the ritual is level 9 or above (this cannot stack).\n\nThe user may take advantage of the second ability even if they do not have any ritual slots of their own but must be able to read rituals and cast a sphere of magic."
+        }
+      ]
+    },
+    "Kraken": {
+      "races": [
+        "Wild Elf"
+      ],
+      "lore": "Though they call themselves the Storto di Coa in their native tongue, these isolationist, sea-bound wild elves are more commonly known as the Kraken tribe to outsiders. Living upon a fleet of ancient, living wooden ships grown with powerful nature magic, they primarily serve as guardians and caretakers of sacred aquatic spaces.\n\nAs prideful and prejudiced against land-dwellers as they are, occasionally an outsider proves themselves worthy of joining them in their venerable duty.",
+      "indoctrination": "Joining the Kraken tribe is difficult. They do not look kindly upon most outsiders and their trust must be earned through service. A prospective Kraken must forswear all loyalty to their old tribe, and they must serve as an agent of the Kraken tribe for many months prior to joining.\n\nThough the Kraken see the land as spiritually barren at best, they recognize that ignoring both it and the peoples that live upon it would be foolish. Thus, these agents serve as extensions of their will. At the direction of a proper Kraken they gather intelligence, eliminate threats, conduct trade, and so on.\n\nOnce their sponsor believes they have proven themselves, the prospective Wild Elf is invited to join the tribe. They are fed a draught of enchanted saltwater drawn from Coa's Cove. This powerful drink forever changes their physiology, altering their ears to grant them a superb sense of balance as their limbs flow like water.",
+      "racialCharacteristicAddition": "\"Webbed\", serrated ears.",
+      "purchased": [
+        {
+          "name": "Freedom of Movement",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqs": [],
+          "desc": "This ability grants the user Freedom of Movement for 1 minute, stating \"Racial Freedom of Movement\". This makes the user immune to any binding effect that would physically constrict them, any effect that would stun them, and any effect that would slow their movement in any manner that is not a Mind Altering effect or being knocked unconscious.\n\nThis includes effects, such as Stun, Swampwalk, Snare, Bind, Web, Black Plague, Tread Water, etc., but not effects like Sap or Repel. The Kraken would call \"No Effect\" to any such effect. This ability is usable once per day per purchase."
+        }
+      ]
+    },
+    "House of Séasúir": {
+      "races": [
+        "Wood Fae"
+      ],
+      "lore": "The House of Séasúir (Seasons) have become disenchanted with their chaotic, free-living kin. They have instead devoted themselves to the True Fae seasonal Courts, hoping to trade in their carefree upbringing for one of order, structure and servitude.\n\nThe House of Séasúir is an organisation that serves the noble houses of the True Fae in whatever capacity is needed. The first step is to join the House of Séasúir, and to swear loyalty to the True Fae Courts in an elaborate ceremony involving Fae magic.",
+      "indoctrination": "To join House of Séasúir a Wood Fae must find and petition a True Fae noble house to sponsor them, through gifts or service. Gifts must be considered valuable to the True Fae they are attempting to impress, either due to craftsmanship or worth.\n\nThe nature of the personal service greatly depends on the True Fae being petitioned and should not be taken lightly. Acts betraying one's friends and family or involving dangerous situations are not uncommon – the Fae do not trust lightly and test their would-be allies accordingly.\n\nThis application period typically lasts for one year and in the end the Wood Fae may simply be thanked and never hear from the True Fae again… but if they've truly impressed a True Fae, the benefits may last a lifetime.",
+      "racialCharacteristicAddition": "Colourful swirling \"Fae style\" marks on the face and neck, typically matching the personality of the True Fae who sponsored them.",
+      "purchased": [
+        {
+          "name": "Blessing of the Queen",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqs": [],
+          "desc": "To use this ability the Wood Fae must mark two locations as being \"Fae Touched\". This can be done by adding flowers, tying colourful ribbons or similar methods personal to their Fae sponsor. This ceremony must be roleplayed for 5 minutes at each location and the Wood Fae must not leave the areas during this time.\n\nThe ceremony for the second location must occur within 1 hour of the first ceremony. Once completed, once per day per purchase, they may enter one of the two locations, touch the center and be transported to the other location on a 5 count.\n\nThe time it takes to be transported to the other location is the time it takes the player to walk to that location. This ability will allow for passage through Nature-based barriers, such as Henges, but not other magical barriers such as Vaults.\n\nThe two locations cannot be farther than 3 miles apart. The Wood Fae may take one \"passenger\" along with them so long as they are willing and an additional usage of Blessing of the Queen is expended. If the physical items marking the location are destroyed, the location will no longer work.\n\nOnly one pair of locations may be created per day and to change either location, both must be redone."
+        }
+      ]
+    },
+    "Ebon Khan": {
+      "races": [
+        "Orc"
+      ],
+      "lore": "The specifics of the arcane rites that created the newborn Ebon Khan Orcs of Amarinthia are kept closely guarded by the Den Mothers and their Hivefather Scissa Manyeyes. These fearsome Orcs took on the traits of Brood, to better combat their encroachment upon Orcish territory.\n\nAfter the Ebon Khan lost their localised hive mind upon the death of the Brood Matriarch dragon Ta-Ba-Ret, they gained a new appreciation for the individuality of the sisters and brothers that helped them during the Amarinthian War. As such, the Hivefather revealed an unprecedented secret: a rite to imbue Orcs with Brood essence even after they have come of age.\n\nWhile still macabre to some and lacking the true abilities of an Ebon Khan, the Hivefather's gift has been offered to many Orcs seeking a taste of their strange power.",
+      "indoctrination": "Once an Orc finds the Ebon Khan and asks to join, they will be questioned at length about their motivations. If accepted, they must hunt down as many Brood as possible. Each Brood must be captured alive and its chitin must be surgically removed, then brought back to their Ebon Khan mentor, who will typically grant an audience once per month.\n\nThe hunt should start with a regular Brood and increase in danger to more powerful ones, finishing with a Tanker Brood. After each successful hunt, the Orc will be given an acid-soaked piece of Brood flesh to consume and they will be trained a little more.\n\nIf their training is deemed successful at the end of the year, a ceremony will be performed by three Ebon Khan members involving Brood Oil, which can only be obtained from Brood Queens. The oil will be mixed into a chitin cocoon made from the pieces the Ebon Khan has obtained throughout the year, to simulate how true Ebon Khan are made at birth. The Orc steps inside the acid- and oiled-soaked cocoon, burning and changing them.",
+      "racialCharacteristicAddition": "Blood coloured mandible-shaped scars around lower mouth and chin, or scars around the face resembling eyes.",
+      "purchased": [
+        {
+          "name": "Brood Constitution",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqs": [],
+          "desc": "While the Orc is above half their normal Body points (rounded down), they will Minimize Acid damage they receive. While they are at or below half their normal Body points, they can use their blood to coat their own weapon in an acidic solution on a 5 count, stating, \"Acid Coating 1, Acid Coating 2, etc.\"\n\nAfter doing this, the next swing they make within the next 5 minutes will do +0 Acid damage. This can be done once per minute and does not stack with itself. If they are interrupted while coating their weapon, they must wait a minute before trying again. Only the Ebon Khan Orc themself can benefit from this.\n\nEbon Khan may communicate telepathically with other Ebon Khan or creatures with the Hivemind ability at will, as long as they are within arm's length. This is represented by quietly speaking to the target OOG, who can respond in the same manner."
+        }
+      ]
+    },
+    "Clan Vinatore": {
+      "races": [
+        "Ajaunti"
+      ],
+      "lore": "Clan Vinatore are a reclusive clan, travelling in pursuit of spirits needing to be put to rest or hiring themselves out to rich nobles with haunted property. Members of this clan consider doing this a mercy as they believe these spirits are trapped in this realm, unable to go to the afterlife.\n\nThis does not mean that the Clan Vinatore underestimates the danger of these spirits – they come prepared. The Vinatore have dedicated themselves to aiding their ancestors and combating Haldora's influence in the Deadlands.",
+      "indoctrination": "Joining this clan involves performing a monthly séance, led by the Ajaunti's NPC mentor, for a year in which the Ajaunti physically travels into the Deadlands to briefly speak to an ancestor and help them in some way. The more ancestors helped, the more likely an Ajaunti will be accepted into Clan Vinatore.\n\nIf their training has been completed and deemed a success, a final séance will be performed. In it, they will be visited by their ancestors, who will mark new member's cheek with the names of the ancestors they helped, as a reminder of those who have laid the foundation for the Ajaunti before them, and the eventual destination for all Ajaunti that are alive today.",
+      "racialCharacteristicAddition": "Flowing black script written on the cheek under the cheekbones that describes some ancestors and their names.",
+      "purchased": [
+        {
+          "name": "Spirit Hook",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqs": [],
+          "desc": "The Ajaunti may throw a packet and declare \"Innate Arcane Spirit Hook\". If it strikes a target that is an Ethereal Undead, they will be affected by an Arcane Web effect that immobilizes them from the neck down. Creatures trapped this way are unable to do anything except talking, reading, and skills that require no movement.\n\nTrapped creatures may also activate Magical items if the items are touching them, though few items would be beneficial, for the victim cannot use their hands to direct the activated item by throwing packets. Creatures with a Strength bonus of +6 may rip free from the web, taking three seconds and doing 6 Body in the process regardless of threshold.\n\nOtherwise, they may be cut out which takes 6 minutes of time to completely remove the sticky strands. Webbed creatures cannot be moved. This effect lasts as long as the Ajaunti has line of sight of the Undead.\n\nIf used on a ghost whose spirit is trapped in the Deadlands, this ability will function as a binding circle and force it to remain in place. This does not give the Ajaunti control over the creature but it does prevents its escape.\n\nOnce a creature is successfully struck with the packet, a 5-foot diameter circle of salt and ash will appear centered around the ghost. The Ajaunti can keep the ghost in the circle indefinitely until it is put to rest or the circle is destroyed.\n\nThe ghost can converse through the circle, assuming anyone has the ability to understand it. Should the circle be crossed or breached by anything or anyone, the effect will end immediately and the ghost trapped inside will be freed.\n\nThe Ajaunti may choose to drop the circle at any time. The circle perimeter must be represented by a rope or a similarly identifying prop.\n\nThis ability has no impact on people who are possessed by ghosts. This ability is usable once per day per purchase."
+        }
+      ]
+    },
+    "True Berserker": {
+      "races": [
+        "Einher"
+      ],
+      "lore": "Many Einher can conjure up an inner controlled rage which makes them truly fearsome in battle, but some Einher go further. These Einher embrace tradition and spirituality and make that strength a lifestyle of its own. Most holy to a True Berserker is their Mantle: a realistic wolf or bear headpiece which has internal hooks and spikes that dig into the Einher's flesh when worn.\n\nThe Mantle represents the Berserker offering themselves to the wolf or bear spirit, inviting them to possess their body for the battle. While the Mantle is not strictly necessary to use their Berserker Poison, it is considered incredibly important.\n\nA lost or destroyed Mantle can be replaced with minimal effort so long as the Berserker has access to another full bear or wolf skin.",
+      "indoctrination": "To become a True Berserker, an Einher must first meet and convince an existing True Berserker to tutor them. If accepted, this mentorship begins with the Einher making a short pilgrimage to an isolated location in the wilderness. There they will remain for a week, meditating and consuming hallucinogenic mushrooms.\n\nThe purpose of this spiritual journey is to form a bond with either the wolf or bear, which will become the base of their Mantle. If successful they will return to their mentor where they will be given ten tasks over the course of a year.\n\nThese tasks will be tests of strength, endurance and hardship. The final test will involve hunting a bear or wolf, the more fearsome the better, with no armour and only simple weapons. Not every test need be successful – sometimes the greatest lessons are taught in failure – but the Einher must show resolve and succeed at the final test, as the Berserker's Mantle will be made from that final kill.",
+      "racialCharacteristicAddition": "Pictish-style war paint covering any exposed flesh.",
+      "purchased": [
+        {
+          "name": "Berserker Poison",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqs": [],
+          "desc": "The Einher may brew an \"Ingested Alchemical Berserker Poison\" that lasts until reset. This brew takes 10 minutes to make and is made from bodily fluids, local fungi and water from a source that is spiritually significant to the character.\n\nUnlike regular ingested alchemy, the brew cannot be mixed with any other food or drink. This brew can be ingested or poured over the Berserker's Mantle, where the liquid will drip into the hooks that are lodged in the True Berserker's skin.\n\nWhen a True Berserker drinks this brew, they will go in a Berserk state in which they are immune to fear effects and gain 1 AP for any unarmoured armour location. This armour cannot be repaired. They will also gain +1 Strength. The Strength and AP increase by 1 when the character purchases the skill four, seven and ten times.\n\nWhile in their Berserk state, the Einher must try to kill anyone who they consider an opponent, and anyone who gets in their way, friend or foe. If there are no opponents remaining, they will perform a Killing Blow on any unconscious opponents to ensure that they are dead.\n\nAt the end of a fight, it takes 5 minutes for the effects of Berserk to wear off. The character cannot end the rage sooner and must continue to fight so long as opponents are visible, even if they are cleansed of the Berserker Poison itself.\n\nAfterwards, no skills or abilities may be used for the same length of time that they were Berserking, to a minimum of 10 minutes. If anyone but a True Berserker drinks this brew, they will take an Alchemical Enrage effect for 60 seconds, causing them to attack the first person they see.\n\nThey will not gain any of the other effects. This ability is useable once per day per purchase. This ability does not stack."
+        }
+      ]
+    },
+    "Five Sons Bakery": {
+      "races": [
+        "Hobling"
+      ],
+      "lore": "It is a poorly kept secret that this famous Berphauntian bakery is a front for a business that supplies poisons and alchemy to the world's assassins. Their products are frequently used to deliver vials, but as they are also genuinely fabulous bakers, they also create such wonders as a poisoned bread which cannot be detected by normal means, known as \"the Humble Loaf\".\n\nFive Sons will only hire Hoblings due to their racial ability to develop an immunity to this undetectable poison and they must be initiated via consuming a toxin which grants it. Unfortunately, this immunity permanently alters the Hobling's nervous system, impairing their natural ability to move quickly.",
+      "indoctrination": "To become a \"baker\" at Five Sons, the Hobling must gain their attention by showing their skill as an alchemist or chemist. This will lead to being offered a franchise of the bakery. The process takes a year, mostly because the hopeful baker must consume a vial of toxin once a month and build up their immunity to the poison of the Humble Loaf.\n\nThis is very much a business arrangement; the prospective baker must create orders sent to them by Five Son's (and may earn a profit by doing so) and are encouraged to set up their own shop.",
+      "racialCharacteristicAddition": "Consuming the toxin when joining the bakery causes a permanent purple discolouration around the mouth and lips.",
+      "purchased": [
+        {
+          "name": "Adapted Insides",
+          "maxPurchases": 10,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqs": [],
+          "desc": "The same numbing of the Hobling's nerves that causes their natural quickness to slow also causes a resilience to dangerous substances. A Hobling with Adapted Insides is highly resistant to all forms of alchemy, including ingested or beneficial alchemies, excluding acid and chemistry.\n\nThe first time they are hit with alchemy in a day, they resist the effect and their resistance disappears for 1 second. The second time, their resistance disappears for 10 seconds. The third time removes it for 1 minute. The fourth time removes it for 10 minutes.\n\nEach subsequent time removes it for 1 hour. The refractory period resets during the daily skill reset. Once per day per purchase they may fully resist a single acid or chemistry effect, which does not trigger a refractory period."
+        }
+      ]
+    }
+  }
+}

@@ -12,6 +12,9 @@ export const SECTION_TITLES: [string, string][] = [
   ['/games/ffxi/faction-conquest', 'FFXI - Faction Conquest'],
   ['/games/ffxi/friend-viewer', 'FFXI - Friend Viewer'],
   ['/games/ffxi', 'FFXI'],
+  ['/games/underworld/planner', 'UW LARP - Character Planner'],
+  ['/games/underworld/reference', 'UW LARP - Data Reference'],
+  ['/games/underworld', 'UW LARP'],
   ['/games', 'Forge Games'],
   ['/', 'FORGEHAVEN'],
 ]

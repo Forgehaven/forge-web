@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { ForgeLayout } from '../../components/ForgeLayout'
 import { GamesBottomBar } from './GamesBottomBar'
@@ -18,6 +19,13 @@ import { InteractiveMap } from './ffxi/InteractiveMap/InteractiveMap'
 import { ExpCampsPage } from './ffxi/ExpCamps/ExpCampsPage'
 import { AlarmProvider } from '../../components/alarms/AlarmProvider'
 import { ffxiAlarmTargets } from './ffxi/alarms'
+import { UnderworldSplash } from './underworld/UnderworldSplash'
+import { lazyWithReload } from '../../lib/lazyWithReload'
+
+// Lazy: the Underworld rules data is large and only these pages need it.
+const CharacterPlanner = lazyWithReload(() => import('./underworld/CharacterPlanner/CharacterPlanner'))
+const DataReference = lazyWithReload(() => import('./underworld/DataReference/DataReference'))
+const lazyPage = (Page: React.ComponentType) => <Suspense fallback={null}><Page /></Suspense>
 
 export default function GamesLayout() {
   return (
@@ -47,6 +55,9 @@ export default function GamesLayout() {
           <Route path="ffxi/exp-camps" element={<ExpCampsPage />} />
           <Route path="ffxi/map" element={<InteractiveMap />} />
           <Route path="ffxi/map/:zoneId" element={<InteractiveMap />} />
+          <Route path="underworld" element={<UnderworldSplash />} />
+          <Route path="underworld/planner" element={lazyPage(CharacterPlanner)} />
+          <Route path="underworld/reference" element={lazyPage(DataReference)} />
           <Route path="*" element={<NotFound backTo="/games" backLabel="Back to games" />} />
         </Route>
       </Routes>
