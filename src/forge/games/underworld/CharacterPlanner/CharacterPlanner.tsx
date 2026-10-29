@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react'
-import { activePurchases, evaluate, simpleView, unbuy, withPurchases } from '../engine'
+import { useEffect, useEffectEvent, useMemo, useState } from 'react'
+import { activePurchases, copyPicks, evaluate, priorityMonths, priorityView, simpleView, unbuy, withPurchases, type PlanMode } from '../engine'
 import { VOCATION_PREREQS } from '../data'
 import { useBuildStore } from '../hooks/useBuildStore'
 import { MournfallCard } from '../components/MournfallCard'
@@ -7,25 +7,50 @@ import { BuildBar } from './BuildBar'
 import { IdentityPanel } from './IdentityPanel'
 import { Timeline } from './Timeline'
 import { SimplePlan } from './SimplePlan'
+import { PriorityPlan } from './PriorityPlan'
 import { SkillCatalog } from './SkillCatalog'
 import { MagicPanel } from './MagicPanel'
 import { Spellbook } from './Spellbook'
 import { Sheet } from './Sheet'
 import { uid } from './util'
+import { ConfirmButton } from '../../../../components/ConfirmButton'
 
 const TABS = ['Skills', 'Magic', 'Spellbook', 'Sheet'] as const
 type Tab = typeof TABS[number]
+
+const MODES: { mode: PlanMode; label: string; hint: string }[] = [
+  { mode: 'sandbox', label: 'Sandbox', hint: 'Pick freely against a blanket count.' },
+  { mode: 'priority', label: 'Priority list', hint: 'Skills in buying order, each dated when you can afford it.' },
+  { mode: 'timeline', label: 'Blanket timeline', hint: 'Place each skill on the blanket you buy it with.' },
+]
 
 export default function CharacterPlanner() {
   const store = useBuildStore()
   const { build, setBuild } = store
   const [tab, setTab] = useState<Tab>('Skills')
-  const timeline = !!build.useTimeline
-  const loose = !timeline
-  const view = useMemo(() => (timeline ? build : simpleView(build)), [build, timeline])
+  // Ctrl+Z undoes planner edits; text fields keep their own undo.
+  const onKey = useEffectEvent((e: KeyboardEvent) => {
+    const el = e.target as HTMLElement
+    if (!(e.ctrlKey || e.metaKey) || e.shiftKey || e.key.toLowerCase() !== 'z') return
+    if (el.closest('input, textarea, select, [contenteditable]')) return
+    e.preventDefault()
+    store.undo()
+  })
+  useEffect(() => {
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+  const mode = build.mode ?? 'sandbox'
+  const timeline = mode === 'timeline'
+  const view = useMemo(() => (mode === 'timeline' ? build : mode === 'priority' ? priorityView(build) : simpleView(build)), [build, mode])
   const [activeRaw, setActive] = useState(() => build.blankets.length)
-  const active = timeline ? Math.min(activeRaw, build.blankets.length) : view.blankets.length
-  const ev = useMemo(() => evaluate(view, undefined, loose), [view, loose])
+  const ev = useMemo(() => evaluate(view, undefined, mode === 'sandbox'), [view, mode])
+  // Priority picks are dated later, so the catalog checks them against the whole horizon.
+  const pick = useMemo(() => (mode === 'priority' ? { ...view, blankets: priorityMonths(build) } : view), [view, mode, build])
+  const loose = !timeline
+  // Other modes with picks to copy over.
+  const sources = MODES.filter(m => m.mode !== mode && activePurchases({ ...build, mode: m.mode }).length > 0)
+  const active = timeline ? Math.min(activeRaw, build.blankets.length) : pick.blankets.length
 
   const add = (skill: string, choice?: string) =>
     setBuild(b => withPurchases(b, [...activePurchases(b), { id: uid(), skill, at: timeline ? active : 0, choice }]))
@@ -75,18 +100,44 @@ export default function CharacterPlanner() {
           </div>
         )}
 
-        <label className="flex items-center gap-2 text-sm text-[#e2e4ed] cursor-pointer select-none">
-          <input
-            type="checkbox"
-            checked={timeline}
-            onChange={e => setBuild(b => ({ ...b, useTimeline: e.target.checked }))}
-          />
-          Use blanket timeline
-          <span className="text-[11px] text-[#6b7280]">plan which month each skill is bought</span>
-        </label>
-        {timeline
-          ? <Timeline build={build} ev={ev} active={active} setActive={setActive} setBuild={setBuild} />
-          : <SimplePlan build={build} ev={ev} setBuild={setBuild} />}
+        <div className="flex flex-col gap-1">
+          <div className="flex rounded-md border border-[#2a2d3a] overflow-hidden" role="radiogroup" aria-label="Planning mode">
+            {MODES.map(m => (
+              <button
+                key={m.mode}
+                role="radio"
+                aria-checked={mode === m.mode}
+                className={`flex-1 py-1.5 text-xs cursor-pointer ${mode === m.mode ? 'bg-[#c4af64]/15 text-[#c4af64]' : 'text-[#9ca3af] hover:text-[#e2e4ed]'}`}
+                onClick={() => setBuild(b => ({ ...b, mode: m.mode }))}
+              >{m.label}</button>
+            ))}
+          </div>
+          <p className="text-[11px] text-[#9ca3af] text-center">{MODES.find(m => m.mode === mode)?.hint}</p>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-[#6b7280]">
+            {sources.length > 0 && <>
+              Copy picks from
+              {sources.map(m => (activePurchases(build).length ? (
+                <ConfirmButton
+                  key={m.mode}
+                  label={m.label}
+                  confirmPrompt={`Replace these picks with ${m.label}?`}
+                  className="text-[#c4af64] hover:underline cursor-pointer"
+                  onConfirm={() => setBuild(b => copyPicks(b, m.mode))}
+                />
+              ) : (
+                <button key={m.mode} className="text-[#c4af64] hover:underline cursor-pointer" onClick={() => setBuild(b => copyPicks(b, m.mode))}>{m.label}</button>
+              )))}
+            </>}
+            {activePurchases(build).length > 0 && (
+              <span className="ml-auto">
+                <ConfirmButton label="Clear skills" confirmPrompt="Remove this mode's picks?" onConfirm={() => setBuild(b => withPurchases(b, []))} />
+              </span>
+            )}
+          </div>
+        </div>
+        {mode === 'timeline' && <Timeline build={build} ev={ev} active={active} setActive={setActive} setBuild={setBuild} />}
+        {mode === 'priority' && <PriorityPlan view={view} build={build} ev={ev} setBuild={setBuild} />}
+        {mode === 'sandbox' && <SimplePlan build={build} ev={ev} setBuild={setBuild} />}
         <MournfallCard compact />
       </aside>
 
@@ -99,8 +150,8 @@ export default function CharacterPlanner() {
           ))}
         </nav>
         <div className="lg:min-h-0 lg:overflow-y-auto lg:pr-2">
-          {tab === 'Skills' && <SkillCatalog build={view} ev={ev} active={active} loose={loose} onAdd={add} onRemove={remove} />}
-          {tab === 'Magic' && <MagicPanel build={view} ev={ev} active={active} loose={loose} setBuild={setBuild} onAdd={add} onRemove={remove} />}
+          {tab === 'Skills' && <SkillCatalog build={pick} ev={ev} active={active} loose={loose} onAdd={add} onRemove={remove} />}
+          {tab === 'Magic' && <MagicPanel build={pick} ev={ev} active={active} loose={loose} setBuild={setBuild} onAdd={add} onRemove={remove} />}
           {tab === 'Spellbook' && <Spellbook build={view} ev={ev} setBuild={setBuild} />}
           {tab === 'Sheet' && <Sheet build={view} ev={ev} />}
         </div>

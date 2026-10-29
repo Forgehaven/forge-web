@@ -20,13 +20,13 @@ export function Sheet({ build, ev }: { build: Build; ev: Evaluation }) {
   const last = ev.steps[ev.steps.length - 1]
 
   return (
-    <div className="flex flex-col gap-4 text-sm">
-      <div className="forge-card !p-4">
-        <h3 className="text-base font-semibold text-[#e2e4ed]">{build.name || 'Unnamed character'}</h3>
-        <p className="text-xs text-[#9ca3af] mt-1">
+    <div className="forge-card !p-5 flex flex-col gap-4 max-w-2xl">
+      <div>
+        <h3 className="text-lg font-semibold text-[#e2e4ed]">{build.name || 'Unnamed character'}</h3>
+        <p className="text-sm text-[#9ca3af] mt-1">
           {[build.race, build.culture, build.occupation, build.vocation].filter(Boolean).join(' · ') || 'No choices yet'}
         </p>
-        <p className="text-xs text-[#6b7280] mt-1">
+        <p className="text-sm text-[#6b7280] mt-1">
           Level {ev.stats.level} after {build.blankets.length} blanket{build.blankets.length === 1 ? '' : 's'} ({monthLabel(last.month)}) ·
           {' '}{ev.stats.cpSpent}/{ev.stats.cpTotal} CP · Body {ev.stats.body ?? '-'} · Strength {ev.stats.strength} · {ev.stats.frags} frags
         </p>
@@ -34,17 +34,17 @@ export function Sheet({ build, ev }: { build: Build; ev: Evaluation }) {
 
       {traits.length > 0 && (
         <section>
-          <h4 className="forge-label uppercase tracking-widest">Racial traits</h4>
-          <p className="text-xs text-[#9ca3af]">{traits.map(t => t.name).join(', ')}, Weapon Group Proficiency: Simple</p>
+          <h4 className="forge-label uppercase tracking-widest !mb-1">Racial traits</h4>
+          <p className="text-sm text-[#9ca3af]">{traits.map(t => t.name).join(', ')}, Weapon Group Proficiency: Simple</p>
         </section>
       )}
 
       {[...groups].map(([cat, skills]) => (
         <section key={cat}>
-          <h4 className="forge-label uppercase tracking-widest">{cat}</h4>
-          <ul className="grid sm:grid-cols-2 gap-x-6">
+          <h4 className="forge-label uppercase tracking-widest !mb-1">{cat}</h4>
+          <ul>
             {[...skills].map(([label, n]) => (
-              <li key={label} className="flex justify-between text-xs text-[#c4c7d0] border-b border-[#2a2d3a] py-1">
+              <li key={label} className="flex justify-between text-sm text-[#c4c7d0] border-b border-[#2a2d3a]/60 last:border-b-0 py-0.5">
                 <span>{label}</span>{n > 1 && <span className="font-mono text-[#c4af64]">×{n}</span>}
               </li>
             ))}
@@ -54,10 +54,10 @@ export function Sheet({ build, ev }: { build: Build; ev: Evaluation }) {
 
       {spells.length > 0 && (
         <section>
-          <h4 className="forge-label uppercase tracking-widest">Spells</h4>
-          <ul className="grid sm:grid-cols-2 gap-x-6">
+          <h4 className="forge-label uppercase tracking-widest !mb-1">Spells</h4>
+          <ul>
             {spells.map(([slot, v]) => (
-              <li key={slot} className="text-xs text-[#c4c7d0] border-b border-[#2a2d3a] py-1">
+              <li key={slot} className="text-sm text-[#c4c7d0] border-b border-[#2a2d3a]/60 last:border-b-0 py-0.5">
                 <span className="text-[#6b7280] font-mono mr-2">{slot === 'paragon' ? 'P' : slot.split('-')[0]}</span>{v.split('|')[1]}
               </li>
             ))}

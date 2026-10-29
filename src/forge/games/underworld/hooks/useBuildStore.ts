@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useEffectEvent, useRef, useState } from 'react'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import { useAuth } from '../../../../auth/authContext'
-import { emptyBuild, type Build, type Purchase } from '../engine'
+import { emptyBuild, type Build, type PlanMode, type Purchase } from '../engine'
 import { createBuild, deleteBuild, getBuild, listBuilds, putBuild, type BuildSummary } from '../api'
 import { uid } from '../CharacterPlanner/util'
-import { SCHOOLS_OF_MAGIC } from '../rules'
+import { MAX_BLANKETS_PER_MONTH, SCHOOLS_OF_MAGIC } from '../rules'
 
 export type SaveKind = 'local' | 'server'
 
@@ -31,7 +31,16 @@ interface Stored {
   // JSON of the build as last saved, for the dirty check.
   saved: string | null
   local: LocalSave[]
+  // Undo history, kept in memory only.
+  past?: Build[]
+  pastAt?: number
 }
+
+const UNDO_LIMIT = 50
+// Edits closer together than this undo as one step (typing a name, a burst of clicks).
+const UNDO_GAP_MS = 600
+// Account saves wait for a pause in editing; device saves are cheap.
+const AUTOSAVE_MS = { server: 2000, local: 300 }
 
 function thisMonth() {
   const d = new Date()
@@ -51,6 +60,9 @@ export function sanitize(raw: unknown): Build {
   const b = blank()
   if (!isObj(raw)) return b
   const simple = isObj(raw.simple) ? raw.simple : {}
+  const priority = isObj(raw.priority) ? raw.priority : {}
+  const blankets = (x: unknown) => (Number.isInteger(x) && (x as number) >= 0 && (x as number) <= MAX_BLANKETS_PER_MONTH ? (x as number) : null)
+  const modes: PlanMode[] = ['sandbox', 'timeline', 'priority']
   return {
     ...b,
     name: str(raw.name), race: str(raw.race), culture: str(raw.culture),
@@ -61,7 +73,14 @@ export function sanitize(raw: unknown): Build {
     blankets: Array.isArray(raw.blankets) ? raw.blankets.filter(m => typeof m === 'string' && /^\d{4}-\d{2}$/.test(m)) : [],
     purchases: purchases(raw.purchases),
     spells: isObj(raw.spells) ? Object.fromEntries(Object.entries(raw.spells).filter(([, v]) => typeof v === 'string')) as Record<string, string> : {},
-    useTimeline: raw.useTimeline === true,
+    // useTimeline: builds saved before plan modes existed.
+    mode: modes.includes(raw.mode as PlanMode) ? raw.mode as PlanMode : raw.useTimeline === true ? 'timeline' : 'sandbox',
+    priority: {
+      perMonth: blankets(priority.perMonth) || MAX_BLANKETS_PER_MONTH,
+      months: Object.fromEntries(Object.entries(isObj(priority.months) ? priority.months : {})
+        .filter(([m, n]) => /^\d{4}-\d{2}$/.test(m) && blankets(n) !== null)) as Record<string, number>,
+      purchases: purchases(priority.purchases),
+    },
     simple: {
       blankets: typeof simple.blankets === 'number' && simple.blankets >= 0 ? Math.floor(simple.blankets) : 0,
       purchases: purchases(simple.purchases),
@@ -104,7 +123,7 @@ export function useBuildStore() {
   const generation = useRef(0)
 
   useEffect(() => {
-    try { localStorage.setItem(STORAGE_KEYS.uwPlanner, JSON.stringify(state)) } catch { /* quota */ }
+    try { localStorage.setItem(STORAGE_KEYS.uwPlanner, JSON.stringify({ ...state, past: undefined, pastAt: undefined })) } catch { /* quota */ }
   }, [state])
 
   // Logged out (not just still loading): an account build can't be saved
@@ -124,8 +143,17 @@ export function useBuildStore() {
   useEffect(() => { refresh() }, [refresh])
 
   const setBuild = useCallback((fn: (b: Build) => Build) => {
-    setState(s => ({ ...s, build: fn(s.build) }))
+    setError(null)
+    setState(s => {
+      const build = fn(s.build)
+      if (build === s.build) return s
+      const now = Date.now()
+      const burst = now - (s.pastAt ?? 0) < UNDO_GAP_MS && !!s.past?.length
+      return { ...s, build, past: burst ? s.past : [...(s.past ?? []), s.build].slice(-UNDO_LIMIT), pastAt: now }
+    })
   }, [])
+
+  const undo = () => setState(s => (s.past?.length ? { ...s, build: s.past[s.past.length - 1], past: s.past.slice(0, -1), pastAt: 0 } : s))
 
   // Runs an async action; `apply` is skipped if the user switched builds meanwhile.
   const run = async (fn: (stillCurrent: () => boolean) => Promise<void>) => {
@@ -138,7 +166,7 @@ export function useBuildStore() {
   const switchTo = (next: Partial<Stored>) => {
     generation.current++
     setConflict(false)
-    setState(s => ({ ...s, ...next }))
+    setState(s => ({ ...s, ...next, past: [], pastAt: 0 }))
   }
 
   const saveLocal = () => setState(s => {
@@ -224,6 +252,33 @@ export function useBuildStore() {
   // Keeps the current plan as an unsaved copy.
   const detach = () => switchTo({ current: null, base: null, saved: null })
 
+  // Once a build has a save, edits save themselves. A failed save waits for the
+  // next edit or for the connection to come back; a conflict waits for the user.
+  const dirty = JSON.stringify(state.build) !== state.saved
+  const [online, setOnline] = useState(() => navigator.onLine)
+  const autosave = useEffectEvent(() => save())
+  const flush = useEffectEvent(() => {
+    if (document.visibilityState === 'hidden' && state.current?.kind === 'server' && dirty && !busy && !conflict) save()
+  })
+  useEffect(() => {
+    const on = () => { setOnline(true); setError(null) }
+    const off = () => setOnline(false)
+    window.addEventListener('online', on)
+    window.addEventListener('offline', off)
+    document.addEventListener('visibilitychange', flush)
+    return () => {
+      window.removeEventListener('online', on)
+      window.removeEventListener('offline', off)
+      document.removeEventListener('visibilitychange', flush)
+    }
+  }, [])
+  const kind = state.current?.kind
+  useEffect(() => {
+    if (!kind || !dirty || conflict || busy || error || (kind === 'server' && !online)) return
+    const t = setTimeout(autosave, AUTOSAVE_MS[kind])
+    return () => clearTimeout(t)
+  }, [state.build, kind, dirty, conflict, busy, error, online])
+
   const saves: SaveEntry[] = [
     ...(isAuthenticated ? server : []).map(b => ({ kind: 'server' as const, id: b.id, name: b.name, updatedAt: b.updated_at })),
     ...state.local.map(l => ({ kind: 'local' as const, id: l.id, name: l.name, updatedAt: l.updatedAt })),
@@ -231,8 +286,8 @@ export function useBuildStore() {
 
   return {
     build: state.build, setBuild, current: state.current, saves,
-    dirty: JSON.stringify(state.build) !== state.saved,
-    conflict, busy, error, isAuthenticated,
+    dirty, online, conflict, busy, error, isAuthenticated,
+    canUndo: !!state.past?.length, undo,
     save, moveToAccount, open, remove, startNew, detach,
   }
 }

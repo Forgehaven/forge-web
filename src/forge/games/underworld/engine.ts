@@ -43,17 +43,29 @@ export interface Build {
   purchases: Purchase[]
   // `${circle}-${slot}` or 'paragon' -> `${sphere}|${spell}`
   spells: Record<string, string>
-  // Off (default): free picking against a blanket count, `simple` holds the
-  // picks. On: the dated timeline above (`blankets` + `purchases`).
-  useTimeline?: boolean
+  // sandbox (default): free picking against a blanket count, `simple` holds the picks.
+  // timeline: the hand-dated `blankets` + `purchases` above.
+  // priority: `priority.purchases` in buying order, each dated by priorityView.
+  mode?: PlanMode
   simple?: { blankets: number; purchases: Purchase[] }
+  priority?: Priority
+}
+
+export type PlanMode = 'sandbox' | 'timeline' | 'priority'
+
+export interface Priority {
+  // Blankets applied each month, unless `months` overrides that month.
+  perMonth: number
+  months: Record<string, number>
+  purchases: Purchase[]
 }
 
 export function emptyBuild(startMonth: string): Build {
   return {
     v: 1, name: '', race: '', culture: '', occupation: '', vocation: '',
     schools: ['', '', ''], attunement: '', startMonth, blankets: [], purchases: [], spells: {},
-    useTimeline: false, simple: { blankets: 0, purchases: [] },
+    mode: 'sandbox', simple: { blankets: 0, purchases: [] },
+    priority: { perMonth: MAX_BLANKETS_PER_MONTH, months: {}, purchases: [] },
   }
 }
 
@@ -607,11 +619,68 @@ export function simpleView(b: Build): Build {
 
 // The purchase list the planner is editing in the current mode.
 export function activePurchases(b: Build) {
-  return b.useTimeline ? b.purchases : b.simple?.purchases ?? []
+  if (b.mode === 'timeline') return b.purchases
+  if (b.mode === 'priority') return b.priority?.purchases ?? []
+  return b.simple?.purchases ?? []
 }
 
 export function withPurchases(b: Build, purchases: Purchase[]): Build {
-  return b.useTimeline ? { ...b, purchases } : { ...b, simple: { blankets: b.simple?.blankets ?? 0, purchases } }
+  if (b.mode === 'timeline') return { ...b, purchases }
+  if (b.mode === 'priority') return { ...b, priority: { ...priorityOf(b), purchases } }
+  return { ...b, simple: { blankets: b.simple?.blankets ?? 0, purchases } }
+}
+
+const priorityOf = (b: Build): Priority => b.priority ?? { perMonth: MAX_BLANKETS_PER_MONTH, months: {}, purchases: [] }
+
+// How far the scheduler looks ahead (20 years at the monthly max).
+export const PRIORITY_HORIZON = 480
+
+// Blanket months from the start month, `perMonth` each unless overridden.
+export function priorityMonths(b: Build, count = PRIORITY_HORIZON) {
+  const p = priorityOf(b)
+  const out: string[] = []
+  let month = b.startMonth
+  for (let i = 0; i < PRIORITY_HORIZON && out.length < count; i++, month = addMonths(month, 1)) {
+    const n = Math.min(p.months[month] ?? p.perMonth, MAX_BLANKETS_PER_MONTH)
+    for (let k = 0; k < n && out.length < count; k++) out.push(month)
+  }
+  return out
+}
+
+// Errors that more blankets can fix.
+const WAITABLE = /^(Over budget|Requires level|Racial cap)/
+
+// Priority mode as an engine build: each pick, in order, lands on the first
+// blanket (no earlier than the pick before it) where it is legal and affordable.
+// Picks that waiting cannot fix stay on the previous pick's blanket and show their error.
+export function priorityView(b: Build): Build {
+  const months = priorityMonths(b)
+  const purchases: Purchase[] = []
+  let at = 0
+  for (const item of priorityOf(b).purchases) {
+    for (let t = at; t <= months.length; t++) {
+      const error = evaluate({ ...b, blankets: months.slice(0, t), purchases }, { ...item, at: t }).probe?.error
+      if (!error) { at = t; break }
+      if (!WAITABLE.test(error)) break
+    }
+    purchases.push({ ...item, at })
+  }
+  return { ...b, blankets: months.slice(0, at), purchases }
+}
+
+// Replaces the current mode's picks with another mode's, keeping their order
+// and, where the target has dates, their blankets.
+export function copyPicks(b: Build, from: PlanMode): Build {
+  const src = from === 'timeline' ? b : from === 'priority' ? priorityView(b) : simpleView(b)
+  const list = sortedPurchases(src)
+  const undated = list.map(p => ({ ...p, at: 0 }))
+  const to = b.mode ?? 'sandbox'
+  if (to === 'sandbox') return { ...b, simple: { blankets: src.blankets.length, purchases: undated } }
+  if (to === 'priority') return { ...b, priority: { ...priorityOf(b), purchases: undated } }
+  if (from === 'priority') return { ...b, blankets: src.blankets, purchases: list }
+  // Sandbox has a count, not dates: back-fill that many blankets and buy everything after the last.
+  const dated = pastBlankets({ ...b, blankets: [], purchases: [] }, src.blankets.length)
+  return { ...dated, purchases: list.map(p => ({ ...p, at: dated.blankets.length })) }
 }
 
 // Removes the latest purchase of a skill (matching `choice` when given).

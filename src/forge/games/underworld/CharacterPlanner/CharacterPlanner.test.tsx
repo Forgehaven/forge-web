@@ -25,7 +25,7 @@ describe('CharacterPlanner', () => {
     renderPlanner()
 
     await user.selectOptions(screen.getByLabelText('Race'), 'Human')
-    await user.click(screen.getByLabelText(/Use blanket timeline/))
+    await user.click(screen.getByRole('radio', { name: 'Blanket timeline' }))
     await user.selectOptions(screen.getByLabelText('Occupation'), 'Mage')
     await user.click(screen.getByRole('button', { name: '+ Add blanket' }))
     await user.click(screen.getByRole('button', { name: 'Add Read & Write' }))
@@ -39,7 +39,7 @@ describe('CharacterPlanner', () => {
     expect(screen.getByRole('button', { name: 'Add Read Magic: Advanced' })).toBeDisabled()
 
     const draft = JSON.parse(localStorage.getItem('forgegames_uw_planner_v1')!)
-    expect(draft.build.useTimeline).toBe(true)
+    expect(draft.build.mode).toBe('timeline')
     expect(draft.build.purchases).toMatchObject([{ skill: 'Read & Write', at: 1 }])
     expect(screen.getByText(/only saved in this browser/)).toBeInTheDocument()
   })
@@ -62,7 +62,7 @@ describe('CharacterPlanner timeline', () => {
   it('back-fills past blankets and adds a blanket in a chosen month', async () => {
     const user = userEvent.setup()
     renderPlanner()
-    await user.click(screen.getByLabelText(/Use blanket timeline/))
+    await user.click(screen.getByRole('radio', { name: 'Blanket timeline' }))
     await user.selectOptions(screen.getByLabelText('Character created year'), '2025')
     await user.selectOptions(screen.getByLabelText('Character created month'), 'Jan')
 
@@ -147,5 +147,21 @@ describe('CharacterPlanner build bar', () => {
     await user.click(screen.getByRole('button', { name: 'Discard and continue' }))
     expect(screen.getByLabelText('Character name')).toHaveValue('Grak')
     expect(JSON.parse(localStorage.getItem('forgegames_uw_planner_v1')!).local).toHaveLength(1)
+  })
+
+  it('autosaves a saved build and undoes edits', async () => {
+    const user = userEvent.setup()
+    renderPlanner()
+    await user.type(screen.getByLabelText('Character name'), 'Grak')
+    await user.click(screen.getByRole('button', { name: 'Save' }))
+    await user.selectOptions(screen.getByLabelText('Occupation'), 'Mage')
+
+    const stored = () => JSON.parse(localStorage.getItem('forgegames_uw_planner_v1')!)
+    await vi.waitFor(() => expect(stored().local[0].build.occupation).toBe('Mage'))
+    expect(screen.getByRole('button', { name: /Saved/ })).toBeDisabled()
+
+    await user.click(screen.getByRole('button', { name: 'Undo' }))
+    expect(screen.getByLabelText('Occupation')).toHaveValue('')
+    await vi.waitFor(() => expect(stored().local[0].build.occupation).toBe(''))
   })
 })

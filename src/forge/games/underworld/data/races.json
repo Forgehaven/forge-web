@@ -418,7 +418,7 @@
         {
           "name": "Restriction to Nature Healing",
           "kind": "disadvantage",
-          "desc": "When it comes to magical healing, Fauns cannot be healed by any magic outside of the Nature sphere. This includes all Body Point healing and healing effects other than Mending. Natural and alchemical versions of these effects will work.\n\nAdditionally, consuming a Goodberry will heal a Faun for 2 Body when they are in their Bleed Count, instead of the regular 1 Body. Life spells from outside the Nature sphere will work on Fauns but not as effectively — the Faun will receive the normal benefits of a Life spell, except that they will only be healed to 1 Body, not full Body. Life effects from Nature sources will operate as normal."
+          "desc": "When it comes to magical healing, Fauns cannot be healed by any magic outside of the Nature sphere. This includes all Body Point healing and healing effects other than Mending. Natural and alchemical versions of these effects will work.\n\nAdditionally, consuming a Goodberry will heal a Faun for 2 Body when they are in their Bleed Count, instead of the regular 1 Body. Life spells from outside the Nature sphere will work on Fauns but not as effectively; the Faun will receive the normal benefits of a Life spell, except that they will only be healed to 1 Body, not full Body. Life effects from Nature sources will operate as normal."
         }
       ],
       "purchased": [
@@ -843,7 +843,7 @@
       "tier": "Obscure",
       "fragCost": 250,
       "cpBonus": 0,
-      "lore": "The Faceless are a dark and morbid race, ex-slaves of a demon master long thought to be dead. Appearing as mostly human, Faceless wear elaborate masks to cover a scarred or blank face underneath. All Faceless have amnesia, as their freedom came at a price — no memories of what came before it.\n\nLife Span: Immortal.\nLanguage: Common (English).\nRacial Characteristics: Venetian (carnival) style masks at all times covering at least the top 3/4ths of the face. The face under the mask is either featureless and pure white or a gruesome mess of scars.",
+      "lore": "The Faceless are a dark and morbid race, ex-slaves of a demon master long thought to be dead. Appearing as mostly human, Faceless wear elaborate masks to cover a scarred or blank face underneath. All Faceless have amnesia, as their freedom came at a price; no memories of what came before it.\n\nLife Span: Immortal.\nLanguage: Common (English).\nRacial Characteristics: Venetian (carnival) style masks at all times covering at least the top 3/4ths of the face. The face under the mask is either featureless and pure white or a gruesome mess of scars.",
       "auto": [
         {
           "name": "Permanent Non-Detection",

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ConfirmButton } from '../../../../components/ConfirmButton'
 import { useAuth } from '../../../../auth/authContext'
-import { emptyBuild, withPurchases } from '../engine'
+import { emptyBuild } from '../engine'
 import type { BuildStore, SaveKind } from '../hooks/useBuildStore'
 
 function DeviceIcon() {
@@ -29,26 +29,39 @@ const KIND: Record<SaveKind, { icon: React.ReactNode; title: string; color: stri
 const shortDate = (iso: string | null) => (iso ? new Date(iso).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : '')
 
 export function BuildBar({ store }: { store: BuildStore }) {
-  const { setBuild, current, saves, dirty, busy, conflict, error, isAuthenticated } = store
+  const { setBuild, current, saves, dirty, online, busy, conflict, error, isAuthenticated } = store
   const { login } = useAuth()
   const target = current?.kind ?? (isAuthenticated ? 'server' : 'local')
   // Switching away from unsaved edits asks first.
   const [pending, setPending] = useState<(() => void) | null>(null)
   const guard = (action: () => void) => (dirty ? setPending(() => action) : action())
+  // A saved build autosaves, so its button is mostly a status.
+  const status = !current ? 'Save'
+    : conflict ? 'Conflict'
+    : !dirty ? 'Saved'
+    : current.kind === 'server' && !online ? 'Offline'
+    : error ? 'Retry save'
+    : 'Saving…'
 
   return (
     <div className="forge-card !p-4 flex flex-col gap-3">
       <div className="flex items-center gap-2">
         <button
-          className={`forge-btn-accent flex items-center gap-1.5 ${dirty ? 'animate-pulse' : ''}`}
-          disabled={busy || !dirty}
+          className={`forge-btn-accent flex items-center gap-1.5 ${!current && dirty ? 'animate-pulse' : ''}`}
+          disabled={busy || !dirty || conflict}
           onClick={() => store.save()}
-          title={KIND[target].title}
+          title={status === 'Offline' ? 'Saves when you are back online' : current ? `${KIND[target].title}. Changes save automatically.` : KIND[target].title}
         >
           {KIND[target].icon}
-          {dirty ? 'Save' : 'Saved'}
+          {status}
         </button>
         <button className="forge-btn !py-2 cursor-pointer disabled:opacity-40" disabled={busy} onClick={() => guard(store.startNew)}>New</button>
+        <button
+          className="forge-btn !py-2 cursor-pointer disabled:opacity-40"
+          disabled={!store.canUndo}
+          onClick={store.undo}
+          title="Undo (Ctrl+Z)"
+        >Undo</button>
         {current && (
           <button className="text-xs text-[#6b7280] hover:text-[#e2e4ed] cursor-pointer ml-auto" onClick={store.detach}>
             Save as copy
@@ -105,19 +118,12 @@ export function BuildBar({ store }: { store: BuildStore }) {
         </ul>
       )}
 
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-[#2a2d3a] pt-2">
+      <div className="flex justify-end border-t border-[#2a2d3a] pt-2">
         <ConfirmButton
-          label="Clear skills"
-          confirmPrompt="Remove all purchases?"
-          onConfirm={() => setBuild(b => ({ ...withPurchases(b, []), spells: {} }))}
+          label="Reset everything"
+          confirmPrompt="Clear the whole character?"
+          onConfirm={() => setBuild(b => emptyBuild(b.startMonth))}
         />
-        <span className="ml-auto">
-          <ConfirmButton
-            label="Reset everything"
-            confirmPrompt="Clear the whole character?"
-            onConfirm={() => setBuild(b => emptyBuild(b.startMonth))}
-          />
-        </span>
       </div>
 
       {conflict && (

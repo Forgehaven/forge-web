@@ -10,4 +10,10 @@ describe('sanitize', () => {
     expect(() => evaluate(simpleView(b), undefined, true)).not.toThrow()
     expect(sanitize(null).v).toBe(1)
   })
+
+  it('keeps plan mode and priority settings, migrating useTimeline', () => {
+    const b = sanitize({ mode: 'priority', priority: { perMonth: 1, months: { '2026-03': 0, x: 1, '2026-04': 9 }, purchases: [{ id: 'a', skill: 'Shield', at: 0 }] } })
+    expect(b).toMatchObject({ mode: 'priority', priority: { perMonth: 1, months: { '2026-03': 0 }, purchases: [{ id: 'a' }] } })
+    expect(sanitize({ useTimeline: true }).mode).toBe('timeline')
+  })
 })

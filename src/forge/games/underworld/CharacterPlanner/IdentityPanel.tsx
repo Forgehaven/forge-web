@@ -99,14 +99,18 @@ export function IdentityPanel({ build, ev, setBuild }: Props) {
         </Field>
       </div>
 
-      <div className="grid grid-cols-4 gap-y-3 border-t border-[#2a2d3a] pt-3">
-        <Stat label="Level" value={stats.level} />
-        <Stat label="CP total" value={stats.cpTotal} />
-        <Stat label="CP spent" value={stats.cpSpent} />
-        <Stat label="CP left" value={stats.cpRemaining} warn={stats.cpRemaining < 0} />
-        <Stat label="Body" value={stats.body ?? '-'} />
-        <Stat label="Strength" value={stats.strength} />
-        <Stat label="Frags" value={stats.frags} />
+      <div className="flex flex-col gap-3 border-t border-[#2a2d3a] pt-3">
+        <div className="grid grid-cols-3 w-3/4 mx-auto">
+          <Stat label="Level" value={stats.level} />
+          <Stat label="Body" value={stats.body ?? '-'} />
+          <Stat label="Strength" value={stats.strength} />
+        </div>
+        <div className="grid grid-cols-4">
+          <Stat label="CP total" value={stats.cpTotal} />
+          <Stat label="CP spent" value={stats.cpSpent} />
+          <Stat label="CP left" value={stats.cpRemaining} warn={stats.cpRemaining < 0} />
+          <Stat label="Frags" value={stats.frags} />
+        </div>
       </div>
 
       {(race || culture || voc) && (

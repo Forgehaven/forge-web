@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { OCC_ORDER, PYRAMID_ORDER, RITUAL_BASE_COSTS, SPELL_CIRCLE_COSTS, SPHERES } from './rules'
 import { SKILLS } from './data'
 import {
-  cpAt, emptyBuild, evaluate, insertBlanket, levelRow, nextBlanketMonth, pastBlankets, simpleView, unbuy,
+  copyPicks, cpAt, emptyBuild, evaluate, insertBlanket, levelRow, nextBlanketMonth, pastBlankets, priorityView, simpleView, unbuy,
   type Build, type Purchase,
 } from './engine'
 
@@ -157,10 +157,52 @@ describe('simple mode', () => {
   })
 
   it('unbuys the latest purchase of a skill in the active mode', () => {
-    const b = build({ useTimeline: true, purchases: [buy('Slay/Parry', 0), buy('Slay/Parry', 2), buy('Shield', 1)] })
+    const b = build({ mode: 'timeline', purchases: [buy('Slay/Parry', 0), buy('Slay/Parry', 2), buy('Shield', 1)] })
     expect(unbuy(b, 'Slay/Parry').purchases.map(p => p.at)).toEqual([0, 1])
     const s = build({ simple: { blankets: 3, purchases: [buy('Shield')] } })
     expect(unbuy(s, 'Shield').simple?.purchases).toEqual([])
+  })
+})
+
+describe('priority mode', () => {
+  it('dates each pick at the first blanket that affords it, in order', () => {
+    const magic = ['Read & Write', 'Read Magic', 'Sphere of Magic: 1st', 'Read Magic: Advanced'].map(s => buy(s))
+    const slots = PYRAMID_ORDER.slice(0, 15).map(c => buy('Spell Slot', 0, String(c)))
+    const picks = [...magic, ...slots]
+    const b = build({ occupation: 'Mage', mode: 'priority', priority: { perMonth: 2, months: { '2026-02': 0 }, purchases: picks } })
+    const view = priorityView(b)
+    const ats = view.purchases.map(p => p.at)
+    expect(ats[0]).toBe(0)
+    expect(ats.at(-1)).toBeGreaterThan(0)
+    expect(ats).toEqual([...ats].sort((x, y) => x - y))
+    expect(view.blankets).not.toContain('2026-02')
+    expect([...evaluate(view).results.values()].every(r => r.error === null)).toBe(true)
+
+    const k = ats.findIndex(a => a > 0)
+    const earlier = { ...view, blankets: view.blankets.slice(0, ats[k] - 1), purchases: view.purchases.slice(0, k) }
+    expect(evaluate(earlier, { ...picks[k], at: ats[k] - 1 }).probe?.error).toMatch(/^Over budget/)
+  })
+
+  it('copies picks between modes', () => {
+    const picks = ['Read & Write', 'Read Magic', 'Sphere of Magic: 1st', 'Sphere of Magic: 2nd'].map(s => buy(s))
+    const prio = build({ occupation: 'Mage', mode: 'priority', priority: { perMonth: 2, months: {}, purchases: picks } })
+
+    const timeline = copyPicks({ ...prio, mode: 'timeline' }, 'priority')
+    expect(timeline.purchases).toEqual(priorityView(prio).purchases)
+    expect(timeline.blankets).toEqual(priorityView(prio).blankets)
+
+    const sandbox = copyPicks({ ...timeline, mode: 'sandbox' }, 'timeline')
+    expect(sandbox.simple).toEqual({ blankets: timeline.blankets.length, purchases: picks.map(p => ({ ...p, at: 0 })) })
+
+    const back = copyPicks({ ...sandbox, mode: 'timeline' }, 'sandbox')
+    expect(back.blankets).toHaveLength(timeline.blankets.length)
+    expect([...evaluate(back).results.values()].every(r => r.error === null)).toBe(true)
+  })
+
+  it('does not wait on errors more blankets cannot fix', () => {
+    const view = priorityView(build({ mode: 'priority', priority: { perMonth: 2, months: {}, purchases: [buy('Read Magic')] } }))
+    expect(view.blankets).toEqual([])
+    expect([...evaluate(view).results.values()][0].error).toContain('Requires')
   })
 })
 
@@ -191,7 +233,7 @@ describe('spell pyramid (Core p.105-106)', () => {
 describe('spell slot ordering across steps', () => {
   it('keeps a legal order when circle-1 slots were bought at an earlier step', () => {
     const b = build({
-      occupation: 'Mage', useTimeline: true, blankets: ['2026-01', '2026-01', '2026-02'],
+      occupation: 'Mage', mode: 'timeline', blankets: ['2026-01', '2026-01', '2026-02'],
       purchases: [
         buy('Read & Write'), buy('Read Magic'), buy('Sphere of Magic: 1st'),
         buy('Spell Slot', 2, '1'), buy('Spell Slot', 2, '1'),
