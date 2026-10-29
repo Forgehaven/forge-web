@@ -6,6 +6,7 @@ export type Job =
   | 'WAR' | 'MNK' | 'WHM' | 'BLM' | 'RDM' | 'THF'
   | 'PLD' | 'DRK' | 'BST' | 'BRD' | 'RNG' | 'SAM'
   | 'NIN' | 'DRG' | 'SMN'
+  | 'BLU' | 'COR' | 'PUP'
 
 // 11 distinct ranks - no plain "A" or plain "B" exist in the FFXI rank system
 export type SkillRank = 'A+' | 'A-' | 'B+' | 'B' | 'B-' | 'C+' | 'C' | 'C-' | 'D' | 'E' | 'F'
@@ -110,5 +111,18 @@ export const JOBS: JobInfo[] = [
   {
     name: 'SMN', fullName: 'Summoner', roles: ['mage'],
     weapons: { 'Dagger': 'E', 'Club': 'C+', 'Staff': 'B' },
+  },
+  // Treasures of Aht Urhgan jobs (HorizonXI 2026-08-07); ranks from each job's wiki page
+  {
+    name: 'BLU', fullName: 'Blue Mage', roles: ['melee'],
+    weapons: { 'Sword': 'A+', 'Club': 'B-' },
+  },
+  {
+    name: 'COR', fullName: 'Corsair', roles: ['melee', 'ranged'],
+    weapons: { 'Dagger': 'B+', 'Sword': 'B-', 'Marksmanship': 'B' },
+  },
+  {
+    name: 'PUP', fullName: 'Puppetmaster', roles: ['melee'],
+    weapons: { 'Hand-to-Hand': 'B+', 'Dagger': 'C-', 'Club': 'D' },
   },
 ]

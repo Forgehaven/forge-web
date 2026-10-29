@@ -51,11 +51,15 @@ export const MOBS: Mob[] = [
   { name: 'Worm',     category: 'Amorph', modifiers: { Earth: -0.5 } },
   { name: 'Slime',    category: 'Amorph', modifiers: { Fire: +0.5, Water: -0.5, Slashing: -0.5, Piercing: -0.5, Blunt: -0.75 } },
   { name: 'Toad',     category: 'Amorph', modifiers: { Ice: +0.5, Lightning: +0.5, Water: -0.5, Light: -1.0 } },
+  // Flans: wiki lists no elemental weakness, only +25% from all elemental magic
+  { name: 'Flan',     category: 'Amorph', modifiers: { Fire: +0.25, Ice: +0.25, Wind: +0.25, Earth: +0.25, Lightning: +0.25, Water: +0.25, Light: +0.25, Dark: +0.25 } },
 
   // --- Arcana ---
   { name: 'Golem',    category: 'Arcana', modifiers: { Lightning: +0.5 } },
   { name: 'Doll',     category: 'Arcana', modifiers: { Lightning: +0.5 } },
   { name: 'Cluster',  category: 'Arcana', modifiers: { Fire: +0.5 } },
+  { name: 'Bomb',     category: 'Arcana', modifiers: { Fire: +0.5, Ice: -0.5, Wind: -0.5, Earth: -0.5, Lightning: -0.5, Water: -0.5, Light: -0.5, Dark: -0.5 } },
+  { name: 'Khimaira', category: 'Arcana', modifiers: { Earth: +0.5, Ice: +0.5 } },
 
   // --- Vermin ---
   { name: 'Beetle',   category: 'Vermin', modifiers: { Ice: +0.5, Light: +0.5 } },
@@ -70,7 +74,7 @@ export const MOBS: Mob[] = [
   // --- Plantoid ---
   { name: 'Mandragora',  category: 'Plantoid', modifiers: { Fire: +0.5, Dark: +0.5, Ice: +0.5, Lightning: +0.5, Wind: +0.5 } },
   { name: 'Funguar',     category: 'Plantoid', modifiers: { Light: +0.5, Slashing: +0.125, Dark: -0.5, Water: -0.5 } },
-  { name: 'Treant',      category: 'Plantoid', modifiers: { Fire: +0.5, Dark: +0.5 } },
+  { name: 'Treant',      category: 'Plantoid', modifiers: { Fire: +0.5, Dark: +0.5, Slashing: +0.125 } },
   { name: 'Morbol',      category: 'Plantoid', modifiers: { Fire: +0.5, Water: -0.5 } },
   { name: 'Sabotender',  category: 'Plantoid', modifiers: { Dark: +0.5, Ice: +0.5, Lightning: +0.5, Water: -1.0 } },
 
@@ -85,6 +89,9 @@ export const MOBS: Mob[] = [
   { name: 'Opo-opo',   category: 'Beast', modifiers: { Ice: +0.5 } },
   { name: 'Sheep',     category: 'Beast', modifiers: {} },
   { name: 'Ram',       category: 'Beast', modifiers: { Ice: -0.5 } },
+  { name: 'Marid',     category: 'Beast', modifiers: { Water: +0.5 } },
+  { name: 'Cerberus',  category: 'Beast', modifiers: {} },
+  { name: 'Manticore', category: 'Beast', modifiers: { Water: +0.5, Fire: -0.5, Wind: -0.5 } },
 
   // --- Bird ---
   { name: 'Bird',        category: 'Bird', modifiers: { Ice: +0.5, Piercing: +0.125 } },
@@ -99,7 +106,7 @@ export const MOBS: Mob[] = [
   { name: 'Bugard',  category: 'Lizard', modifiers: { Ice: +0.5 } },
   { name: 'Eft',     category: 'Lizard', modifiers: { Ice: +0.5 } },
   { name: 'Peiste',  category: 'Lizard', modifiers: { Ice: +0.5 } },
-  { name: 'Wivre',   category: 'Lizard', modifiers: { Ice: +0.5, Wind: +0.5 } },
+  { name: 'Wivre',   category: 'Lizard', modifiers: { Ice: +0.5, Wind: +0.5, Earth: -0.5 } },
 
   // --- Aquan ---
   { name: 'Pugil',     category: 'Aquan', modifiers: { Ice: +0.5, Lightning: +0.5, Water: -0.5 } },
@@ -115,6 +122,7 @@ export const MOBS: Mob[] = [
   { name: 'Tiamat',     category: 'Dragon', modifiers: { Water: +0.5, Lightning: +0.5, Fire: -0.5, Ice: -0.5 } },
   { name: 'Vrtra',      category: 'Dragon', modifiers: { Light: +0.5, Fire: +0.5, Dark: -0.5 } },
   { name: 'Jormungand', category: 'Dragon', modifiers: { Fire: +0.5, Ice: -0.5 } },
+  { name: 'Puk',        category: 'Dragon', modifiers: { Ice: +0.5, Piercing: -0.25 } },
 
   // --- Humanoid (Beastmen) ---
   { name: 'Orc',       category: 'Humanoid', modifiers: { Water: +0.5 } },
@@ -126,6 +134,8 @@ export const MOBS: Mob[] = [
   { name: 'Tonberry',  category: 'Humanoid', modifiers: { Ice: +0.5, Light: -0.5 } },
   { name: 'Mamool Ja', category: 'Humanoid', modifiers: { Ice: +0.5, Wind: -0.5, Light: -0.5 } },
   { name: 'Qiqirn',    category: 'Humanoid', modifiers: { Wind: +0.5 } },
+  { name: 'Lamia',     category: 'Humanoid', modifiers: { Ice: +0.5, Lightning: +0.5, Water: -1.0 } },
+  { name: 'Poroggo',   category: 'Humanoid', modifiers: { Ice: +0.5, Lightning: +0.5, Water: -0.5, Light: -1.0 } },
 
   // --- Demon ---
   { name: 'Demon',    category: 'Demon', modifiers: { Light: +0.5, Dark: -0.5 } },

@@ -18,7 +18,7 @@ function renderMap(initialEntry: string | { pathname: string; state?: object } =
 
 describe('maps index', () => {
   it('covers all bundled zones with beautified names', () => {
-    expect(MAPS.length).toBe(319)
+    expect(MAPS.length).toBe(370)
     const byId = new Map(MAPS.map(m => [m.id, m.name]))
     expect(byId.get('northern_san_doria')).toBe("Northern San d'Oria")
     expect(byId.get('rulude_gardens')).toBe("Ru'Lude Gardens")

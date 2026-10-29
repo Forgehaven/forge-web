@@ -245,7 +245,7 @@ describe('SpellTracker live job levels', () => {
     expect(put).toBeTruthy()
     const body = JSON.parse((put![1] as RequestInit).body as string)
     expect(body.data.jobLevels).toEqual({
-      WHM: 75, BLM: 40, RDM: 0, PLD: 0, DRK: 0, BRD: 0, SMN: 0, NIN: 0,
+      WHM: 75, BLM: 40, RDM: 0, PLD: 0, DRK: 0, BRD: 0, SMN: 0, NIN: 0, BLU: 0,
     })
   })
 })

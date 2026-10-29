@@ -33,8 +33,7 @@ function loadNoSync(): string[] {
 }
 
 const JOBS: JobAbbr[] = [
-  'WHM', 'BLM', 'RDM', 'PLD', 'DRK', 'BRD', 'SMN', 'NIN',
-  // 'BLU', // not yet implemented
+  'WHM', 'BLM', 'RDM', 'PLD', 'DRK', 'BRD', 'SMN', 'NIN', 'BLU',
 ]
 
 // Tracked progress only. Logged out this lives in localStorage; logged in it

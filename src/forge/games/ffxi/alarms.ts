@@ -1,10 +1,11 @@
 import type { AlarmTarget } from '../../../components/alarms/alarmContext'
 import { STORAGE_KEYS } from '../../../config/storageKeys'
 import { lastConquestReset } from './conquest'
+import { assaultTags } from './LockoutTracker/assaultTags'
 import {
   nextDeparture, guildStatus, upcomingMoonEvents, dayNight, undeadHours, rseNow, rseSchedule,
   itemActivations,
-  AIRSHIP_ROUTES, FERRY_ROUTES, MANACLIPPER_ROUTES, BARGE_ROUTES, GUILDS, RSE_RACES,
+  AIRSHIP_ROUTES, FERRY_ROUTES, MANACLIPPER_ROUTES, BARGE_ROUTES, AHT_URHGAN_ROUTES, GUILDS, RSE_RACES,
 } from './data/vanaTime'
 
 // Every armable FFXI event with its time-to-fire. Registered as the 'ffxi'
@@ -15,7 +16,7 @@ export function ffxiAlarmTargets(nowMs: number): AlarmTarget[] {
   const cycle = dayNight(nowMs)
   const undead = undeadHours(nowMs)
   return [
-    ...[...AIRSHIP_ROUTES, ...FERRY_ROUTES, ...MANACLIPPER_ROUTES, ...BARGE_ROUTES]
+    ...[...AIRSHIP_ROUTES, ...FERRY_ROUTES, ...MANACLIPPER_ROUTES, ...BARGE_ROUTES, ...AHT_URHGAN_ROUTES]
       .map(r => ({ key: r.route, inMs: nextDeparture(nowMs, r).earthMsUntil })),
     ...GUILDS.map(g => ({ key: `${g.name} opens`, inMs: guildStatus(nowMs, g).nextOpenInMs })),
     { key: 'Full Moon', inMs: moonEvents.nextFullMs - nowMs },
@@ -55,6 +56,11 @@ function lockoutTargets(nowMs: number): AlarmTarget[] {
       const inMs = p.limbus + LOCKOUT_MS - nowMs
       if (inMs > 0) out.push({ key: 'Limbus ready', inMs })
     }
+    const draws: number[] = Array.isArray(p?.assault?.draws)
+      ? p.assault.draws.filter((n: unknown) => typeof n === 'number')
+      : []
+    const tags = assaultTags(draws, p?.assault?.fourTags ? 4 : 3, nowMs)
+    if (tags.nextAt !== null) out.push({ key: 'Assault tag ready', inMs: tags.nextAt - nowMs })
     return out
   } catch {
     return []

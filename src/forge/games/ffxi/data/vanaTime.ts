@@ -108,6 +108,15 @@ export const MANACLIPPER_ROUTES: ScheduleRoute[] = [
   { route: 'Dhalmel Rock tour', departuresMin: [50] },
 ]
 
+// ToAU ferries (LandSandBoat scripts/globals/transport.lua, wiki Open sea route page):
+// both legs of each route share a clock; 8-hour cycle, 6h40 crossing.
+export const AHT_URHGAN_ROUTES: ScheduleRoute[] = [
+  { route: 'Mhaura → Al Zahbi (open sea)', departuresMin: every(240, 480) },
+  { route: 'Al Zahbi → Mhaura (open sea)', departuresMin: every(240, 480) },
+  { route: 'Al Zahbi → Nashmau (silver sea)', departuresMin: every(0, 480) },
+  { route: 'Nashmau → Al Zahbi (silver sea)', departuresMin: every(0, 480) },
+]
+
 export const BARGE_ROUTES: ScheduleRoute[] = [
   { route: 'South → Central Landing', departuresMin: [50] },
   { route: 'South → North Landing', departuresMin: [610] },

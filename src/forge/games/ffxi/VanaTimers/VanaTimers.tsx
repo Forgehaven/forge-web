@@ -24,7 +24,7 @@ import {
   vanaTime, moonPhase, nextDeparture, formatEarthWait,
   rseSchedule, upcomingMoonEvents, itemActivations, dayNight, undeadHours,
   VANA_WEEKDAYS, WEEKDAY_ELEMENTS, RSE_RACES,
-  AIRSHIP_ROUTES, FERRY_ROUTES, MANACLIPPER_ROUTES, BARGE_ROUTES,
+  AIRSHIP_ROUTES, FERRY_ROUTES, MANACLIPPER_ROUTES, BARGE_ROUTES, AHT_URHGAN_ROUTES,
   GUILDS, guildStatus,
   type ScheduleRoute,
 } from '../data/vanaTime'
@@ -229,6 +229,7 @@ const SOURCES: [string, string][] = [
   ['pyogenes timer', 'https://www.pyogenes.com/ffxi/timer/v2.html'],
   ['go-vanatime', 'https://github.com/pasela/go-vanatime'],
   ['wiki route pages', 'https://horizonffxi.wiki/Airship'],
+  ['ToAU ferries (LSB transport.lua)', 'https://github.com/LandSandBoat/server/blob/base/scripts/globals/transport.lua'],
   ['live weather (wiki)', 'https://horizonffxi.wiki/Special:WeatherForecast'],
 ]
 
@@ -409,6 +410,9 @@ export function VanaTimers() {
         isArmed={alarms.has} onToggleAlert={alarms.toggle} />
       <ScheduleTable title="Selbina · Mhaura ferry" routes={FERRY_ROUTES} nowMs={ms}
         open={!collapsed.ferry} onToggle={() => toggleTable('ferry')}
+        isArmed={alarms.has} onToggleAlert={alarms.toggle} />
+      <ScheduleTable title="Aht Urhgan ferries · open sea / silver sea" routes={AHT_URHGAN_ROUTES} nowMs={ms}
+        open={!collapsed.ahturhgan} onToggle={() => toggleTable('ahturhgan')}
         isArmed={alarms.has} onToggleAlert={alarms.toggle} />
       <ScheduleTable title="Manaclipper · Bibiki Bay" routes={MANACLIPPER_ROUTES} nowMs={ms}
         open={!collapsed.manaclipper} onToggle={() => toggleTable('manaclipper')}

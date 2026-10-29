@@ -5,6 +5,8 @@
 // `unmarked: true` have no known position (absent from the wiki spawn map
 // or on a floor we do not ship): legend-only wiki link, no shape; preserve
 // them on regeneration like traced points.
+// ToAU zones (2026-10-29): the wiki has no spawn-map images for them yet, so
+// r:31 circles sit on the grid cell(s) the zone page's NM table names.
 export interface NmSpawn {
   name: string
   page: string
@@ -18,6 +20,122 @@ export interface NmSpawn {
 }
 
 export const NM_SPAWNS: Record<string, NmSpawn[]> = {
+  "alzadaal_undersea_ruins_1": [
+    { name: "Armed Gears", page: "Armed Gears", x: 435, y: 682, r: 31 },
+    { name: "Cheese Hoarder Gigiroon", page: "Cheese Hoarder Gigiroon", x: 374, y: 497, r: 31 },
+    { name: "Ob", page: "Ob", x: 435, y: 435, r: 31 },
+    { name: "Wulgaru", page: "Wulgaru", x: 435, y: 374, r: 31 },
+  ],
+  "arrapago_reef_1": [
+    { name: "Euryale", page: "Euryale", x: 559, y: 374, r: 31 },
+    { name: "Lil' Apkallu", page: "Lil' Apkallu", x: 559, y: 559, r: 31 },
+    { name: "Velionis", page: "Velionis", x: 374, y: 682, r: 31 },
+  ],
+  "arrapago_reef_2": [
+    { name: "Bloody Bones", page: "Bloody Bones", x: 559, y: 374, r: 31 },
+    { name: "Lamie No.7", page: "Lamie No.7", x: 312, y: 620, r: 31 },
+    { name: "Lamie No.8", page: "Lamie No.8", x: 559, y: 620, r: 31 },
+    { name: "Lamia No.19", page: "Lamia No.19", x: 312, y: 682, r: 31 },
+    { name: "Lamia No.19", page: "Lamia No.19", x: 374, y: 559, r: 31 },
+    { name: "Merrow No.5", page: "Merrow No.5", x: 374, y: 374, r: 31 },
+    { name: "Zareehkl the Jubilant", page: "Zareehkl the Jubilant", x: 559, y: 620, r: 31 },
+  ],
+  "arrapago_reef_3": [
+    { name: "Lamie No.9", page: "Lamie No.9", x: 620, y: 374, r: 31 },
+    { name: "Medusa", page: "Medusa", x: 435, y: 312, r: 31 },
+    { name: "Nuhn", page: "Nuhn", x: 435, y: 374, r: 31 },
+  ],
+  "aydeewa_subterrane_1": [
+    { name: "Lizardtrap", page: "Lizardtrap", x: 435, y: 497, r: 31 },
+  ],
+  "aydeewa_subterrane_2": [
+    { name: "Chigre", page: "Chigre", x: 271, y: 531, r: 15 },
+    { name: "Nosferatu", page: "Nosferatu", x: 401, y: 592, r: 15 },
+  ],
+  "aydeewa_subterrane_3": [
+    { name: "Bluestreak Gyugyuroon", page: "Bluestreak Gyugyuroon", x: 620, y: 497, r: 31 },
+    { name: "Bluestreak Gyugyuroon", page: "Bluestreak Gyugyuroon", x: 559, y: 559, r: 31 },
+    { name: "Bluestreak Gyugyuroon", page: "Bluestreak Gyugyuroon", x: 620, y: 559, r: 31 },
+  ],
+  "aydeewa_subterrane_5": [
+    { name: "Crystal Eater", page: "Crystal Eater", x: 374, y: 497, r: 31 },
+  ],
+  "aydeewa_subterrane_7": [
+    { name: "Pandemonium Warden", page: "Pandemonium Warden", x: 735, y: 385, r: 15 },
+  ],
+  "bhaflau_thickets_1": [
+    { name: "Dea", page: "Dea", x: 374, y: 435, r: 31 },
+    { name: "Emergent Elm", page: "Emergent Elm", x: 435, y: 374, r: 31 },
+    { name: "Emergent Elm", page: "Emergent Elm", x: 497, y: 435, r: 31 },
+    { name: "Harvestman", page: "Harvestman", x: 559, y: 559, r: 31 },
+    { name: "Lividroot Amooshah", page: "Lividroot Amooshah", x: 497, y: 559, r: 31 },
+    { name: "Mahishasura", page: "Mahishasura", x: 435, y: 497, r: 31 },
+    { name: "Mahishasura", page: "Mahishasura", x: 497, y: 435, r: 31 },
+  ],
+  "bhaflau_thickets_2": [
+    { name: "Nis Puk", page: "Nis Puk", x: 497, y: 559, r: 31 },
+  ],
+  "caedarva_mire_1": [
+    { name: "Verdelet", page: "Verdelet", x: 620, y: 374, r: 31 },
+  ],
+  "caedarva_mire_2": [
+    { name: "Experimental Lamia", page: "Experimental Lamia", x: 374, y: 435, r: 31 },
+  ],
+  "caedarva_mire_3": [
+    { name: "Tyger", page: "Tyger", x: 497, y: 497, r: 31 },
+  ],
+  "halvung_1": [
+    { name: "Achamoth", page: "Achamoth", x: 497, y: 250, r: 31 },
+    { name: "Copper Borer", page: "Copper Borer", x: 559, y: 805, r: 31 },
+    { name: "Dextrose", page: "Dextrose", x: 620, y: 374, r: 31 },
+    { name: "Dorgerwor the Astute", page: "Dorgerwor the Astute", unmarked: true },
+    { name: "Farlarder the Shrewd", page: "Farlarder the Shrewd", unmarked: true },
+    { name: "Flammeri", page: "Flammeri", unmarked: true },
+    { name: "Reacton", page: "Reacton", unmarked: true },
+  ],
+  "mamook_1": [
+    { name: "Chamrosh", page: "Chamrosh", x: 620, y: 559, r: 31 },
+    { name: "Iriri Samariri", page: "Iriri Samariri", x: 374, y: 435, r: 31 },
+    { name: "Devout Radol Ja", page: "Devout Radol Ja", unmarked: true },
+    { name: "Dragonscaled Bugaal Ja", page: "Dragonscaled Bugaal Ja", unmarked: true },
+    { name: "Firedance Magmaal Ja", page: "Firedance Magmaal Ja", unmarked: true },
+    { name: "Hundredfaced Hapool Ja", page: "Hundredfaced Hapool Ja", unmarked: true },
+    { name: "Venomfang", page: "Venomfang", unmarked: true },
+    { name: "Zizzy Zillah", page: "Zizzy Zillah", unmarked: true },
+  ],
+  "mamook_2": [
+    { name: "Darting Kachaal Ja", page: "Darting Kachaal Ja", unmarked: true },
+  ],
+  "mamook_3": [
+    { name: "Gulool Ja Ja", page: "Gulool Ja Ja", unmarked: true },
+  ],
+  "mount_zhayolm": [
+    { name: "Brass Borer", page: "Brass Borer", x: 559, y: 435, r: 31 },
+    { name: "Anantaboga", page: "Anantaboga", x: 312, y: 374, r: 31 },
+    { name: "Claret", page: "Claret", x: 620, y: 497, r: 31 },
+    { name: "Sarameya", page: "Sarameya", x: 559, y: 744, r: 31 },
+    { name: "Chary Apkallu", page: "Chary Apkallu", unmarked: true },
+    { name: "Energetic Eruca", page: "Energetic Eruca", unmarked: true },
+    { name: "Garfurlar the Rabid", page: "Garfurlar the Rabid", unmarked: true },
+    { name: "Garharlor the Unruly", page: "Garharlor the Unruly", unmarked: true },
+    { name: "Garhorlur the Brutal", page: "Garhorlur the Brutal", unmarked: true },
+    { name: "Cerberus", page: "Cerberus", unmarked: true },
+    { name: "Fahrafahr the Bloodied", page: "Fahrafahr the Bloodied", unmarked: true },
+    { name: "Giant Orobon", page: "Giant Orobon", unmarked: true },
+    { name: "Ignamoth", page: "Ignamoth", unmarked: true },
+    { name: "Khromasoul Bhurborlor", page: "Khromasoul Bhurborlor", unmarked: true },
+  ],
+  "wajaom_woodlands": [
+    { name: "Chelicerata", page: "Chelicerata", x: 682, y: 559, r: 31 },
+    { name: "Gharial", page: "Gharial", x: 312, y: 497, r: 31 },
+    { name: "Gotoh Zha the Redolent", page: "Gotoh Zha the Redolent", x: 374, y: 312, r: 31 },
+    { name: "Hydra (NM)", page: "Hydra (NM)", x: 374, y: 620, r: 31 },
+    { name: "Iriz Ima", page: "Iriz Ima", x: 620, y: 497, r: 31 },
+    { name: "Tinnin", page: "Tinnin", x: 620, y: 805, r: 31 },
+    { name: "Vulpangue", page: "Vulpangue", x: 250, y: 620, r: 31 },
+    { name: "Jaded Jody", page: "Jaded Jody", unmarked: true },
+    { name: "Zoraal Ja's Pkuucha", page: "Zoraal Ja's Pkuucha", unmarked: true },
+  ],
   "altaieu": [
     { name: "Absolute Virtue", page: "Absolute Virtue", x: 580, y: 717, r: 40 },
     { name: "Jailer of Hope", page: "Jailer of Hope", x: 235, y: 577, r: 30 },
@@ -32,16 +150,6 @@ export const NM_SPAWNS: Record<string, NmSpawn[]> = {
     { name: "Citipati", page: "Citipati", x: 382, y: 510, r: 40 },
     { name: "Lioumere", page: "Lioumere", x: 712, y: 524, r: 26 },
     { name: "Xolotl", page: "Xolotl", x: 302, y: 458, r: 38 },
-  ],
-  "aydeewa_subterrane_2": [
-    { name: "Chigre", page: "Chigre", x: 271, y: 531, r: 15 },
-    { name: "Nosferatu", page: "Nosferatu", x: 401, y: 592, r: 15 },
-  ],
-  "aydeewa_subterrane_3": [
-    { name: "Bluestreak Gyugyuroon", page: "Bluestreak Gyugyuroon", unmarked: true },
-  ],
-  "aydeewa_subterrane_7": [
-    { name: "Pandemonium Warden", page: "Pandemonium Warden", x: 735, y: 385, r: 15 },
   ],
   "batallia_downs": [
     { name: "Ahtu", page: "Ahtu", x: 615, y: 715, r: 36 },

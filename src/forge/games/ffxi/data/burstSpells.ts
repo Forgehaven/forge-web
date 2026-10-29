@@ -37,7 +37,14 @@ export const BURST_SPELLS: BurstSpell[] = [
   { name: 'Aero IV',     job: 'BLM', element: 'Wind',      minLevel: 72 },
   { name: 'Fire IV',     job: 'BLM', element: 'Fire',      minLevel: 73 },
   { name: 'Blizzard IV', job: 'BLM', element: 'Ice',       minLevel: 74 },
-  { name: 'Thunder IV',  job: 'BLM', element: 'Lightning', minLevel: 75 },
+  { name: 'Thunder IV', job: 'BLM', element: 'Lightning', minLevel: 75 },
+  // Ancient Magic II - level 75 scrolls since ToAU on Horizon (Group 2 merits only cut recast)
+  { name: 'Quake II',   job: 'BLM', element: 'Earth',     minLevel: 75 },
+  { name: 'Flood II',   job: 'BLM', element: 'Water',     minLevel: 75 },
+  { name: 'Tornado II', job: 'BLM', element: 'Wind',      minLevel: 75 },
+  { name: 'Flare II',   job: 'BLM', element: 'Fire',      minLevel: 75 },
+  { name: 'Freeze II',  job: 'BLM', element: 'Ice',       minLevel: 75 },
+  { name: 'Burst II',   job: 'BLM', element: 'Lightning', minLevel: 75 },
 
   // White Mage
   { name: 'Banish',    job: 'WHM', element: 'Light', minLevel: 5  },

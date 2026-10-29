@@ -14,23 +14,37 @@ import { loadSelectedCharId } from '../selectedChar'
 import { CHAR_NATIONS } from '../nations'
 import { lastConquestReset, formatNextReset } from '../conquest'
 import { formatLongWait } from '../data/vanaTime'
+import { assaultTags, ASSAULT_TAG_MS } from './assaultTags'
 
 const SK = STORAGE_KEYS.ffxiLockouts
 export const LOCKOUT_MS = 72 * 3_600_000
 
+type AssaultBlob = { draws: number[]; fourTags: boolean }
+
 type LockoutBlob = {
   dynamis: number[]
   limbus: number | null
+  assault: AssaultBlob
 }
 
-const EMPTY: LockoutBlob = { dynamis: [], limbus: null }
+const EMPTY_ASSAULT: AssaultBlob = { draws: [], fourTags: false }
+const EMPTY: LockoutBlob = { dynamis: [], limbus: null, assault: EMPTY_ASSAULT }
+
+const numbers = (v: unknown): number[] =>
+  Array.isArray(v) ? v.filter((n: unknown): n is number => typeof n === 'number') : []
+
+function parseAssault(v: unknown): AssaultBlob {
+  const p = v as Partial<AssaultBlob> | undefined
+  return { draws: numbers(p?.draws), fourTags: p?.fourTags === true }
+}
 
 function loadState(): LockoutBlob {
   try {
     const p = JSON.parse(localStorage.getItem(SK) ?? '')
     return {
-      dynamis: Array.isArray(p?.dynamis) ? p.dynamis.filter((n: unknown) => typeof n === 'number') : [],
+      dynamis: numbers(p?.dynamis),
       limbus: typeof p?.limbus === 'number' ? p.limbus : null,
+      assault: parseAssault(p?.assault),
     }
   } catch { /* fall through */ }
   return EMPTY
@@ -81,6 +95,7 @@ export function LockoutTracker() {
       const next: LockoutBlob = {
         dynamis: data?.dynamis ?? [],
         limbus: data?.limbus ?? null,
+        assault: parseAssault(data?.assault),
       }
       setSaved(next)
       if (data) writeLocal(next)
@@ -108,6 +123,18 @@ export function LockoutTracker() {
 
   function removeDynamis(ts: number) {
     persist({ ...saved, dynamis: saved.dynamis.filter(t => t !== ts) })
+  }
+
+  const tagMax = saved.assault.fourTags ? 4 : 3
+  const tags = assaultTags(saved.assault.draws, tagMax, ms)
+
+  function logTag() {
+    const draws = [...saved.assault.draws, ms].sort((a, b) => b - a).slice(0, 8)
+    persist({ ...saved, assault: { ...saved.assault, draws } })
+  }
+
+  function removeTag(ts: number) {
+    persist({ ...saved, assault: { ...saved.assault, draws: saved.assault.draws.filter(t => t !== ts) } })
   }
 
   const lastDynamis = saved.dynamis.length ? Math.max(...saved.dynamis) : null
@@ -207,9 +234,70 @@ export function LockoutTracker() {
         </div>
       </div>
 
+      <div className="rounded-lg border border-[#2a2d3a] bg-[#1a1d27] px-5 py-4 flex flex-col gap-2">
+        <div className="flex items-center justify-between">
+          <span className="text-[10px] uppercase tracking-wider font-semibold text-[#9ca3af]">Assault tags</span>
+          <AlertBell target="Assault tag ready" armed={alarms.has('Assault tag ready')} onToggle={alarms.toggle} size={14} />
+        </div>
+        <div className="text-sm text-[#9ca3af]">
+          Imperial Army I.D. tags:{' '}
+          <span className={`tabular-nums font-semibold ${tags.stock === 0 ? 'text-[#fb923c]' : 'text-[#e2e4ed]'}`}>
+            {tags.stock}/{tagMax}
+          </span>
+          {tags.nextAt !== null && (
+            <span className="tabular-nums"> · next {fmtStamp(tags.nextAt)} · in {formatLongWait(tags.nextAt - ms)}</span>
+          )}
+          {tags.fullAt !== null && tags.fullAt !== tags.nextAt && (
+            <span className="text-[#6b7280] tabular-nums"> · full {fmtStamp(tags.fullAt)}</span>
+          )}
+        </div>
+        {saved.assault.draws.length > 0 && (
+          <div className="flex flex-col gap-1 text-xs text-[#6b7280]">
+            {saved.assault.draws.map(ts => (
+              <div key={ts} className="flex items-center gap-2">
+                <span className="tabular-nums">{fmtStamp(ts)}</span>
+                <button
+                  onClick={() => removeTag(ts)}
+                  aria-label={`Remove tag draw ${ts}`}
+                  className="text-[#6b7280] hover:text-[#e2e4ed] cursor-pointer leading-none"
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+        <div className="flex items-center gap-3 flex-wrap">
+          <button
+            onClick={logTag}
+            disabled={tags.stock === 0}
+            className="text-sm px-3 py-1 rounded border border-[#c4af64]/60 text-[#c4af64] hover:bg-[#c4af64]/10 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Drew a tag now
+          </button>
+          <label className="flex items-center gap-1.5 text-xs text-[#9ca3af] cursor-pointer">
+            <input
+              type="checkbox"
+              checked={saved.assault.fourTags}
+              onChange={e => persist({ ...saved, assault: { ...saved.assault, fourTags: e.target.checked } })}
+            />
+            4-tag stock (Second Lieutenant, all assaults cleared)
+          </label>
+          {saved.assault.draws.length > 0 && (
+            <ConfirmButton
+              label="Clear"
+              onConfirm={() => persist({ ...saved, assault: { ...saved.assault, draws: [] } })}
+              className="text-xs text-[#9ca3af] hover:text-[#e2e4ed] transition-colors cursor-pointer"
+            />
+          )}
+        </div>
+      </div>
+
       <p className="text-xs text-[#6b7280]">
-        Both timers are 72 Earth hours. Dynamis counts from your hourglass trade; Limbus counts
-        from buying the Cosmo-Cleanse (Horizon 1.1 change). Bells ring on any games page.
+        Dynamis and Limbus timers are 72 Earth hours. Dynamis counts from your hourglass trade; Limbus counts
+        from buying the Cosmo-Cleanse (Horizon 1.1 change). Assault tags regenerate one per{' '}
+        {ASSAULT_TAG_MS / 3_600_000} Earth hours from the first draw out of a full stock (LandSandBoat
+        behaviour; Horizon timing unverified). Bells ring on any games page.
       </p>
     </div>
   )
