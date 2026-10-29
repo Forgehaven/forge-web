@@ -412,10 +412,10 @@ function check(p: Purchase, st: ReplayState, ctx: Ctx, strictChoice: boolean): [
 
   const sk = ctx.skills.get(p.skill)
   if (!sk) return [0, 0, 'Not available to this character']
-  const cost = skillCost(sk, b, p.choice)
+  const have = count(st, sk.id)
+  const cost = sk.cpFirstOnly && have > 0 ? 0 : skillCost(sk, b, p.choice)
   const frag = sk.id === SPELL_VERSATILITY ? versatilityCost(b, p.choice) : sk.frag
   const err = (e: string): [number, number, string] => [cost, frag, e]
-  const have = count(st, sk.id)
 
   if (sk.costs && !b.occupation) return err('Pick an occupation first')
   if (sk.id === ELEMENTAL_ATTUNEMENT) {

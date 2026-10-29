@@ -1843,7 +1843,9 @@
           "prereqs": [],
           "desc": "Purchasing this skill allows a character to teach another character a Vocation or non-Renowned Frag Sphere that they currently have on their character sheet, once. If the Teacher wishes to teach further students, they must pay the frag cost, but not the CP cost, again for each thing taught.\n\nTeachers may only teach players from the Teacher's home guild. The amount of time and steps required to learn a Vocation or Sphere are determined by the Teacher.",
           "cp": 15,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "cpFirstOnly": true,
+          "ref": "Soul Frag 2.10 p.88"
         }
       ]
     }

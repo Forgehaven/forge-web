@@ -441,6 +441,9 @@ so FFXI pages never load the ~450KB rules JSON.
 - `AuthProvider` at the app root (`App.tsx`); `useAuth` / `AuthContext` in `src/auth/authContext.ts`.
   A Login button in every sidebar footer opens `src/auth/LoginModal.tsx`.
 - **Login is OPTIONAL**: nothing is role-gated. Login only adds cross-device sync (FFXI).
+- `LoginModal`'s guild chips label forge-api's named roles (`ROLE_LABELS`: `wow_member` -> "WoW Guild
+  Member", `wow_leadership` -> "WoW Guild Leadership") and hide a missing leadership chip
+  (`QUIET_WHEN_MISSING`). The WoW: Forever section itself lives on runningdawn.com, not here.
 - Flow: `login()` -> Discord OAuth -> `/auth/callback?code=` -> POST `{code}` -> HttpOnly
   `forge_session` cookie (1h) -> redirect to stored `auth_return_path` -> `/auth/me` on mount.
 - Logout POSTs `/auth/logout`, sets `localStorage.forge_logged_out`, reloads.

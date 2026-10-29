@@ -8,6 +8,13 @@ import { useFfxiCharacters } from '../forge/games/ffxi/hooks/useFfxiCharacters'
 import { API_URLS } from '../config/apiUrls'
 import ffxiLogo from '../forge/games/ffxi/ffxi-logo.png'
 
+// Named roles from /auth/me: display label, and whether a missing role is worth a red chip.
+const ROLE_LABELS: Record<string, string> = {
+  wow_member: 'WoW Guild Member',
+  wow_leadership: 'WoW Guild Leadership',
+}
+const QUIET_WHEN_MISSING = new Set(['wow_leadership'])
+
 // 'running_dawn' -> 'Running Dawn'
 function titleCase(slug: string): string {
   return slug
@@ -214,9 +221,11 @@ function GuildAccess({ user }: { user: AuthUser }) {
           <p className="text-xs text-[#6b7280]">{titleCase(slug)}</p>
           <div className="flex flex-wrap gap-2">
             <AccessChip ok={status.is_member} label="Member" />
-            {Object.entries(status.roles).map(([role, ok]) => (
-              <AccessChip key={role} ok={ok} label={`${titleCase(role)} role`} />
-            ))}
+            {Object.entries(status.roles)
+              .filter(([role, ok]) => ok || !QUIET_WHEN_MISSING.has(role))
+              .map(([role, ok]) => (
+                <AccessChip key={role} ok={ok} label={ROLE_LABELS[role] ?? `${titleCase(role)} role`} />
+              ))}
           </div>
         </div>
       ))}

@@ -1,13 +1,13 @@
 import { Fragment, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react'
-import { assignColumns } from '../lib/assignColumns'
+import { assignColumns, type Place } from '../lib/assignColumns'
 
 export interface MasonryItem {
   key: string
   // Estimated height (e.g. row count). Columns are assigned from these, not
   // from live heights, so expanding a card never moves cards between columns.
   weight: number
-  // Fixed column, honoured when the container is wide enough.
-  col?: number
+  // Fixed [column, row] per column count, used when the container fits that many.
+  place?: Place
   node: ReactNode
 }
 

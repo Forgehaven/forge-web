@@ -8,6 +8,7 @@ import { stepLabel } from './util'
 import { ordinal } from '../rules'
 import { Prose } from '../components/Prose'
 import { Masonry, type MasonryItem } from '../../../../components/Masonry'
+import type { Place } from '../../../../lib/assignColumns'
 
 interface Props {
   build: Build
@@ -40,12 +41,21 @@ function optionLabel(sk: CatalogSkill, o: string, build: Build) {
   return o.replace('|', ', circle ')
 }
 
-// Fixed card layout: [column, order]. Class Frag Skills is whichever class applies.
-function slot(cat: string): [number, number] {
-  if (cat.endsWith('Class Frag Skills')) return [2, 1]
-  const at = { Racial: [0, 0], Production: [0, 1], Warrior: [0, 2], 'Frag Skills': [1, 0], Scholar: [1, 1], 'Occupational Abilities': [2, 0], Rogue: [2, 2] }[cat]
-  return (at as [number, number]) ?? [2, 3]
+// Card placement per column count: 3 wide on desktop, 2 wide on tablets. One
+// column reads the 2-wide columns top to bottom.
+const LAYOUTS: Record<number, string[][]> = {
+  2: [['Racial', 'Production', 'Frag Skills', 'Occupational Abilities', 'Class Frag Skills'], ['Warrior', 'Scholar', 'Rogue']],
+  3: [['Racial', 'Production', 'Warrior'], ['Frag Skills', 'Scholar'], ['Occupational Abilities', 'Class Frag Skills', 'Rogue']],
 }
+// Class Frag Skills is whichever class applies.
+const group = (cat: string) => (cat.endsWith('Class Frag Skills') ? 'Class Frag Skills' : cat)
+function place(cat: string): Place {
+  return Object.fromEntries(Object.entries(LAYOUTS).map(([n, cols]) => {
+    const c = cols.findIndex(col => col.includes(group(cat)))
+    return [n, [c, cols[c].indexOf(group(cat))]]
+  }))
+}
+const stackIndex = (cat: string) => LAYOUTS[2].flat().indexOf(group(cat))
 
 function SkillRow({ row, owned, needFor, hasOccupation, onAdd, onRemove }: {
   row: Row
@@ -220,16 +230,16 @@ export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove }: Prop
         </p>
       )}
 
-      <Masonry minWidth={300} items={[...rows].sort((a, b) => slot(a.cat)[0] - slot(b.cat)[0] || slot(a.cat)[1] - slot(b.cat)[1]).flatMap(({ cat, skills }): MasonryItem[] => {
+      <Masonry minWidth={300} items={[...rows].sort((a, b) => stackIndex(a.cat) - stackIndex(b.cat)).flatMap(({ cat, skills }): MasonryItem[] => {
           const shown = skills.filter(r =>
             (!q || r.sk.name.toLowerCase().includes(q)) && (!hideBlocked || !r.reason))
           // Columns come from full category sizes, so filtering or buying never moves
           // a card; a category with nothing to show hides in its slot.
-          if (!shown.length) return [{ key: cat, col: slot(cat)[0], weight: skills.length + 2, node: null }]
+          if (!shown.length) return [{ key: cat, place: place(cat), weight: skills.length + 2, node: null }]
           const isClosed = closed[cat] && !q
           const ownedHere = skills.filter(r => owned(r.sk.id) > 0).length
           const buyable = skills.filter(r => !r.reason).length
-          return [{ key: cat, col: slot(cat)[0], weight: skills.length + 2, node: (
+          return [{ key: cat, place: place(cat), weight: skills.length + 2, node: (
             <section className="forge-card !p-0 overflow-hidden">
               <button
                 className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-[#e2e4ed] bg-[#2a2d3a]/30 hover:bg-[#2a2d3a]/60 cursor-pointer"

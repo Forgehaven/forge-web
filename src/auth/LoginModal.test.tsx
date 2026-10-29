@@ -67,6 +67,17 @@ describe('LoginModal', () => {
     expect(screen.getAllByText('✓ Member')).toHaveLength(2)
   })
 
+  it('names WoW roles and hides a missing leadership chip', async () => {
+    const user = tester(true)
+    user.guilds.running_dawn.roles = { wow_member: true, wow_leadership: false }
+    fetchSpy.mockResolvedValue(ok(user))
+
+    renderModal('/games/wow-forever')
+
+    expect(await screen.findByText('✓ WoW Guild Member')).toBeInTheDocument()
+    expect(screen.queryByText(/WoW Guild Leadership/)).not.toBeInTheDocument()
+  })
+
   it('logged in: avatar renders the backend URL verbatim', async () => {
     fetchSpy.mockResolvedValue(ok(tester(true)))
 

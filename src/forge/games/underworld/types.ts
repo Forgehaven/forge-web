@@ -30,6 +30,8 @@ export interface Skill {
   raceReq?: string
   _fragOnly?: boolean
   _paragon?: boolean
+  // Only the first purchase costs CP; later ones cost frags only.
+  cpFirstOnly?: boolean
 }
 
 // A frag purchase applied to the player (Soul Frag "Out of Game Skills"); not bought with CP.

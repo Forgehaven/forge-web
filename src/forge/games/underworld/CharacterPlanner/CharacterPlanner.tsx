@@ -65,7 +65,7 @@ export default function CharacterPlanner() {
   const needsHighlighted = vocationNeeds(view, ev.final).size > 0
 
   return (
-    <div className={`grid gap-4 lg:h-full lg:grid-rows-[minmax(0,1fr)] ${pane ? 'lg:grid-cols-[22rem_24rem_minmax(0,1fr)]' : 'lg:grid-cols-[24rem_minmax(0,1fr)]'}`}>
+    <div className={`grid gap-4 pb-6 lg:pb-0 lg:h-full lg:grid-rows-[minmax(0,1fr)] ${pane ? 'lg:grid-cols-[22rem_24rem_minmax(0,1fr)]' : 'lg:grid-cols-[24rem_minmax(0,1fr)]'}`}>
       <aside className="flex flex-col gap-4 lg:min-h-0 lg:overflow-y-auto lg:pr-2">
         <header>
           <h1 className="text-xl font-semibold text-[#e2e4ed]">Character Planner</h1>

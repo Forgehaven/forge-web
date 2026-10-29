@@ -294,6 +294,12 @@ describe('spell slot ordering across steps', () => {
     expect(choiceOptions(sk, stateAt(b, 0, true))).toEqual(['Stone', 'Lightning', 'Ice'])
   })
 
+  it('charges Teacher CP only once; later purchases cost frags only (Soul Frag 2.10 p.88)', () => {
+    const teach = [buy('teacher'), buy('teacher')]
+    const ev = evaluate(build({ purchases: teach }), undefined, true)
+    expect(teach.map(p => { const r = ev.results.get(p.id)!; return [r.cost, r.frag] })).toEqual([[15, 50], [0, 50]])
+  })
+
   it('warns where level 16 ends buying back lives, and where to stop', () => {
     const safe = lastBlanketAtLevel(15)
     expect(safe).toBe(82)
