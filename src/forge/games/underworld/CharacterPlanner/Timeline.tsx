@@ -89,8 +89,8 @@ export function Timeline({ build, ev, active, setActive, setBuild }: Props) {
   const now = thisMonth()
   const lastStep = ev.steps[ev.steps.length - 1]
   const final = lastStep.row.level
-  // The "Today" line goes before the first step after this month.
-  const todayAt = ev.steps.find(s => s.month > now)?.at
+  // Newest first. The "Today" line sits above the latest step not after this month.
+  const todayAt = ev.steps.findLast(s => s.month <= now)?.at
 
   return (
     <section className="flex flex-col gap-3">
@@ -125,11 +125,25 @@ export function Timeline({ build, ev, active, setActive, setBuild }: Props) {
       </details>
 
       <ol className="relative">
-        {ev.steps.map((step, i) => {
+        <li className="grid grid-cols-[2rem_1.25rem_minmax(0,1fr)] gap-x-2">
+          <span />
+          <span className="relative flex justify-center">
+            <span className="absolute top-4 bottom-0 w-px border-l border-dashed border-[#3a3d4a]" />
+            <span className="relative mt-3.5 w-2.5 h-2.5 rounded-full border border-dashed border-[#c4af64]" />
+          </span>
+          <div className="my-1 flex flex-wrap items-center gap-2 rounded-md border border-dashed border-[#2a2d3a] px-3 py-2">
+            <span className="text-sm text-[#9ca3af]">Next blanket</span>
+            <MonthSelect compact label="Next blanket" value={month} onChange={setAddMonth} />
+            <button className="forge-btn-accent !py-1 ml-auto" onClick={addBlanket}>+ Add blanket</button>
+          </div>
+        </li>
+
+        {ev.steps.map((step, i) => [step, i] as const).reverse().map(([step, i]) => {
           const prev = ev.steps[i - 1]
+          const later = ev.steps[i + 1]
           const levelUp = !prev || step.row.level > prev.row.level
           const year = step.month.slice(0, 4)
-          const newYear = !prev || prev.month.slice(0, 4) !== year
+          const newYear = !later || later.month.slice(0, 4) !== year
           const planned = step.month > now
           const isActive = step.at === active
           const over = step.spent > step.cp
@@ -141,9 +155,9 @@ export function Timeline({ build, ev, active, setActive, setBuild }: Props) {
                 <div className="pl-1 pt-2 pb-1 text-sm font-semibold text-[#c4af64]">{year}</div>
               )}
               <div className="grid grid-cols-[2rem_1.25rem_minmax(0,1fr)] gap-x-2">
-                <span className="text-xs text-[#6b7280] text-right pt-3">{prev?.month === step.month ? '' : monthLabel(step.month).split(' ')[0]}</span>
+                <span className="text-xs text-[#6b7280] text-right pt-3">{later?.month === step.month ? '' : monthLabel(step.month).split(' ')[0]}</span>
                 <span className="relative flex justify-center">
-                  <span className={`absolute inset-y-0 w-px ${planned ? 'border-l border-dashed border-[#3a3d4a]' : 'bg-[#3a3d4a]'} ${i === 0 ? 'top-4' : ''}`} />
+                  <span className={`absolute inset-y-0 w-px ${planned ? 'border-l border-dashed border-[#3a3d4a]' : 'bg-[#3a3d4a]'} ${i === 0 ? 'h-4' : ''}`} />
                   <span className={`relative rounded-full ${
                     levelUp ? 'mt-3 w-3.5 h-3.5 bg-emerald-400 ring-4 ring-emerald-400/15' : `mt-3.5 w-2.5 h-2.5 ${isActive ? 'bg-[#c4af64]' : 'bg-[#4b5563]'}`
                   }`} />
@@ -201,20 +215,7 @@ export function Timeline({ build, ev, active, setActive, setBuild }: Props) {
             </li>
           )
         })}
-
         {todayAt === undefined && <li><TodayLine /></li>}
-        <li className="grid grid-cols-[2rem_1.25rem_minmax(0,1fr)] gap-x-2">
-          <span />
-          <span className="relative flex justify-center">
-            <span className="absolute top-0 h-4 w-px border-l border-dashed border-[#3a3d4a]" />
-            <span className="relative mt-3.5 w-2.5 h-2.5 rounded-full border border-dashed border-[#c4af64]" />
-          </span>
-          <div className="my-1 flex flex-wrap items-center gap-2 rounded-md border border-dashed border-[#2a2d3a] px-3 py-2">
-            <span className="text-sm text-[#9ca3af]">Next blanket</span>
-            <MonthSelect compact label="Next blanket" value={month} onChange={setAddMonth} />
-            <button className="forge-btn-accent !py-1 ml-auto" onClick={addBlanket}>+ Add blanket</button>
-          </div>
-        </li>
       </ol>
       <p className="text-[11px] text-[#6b7280]">
         Max {MAX_BLANKETS_PER_MONTH} blankets a month. Click a step to buy skills there; drag skills between steps.

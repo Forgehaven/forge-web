@@ -23,4 +23,5 @@ export const STORAGE_KEYS = {
   ffxiMap:                 'forgegames_ffxi_map_v1',
   ffxiExpCamps:            'forgegames_ffxi_expcamps_v1',
   uwPlanner:               'forgegames_uw_planner_v1',
+  uwOnlyBuyable:           'forgegames_uw_onlybuyable_v1',
 } as const

@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import {
   catalog, choiceLabel, choiceOptions, evaluate, needsChoice, stateAt, SPELL_VERSATILITY, TRADESMAN, versatilityCost,
   type Build, type CatalogSkill, type Evaluation,
@@ -149,7 +150,13 @@ function SkillRow({ row, owned, hasOccupation, onAdd, onRemove }: {
 
 export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove }: Props) {
   const [query, setQuery] = useState('')
-  const [hideBlocked, setHideBlocked] = useState(false)
+  const [hideBlocked, setHideBlocked] = useState(() => {
+    try { return localStorage.getItem(STORAGE_KEYS.uwOnlyBuyable) === '1' } catch { return false }
+  })
+  const toggleBlocked = (on: boolean) => {
+    setHideBlocked(on)
+    try { localStorage.setItem(STORAGE_KEYS.uwOnlyBuyable, on ? '1' : '0') } catch { /* private mode */ }
+  }
   const [closed, setClosed] = useState<Record<string, boolean>>({})
 
   const rows = useMemo(() => {
@@ -186,7 +193,7 @@ export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove }: Prop
           onChange={e => setQuery(e.target.value)}
         />
         <label className="flex items-center gap-1.5 text-xs text-[#9ca3af] cursor-pointer">
-          <input type="checkbox" checked={hideBlocked} onChange={e => setHideBlocked(e.target.checked)} />
+          <input type="checkbox" checked={hideBlocked} onChange={e => toggleBlocked(e.target.checked)} />
           Only buyable
         </label>
         {!loose && <span className="text-xs text-[#6b7280]">Buying at <span className="text-[#c4af64]">{stepLabel(active)}</span></span>}
