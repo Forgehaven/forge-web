@@ -32,6 +32,16 @@ export interface Skill {
   _paragon?: boolean
 }
 
+// A frag purchase applied to the player (Soul Frag "Out of Game Skills"); not bought with CP.
+export interface OutOfGameSkill {
+  id: string
+  name: string
+  // null when the cost varies; see costNote.
+  frag: number | null
+  costNote?: string
+  desc: string
+}
+
 export interface SkillCategory {
   cat: string
   skills: Skill[]

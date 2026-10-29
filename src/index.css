@@ -27,6 +27,13 @@
 
 /* ─── Base ───────────────────────────────────────────────────────────────── */
 
+/* A disabled fieldset is a read-only region: its controls look inert and drop
+   hover effects, whatever their own styles say. Expanders stay readable. */
+fieldset:disabled :is(button:not([aria-expanded]), select, input, textarea) {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
 body {
   background: #0f1117;
   color: #e2e4ed;

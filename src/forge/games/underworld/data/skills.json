@@ -1845,5 +1845,84 @@
         }
       ]
     }
-  ]
+  ],
+  "outOfGame": {
+    "source": "Soul Frag Book 2.10, Chapter 6, Out of Game Skills (pp.78-80)",
+    "note": "Applied to the player, not bought with CP. No prerequisites; self-taught.",
+    "skills": [
+      {
+        "id": "a-friend-in-need",
+        "name": "A Friend in Need",
+        "frag": 10,
+        "desc": "This skill will allow a character to come into game with the following protections: Shield Magic, Magic Armour and Simple Resist Toxin. This is a one-time purchase; it will allow the character to start game with these protections once, after which it can be purchased again for the same effect. This skill can only be used in the guild whose frags were used to purchase it."
+      },
+      {
+        "id": "a-friend-indeed",
+        "name": "A Friend Indeed",
+        "frag": 25,
+        "desc": "This skill will allow a character to come into game with the following protections: Advanced Shield Magic, Advanced Magic Armour and Complex Resist Toxin. This is a one-time purchase; it will allow the character to start game with these protections once, after which it can be purchased again for the same effect. This skill can only be used in the guild whose frags were used to purchase it."
+      },
+      {
+        "id": "hindsight",
+        "name": "Hindsight",
+        "frag": 5,
+        "desc": "This skill gives the character an additional 25% chance of remembering their death upon resurrection, instead of a 10% chance, the first time that character resurrects. It can be purchased multiple times for an additional 25% increase. All purchases will be used up the first time the character resurrects. The bonuses will stack with other abilities, but the total combined percentage is capped at 90%.\n\nThis is a one-time purchase; it will allow the character to start game with this benefit once, after which it can be purchased again for the same effect. This skill can only be used in the guild whose frags were used to purchase it."
+      },
+      {
+        "id": "luck",
+        "name": "Luck",
+        "frag": 75,
+        "desc": "Luck is a powerful \"do over\" ability. It does not always guarantee success; it will only allow you to take a mulligan against any situation where you have to flip a coin, roll a dice or pull a stone from a bag. Examples of the use of Luck would be re-pulling a ritual backlash or flipping for final death.\n\nLuck is purchased per character. Luck is a one-time purchase. Once it is used, it must be re-purchased. During the year following its use, it may be re-purchased only once, for 300 frags. Once a year has passed, the frag cost will go back to 75 frags."
+      },
+      {
+        "id": "quick-study",
+        "name": "Quick Study",
+        "frag": 10,
+        "desc": "This skill will allow a player to reset outside of the normal 6 PM-midnight reset period once ever. It will not allow them more resets than they would normally have. There must still be at least 6 hours between resets. Once used, this skill must be purchased again in order to be used again. This skill can only be used in the guild whose frags were used to purchase it."
+      },
+      {
+        "id": "race-uncommon",
+        "name": "Race: Uncommon",
+        "frag": 75,
+        "desc": "This skill allows the player to start a new character as an uncommon race, listed in Chapter 2. This must be purchased again to play a different character of the same race."
+      },
+      {
+        "id": "race-rare",
+        "name": "Race: Rare",
+        "frag": 150,
+        "desc": "This skill allows the player to start a new character as a rare race, listed in Chapter 2. This must be purchased again to play a different character of the same race."
+      },
+      {
+        "id": "race-obscure",
+        "name": "Race: Obscure",
+        "frag": 250,
+        "desc": "This skill allows the player to start a new character as an obscure race, listed in Chapter 2. This must be purchased again to play a different character of the same race."
+      },
+      {
+        "id": "restricted-remort",
+        "name": "Restricted Remort",
+        "frag": 750,
+        "desc": "Purchasing a restricted remort allows you to permanently remove all skills on one character and then respend the CP. This does not allow a class or race change, nor does it grant refunds for frag skills which might have been spent. It is used once, immediately after purchase."
+      },
+      {
+        "id": "spiritual-resolve",
+        "name": "Spiritual Resolve",
+        "frag": null,
+        "costNote": "100 frags at level 1-4, 250 at level 5-9, 500 at level 10-15",
+        "desc": "Frag cost: 100 frags for a level 1-4 character, 250 frags for a level 5-9 character, 500 frags for a level 10-15 character.\n\nThis purchase allows the player to buy an additional life to add to their character of choice up to their maximum \"free\" lives (2 for most races). This means a character who has never died cannot buy this skill, a character who has died once can buy it back once and so forth. This skill cannot be purchased for characters over level 15."
+      },
+      {
+        "id": "skill-remort",
+        "name": "Skill Remort",
+        "frag": 250,
+        "desc": "Purchasing a Skill Remort allows a player to remove one skill from any character. The skill removed cannot be a pre-requisite for another skill that character possesses, however a Skill Remort can be purchased multiple times to remove a chain of pre-requisite skills from the top down. If the character has multiple stacks of the skill to be removed, Skill Remort will only remove one of them. For example, to remove 6 purchases of Physician, you will need 6 Skill Remorts.\n\nA skill which is a pre-requisite can be removed only if it is being replaced with another skill which acts as the same pre-requisite (eg: removing Sphere of Magic: Nature and replacing it with Sphere of Magic: Healing without needing to remort all the spell slots). A Skill Remort is used once, immediately after being purchased."
+      },
+      {
+        "id": "unrestricted-remort",
+        "name": "Unrestricted Remort",
+        "frag": 1250,
+        "desc": "Purchasing an unrestricted remort allows you to permanently remove all skills on one character and then respend the CP, but will not grant refunds for frag skills which might have been spent. It will also allow a class and/or race change. It is used once, immediately after purchase."
+      }
+    ]
+  }
 }

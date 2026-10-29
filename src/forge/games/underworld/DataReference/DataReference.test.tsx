@@ -16,4 +16,11 @@ describe('DataReference', () => {
     await user.type(screen.getByPlaceholderText('Search everything…'), 'zzqx')
     expect(screen.getByText('Nothing matches "zzqx".')).toBeInTheDocument()
   })
+
+  it('lists out of game frag purchases like Spiritual Resolve', async () => {
+    const user = userEvent.setup()
+    render(<DataReference />)
+    await user.type(screen.getByPlaceholderText('Search everything…'), 'spiritual resolve')
+    expect(screen.getByText('100 frags at level 1-4, 250 at level 5-9, 500 at level 10-15')).toBeInTheDocument()
+  })
 })

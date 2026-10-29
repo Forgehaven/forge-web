@@ -1,7 +1,7 @@
 import { Children, isValidElement, useState } from 'react'
 import { Masonry } from '../../../../components/Masonry'
 import {
-  CULTURES, DATA_SOURCES, EQUIPMENT, FAVOURED_VOCATIONS, FRAG_RACES, OCC_ABILITIES, RACES, SKILLS, SOURCES, SPELLS, VOCATIONS,
+  CULTURES, DATA_SOURCES, EQUIPMENT, FAVOURED_VOCATIONS, FRAG_RACES, OCC_ABILITIES, OUT_OF_GAME, RACES, SKILLS, SOURCES, SPELLS, VOCATIONS,
 } from '../data'
 import { OCC_CLASS, OCC_ORDER, TABLE, ordinal } from '../rules'
 import { prereqLabel } from '../engine'
@@ -117,6 +117,8 @@ function SkillEntry({ s }: { s: Skill }) {
 
 interface Filters { q: string; sphere: string; circle: string; category: string }
 
+const OOG = 'Out of Game Skills'
+
 const SEARCHABLE = ['Races', 'Cultures', 'Occupations', 'Vocations', 'Skills', 'Spells', 'Armour & Weapons'] as const
 type Searchable = typeof SEARCHABLE[number]
 const isSearchable = (t: Tab): t is Searchable => (SEARCHABLE as readonly string[]).includes(t)
@@ -183,13 +185,31 @@ function section(tab: Searchable, { q, sphere, circle, category }: Filters): Rea
         .filter(c => !category || c.cat === category)
         .map(c => ({ cat: c.cat, skills: c.skills.filter(s => has(q, s.name, s.desc)) }))
         .filter(c => c.skills.length)
-      if (!cats.length) return null
-      return cats.map(c => (
-        <section key={c.cat}>
-          <Heading>{c.cat}</Heading>
-          <Grid>{c.skills.map(s => <SkillEntry key={s.name} s={s} />)}</Grid>
-        </section>
-      ))
+      const oog = !category || category === OOG ? OUT_OF_GAME.skills.filter(s => has(q, s.name, s.desc)) : []
+      if (!cats.length && !oog.length) return null
+      return (
+        <>
+          {cats.map(c => (
+            <section key={c.cat}>
+              <Heading>{c.cat}</Heading>
+              <Grid>{c.skills.map(s => <SkillEntry key={s.name} s={s} />)}</Grid>
+            </section>
+          ))}
+          {oog.length > 0 && (
+            <section>
+              <Heading>{OOG}</Heading>
+              <p className="text-xs text-[#6b7280] mb-2">{OUT_OF_GAME.note} {OUT_OF_GAME.source}.</p>
+              <Grid>
+                {oog.map(s => (
+                  <Entry key={s.id} title={s.name} tags={[s.costNote ?? `${s.frag} frags`]}>
+                    <Prose text={s.desc} />
+                  </Entry>
+                ))}
+              </Grid>
+            </section>
+          )}
+        </>
+      )
     }
     case 'Spells': {
       const spheres = SPHERES.filter(s => !sphere || s === sphere).map(sp => ({
@@ -279,7 +299,7 @@ export default function DataReference() {
             </>
           )}
           {tab === 'Skills' && (
-            <Filter label="Categories" value={category} onChange={setCategory} options={SKILLS.map(c => ({ value: c.cat, label: c.cat }))} />
+            <Filter label="Categories" value={category} onChange={setCategory} options={[...SKILLS.map(c => ({ value: c.cat, label: c.cat })), { value: OOG, label: OOG }]} />
           )}
         </div>
       )}
