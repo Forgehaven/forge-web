@@ -13,6 +13,9 @@ export const RITUAL_SLOT = 'Ritual Slot'
 export const ELEMENTAL_ATTUNEMENT = 'Elemental Attunement'
 export const PARAGON = 'Paragon'
 export const SPELL_VERSATILITY = 'Spell Versatility'
+export const TRADESMAN = 'Tradesman'
+// Raw Material a trade produces; the trade's name is free text after a '|'.
+export const TRADE_MATERIALS = ['Blacksmith', 'Scrollcraft', 'Alchemy', 'Trapper']
 export function slotCost(b: Build, circle: number) {
   const costs = SPELL_CIRCLE_COSTS[String(circle)]
   return costs ? occCost(costs, b) : 0
@@ -25,7 +28,7 @@ export interface Purchase {
   skill: string
   // 0 = character creation, n = bought after blanket n.
   at: number
-  // Weapon / group, element, spell circle, or 'Light|3' for Paragon.
+  // Weapon / group, element, spell circle, 'Light|3' for Paragon, or 'Blacksmith|Miner' for Tradesman.
   choice?: string
 }
 
@@ -230,6 +233,7 @@ export function weaponGroups(st: ReplayState) {
 // Legal answers for a choice skill given what is owned so far.
 export function choiceOptions(sk: Skill, st: ReplayState): string[] {
   if (sk.name === ELEMENTAL_ATTUNEMENT) return ELEMENTS.filter(e => !st.attunements.includes(e))
+  if (sk.name === TRADESMAN) return TRADE_MATERIALS
   if (sk.name === SPELL_SLOT) return ['1', '2', '3', '4', '5', '6', '7', '8', '9']
   if (sk.name === SPELL_VERSATILITY) return ['1', '2', '3', '4', '5', '6', '7', '8', '9'].filter(c => st.circles[+c] > st.versatile[+c])
   if (sk._paragon) {
@@ -246,13 +250,17 @@ export function choiceOptions(sk: Skill, st: ReplayState): string[] {
 }
 
 export function needsChoice(sk: Skill) {
-  return !!sk._weaponChoice || !!sk._paragon || sk.name === ELEMENTAL_ATTUNEMENT || sk.name === SPELL_SLOT || sk.name === SPELL_VERSATILITY
+  return !!sk._weaponChoice || !!sk._paragon || sk.name === ELEMENTAL_ATTUNEMENT || sk.name === SPELL_SLOT || sk.name === SPELL_VERSATILITY || sk.name === TRADESMAN
 }
 
 export function choiceLabel(skillName: string, choice?: string) {
   if (!choice) return skillName
   if (skillName === SPELL_SLOT) return `Spell Slot: ${ordinal(Number(choice))} Circle`
   if (skillName === SPELL_VERSATILITY) return `Spell Versatility: ${ordinal(Number(choice))} Circle`
+  if (skillName === TRADESMAN) {
+    const [material, name] = choice.split('|')
+    return `Tradesman: ${name || 'Unnamed'} (${material})`
+  }
   if (skillName === PARAGON) {
     const [sp, c] = choice.split('|')
     return `Paragon (${sp}, ${ordinal(Number(c))} Circle)`
@@ -363,7 +371,8 @@ function check(p: Purchase, st: ReplayState, ctx: Ctx, strictChoice: boolean): [
   if (pre) return err(pre)
   if (needsChoice(sk)) {
     if (p.choice === undefined) return [cost, frag, strictChoice ? 'Make a choice' : null]
-    if (!choiceOptions(sk, st).includes(p.choice)) return err(`${p.choice} not available`)
+    const pick = sk.name === TRADESMAN ? p.choice.split('|')[0] : p.choice
+    if (!choiceOptions(sk, st).includes(pick)) return err(`${pick} not available`)
   }
   return [cost, frag, null]
 }

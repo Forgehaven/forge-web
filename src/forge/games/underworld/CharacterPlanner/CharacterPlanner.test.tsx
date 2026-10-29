@@ -136,16 +136,49 @@ describe('CharacterPlanner build bar', () => {
     renderPlanner()
     await user.type(screen.getByLabelText('Character name'), 'Grak')
     await user.click(screen.getByRole('button', { name: 'Save' }))
-    expect(screen.getByRole('button', { name: /Grak/ })).toHaveAttribute('title', 'Saved on this device')
+    expect(screen.getByRole('button', { name: /^Grak/ })).toHaveAttribute('title', 'Saved on this device')
 
     await user.click(screen.getByRole('button', { name: 'New' }))
     expect(screen.getByLabelText('Character name')).toHaveValue('')
     await user.type(screen.getByLabelText('Character name'), 'Vex')
     // Unsaved edits: switching asks first.
-    await user.click(screen.getByRole('button', { name: /Grak/ }))
+    await user.click(screen.getByRole('button', { name: /^Grak/ }))
     await user.click(screen.getByRole('button', { name: 'Discard and continue' }))
     expect(screen.getByLabelText('Character name')).toHaveValue('Grak')
     expect(JSON.parse(localStorage.getItem('forgegames_uw_planner_v1')!).local).toHaveLength(1)
+  })
+
+  it('levels up an existing trade or starts another', async () => {
+    const user = userEvent.setup()
+    renderPlanner()
+    await user.selectOptions(screen.getByLabelText('Occupation'), 'Mage')
+    await user.click(screen.getByRole('button', { name: 'Add Tradesman' }))
+    await user.type(screen.getByLabelText('Trade name'), 'Miner')
+    await user.selectOptions(screen.getByLabelText('Tradesman choice'), 'Blacksmith')
+    await user.click(screen.getByRole('button', { name: 'Add Tradesman' }))
+    await user.selectOptions(screen.getByLabelText('Tradesman choice'), 'Miner (Blacksmith) to level 2')
+    await user.click(screen.getByRole('button', { name: 'Add Tradesman' }))
+    await user.type(screen.getByLabelText('Trade name'), 'Herb|alist')
+    await user.selectOptions(screen.getByLabelText('Tradesman choice'), 'Alchemy')
+
+    const picks = JSON.parse(localStorage.getItem('forgegames_uw_planner_v1')!).build.simple.purchases
+    expect(picks.map((p: { choice: string }) => p.choice)).toEqual(['Blacksmith|Miner', 'Blacksmith|Miner', 'Alchemy|Herbalist'])
+  })
+
+  it('favourites float to the top and keep their order', async () => {
+    const user = userEvent.setup()
+    renderPlanner()
+    for (const name of ['Grak', 'Vex']) {
+      await user.click(screen.getByRole('button', { name: 'New' }))
+      await user.type(screen.getByLabelText('Character name'), name)
+      await user.click(screen.getByRole('button', { name: 'Save' }))
+    }
+    const names = () => screen.getAllByRole('button', { name: /^(Grak|Vex)/ }).map(b => b.textContent?.match(/Grak|Vex/)?.[0])
+    expect(names()).toEqual(['Vex', 'Grak'])
+    await user.click(screen.getByRole('button', { name: 'Favourite Grak' }))
+    expect(names()).toEqual(['Grak', 'Vex'])
+    const local = JSON.parse(localStorage.getItem('forgegames_uw_planner_v1')!).local
+    expect(local.map((l: { name: string; favourite: boolean }) => [l.name, l.favourite])).toEqual([['Grak', true], ['Vex', false]])
   })
 
   it('autosaves a saved build and undoes edits', async () => {

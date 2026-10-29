@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { ConfirmButton } from '../../../../components/ConfirmButton'
 import { useAuth } from '../../../../auth/authContext'
 import { emptyBuild } from '../engine'
-import type { BuildStore, SaveKind } from '../hooks/useBuildStore'
+import type { BuildStore, SaveEntry, SaveKind } from '../hooks/useBuildStore'
 
 function DeviceIcon() {
   return (
@@ -35,6 +35,17 @@ export function BuildBar({ store }: { store: BuildStore }) {
   // Switching away from unsaved edits asks first.
   const [pending, setPending] = useState<(() => void) | null>(null)
   const guard = (action: () => void) => (dirty ? setPending(() => action) : action())
+  const [drag, setDrag] = useState<{ from: number; over: number } | null>(null)
+  // A build dropped among the favourites (or the rest) joins that group.
+  const move = (from: number, to: number) => {
+    setDrag(null)
+    if (from === to) return
+    const list = [...saves]
+    const [item] = list.splice(from, 1)
+    list.splice(to, 0, { ...item, favourite: saves[to].favourite })
+    store.arrange(list)
+  }
+  const star = (e: SaveEntry) => store.arrange(saves.map(s => (s === e ? { ...s, favourite: !s.favourite } : s)))
   // A saved build autosaves, so its button is mostly a status.
   const status = !current ? 'Save'
     : conflict ? 'Conflict'
@@ -92,10 +103,25 @@ export function BuildBar({ store }: { store: BuildStore }) {
 
       {saves.length > 0 && (
         <ul className="flex flex-col max-h-48 overflow-y-auto -mx-1">
-          {saves.map(s => {
+          {saves.map((s, i) => {
             const active = current?.kind === s.kind && current.id === s.id
+            const edge = drag && drag.over === i && drag.from !== i ? (drag.from < i ? 'border-b' : 'border-t') + ' border-[#c4af64]' : ''
             return (
-              <li key={`${s.kind}:${s.id}`} className={`group flex items-center gap-2 rounded px-1 ${active ? 'bg-[#c4af64]/10' : 'hover:bg-[#2a2d3a]/50'}`}>
+              <li
+                key={`${s.kind}:${s.id}`}
+                draggable
+                onDragStart={() => setDrag({ from: i, over: i })}
+                onDragOver={e => { e.preventDefault(); if (drag && drag.over !== i) setDrag({ ...drag, over: i }) }}
+                onDrop={e => { e.preventDefault(); if (drag) move(drag.from, i) }}
+                onDragEnd={() => setDrag(null)}
+                className={`group flex items-center gap-2 rounded px-1 cursor-grab active:cursor-grabbing ${active ? 'bg-[#c4af64]/10' : 'hover:bg-[#2a2d3a]/50'} ${edge} ${drag?.from === i ? 'opacity-40' : ''} ${s.favourite && !saves[i + 1]?.favourite && saves[i + 1] ? 'mb-1' : ''}`}
+              >
+                <button
+                  aria-label={`${s.favourite ? 'Unfavourite' : 'Favourite'} ${s.name}`}
+                  aria-pressed={s.favourite}
+                  className={`cursor-pointer leading-none ${s.favourite ? 'text-[#c4af64]' : 'text-[#4b5563] opacity-0 group-hover:opacity-100 focus:opacity-100 hover:text-[#c4af64]'}`}
+                  onClick={() => star(s)}
+                >{s.favourite ? '★' : '☆'}</button>
                 <button
                   className="flex-1 min-w-0 flex items-center gap-2 py-1 text-left cursor-pointer"
                   disabled={busy}

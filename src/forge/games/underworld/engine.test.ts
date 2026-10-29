@@ -255,6 +255,14 @@ describe('spell slot ordering across steps', () => {
     expect([one.cost, one.frag, one.error]).toEqual([SPELL_CIRCLE_COSTS['1'].Mage / 2 + 5, SPELL_CIRCLE_COSTS['1'].Mage / 2 + 5, null])
   })
 
+  it('names a Tradesman trade and checks its material', () => {
+    const trades = [buy('Tradesman', 0, 'Blacksmith|Miner'), buy('Tradesman', 0, 'Gold|Miner')]
+    const ev = evaluate(build({ occupation: 'Mage', purchases: trades }), undefined, true)
+    const [ok, bad] = trades.map(p => ev.results.get(p.id)!)
+    expect([ok.label, ok.error]).toEqual(['Tradesman: Miner (Blacksmith)', null])
+    expect(bad.error).toBe('Gold not available')
+  })
+
   it('orders slots past the full pyramid by the circle below', () => {
     const magic = [buy('Read & Write'), buy('Read Magic'), buy('Sphere of Magic: 1st'), buy('Read Magic: Advanced')]
     const slots = [...PYRAMID_ORDER, 2, 1].map(c => buy('Spell Slot', 0, String(c)))

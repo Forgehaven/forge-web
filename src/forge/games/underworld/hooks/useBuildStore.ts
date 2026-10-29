@@ -2,7 +2,7 @@ import { useCallback, useEffect, useEffectEvent, useRef, useState } from 'react'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import { useAuth } from '../../../../auth/authContext'
 import { emptyBuild, type Build, type PlanMode, type Purchase } from '../engine'
-import { createBuild, deleteBuild, getBuild, listBuilds, putBuild, type BuildSummary } from '../api'
+import { createBuild, deleteBuild, getBuild, listBuilds, putBuild, putOrder, type BuildSummary } from '../api'
 import { uid } from '../CharacterPlanner/util'
 import { MAX_BLANKETS_PER_MONTH, SCHOOLS_OF_MAGIC } from '../rules'
 
@@ -12,6 +12,7 @@ export interface LocalSave {
   id: string
   name: string
   updatedAt: string
+  favourite?: boolean
   build: Build
 }
 
@@ -20,6 +21,7 @@ export interface SaveEntry {
   id: string
   name: string
   updatedAt: string | null
+  favourite: boolean
 }
 
 interface Stored {
@@ -96,7 +98,7 @@ function load(): Stored {
     const s = JSON.parse(raw) as Record<string, unknown>
     const local = (Array.isArray(s.local) ? s.local : [])
       .filter((l): l is LocalSave => isObj(l) && typeof l.id === 'string')
-      .map(l => ({ id: l.id, name: str(l.name, 'Unnamed character'), updatedAt: str(l.updatedAt), build: sanitize(l.build) }))
+      .map(l => ({ id: l.id, name: str(l.name, 'Unnamed character'), updatedAt: str(l.updatedAt), favourite: l.favourite === true, build: sanitize(l.build) }))
     const c = s.current
     // Older drafts stored only an account build id.
     const current = isObj(c) && (c.kind === 'local' || c.kind === 'server') && typeof c.id === 'string'
@@ -171,8 +173,10 @@ export function useBuildStore() {
 
   const saveLocal = () => setState(s => {
     const id = s.current?.kind === 'local' ? s.current.id : uid()
-    const entry: LocalSave = { id, name: nameOf(s.build), updatedAt: new Date().toISOString(), build: s.build }
-    const local = [entry, ...s.local.filter(l => l.id !== id)]
+    const old = s.local.find(l => l.id === id)
+    const entry: LocalSave = { ...old, id, name: nameOf(s.build), updatedAt: new Date().toISOString(), build: s.build }
+    // Saving keeps the build's place in the list; new ones go on top.
+    const local = old ? s.local.map(l => (l === old ? entry : l)) : [entry, ...s.local]
     return { ...s, local, current: { kind: 'local', id }, base: null, saved: JSON.stringify(s.build) }
   })
 
@@ -279,16 +283,34 @@ export function useBuildStore() {
     return () => clearTimeout(t)
   }, [state.build, kind, dirty, conflict, busy, error, online])
 
+  // Favourites first; account builds before device ones within each group.
   const saves: SaveEntry[] = [
-    ...(isAuthenticated ? server : []).map(b => ({ kind: 'server' as const, id: b.id, name: b.name, updatedAt: b.updated_at })),
-    ...state.local.map(l => ({ kind: 'local' as const, id: l.id, name: l.name, updatedAt: l.updatedAt })),
-  ]
+    ...(isAuthenticated ? server : []).map(b => ({ kind: 'server' as const, id: b.id, name: b.name, updatedAt: b.updated_at, favourite: !!b.favourite })),
+    ...state.local.map(l => ({ kind: 'local' as const, id: l.id, name: l.name, updatedAt: l.updatedAt, favourite: !!l.favourite })),
+  ].sort((a, b) => Number(b.favourite) - Number(a.favourite))
+
+  // Persists a new list order and favourites: device saves locally, account
+  // builds on the server (so they follow the login).
+  const arrange = (list: SaveEntry[]) => {
+    const sorted = [...list].sort((a, b) => Number(b.favourite) - Number(a.favourite))
+    const pick = (kind: SaveKind) => sorted.filter(e => e.kind === kind)
+    setState(s => ({
+      ...s,
+      local: pick('local').flatMap(e => s.local.filter(l => l.id === e.id).map(l => ({ ...l, favourite: e.favourite }))),
+    }))
+    const mine = pick('server')
+    if (!mine.length) return
+    setServer(srv => mine.flatMap(e => srv.filter(b => b.id === e.id).map(b => ({ ...b, favourite: e.favourite }))))
+    putOrder(mine.map(e => e.id), mine.filter(e => e.favourite).map(e => e.id))
+      .then(res => { if (res.status !== 'ok') refresh() })
+      .catch(refresh)
+  }
 
   return {
     build: state.build, setBuild, current: state.current, saves,
     dirty, online, conflict, busy, error, isAuthenticated,
     canUndo: !!state.past?.length, undo,
-    save, moveToAccount, open, remove, startNew, detach,
+    save, moveToAccount, open, remove, startNew, detach, arrange,
   }
 }
 

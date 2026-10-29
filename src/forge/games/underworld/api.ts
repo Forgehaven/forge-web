@@ -5,6 +5,7 @@ import type { Build } from './engine'
 export interface BuildSummary {
   id: string
   name: string
+  favourite: boolean
   updated_at: string | null
 }
 
@@ -26,6 +27,11 @@ export function createBuild(data: Build) {
 export function putBuild(id: string, data: Build, baseUpdatedAt?: string | null) {
   const body = baseUpdatedAt === undefined ? { data } : { data, base_updated_at: baseUpdatedAt }
   return forgeFetch<PutResult>(`${BASE}/${id}`, { method: 'PUT', body: JSON.stringify(body) })
+}
+
+// Sets list placement for the given builds; does not touch updated_at.
+export function putOrder(order: string[], favourites: string[]) {
+  return forgeFetch<null>(`${BASE}/order`, { method: 'PUT', body: JSON.stringify({ order, favourites }) })
 }
 
 export function deleteBuild(id: string) {

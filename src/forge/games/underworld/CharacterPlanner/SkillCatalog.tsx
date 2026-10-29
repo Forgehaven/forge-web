@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import {
-  catalog, choiceOptions, evaluate, needsChoice, stateAt, SPELL_VERSATILITY, versatilityCost,
+  catalog, choiceLabel, choiceOptions, evaluate, needsChoice, stateAt, SPELL_VERSATILITY, TRADESMAN, versatilityCost,
   type Build, type CatalogSkill, type Evaluation,
 } from '../engine'
 import { stepLabel } from './util'
@@ -26,6 +26,8 @@ interface Row {
   reason: string | null
   // [value, label]
   options: [string, string][] | null
+  // Tradesman: trades already bought, with their levels, to level up.
+  trades?: [string, number][]
 }
 
 function optionLabel(sk: CatalogSkill, o: string, build: Build) {
@@ -43,6 +45,7 @@ function SkillRow({ row, owned, hasOccupation, onAdd, onRemove }: {
   const { sk, cost, frag, options } = row
   const [open, setOpen] = useState(false)
   const [choosing, setChoosing] = useState(false)
+  const [trade, setTrade] = useState('')
   const maxed = owned > 0 && owned >= sk.maxPurchases
   const reason = row.reason === NO_OCCUPATION || maxed ? null : row.reason
   const blocked = !!row.reason || (options !== null && options.length === 0)
@@ -90,19 +93,42 @@ function SkillRow({ row, owned, hasOccupation, onAdd, onRemove }: {
 
       {choosing && options !== null && !blocked && (
         <div className="flex items-center gap-2 pb-2">
+          {sk.name === TRADESMAN && (
+            <input
+              autoFocus
+              aria-label="Trade name"
+              className="forge-input !py-1 !px-1.5 text-xs flex-1 min-w-0"
+              placeholder="New trade, e.g. Miner"
+              maxLength={40}
+              value={trade}
+              onChange={e => setTrade(e.target.value)}
+            />
+          )}
           <select
-            autoFocus
+            autoFocus={sk.name !== TRADESMAN}
             aria-label={`${sk.name} choice`}
             className="forge-input !py-1 !px-1.5 text-xs flex-1"
             defaultValue=""
             onChange={e => {
               if (!e.target.value) return
-              onAdd(e.target.value)
+              const v = e.target.value
+              // A bare material starts a new trade under the typed name.
+              onAdd(sk.name === TRADESMAN && !v.includes('|') ? `${v}|${trade.replace(/\|/g, '').trim()}` : v)
               setChoosing(false)
+              setTrade('')
             }}
           >
-            <option value="" disabled>Choose {sk._weaponChoice === 'group' ? 'a weapon group' : sk._weaponChoice ? 'a weapon' : sk._paragon ? 'sphere and circle' : sk.name === SPELL_VERSATILITY ? 'a slot' : 'an element'}…</option>
-            {options.map(([v, label]) => <option key={v} value={v}>{label}</option>)}
+            <option value="" disabled>Choose {sk._weaponChoice === 'group' ? 'a weapon group' : sk._weaponChoice ? 'a weapon' : sk._paragon ? 'sphere and circle' : sk.name === SPELL_VERSATILITY ? 'a slot' : sk.name === TRADESMAN ? (row.trades?.length ? 'a trade' : 'its material') : 'an element'}…</option>
+            {row.trades?.length ? (
+              <>
+                <optgroup label="Level up">
+                  {row.trades.map(([v, n]) => <option key={v} value={v}>{choiceLabel(TRADESMAN, v).replace('Tradesman: ', '')} to level {n + 1}</option>)}
+                </optgroup>
+                <optgroup label="New trade">
+                  {options.map(([v, label]) => <option key={v} value={v}>{label}</option>)}
+                </optgroup>
+              </>
+            ) : options.map(([v, label]) => <option key={v} value={v}>{label}</option>)}
           </select>
           <button className="text-xs text-[#6b7280] hover:text-[#e2e4ed] cursor-pointer" onClick={() => setChoosing(false)}>Cancel</button>
         </div>
@@ -128,6 +154,8 @@ export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove }: Prop
 
   const rows = useMemo(() => {
     const st = stateAt(build, active, loose)
+    const trades = new Map<string, number>()
+    for (const p of build.purchases) if (p.skill === TRADESMAN && p.choice) trades.set(p.choice, (trades.get(p.choice) ?? 0) + 1)
     return catalog(build).map(c => ({
       cat: c.cat,
       skills: c.skills.map((sk): Row => {
@@ -138,6 +166,7 @@ export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove }: Prop
           frag: probe?.frag ?? 0,
           reason: probe?.error ?? null,
           options: needsChoice(sk) ? choiceOptions(sk, st).map(o => [o, optionLabel(sk, o, build)]) : null,
+          trades: sk.name === TRADESMAN ? [...trades] : undefined,
         }
       }),
     }))
