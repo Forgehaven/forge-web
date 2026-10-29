@@ -30,14 +30,13 @@ describe('CharacterPlanner', () => {
     await user.click(screen.getByRole('button', { name: '+ Add blanket' }))
     await user.click(screen.getByRole('button', { name: 'Add Read & Write' }))
 
-    const timeline = screen.getByRole('heading', { name: 'Timeline' }).closest('section')!
-    const blanket = within(timeline).getByText('Blanket 1').closest('li')!
-    expect(within(blanket).getByText('Read & Write')).toBeInTheDocument()
-
     // Read Magic is now buyable; Read Magic: Advanced still is not.
     expect(screen.getByRole('button', { name: 'Add Read Magic' })).toBeEnabled()
     expect(screen.getByRole('button', { name: 'Add Read Magic: Advanced' })).toBeDisabled()
 
+    const timeline = screen.getByRole('heading', { name: 'Timeline' }).closest('section')!
+    const blanket = within(timeline).getByText('Blanket 1').closest('li')!
+    expect(within(blanket).getByText('Read & Write')).toBeInTheDocument()
     const draft = JSON.parse(localStorage.getItem('forgegames_uw_planner_v1')!)
     expect(draft.build.mode).toBe('timeline')
     expect(draft.build.purchases).toMatchObject([{ skill: 'Read & Write', at: 1 }])

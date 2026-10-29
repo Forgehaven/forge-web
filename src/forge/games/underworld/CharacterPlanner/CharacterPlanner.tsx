@@ -62,7 +62,7 @@ export default function CharacterPlanner() {
     .map(need => need.split('|')[0])
 
   return (
-    <div className="grid gap-4 lg:h-full lg:grid-rows-[minmax(0,1fr)] lg:grid-cols-[24rem_minmax(0,1fr)]">
+    <div className={`grid gap-4 lg:h-full lg:grid-rows-[minmax(0,1fr)] ${timeline ? 'lg:grid-cols-[22rem_minmax(0,1fr)_24rem]' : 'lg:grid-cols-[24rem_minmax(0,1fr)]'}`}>
       <aside className="flex flex-col gap-4 lg:min-h-0 lg:overflow-y-auto lg:pr-2">
         <header>
           <h1 className="text-xl font-semibold text-[#e2e4ed]">Character Planner</h1>
@@ -135,7 +135,6 @@ export default function CharacterPlanner() {
             )}
           </div>
         </div>
-        {mode === 'timeline' && <Timeline build={build} ev={ev} active={active} setActive={setActive} setBuild={setBuild} />}
         {mode === 'priority' && <PriorityPlan view={view} build={build} ev={ev} setBuild={setBuild} />}
         {mode === 'sandbox' && <SimplePlan build={build} ev={ev} setBuild={setBuild} />}
         <MournfallCard compact />
@@ -156,6 +155,11 @@ export default function CharacterPlanner() {
           {tab === 'Sheet' && <Sheet build={view} ev={ev} />}
         </div>
       </div>
+      {timeline && (
+        <div className="lg:min-h-0 lg:overflow-y-auto lg:pr-2">
+          <Timeline build={build} ev={ev} active={active} setActive={setActive} setBuild={setBuild} />
+        </div>
+      )}
     </div>
   )
 }
