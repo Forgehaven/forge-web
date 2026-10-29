@@ -1,11 +1,12 @@
 import { forgeFetch } from '../../../lib/api'
 import type { PutResult } from '../ffxi/api'
-import type { Build } from './engine'
+import type { Build, BuildStatus } from './engine'
 
 export interface BuildSummary {
   id: string
   name: string
   favourite: boolean
+  status: BuildStatus
   updated_at: string | null
 }
 

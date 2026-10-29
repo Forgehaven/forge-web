@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useEffectEvent, useRef, useState } from 'react'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import { useAuth } from '../../../../auth/authContext'
-import { emptyBuild, legacyId, type Build, type PlanMode, type Purchase } from '../engine'
+import { BUILD_STATUSES, emptyBuild, legacyId, type Build, type BuildStatus, type PlanMode, type Purchase } from '../engine'
 import { createBuild, deleteBuild, getBuild, listBuilds, putBuild, putOrder, type BuildSummary } from '../api'
 import { uid } from '../CharacterPlanner/util'
 import { MAX_BLANKETS_PER_MONTH, SCHOOLS_OF_MAGIC } from '../rules'
@@ -22,6 +22,7 @@ export interface SaveEntry {
   name: string
   updatedAt: string | null
   favourite: boolean
+  status: BuildStatus
 }
 
 interface Stored {
@@ -79,6 +80,7 @@ export function sanitize(raw: unknown): Build {
     purchases: purchases(raw.purchases),
     spells: isObj(raw.spells) ? Object.fromEntries(Object.entries(raw.spells).filter(([, v]) => typeof v === 'string')) as Record<string, string> : {},
     // useTimeline: builds saved before plan modes existed.
+    status: BUILD_STATUSES.includes(raw.status as BuildStatus) ? raw.status as BuildStatus : 'planning',
     mode: modes.includes(raw.mode as PlanMode) ? raw.mode as PlanMode : raw.useTimeline === true ? 'timeline' : 'sandbox',
     priority: {
       perMonth: blankets(priority.perMonth) || MAX_BLANKETS_PER_MONTH,
@@ -288,8 +290,8 @@ export function useBuildStore() {
 
   // Favourites first; account builds before device ones within each group.
   const saves: SaveEntry[] = [
-    ...(isAuthenticated ? server : []).map(b => ({ kind: 'server' as const, id: b.id, name: b.name, updatedAt: b.updated_at, favourite: !!b.favourite })),
-    ...state.local.map(l => ({ kind: 'local' as const, id: l.id, name: l.name, updatedAt: l.updatedAt, favourite: !!l.favourite })),
+    ...(isAuthenticated ? server : []).map(b => ({ kind: 'server' as const, id: b.id, name: b.name, updatedAt: b.updated_at, favourite: !!b.favourite, status: b.status ?? 'planning' })),
+    ...state.local.map(l => ({ kind: 'local' as const, id: l.id, name: l.name, updatedAt: l.updatedAt, favourite: !!l.favourite, status: l.build.status ?? 'planning' })),
   ].sort((a, b) => Number(b.favourite) - Number(a.favourite))
 
   // Persists a new list order and favourites: device saves locally, account

@@ -6,6 +6,8 @@ export interface MasonryItem {
   // Estimated height (e.g. row count). Columns are assigned from these, not
   // from live heights, so expanding a card never moves cards between columns.
   weight: number
+  // Fixed column, honoured when the container is wide enough.
+  col?: number
   node: ReactNode
 }
 

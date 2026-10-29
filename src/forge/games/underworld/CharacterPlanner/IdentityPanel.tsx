@@ -1,6 +1,6 @@
 import { CULTURES, FAVOURED_VOCATIONS, FRAG_RACES, RACES, VOCATIONS } from '../data'
 import { OCC_CLASS, OCC_ORDER } from '../rules'
-import { raceData, switchRole, vocationData, type Build, type Evaluation } from '../engine'
+import { BUILD_STATUSES, raceData, switchRole, vocationData, type Build, type BuildStatus, type Evaluation } from '../engine'
 import { Collapsible } from '../../../../components/Collapsible'
 import { Prose } from '../components/Prose'
 
@@ -8,6 +8,8 @@ interface Props {
   build: Build
   ev: Evaluation
   setBuild: (fn: (b: Build) => Build) => void
+  locked: boolean
+  setStatus: (status: BuildStatus) => void
 }
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
@@ -30,7 +32,7 @@ function Stat({ label, value, warn }: { label: string; value: string | number; w
 
 const fragTiers = ['Uncommon', 'Rare', 'Obscure']
 
-export function IdentityPanel({ build, ev, setBuild }: Props) {
+export function IdentityPanel({ build, ev, setBuild, locked, setStatus }: Props) {
   const set = (patch: Partial<Build>) => setBuild(b => ({ ...b, ...patch }))
   const race = raceData(build.race)
   const culture = CULTURES[build.culture]
@@ -40,17 +42,25 @@ export function IdentityPanel({ build, ev, setBuild }: Props) {
 
   return (
     <div className="forge-card !p-4 flex flex-col gap-4">
-      <div className="grid grid-cols-2 gap-3">
-        <label className="col-span-2">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-3">
+        <label className="min-w-0">
           <span className="forge-label">Character name</span>
           <input
             className="forge-input"
             value={build.name}
             placeholder="Unnamed character"
             maxLength={80}
+            disabled={locked}
             onChange={e => set({ name: e.target.value })}
           />
         </label>
+        <Field label="Status">
+          <select className="forge-input" value={build.status ?? 'planning'} onChange={e => setStatus(e.target.value as BuildStatus)}>
+            {BUILD_STATUSES.map(s => <option key={s} value={s}>{s[0].toUpperCase() + s.slice(1)}</option>)}
+          </select>
+        </Field>
+      </div>
+      <fieldset disabled={locked} className="grid grid-cols-2 gap-3 min-w-0">
         <Field label="Race">
           <select className="forge-input" value={build.race} onChange={e => set({ race: e.target.value, culture: '' })}>
             <option value="">Choose…</option>
@@ -97,7 +107,7 @@ export function IdentityPanel({ build, ev, setBuild }: Props) {
             ))}
           </select>
         </Field>
-      </div>
+      </fieldset>
 
       <div className="flex flex-col gap-3 border-t border-[#2a2d3a] pt-3">
         <div className="grid grid-cols-3 w-3/4 mx-auto">

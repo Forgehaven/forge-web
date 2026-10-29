@@ -15,6 +15,8 @@ export const PYRAMID_ORDER = [
   5, 6, 7, 8, 9, 6, 7, 8, 9, 7, 8, 9, 8, 9, 9,
 ]
 export const MAX_RITUAL_SLOTS = 10
+// Spiritual Resolve (buying back a life with frags) is for level 15 and under (Soul Frag 2.10 p.79).
+export const SPIRITUAL_RESOLVE_MAX_LEVEL = 15
 
 export type BodyClass = 'warrior' | 'rogue' | 'scholar'
 

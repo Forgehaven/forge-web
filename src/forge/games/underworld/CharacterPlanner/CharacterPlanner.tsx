@@ -1,5 +1,5 @@
 import { useEffect, useEffectEvent, useMemo, useState } from 'react'
-import { activePurchases, copyPicks, evaluate, priorityMonths, priorityView, simpleView, unbuy, vocationNeeds, withPurchases, type PlanMode } from '../engine'
+import { activePurchases, copyPicks, evaluate, priorityMonths, priorityView, simpleView, unbuy, vocationNeeds, withPurchases, type BuildStatus, type PlanMode } from '../engine'
 import { useBuildStore } from '../hooks/useBuildStore'
 import { MournfallCard } from '../components/MournfallCard'
 import { BuildBar } from './BuildBar'
@@ -25,7 +25,12 @@ const MODES: { mode: PlanMode; label: string; hint: string }[] = [
 
 export default function CharacterPlanner() {
   const store = useBuildStore()
-  const { build, setBuild } = store
+  const { build } = store
+  const status = build.status ?? 'planning'
+  // Complete and retired builds are read-only until set back to planning.
+  const locked = status !== 'planning'
+  const setBuild: typeof store.setBuild = locked ? () => {} : store.setBuild
+  const setStatus = (next: BuildStatus) => store.setBuild(b => ({ ...b, status: next }))
   const [tab, setTab] = useState<Tab>('Skills')
   // Ctrl+Z undoes planner edits; text fields keep their own undo.
   const onKey = useEffectEvent((e: KeyboardEvent) => {
@@ -41,6 +46,8 @@ export default function CharacterPlanner() {
   }, [])
   const mode = build.mode ?? 'sandbox'
   const timeline = mode === 'timeline'
+  // Timeline and priority list get their own pane beside the catalog.
+  const pane = mode !== 'sandbox'
   const view = useMemo(() => (mode === 'timeline' ? build : mode === 'priority' ? priorityView(build) : simpleView(build)), [build, mode])
   const [activeRaw, setActive] = useState(() => build.blankets.length)
   const ev = useMemo(() => evaluate(view, undefined, mode === 'sandbox'), [view, mode])
@@ -58,7 +65,7 @@ export default function CharacterPlanner() {
   const needsHighlighted = vocationNeeds(view, ev.final).size > 0
 
   return (
-    <div className={`grid gap-4 lg:h-full lg:grid-rows-[minmax(0,1fr)] ${timeline ? 'lg:grid-cols-[22rem_minmax(0,1fr)_24rem]' : 'lg:grid-cols-[24rem_minmax(0,1fr)]'}`}>
+    <div className={`grid gap-4 lg:h-full lg:grid-rows-[minmax(0,1fr)] ${pane ? 'lg:grid-cols-[22rem_24rem_minmax(0,1fr)]' : 'lg:grid-cols-[24rem_minmax(0,1fr)]'}`}>
       <aside className="flex flex-col gap-4 lg:min-h-0 lg:overflow-y-auto lg:pr-2">
         <header>
           <h1 className="text-xl font-semibold text-[#e2e4ed]">Character Planner</h1>
@@ -72,7 +79,15 @@ export default function CharacterPlanner() {
         </header>
 
         <BuildBar store={store} />
-        <IdentityPanel build={build} ev={ev} setBuild={setBuild} />
+        {locked && (
+          <div className="rounded-md border border-sky-400/30 bg-sky-400/5 px-4 py-2 text-xs text-sky-200 flex flex-wrap items-center gap-x-3 gap-y-1">
+            {status === 'complete' ? 'Plan complete' : 'Retired'}: read-only.
+            <button className="underline cursor-pointer" onClick={() => setStatus('planning')}>Back to planning</button>
+          </div>
+        )}
+        <IdentityPanel build={build} ev={ev} setBuild={setBuild} locked={locked} setStatus={setStatus} />
+
+        <fieldset disabled={locked} className="contents">
 
         {(ev.warnings.length > 0 || invalid > 0) && (
           <div className="rounded-md border border-amber-500/30 bg-amber-500/5 px-4 py-2 text-xs text-amber-200 flex flex-col gap-1">
@@ -125,10 +140,20 @@ export default function CharacterPlanner() {
             )}
           </div>
         </div>
-        {mode === 'priority' && <PriorityPlan view={view} build={build} ev={ev} setBuild={setBuild} />}
         {mode === 'sandbox' && <SimplePlan build={build} ev={ev} setBuild={setBuild} />}
+        </fieldset>
         <MournfallCard compact />
       </aside>
+
+      {pane && (
+        <div className="lg:min-h-0 lg:overflow-y-auto lg:pr-2">
+          <fieldset disabled={locked} className="contents">
+            {timeline
+              ? <Timeline build={build} ev={ev} active={active} setActive={setActive} setBuild={setBuild} />
+              : <PriorityPlan view={view} build={build} ev={ev} setBuild={setBuild} />}
+          </fieldset>
+        </div>
+      )}
 
       <div className="flex flex-col gap-3 min-w-0 lg:min-h-0">
         <nav className="flex gap-2" role="tablist">
@@ -139,17 +164,14 @@ export default function CharacterPlanner() {
           ))}
         </nav>
         <div className="lg:min-h-0 lg:overflow-y-auto lg:pr-2">
-          {tab === 'Skills' && <SkillCatalog build={pick} ev={ev} active={active} loose={loose} onAdd={add} onRemove={remove} />}
-          {tab === 'Magic' && <MagicPanel build={pick} ev={ev} active={active} loose={loose} setBuild={setBuild} onAdd={add} onRemove={remove} />}
-          {tab === 'Spellbook' && <Spellbook build={view} ev={ev} setBuild={setBuild} />}
+          <fieldset disabled={locked} className="contents">
+            {tab === 'Skills' && <SkillCatalog build={pick} ev={ev} active={active} loose={loose} onAdd={add} onRemove={remove} />}
+            {tab === 'Magic' && <MagicPanel build={pick} ev={ev} active={active} loose={loose} setBuild={setBuild} onAdd={add} onRemove={remove} />}
+            {tab === 'Spellbook' && <Spellbook build={view} ev={ev} setBuild={setBuild} />}
+          </fieldset>
           {tab === 'Sheet' && <Sheet build={view} ev={ev} />}
         </div>
       </div>
-      {timeline && (
-        <div className="lg:min-h-0 lg:overflow-y-auto lg:pr-2">
-          <Timeline build={build} ev={ev} active={active} setActive={setActive} setBuild={setBuild} />
-        </div>
-      )}
     </div>
   )
 }

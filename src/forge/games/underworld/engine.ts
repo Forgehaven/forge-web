@@ -1,6 +1,6 @@
 import {
   BASE_CP, CULTURE_FRAG_COST, DEFAULT_MAX, ELEMENTS, EXCLUSIVE_SPHERES, MAX_BLANKETS_PER_MONTH,
-  MAX_RITUAL_SLOTS, OCC_CLASS, RACIAL_CP, RITUAL_BASE_COSTS, SLOTS_PER_CIRCLE,
+  MAX_RITUAL_SLOTS, OCC_CLASS, SPIRITUAL_RESOLVE_MAX_LEVEL, RACIAL_CP, RITUAL_BASE_COSTS, SLOTS_PER_CIRCLE,
   SPELL_CIRCLE_COSTS, sphereAt, sphereId, sphereIndex, sphereName, MAX_SLOTS_PER_CIRCLE, SPHERE_SURCHARGE_FRAGS,
   SURCHARGE_SPHERES, TABLE, WEAPON_GROUPS, ordinal,
   type LevelRow,
@@ -54,11 +54,15 @@ export interface Build {
   // timeline: the hand-dated `blankets` + `purchases` above.
   // priority: `priority.purchases` in buying order, each dated by priorityView.
   mode?: PlanMode
+  // complete: the plan is done; retired: no longer played. Both are read-only.
+  status?: BuildStatus
   simple?: { blankets: number; purchases: Purchase[] }
   priority?: Priority
 }
 
 export type PlanMode = 'sandbox' | 'timeline' | 'priority'
+export type BuildStatus = 'planning' | 'complete' | 'retired'
+export const BUILD_STATUSES: BuildStatus[] = ['planning', 'complete', 'retired']
 
 export interface Priority {
   // Blankets applied each month, unless `months` overrides that month.
@@ -71,7 +75,7 @@ export function emptyBuild(startMonth: string): Build {
   return {
     v: 1, name: '', race: '', culture: '', occupation: '', vocation: '',
     schools: ['', '', ''], attunement: '', startMonth, blankets: [], purchases: [], spells: {},
-    mode: 'sandbox', simple: { blankets: 0, purchases: [] },
+    mode: 'sandbox', status: 'planning', simple: { blankets: 0, purchases: [] },
     priority: { perMonth: MAX_BLANKETS_PER_MONTH, months: {}, purchases: [] },
   }
 }
@@ -629,7 +633,7 @@ export function evaluate(b: Build, probe?: Purchase, loose = false): Evaluation 
 
   return {
     steps, results, final: st, probe: probeResult,
-    warnings: buildWarnings(b, st),
+    warnings: [...buildWarnings(b, st), ...levelWarnings(steps, bonus)],
     stats: {
       level, cpTotal: last.cp, cpSpent: st.spent, cpRemaining: last.cp - st.spent, frags,
       body: cls ? last.row[cls] + body : null, strength,
@@ -655,6 +659,19 @@ export function vocationNeeds(b: Build, st: ReplayState): Set<string> {
     for (const cond of c.anyOf.flat()) cond.skill?.split('|').forEach(s => out.add(s))
   }
   return out
+}
+
+// Most blankets a character can apply and stay at or under `level`.
+export function lastBlanketAtLevel(level: number, cpBonus = 0) {
+  let n = 0
+  while (levelRow(cpAt(n + 1, cpBonus), cpBonus).level <= level) n++
+  return n
+}
+
+function levelWarnings(steps: Step[], cpBonus: number): string[] {
+  if (!steps.some(s => s.row.level > SPIRITUAL_RESOLVE_MAX_LEVEL)) return []
+  const safe = lastBlanketAtLevel(SPIRITUAL_RESOLVE_MAX_LEVEL, cpBonus)
+  return [`Blanket ${safe + 1} reaches level ${SPIRITUAL_RESOLVE_MAX_LEVEL + 1}: lives can no longer be bought back with frags (Spiritual Resolve). Stop at ${safe} blankets to keep that option.`]
 }
 
 function buildWarnings(b: Build, st: ReplayState): string[] {

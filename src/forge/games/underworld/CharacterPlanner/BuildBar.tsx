@@ -129,7 +129,9 @@ export function BuildBar({ store }: { store: BuildStore }) {
                   title={KIND[s.kind].title}
                 >
                   <span className={KIND[s.kind].color}>{KIND[s.kind].icon}</span>
-                  <span className={`text-sm truncate ${active ? 'text-[#c4af64]' : 'text-[#e2e4ed]'}`}>{s.name}</span>
+                  <span className={`text-sm truncate ${active ? 'text-[#c4af64]' : s.status === 'retired' ? 'text-[#6b7280]' : 'text-[#e2e4ed]'}`}>{s.name}</span>
+                  {s.status === 'complete' && <span className="text-[10px] text-emerald-300" title="Plan complete">✓ complete</span>}
+                  {s.status === 'retired' && <span className="text-[10px] text-[#6b7280]">retired</span>}
                   <span className="ml-auto text-[10px] text-[#6b7280] whitespace-nowrap">{shortDate(s.updatedAt)}</span>
                 </button>
                 <ConfirmButton
@@ -144,13 +146,13 @@ export function BuildBar({ store }: { store: BuildStore }) {
         </ul>
       )}
 
-      <div className="flex justify-end border-t border-[#2a2d3a] pt-2">
+      {(store.build.status ?? 'planning') === 'planning' && <div className="flex justify-end border-t border-[#2a2d3a] pt-2">
         <ConfirmButton
           label="Reset everything"
           confirmPrompt="Clear the whole character?"
           onConfirm={() => setBuild(b => emptyBuild(b.startMonth))}
         />
-      </div>
+      </div>}
 
       {conflict && (
         <div className="flex flex-wrap items-center gap-3 text-xs text-amber-300">

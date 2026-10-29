@@ -7,7 +7,7 @@ import {
 import { stepLabel } from './util'
 import { ordinal } from '../rules'
 import { Prose } from '../components/Prose'
-import { Masonry } from '../../../../components/Masonry'
+import { Masonry, type MasonryItem } from '../../../../components/Masonry'
 
 interface Props {
   build: Build
@@ -34,6 +34,13 @@ interface Row {
 function optionLabel(sk: CatalogSkill, o: string, build: Build) {
   if (sk.id === SPELL_VERSATILITY) return `${ordinal(+o)} Circle (${versatilityCost(build, o)} CP, ${versatilityCost(build, o)}f)`
   return o.replace('|', ', circle ')
+}
+
+// Fixed card layout: [column, order]. Class Frag Skills is whichever class applies.
+function slot(cat: string): [number, number] {
+  if (cat.endsWith('Class Frag Skills')) return [2, 1]
+  const at = { Racial: [0, 0], Production: [0, 1], Warrior: [0, 2], 'Frag Skills': [1, 0], Scholar: [1, 1], 'Occupational Abilities': [2, 0], Rogue: [2, 2] }[cat]
+  return (at as [number, number]) ?? [2, 3]
 }
 
 function SkillRow({ row, owned, needFor, hasOccupation, onAdd, onRemove }: {
@@ -209,15 +216,16 @@ export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove }: Prop
         </p>
       )}
 
-      <Masonry minWidth={352} items={rows.flatMap(({ cat, skills }) => {
+      <Masonry minWidth={300} items={[...rows].sort((a, b) => slot(a.cat)[0] - slot(b.cat)[0] || slot(a.cat)[1] - slot(b.cat)[1]).flatMap(({ cat, skills }): MasonryItem[] => {
           const shown = skills.filter(r =>
             (!q || r.sk.name.toLowerCase().includes(q)) && (!hideBlocked || !r.reason))
-          if (!shown.length) return []
+          // Columns come from full category sizes, so filtering or buying never moves
+          // a card; a category with nothing to show hides in its slot.
+          if (!shown.length) return [{ key: cat, col: slot(cat)[0], weight: skills.length + 2, node: null }]
           const isClosed = closed[cat] && !q
           const ownedHere = skills.filter(r => owned(r.sk.id) > 0).length
           const buyable = skills.filter(r => !r.reason).length
-          // Weight ignores collapse so folding a category never reshuffles columns.
-          return [{ key: cat, weight: shown.length + 2, node: (
+          return [{ key: cat, col: slot(cat)[0], weight: skills.length + 2, node: (
             <section className="forge-card !p-0 overflow-hidden">
               <button
                 className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-[#e2e4ed] bg-[#2a2d3a]/30 hover:bg-[#2a2d3a]/60 cursor-pointer"

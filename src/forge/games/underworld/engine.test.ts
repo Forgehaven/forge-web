@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { OCC_ORDER, PYRAMID_ORDER, RITUAL_BASE_COSTS, SPELL_CIRCLE_COSTS, SPHERES } from './rules'
 import { SKILLS } from './data'
 import {
-  copyPicks, cpAt, emptyBuild, evaluate, insertBlanket, levelRow, nextBlanketMonth, pastBlankets, priorityView, simpleView, switchRole, unbuy, vocationNeeds,
+  copyPicks, cpAt, emptyBuild, evaluate, insertBlanket, lastBlanketAtLevel, levelRow, nextBlanketMonth, pastBlankets, priorityView, simpleView, switchRole, unbuy, vocationNeeds,
   type Build, type Purchase,
 } from './engine'
 
@@ -253,6 +253,16 @@ describe('spell slot ordering across steps', () => {
     expect([three.cost, three.frag, three.error]).toEqual([SPELL_CIRCLE_COSTS['3'].Mage / 2 + 5, SPELL_CIRCLE_COSTS['3'].Mage / 2 + 5, null])
     expect(again.error).toBe('3 not available')
     expect([one.cost, one.frag, one.error]).toEqual([SPELL_CIRCLE_COSTS['1'].Mage / 2 + 5, SPELL_CIRCLE_COSTS['1'].Mage / 2 + 5, null])
+  })
+
+  it('warns where level 16 ends buying back lives, and where to stop', () => {
+    const safe = lastBlanketAtLevel(15)
+    expect(safe).toBe(82)
+    expect(levelRow(cpAt(safe)).level).toBe(15)
+    expect(levelRow(cpAt(safe + 1)).level).toBe(16)
+    const at = (n: number) => evaluate(build({ blankets: Array(n).fill('2026-01') }), undefined, true).warnings.filter(w => w.includes('Spiritual Resolve'))
+    expect(at(safe)).toEqual([])
+    expect(at(safe + 1)[0]).toMatch(new RegExp(`^Blanket ${safe + 1} reaches level 16.*Stop at ${safe} blankets`))
   })
 
   it('checks vocation prerequisites, including either/or ones', () => {

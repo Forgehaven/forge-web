@@ -165,6 +165,17 @@ describe('CharacterPlanner build bar', () => {
     expect(picks.map((p: { choice: string }) => p.choice)).toEqual(['Blacksmith|Miner', 'Blacksmith|Miner', 'Alchemy|Herbalist'])
   })
 
+  it('locks a complete build until it is back to planning', async () => {
+    const user = userEvent.setup()
+    renderPlanner()
+    await user.selectOptions(screen.getByLabelText('Occupation'), 'Mercenary')
+    await user.selectOptions(screen.getByLabelText('Status'), 'complete')
+    expect(screen.getByRole('button', { name: 'Add Shield' })).toBeDisabled()
+    expect(screen.getByLabelText('Occupation')).toBeDisabled()
+    await user.click(screen.getByRole('button', { name: 'Back to planning' }))
+    expect(screen.getByRole('button', { name: 'Add Shield' })).toBeEnabled()
+  })
+
   it('favourites float to the top and keep their order', async () => {
     const user = userEvent.setup()
     renderPlanner()
