@@ -1,6 +1,8 @@
+// Skills are referenced by `id`; `name` is display only.
 export interface Prereq {
-  // `|` separates alternatives; 'Level N' is a level gate.
-  name: string
+  // Skill ids, `|` separating alternatives. Absent on a level gate.
+  id?: string
+  level?: number
   minCount?: number
   // Needed once, not once per purchase, on prereqPerPurchase skills.
   primaryGate?: boolean
@@ -9,6 +11,7 @@ export interface Prereq {
 export type WeaponChoice = 'specific' | 'group' | 'exotic'
 
 export interface Skill {
+  id: string
   name: string
   // CP per occupation; null means the flat `cp`.
   costs: Record<string, number> | null
@@ -64,6 +67,7 @@ export interface Culture {
 }
 
 export interface Ability {
+  id: string
   name: string
   cp: number
   tier: number
@@ -86,6 +90,7 @@ export interface Vocation {
 // One condition: `count` purchases across the skills in "A|B", or a spell
 // slot of `circle` (with a sphere of that school owned).
 export interface PrereqCondition {
+  // Skill ids.
   skill?: string
   count?: number
   circle?: number

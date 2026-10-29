@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useEffectEvent, useRef, useState } from 'react'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import { useAuth } from '../../../../auth/authContext'
-import { emptyBuild, type Build, type PlanMode, type Purchase } from '../engine'
+import { emptyBuild, legacyId, type Build, type PlanMode, type Purchase } from '../engine'
 import { createBuild, deleteBuild, getBuild, listBuilds, putBuild, putOrder, type BuildSummary } from '../api'
 import { uid } from '../CharacterPlanner/util'
 import { MAX_BLANKETS_PER_MONTH, SCHOOLS_OF_MAGIC } from '../rules'
@@ -54,7 +54,10 @@ const nameOf = (b: Build) => b.name.trim() || 'Unnamed character'
 const isObj = (x: unknown): x is Record<string, unknown> => !!x && typeof x === 'object' && !Array.isArray(x)
 const str = (x: unknown, fallback = '') => (typeof x === 'string' ? x : fallback)
 const purchases = (x: unknown): Purchase[] =>
-  Array.isArray(x) ? x.filter((p): p is Purchase => isObj(p) && typeof p.id === 'string' && typeof p.skill === 'string' && typeof p.at === 'number') : []
+  Array.isArray(x)
+    ? x.filter((p): p is Purchase => isObj(p) && typeof p.id === 'string' && typeof p.skill === 'string' && typeof p.at === 'number')
+      .map(p => ({ ...p, skill: legacyId(p.skill) }))
+    : []
 
 // Drafts and server blobs are untrusted: coerce every field the engine reads
 // so a bad blob can't crash the page on every reload.

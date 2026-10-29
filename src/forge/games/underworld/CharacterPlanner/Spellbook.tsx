@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { SPELLS } from '../data'
 import { PARAGON, SPELL_SLOT, type Build, type Evaluation } from '../engine'
-import { ordinal, sphereName } from '../rules'
+import { ordinal, sphereId } from '../rules'
 import type { Spell } from '../types'
 import { Prose } from '../components/Prose'
 
@@ -46,7 +46,7 @@ function SlotRow({ label, value, options, attunement, onChange }: {
 }
 
 export function Spellbook({ build, ev, setBuild }: Props) {
-  const schools = build.schools.filter((s, i) => s && (ev.final.counts.get(sphereName(i)) ?? 0) > 0)
+  const schools = build.schools.filter((s, i) => s && (ev.final.counts.get(sphereId(i)) ?? 0) > 0)
   const set = (k: string, v: string) => setBuild(b => {
     const spells = { ...b.spells }
     if (v) spells[k] = v

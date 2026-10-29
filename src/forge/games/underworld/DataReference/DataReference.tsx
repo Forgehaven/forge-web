@@ -4,6 +4,7 @@ import {
   CULTURES, DATA_SOURCES, EQUIPMENT, FAVOURED_VOCATIONS, FRAG_RACES, OCC_ABILITIES, RACES, SKILLS, SOURCES, SPELLS, VOCATIONS,
 } from '../data'
 import { OCC_CLASS, OCC_ORDER, TABLE, ordinal } from '../rules'
+import { prereqLabel } from '../engine'
 import type { Race, Skill, Vocation } from '../types'
 import { MournfallCard } from '../components/MournfallCard'
 import { Prose } from '../components/Prose'
@@ -98,7 +99,7 @@ function SkillEntry({ s }: { s: Skill }) {
     <Entry title={s.name} tags={tags}>
       <Prose text={s.desc} />
       {s.prereqs.length > 0 && (
-        <p><span className="text-[#c4af64]">Requires:</span> {s.prereqs.map(p => p.name.split('|').join(' or ')).join('; ')}</p>
+        <p><span className="text-[#c4af64]">Requires:</span> {s.prereqs.map(prereqLabel).join('; ')}</p>
       )}
       {s.costs && (
         <dl className="grid grid-cols-3 gap-x-4 gap-y-0.5 font-mono text-[11px]">

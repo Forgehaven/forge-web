@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { evaluate, RITUAL_SLOT, SPELL_SLOT, type Build, type Evaluation } from '../engine'
+import { evaluate, READ_MAGIC, READ_MAGIC_ADVANCED, RITUAL_SLOT, SPELL_SLOT, skillName, type Build, type Evaluation } from '../engine'
 import {
   ELEMENTS, EXCLUSIVE_SPHERES, MAX_RITUAL_SLOTS, SCHOOLS_OF_MAGIC, SLOTS_PER_CIRCLE,
-  SPHERE_NAMES, SURCHARGE_SPHERES, ordinal, PYRAMID_ORDER, sphereName,
+  SURCHARGE_SPHERES, ordinal, PYRAMID_ORDER, sphereId, sphereName,
 } from '../rules'
 import { stepLabel } from './util'
 
@@ -45,7 +45,7 @@ function AddButton({ label, probe, onClick }: {
 export function MagicPanel({ build, ev, active, loose, setBuild, onAdd, onRemove }: Props) {
   const [fillTo, setFillTo] = useState('')
   const probe = (skill: string, choice?: string) => evaluate(build, { id: 'probe', skill, at: active, choice }, loose).probe
-  const owned = (name: string) => ev.final.counts.get(name) ?? 0
+  const owned = (id: string) => ev.final.counts.get(id) ?? 0
   const setSchool = (i: number, school: string) =>
     setBuild(b => ({ ...b, schools: b.schools.map((s, j) => (j === i ? school : s)) }))
   const removeSphere = () => setBuild(b => ({ ...b, schools: b.schools.slice(0, -1) }))
@@ -53,8 +53,8 @@ export function MagicPanel({ build, ev, active, loose, setBuild, onAdd, onRemove
 
   // Skills a pyramid through `target` needs that the plan doesn't own yet.
   const missingPrereqs = (target: number) =>
-    ['Read & Write', 'Read Magic', SPHERE_NAMES[0], ...(target >= 5 ? ['Read Magic: Advanced'] : [])]
-      .filter(name => owned(name) === 0)
+    ['read-write', READ_MAGIC, sphereId(0), ...(target >= 5 ? [READ_MAGIC_ADVANCED] : [])]
+      .filter(id => owned(id) === 0)
   const missingSlots = (target: number) => {
     const stop = PYRAMID_ORDER.indexOf(target)
     const have = [...ev.final.circles]
@@ -68,7 +68,7 @@ export function MagicPanel({ build, ev, active, loose, setBuild, onAdd, onRemove
   const fillSlots = target ? missingSlots(target) : []
 
   const fillPyramid = () => {
-    fillPrereqs.forEach(name => onAdd(name))
+    fillPrereqs.forEach(id => onAdd(id))
     fillSlots.forEach(circle => onAdd(SPELL_SLOT, String(circle)))
     setFillTo('')
   }
@@ -80,17 +80,18 @@ export function MagicPanel({ build, ev, active, loose, setBuild, onAdd, onRemove
       <div className="grid lg:grid-cols-[16rem_minmax(0,1fr)] gap-4 items-start">
         <div className="flex flex-col gap-2">
           {build.schools.map((_, i) => {
+            const id = sphereId(i)
             const name = sphereName(i)
-            const has = owned(name) > 0
-            const p = probe(name)
+            const has = owned(id) > 0
+            const p = probe(id)
             const used = build.schools.filter((s, j) => s && j !== i)
             return (
-              <div key={name} className={`forge-card !p-3 flex flex-col gap-2 ${has ? 'border-[#c4af64]/40' : ''}`}>
+              <div key={id} className={`forge-card !p-3 flex flex-col gap-2 ${has ? 'border-[#c4af64]/40' : ''}`}>
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-[#e2e4ed]">Sphere {i + 1}</span>
                   {has
-                    ? <span className="flex items-center gap-2"><span className="text-[10px] text-emerald-300">owned</span><RemoveButton label={`Remove ${name}`} onClick={() => onRemove(name)} /></span>
-                    : <AddButton label={`Buy ${name}`} probe={p} onClick={() => onAdd(name)} />}
+                    ? <span className="flex items-center gap-2"><span className="text-[10px] text-emerald-300">owned</span><RemoveButton label={`Remove ${name}`} onClick={() => onRemove(id)} /></span>
+                    : <AddButton label={`Buy ${name}`} probe={p} onClick={() => onAdd(id)} />}
                 </div>
                 {!has && <span className="text-[11px] text-[#6b7280]">{p?.error ?? `${p?.cost} CP`}</span>}
                 <select className="forge-input !py-1 text-xs" value={build.schools[i]} onChange={e => setSchool(i, e.target.value)}>
@@ -182,7 +183,7 @@ export function MagicPanel({ build, ev, active, loose, setBuild, onAdd, onRemove
                   : !fillPrereqs.length && !fillSlots.length
                     ? 'Already there.'
                     : <>Adds {[
-                        ...fillPrereqs,
+                        ...fillPrereqs.map(skillName),
                         ...(fillSlots.length ? [`${fillSlots.length} spell slot${fillSlots.length > 1 ? 's' : ''}`] : []),
                       ].join(', ')}{loose ? '' : ` at ${stepLabel(active)}`}.</>}
               </p>

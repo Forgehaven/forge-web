@@ -38,12 +38,12 @@ describe('cp and level', () => {
 
 describe('evaluate', () => {
   it('checks the CP budget at the step a purchase lands on', () => {
-    const early = evaluate(build({ purchases: [buy('Read & Write'), buy('Read Magic'), buy('Sphere of Magic: 1st')] }))
+    const early = evaluate(build({ purchases: [buy('read-write'), buy('read-magic'), buy('sphere-1')] }))
     expect([...early.results.values()].map(r => r.error)).toEqual([null, null, expect.stringContaining('Over budget')])
 
     const later = evaluate(build({
       blankets: ['2026-01'],
-      purchases: [buy('Read & Write'), buy('Read Magic'), buy('Sphere of Magic: 1st', 1)],
+      purchases: [buy('read-write'), buy('read-magic'), buy('sphere-1', 1)],
     }))
     expect([...later.results.values()].every(r => r.error === null)).toBe(true)
     expect(later.stats.cpSpent).toBe(215)
@@ -51,21 +51,21 @@ describe('evaluate', () => {
   })
 
   it('cascades a missing prereq to its dependents', () => {
-    const ev = evaluate(build({ blankets: ['2026-01'], purchases: [buy('Read Magic'), buy('Sphere of Magic: 1st', 1)] }))
+    const ev = evaluate(build({ blankets: ['2026-01'], purchases: [buy('read-magic'), buy('sphere-1', 1)] }))
     const errs = [...ev.results.values()].map(r => r.error)
     expect(errs[0]).toBe('Requires Read & Write')
     expect(errs[1]).toBe('Requires Read Magic')
   })
 
   it('gates occupational abilities and spell circles', () => {
-    const ev = evaluate(build({ purchases: [buy('Hamstring'), buy('Spell Slot', 0, '5')] }))
+    const ev = evaluate(build({ purchases: [buy('hamstring'), buy('spell-slot', 0, '5')] }))
     const errs = [...ev.results.values()].map(r => r.error)
     expect(errs[0]).toBe('Requires level 3')
     expect(errs[1]).toBe('Requires Sphere of Magic: 1st')
   })
 
   it('enforces the racial purchase cap by level', () => {
-    const ev = evaluate(build({ purchases: [buy('Body Point Bonus (Human)'), buy('Body Point Bonus (Human)')] }))
+    const ev = evaluate(build({ purchases: [buy('body-point-bonus-human'), buy('body-point-bonus-human')] }))
     expect([...ev.results.values()].map(r => r.error)).toEqual([null, 'Maxed'])
     expect(ev.stats.body).toBe(6 + 5)
   })
@@ -73,8 +73,8 @@ describe('evaluate', () => {
   it('requires and validates weapon choices', () => {
     const ev = evaluate(build({
       purchases: [
-        buy('Specialization +1: Weapon Specific'),
-        buy('Specialization +1: Weapon Specific', 0, 'Club'),
+        buy('specialization-1-weapon-specific'),
+        buy('specialization-1-weapon-specific', 0, 'Club'),
       ],
     }))
     const errs = [...ev.results.values()].map(r => r.error)
@@ -83,12 +83,12 @@ describe('evaluate', () => {
   })
 
   it('does not count Simple proficiency toward group prerequisites', () => {
-    const ev = evaluate(build({ purchases: [buy('Specialization +1: Weapon Group', 0, 'Simple')] }))
+    const ev = evaluate(build({ purchases: [buy('specialization-1-weapon-group', 0, 'Simple')] }))
     expect([...ev.results.values()][0].error).toMatch(/^Requires Weapon Group Proficiency: Medium/)
   })
 
   it('prices 4th+ spheres like the 3rd and chains their prerequisites', () => {
-    const spheres = ['Read & Write', 'Read Magic', ...[1, 2, 3, 4].map(i => `Sphere of Magic: ${['1st', '2nd', '3rd', '4th'][i - 1]}`)]
+    const spheres = ['read-write', 'read-magic', ...[1, 2, 3, 4].map(i => `sphere-${i}`)]
     const ev = evaluate(build({
       occupation: 'Mage', blankets: Array.from({ length: 24 }, (_, i) => `2026-${String((i >> 1) + 1).padStart(2, '0')}`),
       purchases: spheres.map(s => buy(s, 24)), schools: ['Healing', 'Protection', 'Nature', 'Psionics'],
@@ -96,7 +96,7 @@ describe('evaluate', () => {
     const res = [...ev.results.values()]
     expect(res.map(r => r.error)).toEqual(Array(spheres.length).fill(null))
     expect(res[5].cost).toBe(SPHERES[2].costs.Mage)
-    const skip = evaluate(build({ purchases: [buy('Sphere of Magic: 5th')] }))
+    const skip = evaluate(build({ purchases: [buy('sphere-5')] }))
     expect([...skip.results.values()][0].error).toBe('Requires Sphere of Magic: 4th')
   })
 
@@ -106,10 +106,10 @@ describe('evaluate', () => {
   })
 
   it('reports probe availability without recording it', () => {
-    const b = build({ purchases: [buy('Read & Write')] })
-    expect(evaluate(b, buy('Read Magic')).probe?.error).toBeNull()
-    expect(evaluate(b, buy('Read Magic: Ritual')).probe?.error).toBe('Requires Read Magic: Advanced')
-    expect(evaluate(b, buy('Specialization +1: Weapon Group')).probe?.error).toContain('Requires')
+    const b = build({ purchases: [buy('read-write')] })
+    expect(evaluate(b, buy('read-magic')).probe?.error).toBeNull()
+    expect(evaluate(b, buy('read-magic-ritual')).probe?.error).toBe('Requires Read Magic: Advanced')
+    expect(evaluate(b, buy('specialization-1-weapon-group')).probe?.error).toContain('Requires')
   })
 })
 
@@ -135,7 +135,7 @@ describe('data tables', () => {
 
 describe('blanket placement', () => {
   it('inserts out-of-order months in place and moves later purchases with their blanket', () => {
-    const b = build({ blankets: ['2026-01', '2026-05'], purchases: [buy('Read & Write', 2)] })
+    const b = build({ blankets: ['2026-01', '2026-05'], purchases: [buy('read-write', 2)] })
     const { build: out, at } = insertBlanket(b, '2026-03')
     expect(out.blankets).toEqual(['2026-01', '2026-03', '2026-05'])
     expect(at).toBe(2)
@@ -150,24 +150,24 @@ describe('blanket placement', () => {
 
 describe('simple mode', () => {
   it('evaluates picks at the final level without budget errors', () => {
-    const b = build({ simple: { blankets: 0, purchases: [buy('Read & Write'), buy('Read Magic'), buy('Shield')] } })
+    const b = build({ simple: { blankets: 0, purchases: [buy('read-write'), buy('read-magic'), buy('shield')] } })
     const ev = evaluate(simpleView(b), undefined, true)
     expect([...ev.results.values()].every(r => r.error === null)).toBe(true)
     expect(ev.stats.cpRemaining).toBe(200 - 70 - 45 - 50 + 10 - 10)
   })
 
   it('unbuys the latest purchase of a skill in the active mode', () => {
-    const b = build({ mode: 'timeline', purchases: [buy('Slay/Parry', 0), buy('Slay/Parry', 2), buy('Shield', 1)] })
-    expect(unbuy(b, 'Slay/Parry').purchases.map(p => p.at)).toEqual([0, 1])
-    const s = build({ simple: { blankets: 3, purchases: [buy('Shield')] } })
-    expect(unbuy(s, 'Shield').simple?.purchases).toEqual([])
+    const b = build({ mode: 'timeline', purchases: [buy('slay-parry', 0), buy('slay-parry', 2), buy('shield', 1)] })
+    expect(unbuy(b, 'slay-parry').purchases.map(p => p.at)).toEqual([0, 1])
+    const s = build({ simple: { blankets: 3, purchases: [buy('shield')] } })
+    expect(unbuy(s, 'shield').simple?.purchases).toEqual([])
   })
 })
 
 describe('priority mode', () => {
   it('dates each pick at the first blanket that affords it, in order', () => {
-    const magic = ['Read & Write', 'Read Magic', 'Sphere of Magic: 1st', 'Read Magic: Advanced'].map(s => buy(s))
-    const slots = PYRAMID_ORDER.slice(0, 15).map(c => buy('Spell Slot', 0, String(c)))
+    const magic = ['read-write', 'read-magic', 'sphere-1', 'read-magic-advanced'].map(s => buy(s))
+    const slots = PYRAMID_ORDER.slice(0, 15).map(c => buy('spell-slot', 0, String(c)))
     const picks = [...magic, ...slots]
     const b = build({ occupation: 'Mage', mode: 'priority', priority: { perMonth: 2, months: { '2026-02': 0 }, purchases: picks } })
     const view = priorityView(b)
@@ -184,7 +184,7 @@ describe('priority mode', () => {
   })
 
   it('copies picks between modes', () => {
-    const picks = ['Read & Write', 'Read Magic', 'Sphere of Magic: 1st', 'Sphere of Magic: 2nd'].map(s => buy(s))
+    const picks = ['read-write', 'read-magic', 'sphere-1', 'sphere-2'].map(s => buy(s))
     const prio = build({ occupation: 'Mage', mode: 'priority', priority: { perMonth: 2, months: {}, purchases: picks } })
 
     const timeline = copyPicks({ ...prio, mode: 'timeline' }, 'priority')
@@ -200,15 +200,15 @@ describe('priority mode', () => {
   })
 
   it('does not wait on errors more blankets cannot fix', () => {
-    const view = priorityView(build({ mode: 'priority', priority: { perMonth: 2, months: {}, purchases: [buy('Read Magic')] } }))
+    const view = priorityView(build({ mode: 'priority', priority: { perMonth: 2, months: {}, purchases: [buy('read-magic')] } }))
     expect(view.blankets).toEqual([])
     expect([...evaluate(view).results.values()][0].error).toContain('Requires')
   })
 })
 
 describe('spell pyramid (Core p.105-106)', () => {
-  const magic = () => [buy('Read & Write'), buy('Read Magic'), buy('Sphere of Magic: 1st'), buy('Read Magic: Advanced')]
-  const slots = (...circles: number[]) => circles.map(c => buy('Spell Slot', 0, String(c)))
+  const magic = () => [buy('read-write'), buy('read-magic'), buy('sphere-1'), buy('read-magic-advanced')]
+  const slots = (...circles: number[]) => circles.map(c => buy('spell-slot', 0, String(c)))
   const errors = (purchases: Purchase[]) =>
     [...evaluate(build({ occupation: 'Mage', purchases }), undefined, true).results.values()].slice(4).map(r => r.error)
 
@@ -235,9 +235,9 @@ describe('spell slot ordering across steps', () => {
     const b = build({
       occupation: 'Mage', mode: 'timeline', blankets: ['2026-01', '2026-01', '2026-02'],
       purchases: [
-        buy('Read & Write'), buy('Read Magic'), buy('Sphere of Magic: 1st'),
-        buy('Spell Slot', 2, '1'), buy('Spell Slot', 2, '1'),
-        buy('Spell Slot', 3, '2'), buy('Spell Slot', 3, '1'),
+        buy('read-write'), buy('read-magic'), buy('sphere-1'),
+        buy('spell-slot', 2, '1'), buy('spell-slot', 2, '1'),
+        buy('spell-slot', 3, '2'), buy('spell-slot', 3, '1'),
       ],
     })
     const ev = evaluate(b, undefined, true)
@@ -245,9 +245,9 @@ describe('spell slot ordering across steps', () => {
   })
 
   it('ties Spell Versatility to an owned slot and prices it by circle', () => {
-    const magic = [buy('Read & Write'), buy('Read Magic'), buy('Sphere of Magic: 1st')]
-    const slots = [1, 1, 2, 1, 2, 3].map(c => buy('Spell Slot', 0, String(c)))
-    const vers = ['3', '3', '1'].map(c => buy('Spell Versatility', 0, c))
+    const magic = [buy('read-write'), buy('read-magic'), buy('sphere-1')]
+    const slots = [1, 1, 2, 1, 2, 3].map(c => buy('spell-slot', 0, String(c)))
+    const vers = ['3', '3', '1'].map(c => buy('spell-versatility', 0, c))
     const ev = evaluate(build({ occupation: 'Mage', purchases: [...magic, ...slots, ...vers] }), undefined, true)
     const [three, again, one] = vers.map(p => ev.results.get(p.id)!)
     expect([three.cost, three.frag, three.error]).toEqual([SPELL_CIRCLE_COSTS['3'].Mage / 2 + 5, SPELL_CIRCLE_COSTS['3'].Mage / 2 + 5, null])
@@ -257,29 +257,29 @@ describe('spell slot ordering across steps', () => {
 
   it('checks vocation prerequisites, including either/or ones', () => {
     // Weapon-choice skills get the Medium group; Tradesman a Miner trade.
-    const pick = (sk: string) => buy(sk, 0, /Weapon Group$|Master$/.test(sk) ? 'Medium' : sk === 'Tradesman' ? 'Blacksmith|Miner' : undefined)
+    const pick = (sk: string) => buy(sk, 0, /weapon-group$|master$/.test(sk) ? 'Medium' : sk === 'tradesman' ? 'Blacksmith|Miner' : undefined)
     const warn = (vocation: string, skills: string[], occupation = 'Mercenary') =>
       evaluate(build({ occupation, vocation, purchases: skills.map(pick) }), undefined, true).warnings.filter(w => w.startsWith(vocation))
-    const parry = ['Weapon Group Proficiency: Medium', 'Specialization +1: Weapon Group', 'Slay/Parry: Master']
-    expect(warn('Stalwart', ['Heavy Armour', 'Shield'])).toContain('Stalwart expects Slay/Parry or Slay/Parry: Master')
-    expect(warn('Stalwart', ['Heavy Armour', 'Shield', ...parry])).toEqual([])
-    expect(warn('Swashbuckler', ['Ambidexterity'])).toEqual(['Swashbuckler expects a Slay (Specific or Master) or a Dodge'])
-    expect(warn('Swashbuckler', ['Ambidexterity', ...parry])).toEqual([])
-    const trade = Array(5).fill('Tradesman')
+    const parry = ['weapon-group-proficiency-medium', 'specialization-1-weapon-group', 'slay-parry-master']
+    expect(warn('Stalwart', ['heavy-armour', 'shield'])).toContain('Stalwart expects Slay/Parry or Slay/Parry: Master')
+    expect(warn('Stalwart', ['heavy-armour', 'shield', ...parry])).toEqual([])
+    expect(warn('Swashbuckler', ['ambidexterity'])).toEqual(['Swashbuckler expects a Slay (Specific or Master) or a Dodge'])
+    expect(warn('Swashbuckler', ['ambidexterity', ...parry])).toEqual([])
+    const trade = Array(5).fill('tradesman')
     expect(warn('Artisan', trade)).toHaveLength(1)
-    expect(warn('Artisan', [...trade, 'Blacksmith', 'Blacksmith', 'Blacksmith', 'Alchemy', 'Alchemy'])).toEqual([])
+    expect(warn('Artisan', [...trade, 'blacksmith', 'blacksmith', 'blacksmith', 'alchemy', 'alchemy'])).toEqual([])
   })
 
   it('swaps owned occupational abilities by tier when the role changes', () => {
-    const b = build({ occupation: 'Mage', purchases: [buy('Identify Magic Item'), buy('Shield')], simple: { blankets: 0, purchases: [buy('Mana Harvest')] } })
+    const b = build({ occupation: 'Mage', purchases: [buy('identify-magic-item'), buy('shield')], simple: { blankets: 0, purchases: [buy('mana-harvest')] } })
     const merc = switchRole(b, { occupation: 'Mercenary' })
-    expect(merc.purchases.map(p => p.skill)).toEqual(['Hamstring', 'Shield'])
-    expect(merc.simple!.purchases.map(p => p.skill)).toEqual(['Head-Butt'])
-    expect(switchRole(merc, { occupation: 'Mage' }).purchases[0].skill).toBe('Identify Magic Item')
+    expect(merc.purchases.map(p => p.skill)).toEqual(['hamstring', 'shield'])
+    expect(merc.simple!.purchases.map(p => p.skill)).toEqual(['head-butt'])
+    expect(switchRole(merc, { occupation: 'Mage' }).purchases[0].skill).toBe('identify-magic-item')
   })
 
   it('names a Tradesman trade and checks its material', () => {
-    const trades = [buy('Tradesman', 0, 'Blacksmith|Miner'), buy('Tradesman', 0, 'Gold|Miner')]
+    const trades = [buy('tradesman', 0, 'Blacksmith|Miner'), buy('tradesman', 0, 'Gold|Miner')]
     const ev = evaluate(build({ occupation: 'Mage', purchases: trades }), undefined, true)
     const [ok, bad] = trades.map(p => ev.results.get(p.id)!)
     expect([ok.label, ok.error]).toEqual(['Tradesman: Miner (Blacksmith)', null])
@@ -287,8 +287,8 @@ describe('spell slot ordering across steps', () => {
   })
 
   it('orders slots past the full pyramid by the circle below', () => {
-    const magic = [buy('Read & Write'), buy('Read Magic'), buy('Sphere of Magic: 1st'), buy('Read Magic: Advanced')]
-    const slots = [...PYRAMID_ORDER, 2, 1].map(c => buy('Spell Slot', 0, String(c)))
+    const magic = [buy('read-write'), buy('read-magic'), buy('sphere-1'), buy('read-magic-advanced')]
+    const slots = [...PYRAMID_ORDER, 2, 1].map(c => buy('spell-slot', 0, String(c)))
     const ev = evaluate(build({ occupation: 'Mage', purchases: [...magic, ...slots] }), undefined, true)
     expect([...ev.results.values()].every(r => r.error === null)).toBe(true)
   })

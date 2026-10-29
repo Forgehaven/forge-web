@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import {
-  catalog, choiceLabel, choiceOptions, evaluate, needsChoice, stateAt, SPELL_VERSATILITY, TRADESMAN, versatilityCost,
+  catalog, choiceLabel, choiceOptions, evaluate, needsChoice, prereqLabel, stateAt, SPELL_VERSATILITY, TRADESMAN, versatilityCost,
   type Build, type CatalogSkill, type Evaluation,
 } from '../engine'
 import { stepLabel } from './util'
@@ -32,7 +32,7 @@ interface Row {
 }
 
 function optionLabel(sk: CatalogSkill, o: string, build: Build) {
-  if (sk.name === SPELL_VERSATILITY) return `${ordinal(+o)} Circle (${versatilityCost(build, o)} CP, ${versatilityCost(build, o)}f)`
+  if (sk.id === SPELL_VERSATILITY) return `${ordinal(+o)} Circle (${versatilityCost(build, o)} CP, ${versatilityCost(build, o)}f)`
   return o.replace('|', ', circle ')
 }
 
@@ -50,7 +50,7 @@ function SkillRow({ row, owned, hasOccupation, onAdd, onRemove }: {
   const maxed = owned > 0 && owned >= sk.maxPurchases
   const reason = row.reason === NO_OCCUPATION || maxed ? null : row.reason
   const blocked = !!row.reason || (options !== null && options.length === 0)
-  const prereqs = sk.prereqs.map(p => `${(p.minCount ?? 1) > 1 ? `${p.minCount}x ` : ''}${p.name.split('|').join(' or ')}`)
+  const prereqs = sk.prereqs.map(prereqLabel)
   const showCost = hasOccupation || !sk.costs
 
   return (
@@ -94,7 +94,7 @@ function SkillRow({ row, owned, hasOccupation, onAdd, onRemove }: {
 
       {choosing && options !== null && !blocked && (
         <div className="flex items-center gap-2 pb-2">
-          {sk.name === TRADESMAN && (
+          {sk.id === TRADESMAN && (
             <input
               autoFocus
               aria-label="Trade name"
@@ -106,7 +106,7 @@ function SkillRow({ row, owned, hasOccupation, onAdd, onRemove }: {
             />
           )}
           <select
-            autoFocus={sk.name !== TRADESMAN}
+            autoFocus={sk.id !== TRADESMAN}
             aria-label={`${sk.name} choice`}
             className="forge-input !py-1 !px-1.5 text-xs flex-1"
             defaultValue=""
@@ -114,12 +114,12 @@ function SkillRow({ row, owned, hasOccupation, onAdd, onRemove }: {
               if (!e.target.value) return
               const v = e.target.value
               // A bare material starts a new trade under the typed name.
-              onAdd(sk.name === TRADESMAN && !v.includes('|') ? `${v}|${trade.replace(/\|/g, '').trim()}` : v)
+              onAdd(sk.id === TRADESMAN && !v.includes('|') ? `${v}|${trade.replace(/\|/g, '').trim()}` : v)
               setChoosing(false)
               setTrade('')
             }}
           >
-            <option value="" disabled>Choose {sk._weaponChoice === 'group' ? 'a weapon group' : sk._weaponChoice ? 'a weapon' : sk._paragon ? 'sphere and circle' : sk.name === SPELL_VERSATILITY ? 'a slot' : sk.name === TRADESMAN ? (row.trades?.length ? 'a trade' : 'its material') : 'an element'}…</option>
+            <option value="" disabled>Choose {sk._weaponChoice === 'group' ? 'a weapon group' : sk._weaponChoice ? 'a weapon' : sk._paragon ? 'sphere and circle' : sk.id === SPELL_VERSATILITY ? 'a slot' : sk.id === TRADESMAN ? (row.trades?.length ? 'a trade' : 'its material') : 'an element'}…</option>
             {row.trades?.length ? (
               <>
                 <optgroup label="Level up">
@@ -166,14 +166,14 @@ export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove }: Prop
     return catalog(build).map(c => ({
       cat: c.cat,
       skills: c.skills.map((sk): Row => {
-        const probe = evaluate(build, { id: 'probe', skill: sk.name, at: active }, loose).probe
+        const probe = evaluate(build, { id: 'probe', skill: sk.id, at: active }, loose).probe
         return {
           sk,
           cost: probe?.cost ?? 0,
           frag: probe?.frag ?? 0,
           reason: probe?.error ?? null,
           options: needsChoice(sk) ? choiceOptions(sk, st).map(o => [o, optionLabel(sk, o, build)]) : null,
-          trades: sk.name === TRADESMAN ? [...trades] : undefined,
+          trades: sk.id === TRADESMAN ? [...trades] : undefined,
         }
       }),
     }))
@@ -210,7 +210,7 @@ export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove }: Prop
             (!q || r.sk.name.toLowerCase().includes(q)) && (!hideBlocked || !r.reason))
           if (!shown.length) return []
           const isClosed = closed[cat] && !q
-          const ownedHere = skills.filter(r => owned(r.sk.name) > 0).length
+          const ownedHere = skills.filter(r => owned(r.sk.id) > 0).length
           const buyable = skills.filter(r => !r.reason).length
           // Weight ignores collapse so folding a category never reshuffles columns.
           return [{ key: cat, weight: shown.length + 2, node: (
@@ -231,12 +231,12 @@ export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove }: Prop
                 <ul className="px-3">
                   {shown.map(r => (
                     <SkillRow
-                      key={r.sk.name}
+                      key={r.sk.id}
                       row={r}
-                      owned={owned(r.sk.name)}
+                      owned={owned(r.sk.id)}
                       hasOccupation={hasOccupation}
-                      onAdd={choice => onAdd(r.sk.name, choice)}
-                      onRemove={() => onRemove(r.sk.name)}
+                      onAdd={choice => onAdd(r.sk.id, choice)}
+                      onRemove={() => onRemove(r.sk.id)}
                     />
                   ))}
                 </ul>

@@ -4,7 +4,7 @@ import { monthLabel } from './util'
 // Read-only character sheet of everything valid in the plan.
 export function Sheet({ build, ev }: { build: Build; ev: Evaluation }) {
   const catOf = new Map<string, string>()
-  for (const c of catalog(build)) for (const s of c.skills) catOf.set(s.name, c.cat)
+  for (const c of catalog(build)) for (const s of c.skills) catOf.set(s.id, c.cat)
 
   const groups = new Map<string, Map<string, number>>()
   for (const p of build.purchases) {

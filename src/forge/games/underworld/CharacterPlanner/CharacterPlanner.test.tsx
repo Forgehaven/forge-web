@@ -39,7 +39,7 @@ describe('CharacterPlanner', () => {
     expect(within(blanket).getByText('Read & Write')).toBeInTheDocument()
     const draft = JSON.parse(localStorage.getItem('forgegames_uw_planner_v1')!)
     expect(draft.build.mode).toBe('timeline')
-    expect(draft.build.purchases).toMatchObject([{ skill: 'Read & Write', at: 1 }])
+    expect(draft.build.purchases).toMatchObject([{ skill: 'read-write', at: 1 }])
     expect(screen.getByText(/only saved in this browser/)).toBeInTheDocument()
   })
 
@@ -95,7 +95,7 @@ describe('CharacterPlanner simple mode', () => {
     await user.click(screen.getByRole('button', { name: 'Remove one Shield' }))
     expect(screen.queryByRole('button', { name: 'Remove one Shield' })).toBeNull()
     const draft = JSON.parse(localStorage.getItem('forgegames_uw_planner_v1')!)
-    expect(draft.build.simple).toMatchObject({ blankets: 1, purchases: [{ skill: 'Read & Write' }, { skill: 'Read Magic' }] })
+    expect(draft.build.simple).toMatchObject({ blankets: 1, purchases: [{ skill: 'read-write' }, { skill: 'read-magic' }] })
     expect(draft.build.purchases).toEqual([])
   })
 })
@@ -113,7 +113,7 @@ describe('CharacterPlanner magic', () => {
 
     const draft = JSON.parse(localStorage.getItem('forgegames_uw_planner_v1')!)
     expect(draft.build.simple.purchases.map((p: { skill: string; choice?: string }) => p.choice ?? p.skill))
-      .toEqual(['Read & Write', 'Read Magic', 'Sphere of Magic: 1st', '1', '1', '2'])
+      .toEqual(['read-write', 'read-magic', 'sphere-1', '1', '1', '2'])
   })
 })
 

@@ -7,24 +7,28 @@
   "occupationAbilities": {
     "Mercenary": [
       {
+        "id": "hamstring",
         "name": "Hamstring",
         "cp": 30,
         "tier": 3,
         "desc": "An Occupational Ability for Mercenaries, this skill allows the Mercenary to injure the target's leg and hamper their movement. To activate this skill the Mercenary must successfully strike the target's leg with a weapon and call out \"Innate 3 Body Hamstring.\" If the hit is successful, the target will take 3 Body damage and temporarily loses mobility in the injured leg, slowing their movement to 1 step every 3 seconds.\n\nThis skill may be stacked if purchased more than once, allowing the damage to increase for each time it is used. For example, if Hamstring is purchased 3 times all three may be used simultaneously to create a \"Innate 9 Body Hamstring\" attack.\n\nLastly, specific damage types may be called such as \"silver\" or \"magic\" based on the weapon used to hamstring. This makes walking slow and running impossible. This effect will last until the target receives at least 3 Body points worth of healing.\n\nThis skill is usable once per day, per purchase."
       },
       {
+        "id": "head-butt",
         "name": "Head-Butt",
         "cp": 60,
         "tier": 6,
         "desc": "An Occupational Ability for Mercenaries, a Head-Butt attack will stun the target for 5 seconds. While stunned, a victim is unable to take any action, including blocking, moving and the use of skills, minus the ability to call \"interrupt\" against Killing Blows and any counts against them. Automatic defenses such as Shield Magic will still operate, but ones requiring conscious thought such as Advanced Shield Magic will not.\n\nIt may be used at will but only once per target, per day. To use the attack, place your palms on victim's shoulders, facing the victim from the front, and state \"Innate Physical Head-Butt\". If the attacker naturally swings for a type of damage other than Normal, this damage type is placed in front of the normal call.\n\nThere is no numerical value for this attack, so when determining if the attack is stopped by a defender's threshold, only the damage threshold type is taken into account.\n\nFor example, an \"Innate Silver Physical Head-Butt\" will breach a defender's +2 Silver threshold, but not a Magic one. A helmet on the defender will negate the attack, regardless of the damage type. A secondary effect of this ability allows the mercenary to escape a Garrotte. A Mercenary can use a Head-Butt attack while being Garrotted but the attack will be negated if the Garrotter is wearing a helmet.\n\nTo escape a Garrotte the Mercenary does not need to be facing their attacker, but must place their hands on their attacker's hands and state \"Physical Head-Butt\". Performing a Head-Butt will do 1 Body damage to the attacker, which cannot be avoided in any way. Self Mutilate is not needed to use this ability."
       },
       {
+        "id": "dismember",
         "name": "Dismember",
         "cp": 90,
         "tier": 9,
         "desc": "An Occupational Ability for Mercenaries, this skill will sever the arms or legs of a target. By calling out \"Innate 5 Body Dismember!\" before striking an arm or leg, the Mercenary is able to deliver 5 points of Body damage and sever the limb from their victim. This skill may be stacked if purchased more than once, allowing the damage to increase for each time it is used.\n\nFor example, if Dismember is purchased 3 times all three may be used simultaneously to create a \"Innate 15 Body Dismember\" attack. Also, specific damage types may be called such as \"silver\" or \"magic\" based on the weapon used to Dismember. The skill is consumed regardless of whether the attack is successful or not.\n\nIt will work on arms and legs only. The skill may be used once per day per purchase."
       },
       {
+        "id": "razor-s-edge",
         "name": "Razor's Edge",
         "cp": 120,
         "tier": 12,
@@ -33,24 +37,28 @@
     ],
     "Ranger": [
       {
+        "id": "detoxify",
         "name": "Detoxify",
         "cp": 30,
         "tier": 3,
         "desc": "An Occupational Ability for Rangers, this skill allows the Ranger to remove toxins and Alchemical substances from the target's bloodstream. It takes 10 uninterrupted seconds for the Ranger to remove the toxin from the target. If, at any time, the Ranger stops, or takes damage to Body, the Detoxify fails and the skill is considered used.\n\nIt will work on any toxin or Alchemical substance which can be cured by a standard Antidote, regardless of how long the toxin has been in the target's system.\n\nThe call for this ability is \"Innate Detoxify\". This skill is usable once per day, per purchase."
       },
       {
+        "id": "trailblazing",
         "name": "Trailblazing",
         "cp": 60,
         "tier": 6,
         "desc": "An Occupational Ability for Rangers, this skill allows the Ranger to call \"Innate Trailblazing\" to release themselves from any magical or alchemical binding effect that requires a strength bonus to escape from without taking any Body damage. This skill does not function against any man-made devices like bear traps or manacles.\n\nThis skill is usable once per day, per purchase."
       },
       {
+        "id": "nature-s-grasp",
         "name": "Nature's Grasp",
         "cp": 90,
         "tier": 9,
         "desc": "An Occupational Ability for Rangers, this skill allows the Ranger to infuse any weapon with the binding power of Nature. It takes 10 seconds to infuse one weapon and during that time, the Ranger must concentrate by rubbing the weapon with leaves, dirt or other symbols of nature. If the Ranger is interrupted, or takes damage to Body, the ability fails and is used up for the day.\n\nIf successfully created, the weapon's damage suffix is changed to \"Magic Body\" and, when used, will entangle the target in a Web effect. When a target is successfully hit, roots will rise up from the ground, immobilising them from the neck down. It takes a 6 minute count to cut free from the entanglement, or the target may rip it out if they have at least +6 Strength and the skill Self Mutilate, suffering 6 Body damage in the process.\n\nIf the target is not cut or ripped free, the web will remain until Line of Sight to the Ranger is broken. The call for this attack would be \"Innate <damage> Magic Body Web\". This infusion will last 5 days or until first used.\n\nThis skill is usable once per day, per purchase."
       },
       {
+        "id": "call-of-the-hunt",
         "name": "Call of the Hunt",
         "cp": 120,
         "tier": 12,
@@ -59,24 +67,28 @@
     ],
     "Templar": [
       {
+        "id": "burn-slot",
         "name": "Burn Slot",
         "cp": 30,
         "tier": 3,
         "desc": "An Occupational Ability for Templars, this skill allows the Templar to \"burn\" any unused Battle Magic or Ritual Magic level spell-slots to add damage, at the value of +2 Magic/slot, to their next weapon strike. The Templar may choose how many of their unused slots to burn at the time of the swing. Any spells stored in those slots are lost.\n\nE.g. A Templar who normally swings for \"2 Normal\" with their sword chooses to burn 3 slots, the call would be \"Innate 8 Magic\" for that one swing. The level of the slot does not matter for this purpose. If the swing misses or is blocked, the damage is not used up, so the defending player should declare \"Hit\" if the strike hit successfully.\n\nThe Templar must call \"Active Burn Slot\" for every subsequent swing. The Burn Slot remains active for a maximum of 1 minute, or until used. Either way, the skill is used up and the slots are burnt. This skill is considered used if it hits a shield being wielded or if the target uses a defense to stop it after being hit, but the target will take no damage.\n\nThis skill is usable once per day, per purchase."
       },
       {
+        "id": "scroll-harvest",
         "name": "Scroll Harvest",
         "cp": 60,
         "tier": 6,
         "desc": "An Occupational Ability for Templars, this skill will allow the Templar to activate a Battle Magic scroll without it being consumed. To activate this skill, the Templar must hold the target scroll, verbally state \"Innate Scroll Harvest <scroll name>\" then verbally incant the spell on the scroll. The scroll will activate normally but will not be consumed by the casting.\n\nThis class ability will work on scrolls level 1 to 7. For scroll levels 8 to 9, two uses of Scroll Harvest must be used. Normal rules for activating a Battle Magic scroll apply. This ability does not grant the Templar the Read Magic Ability, which must be purchased separately.\n\nThis skill is usable once per day, per purchase."
       },
       {
+        "id": "weapon-break",
         "name": "Weapon Break",
         "cp": 90,
         "tier": 9,
         "desc": "An Occupational Ability for the Templar, this skill will allow the Templar to shatter an opponent's weapon, spraying the target with the shattered pieces. The Templar may break an opponent's weapon using their own weapon, like a physical effect, so long as the weapon is hit. This ability will also work on shields.\n\nIf the shatter is successful, the target will also be dealt 15 damage of whatever type their weapon was dealing when it was struck. This damage type includes Normal, Magic, silver, etc., but does not include Body damage or Alchemical effects. Shields deal Normal damage.\n\nThe call is \"Innate Weapon Break!\" This skill is usable once per day per purchase."
       },
       {
+        "id": "weapon-conduit",
         "name": "Weapon Conduit",
         "cp": 120,
         "tier": 12,
@@ -85,24 +97,28 @@
     ],
     "Nightblade": [
       {
+        "id": "feint",
         "name": "Feint",
         "cp": 30,
         "tier": 3,
         "desc": "An Occupational Ability for Nightblades, this skill allows the Nightblade to quickly evade any packet-delivered alchemical attack they are successfully struck with.\n\nTo use this ability, the Nightblade must state \"Innate Feint,\" in order to avoid the attack. This skill also has the additional benefit of acting as the pre-requisite for the rogue skill Dodge, without requiring the Nightblade to purchase the skill Critical. Each purchase of Feint fulfills the pre-requisite for a single purchase of Dodge.\n\nThis ability may be used once per day per purchase."
       },
       {
+        "id": "duplicate-key",
         "name": "Duplicate Key",
         "cp": 60,
         "tier": 6,
         "desc": "An Occupational Ability for Nightblades, this ability will create a duplicate of any key, Magical or otherwise. This ability will work on any mundane key, wizard lock key, ward keys etc. This ability requires the original key or a pre-existing duplicate to be touched by the Nightblade and a declaration of \"Innate Duplicate Key\" must be said aloud.\n\nThe duplicate will last for 1 year or until used once. This ability may be used once per day, per purchase."
       },
       {
+        "id": "dim",
         "name": "Dim",
         "cp": 90,
         "tier": 9,
         "desc": "An Occupational Ability for Nightblades, this skill allows the Nightblade to become invisible and non-corporeal so long as they do not move, attack, or make any sound.\n\nTo use the skill the Nightblade must be in darkness. A character is in darkness when words on a page held at arm's length cannot be read. Dimming requires a three-count, \"Innate Dim 1, Dim 2…\", both entering and exiting the Dim. Should a light source destroy the shadow the Nightblade will automatically be forced out of Dim (still requiring an exiting 3 count).\n\nWhile dimmed, a Nightblade must put on a white, out-of-game headband, or place their hand/weapon on their head. This ability does not hide the Nightblade from Sense abilities.\n\nThis skill may be used once per day, per purchase."
       },
       {
+        "id": "passwall",
         "name": "Passwall",
         "cp": 120,
         "tier": 12,
@@ -111,24 +127,28 @@
     ],
     "Assassin": [
       {
+        "id": "shiv",
         "name": "Shiv",
         "cp": 30,
         "tier": 3,
         "desc": "An Occupational Ability for Assassins, this skill allows the Assassin to turn any single simple- or medium-sized weapon or stiletto swing into Body damage equal to the weapon's base damage. If a stiletto is used, the damage is x2. Preparing the Shiv attack requires a 3-count - \"Innate Shiv 1, Innate Shiv 2, Innate Shiv 3\".\n\nThis skill can be combined with any other skill or ability as if it were a normal weapon swing. This effect is used up regardless of whether the attack hits or misses. The Assassin has 1 minute to use the Shiv before it expires.\n\nThis skill is usable only by the Assassin who prepares it and is usable once per day per purchase."
       },
       {
+        "id": "silent-strike",
         "name": "Silent Strike",
         "cp": 60,
         "tier": 6,
         "desc": "An Occupational Ability for Assassins, this skill allows the Assassin to add a silencing effect to one of their Normal attacks. For this effect to activate successfully, the attack must damage the target into Body. If the attack does not damage the target into Body, this skill will fail. This silencing effect lasts until the target receives at least 1 Body point of healing.\n\nTo activate this skill the Assassin must declare \"Innate Silent Strike\". Once activated the Assassin has one hour to engage their prey, adding the suffix \"Silence\" once to their next weapon swing.\n\nThis skill may be used in conjunction with an Execute to create a Silent Kill. To use the ability in this manner the assassin must declare \"Silent Kill\". A silent kill functions exactly the same as an execute save that the target is silenced and cannot scream.\n\nThe Silent Strike skill may be used once per day, per purchase."
       },
       {
+        "id": "spirit-sever",
         "name": "Spirit Sever",
         "cp": 90,
         "tier": 9,
         "desc": "An Occupational Ability for Assassins, this skill allows the Assassin to cut the astral strands that bind a Spirit to its body. This skill must be used on a target in their Death Count and takes 30 seconds to complete. During this time, the Assassin must stay with the target, actively cutting the invisible strands that tie the target's Spirit to their body.\n\nIf successful, the target Spirit must forgo the remaining time in their Death Count and immediately attempt to Resurrect. While the Assassin is using this skill, it is suggested that the target continue their normal Death Count, outlined by their race, in the event the Assassin fails. The 30 second Spirit Sever count must be said by the Assassin, loud enough for the target to hear.\n\nIf at any point the Assassin stops counting, is interrupted, uses any other skill or if the target was so far along in their Death Count they Resurrect before the Assassin finishes, this skill will fail. This skill will also fail if used on a conscious target or a target in their Bleed Count.\n\nThis skill can be used once per day per purchase."
       },
       {
+        "id": "penetration",
         "name": "Penetration",
         "cp": 120,
         "tier": 12,
@@ -137,24 +157,28 @@
     ],
     "Wytchhunter": [
       {
+        "id": "wytch-mark-opposed-sphere",
         "name": "Wytch Mark / Opposed Sphere",
         "cp": 30,
         "tier": 3,
         "desc": "An Occupational Ability for Wytch Hunters, this skill serves two purposes:\n\nFirst, it allows for the creation of a glowing magical symbol that will store any Battle Magic spell cast into it by the Wytch Hunter within 60 seconds of its creation. This spell must be cast by the Wytch Hunter or through a magic item used by them. The symbol must be represented by a green light and must remain stationary and unhidden.\n\nThe tag for the Wytch Mark must be attached on or next to the green light, as well as the spell tag if one is used. The Wytch Hunter must choose one of their opposed spheres and write that on the Wytch Mark tag, stating \"Innate Wytch Mark <Sphere>\".\n\nOnce prepared, the Wytch Mark will activate the next time a person with active magic (a spell with a duration in progress) from the chosen sphere or a person holding an item with active magic from the chosen sphere comes within 10 feet of it. If this occurs, the target will be automatically struck by the stored spell as if they had been successfully hit by a spell packet.\n\nFor the purposes of defenses, the attack is presumed to have a call of \"Magic <spell>\". If no spell is cast into the Wytch Mark, it will do 1 Magic damage instead. Once the Wytch Mark is activated, it will vanish. A Wytch Mark can be destroyed and is considered to have 1 Body Point. Wytch Marks last 5 days or until activated.\n\nThis ability may be used once per day per purchase.\n\nSecondly, purchasing this ability allows the Wytch Hunter to choose one hated sphere. Until this class ability is purchased for the first time, a Wytch Hunter has no opposing sphere of magic. This class ability may be purchased multiple times, each time allowing the Wytch Hunter to choose a new sphere of magic if they desire, otherwise multiple purchases will simply unlock more uses of the Wytch Mark per day."
       },
       {
+        "id": "twist-of-the-tongue",
         "name": "Twist of the Tongue",
         "cp": 60,
         "tier": 6,
         "desc": "An Occupational Ability for Wytch Hunter, this skill will allow the Wytch Hunter to inflict a terrible attack on any target, twisting and spiraling their tongue, should they cast from any of the Wytch Hunter's opposed spheres. This packet delivered attack, if successfully landed, will sit, impervious to all methods of removal, on a target's spirit for the next hour like a magical trap.\n\nIf at any time during that duration the target casts a spell from the Wytch Hunters hated spheres, from memory, scroll, or magic item, their tongue will twist and spiral once the spell is cast. A target with a twisted tongue may grunt and squeal but cannot cast, engage in coherent speech or use any skills, items or abilities that require speech for duration of one hour.\n\nThis infliction may not be healed or cured, even if the target dies and is given a life spell. Only successful resurrection or duration expiry will restore the targets tongue.\n\nThe call for this ability is \"Innate Arcane Twist of the Tongue <Spheres>\", e.g. \"Innate Arcane Twist of the Tongue Necromancy Psionics\". The Wytch Hunter need not list each of their opposed spheres, if they do not wish each sphere to be impacted.\n\nThis ability is usable once per day per purchase."
       },
       {
+        "id": "karmic-ricochet",
         "name": "Karmic Ricochet",
         "cp": 90,
         "tier": 9,
         "desc": "An Occupational Ability for Wytch Hunters, this ability will allow the Wytch Hunter to absorb any Battle Magic spell and return it back to the caster. This ability can absorb a spell from the Wytch Hunter's Opposed Spheres of Magic that successfully strikes them, or any other target within 10 feet of the Wytch Hunter, by verbally declaring \"Innate Arcane Ricochet\".\n\nIf the spell is one which allows the caster to throw more than one packet, the Wytch Hunter must absorb the first packet for the Ricochet to be effective. The Wytch Hunter then has 3 seconds to ricochet that spell back to the original caster or into the ground via spell packet or touch-cast. If they fail to do this or do not ricochet it within the 3 seconds, the Wytch Hunter will take the full effect of the spell themselves.\n\nWhen returning the spell, the Wytch Hunter must declare \"Innate Ricochet Magic <spell name>!\" before throwing the packet. This returning spell will have no effect on any other target other than the original caster or the Wytch Hunter. The spell being returned is an exact duplicate of the one that was captured by the Wytch Hunter.\n\nThis ability is usable once per day, per purchase."
       },
       {
+        "id": "counter-magic",
         "name": "Counter Magic",
         "cp": 120,
         "tier": 12,
@@ -163,24 +187,28 @@
     ],
     "Mage": [
       {
+        "id": "identify-magic-item",
         "name": "Identify Magic Item",
         "cp": 30,
         "tier": 3,
         "desc": "An Occupational Ability for Mages, this skill allows the Mage to identify a magic item by consuming a Catalyst of any type. The Mage must touch a Catalyst of any type, as well as the item they are attempting to identify, and state \"Innate Identify\". The Catalyst will be consumed in a brilliant flash of blue light.\n\nThe effect(s), flaw(s), activation word, expiry, and any other traits on the magic item tag will be revealed to the Mage. This skill is usable once per day, per purchase."
       },
       {
+        "id": "mana-harvest",
         "name": "Mana Harvest",
         "cp": 60,
         "tier": 6,
         "desc": "An Occupational Ability for Mages, this skill allows the Mage to harvest spent Battle Magic spells by consuming Catalysts. For this ability to be successful the Mage must touch the appropriate number of Catalysts, choose which used Battle Magic spell they are going to recall, and declare \"Innate Mana Harvest <spell>\".\n\nThe Catalyst(s) will be consumed in a brilliant flash of blue light and the Mage's ability to cast that chosen spell will be recalled. To harvest a Circle 1-3 spell, the mage must consume one Catalyst of any type. To harvest a Circle 4-6 spell, the mage must consume two Catalysts of any type. To harvest a Circle 7-9 the mage must consume three Catalysts of any type.\n\nA Discord Catalyst will count as if it were two Catalysts. This ability will only recall a Battle Magic spell into memory that has already been used and will not allow the Mage to rememorize a new one in its place.\n\nThis skill is usable at will but may only be used once per spell slot."
       },
       {
+        "id": "create-familiar",
         "name": "Create Familiar",
         "cp": 90,
         "tier": 9,
         "desc": "An Occupational Ability for Mages, this skill allows the Mage to create, and bring to life, a magical Familiar. This Familiar is a part of the Mage, created from their raw magic. Only one such creature can exist at a time for the Mage, and the creature is considered to have animal intelligence. The Mage may choose the Familiar's form at creation, but it must in some way represent one of the Spheres of Magic that the Mage can cast.\n\nOnce decided, a Familiar's form cannot be changed. Its size is limited to no greater than a large housecat. The Familiar is spirit linked to its creator, and cannot leave the Mage's person. It has no skills or abilities of its own, possesses no Spirit and cannot die, unless the Mage dies and resurrects.\n\nAt any point, the Mage can choose to kill the Familiar, just by willing it. Doing so causes the Familiar to dissipate. While in existence, the Familiar will hold one Battle Magic spell that the caster can currently cast. This spell is chosen when the Familiar is first created and can be changed or reset when the Mage chooses to re-memorize their spells for that day.\n\nAt any point, the Mage can cast that spell as if they had the extra spell-slot in their pyramid. Once done, the Familiar is now \"empty\" and cannot store another spell until the Mage resets for the day. The Familiar will also help in the casting of Rituals. The Familiar can act as a secondary caster in a Ritual the Mage casts as the primary caster, once per day.\n\nTo create a Familiar, the Mage must spend one hour performing a rite to create an entity from raw magic. Once the hour has passed, the Mage must declare \"Innate Create <Sphere> Familiar\" for the ritual to be complete. The Familiar must be visually represented by the Mage. A doll or stuffed toy will suffice, as long as it in some way resembles the Sphere of Magic chosen.\n\nThis skill may be used once per day, per purchase."
       },
       {
+        "id": "power-nexus",
         "name": "Power Nexus",
         "cp": 120,
         "tier": 12,
@@ -189,18 +217,21 @@
     ],
     "Druid": [
       {
+        "id": "create-grove",
         "name": "Create Grove",
         "cp": 30,
         "tier": 3,
         "desc": "An Occupational Ability for Druids, this skill awakens a 10-foot diameter circle of natural wilderness with druidic energy. A Grove grants the following powers: it allows the creator to see and identify any True Fae creature that steps within its boundary and the Grove creates an empathetic bond with its creator.\n\nThis allows the Druid to sense the emotions of the Grove and vice versa. A Grove's emotion can change based on perceived threats to the grove or unnatural corruption of the lands surrounding it. These indicators will always be vague and cannot tell a druid specifics about the reasons for the emotional state, only that they exist.\n\nA Grove does not provide a barrier or any other protection to those inside, and cannot be augmented in any way, other than upgrading it to a Henge for which it is a prerequisite. It takes a 1-hour role-play ritual to create the Grove. Groves must have their boundary visibly defined by a rope or other marker but these markers can be natural, such as vegetation.\n\nGroves can only be made outdoors. They may contain structures such as tents, but only if the structure is small enough to fit completely inside the Grove. A Druid may have 1 Grove active at a time, per guild. The grove can be moved by releasing the druidic energy back to nature and performing the 1-hour role-play ritual again elsewhere.\n\nIf a druid who has created a Grove dies a final death, the Grove fades away."
       },
       {
+        "id": "forest-meld",
         "name": "Forest Meld",
         "cp": 60,
         "tier": 6,
         "desc": "An Occupational Ability for Druids, this skill allows the Druid to become one with the forest, hiding their presence. To successfully activate this skill the Druid must use a tree with a thickness such that they are unable to completely wrap the fingers of both their hands around its trunk. A 3 count declaration must be said aloud \"Innate Forest Meld 1, Forest Meld 2 ...\"\n\nAt this point, the Druid will merge into the tree and must place their hand/weapon on their head, or don a white headband, to show they are out of game. The Druid may stay hidden inside the tree until they will the skill to end, breaks concentration, or the tree takes 1 Body point of damage. At that point, the Druid will be ejected from the tree, again with a 3 count.\n\nWhile melded, a Druid is able to hear sounds as normal. A Druid who has created a Henge may choose to merge with it, if it is large enough, and forgo the expulsion due to Body damage. In this case the Druid will not be ejected unless the Henge dies, at which point so will the Druid.\n\nThis skill may be used once per day, per purchase."
       },
       {
+        "id": "totem",
         "name": "Totem",
         "cp": 90,
         "tier": 9,
@@ -208,6 +239,7 @@
         "ref": "Core 5.6.5 pp.45-46"
       },
       {
+        "id": "henge",
         "name": "Henge",
         "cp": 120,
         "tier": 12,
@@ -217,24 +249,28 @@
     ],
     "Bard": [
       {
+        "id": "song-of-aversion",
         "name": "Song of Aversion",
         "cp": 30,
         "tier": 3,
         "desc": "Duration: Concentration. This Occupational Ability allows for a Bard in danger to cloud the minds of their foes, confusing their foes to their exact presence and hiding them for a few precious moments. This skill does not grant the Bard true invisibility but it will obfuscate their person, causing all around them to avoid and ignore the Bard for a short period.\n\nTo activate this skill, the Bard must state \"Innate Song of Aversion!\" Once activated the Bard's feet must remain stationary and for the next 15 seconds they must repeatedly state \"Active Song of Aversion\". While the skill is active all those around the Bard that can hear their voice and know the general location of the Bard within ten feet, but the Bard will appear blurred and displaced.\n\nThey will unconsciously miss if they try to blindly attack or swing wildly in the area the Bard is hiding. This does not grant the Bard immunity to damage from Area of Effect spells or effects or the effects of Power or Command Words. This skill is intended to give the Bard a few moments to put away their valuable instruments to avoid harm and/or hopefully allow their friends to regroup and save them from the attack.\n\nThis ability is usable once per day per purchase."
       },
       {
+        "id": "song-of-love",
         "name": "Song of Love",
         "cp": 60,
         "tier": 6,
         "desc": "Duration: 4 Hours. An Occupational Ability for Bards, this song will allow the bard to magically charm up to two individuals of their choosing, so long as both hear the bard's performance from start to finish and are serenaded by the bard at least once. In order for a serenade to be successful, the song must have a duration of at least 5 seconds, and the targets of the serenade must make eye contact with or be touched by the singer.\n\nOnce the performance is complete, the bard must either state \"Innate Arcane Charm: Target's Name\" or convey to the target that they have been affected. Each target will then take the effect of an Arcane Command Word Charm Spell. The player may determine, out of game, whether this causes infatuation or a very strong friendship.\n\nThis Command Word is not detectable when used, nor is spoken or cast by the Bard. Instead, it is a representation of the overall effect the Bard's song has on its targets. Both the Charm and the potential infatuation will not cause the target to do things outside of their nature but they will act as if the bard is their new best friend and possibly lover.\n\nThey will believe almost anything the Bard says to be true, they will protect the Bard with their lives if asked. A charmed target will not kill themselves or assassinate other loved ones unless somehow tricked or deceived. This effect will last for 4 hours after which the charm effect will wear off.\n\nThis ability is usable once per day per purchase."
       },
       {
+        "id": "song-of-intermission",
         "name": "Song of Intermission",
         "cp": 90,
         "tier": 9,
         "desc": "Duration: Concentration up to 30 minutes. An Occupational Ability for Bards, this song will allow the Bard to use their performance to suspend or extend any spell or effect that is currently being counted or in duration. In order for this effect to work the target of the duration or count must hear the Bard's song and willingly accept its effects to allow the duration or count to be extended.\n\nThe Song of Intermission is so powerful that it can even delay death, pausing a willing victim's death or Bleed Count, until help can be found. This function will work even if the dead or dying target cannot hear.\n\nTo activate this song, the Bard must state \"Innate Song of Intermission\" then begin their performance piece. Song of Intermission will not affect any spell or effect that fails. This skill may only be used on one target at a time, though the target of the ability may be changed on a 3 count. This skill will last at most 1 minute per the Bard's level.\n\nThis skill is usable once per day per purchase."
       },
       {
+        "id": "song-of-heroism",
         "name": "Song of Heroism",
         "cp": 120,
         "tier": 12,
@@ -250,24 +286,28 @@
       "lore": "The Archer vocation is a ranged specialist, augmenting their ability to use bows, crossbows and thrown weapons. A straightforward set of abilities, the Archer seeks to increase the damage their ranged weapon does and attempts to keep the distance between themselves and their target.",
       "abilities": [
         {
+          "id": "arrow-dodge",
           "name": "Arrow Dodge",
           "cp": 30,
           "tier": 3,
           "desc": "Once per day per purchase the Archer may use a \"dodge\" defense against a single arrow, bolt, or thrown weapon that hits them, negating the attack as per the dodge skill. It will not function against surprise attacks. The call for this ability is \"Innate Arrow Dodge!\""
         },
         {
+          "id": "stand-and-deliver",
           "name": "Stand and Deliver",
           "cp": 60,
           "tier": 6,
           "desc": "Stand and Deliver allows the Archer to steady which and fire a more damaging ranged attack. The Archer must plant both feet (crossbow users may also choose to kneel or brace their crossbow on a table or stable object) and state \"Innate Stand and Deliver\". The Archer may add +2 to their damage with their ranged attacks for as long as they maintain the position.\n\nMoving from that position or taking damage of any kind will cancel this effect and they must wait at least a minute before they can use it again. Using any type of Dodge skill or spell protections will not break this effect. This ability may be purchased multiple times. Each purchase increased the damage modifier by an additional +2. (+2 for one purchase, +4 for two purchases, etc.)."
         },
         {
+          "id": "maim",
           "name": "Maim",
           "cp": 90,
           "tier": 9,
           "desc": "At 9th level, an Archer can fire a projectile that when struck will cripple the target's defenses temporarily. For 60 seconds after being hit with a Maim attack, the victim will receive x2 damage from all physical sources and be affected by a \"Swampwalk\" effect, forcing them to pause for 3 seconds between each step of movement.\n\nThe archer must call out \"Innate <damage> Maim!\" and the attack must hit Body to function. If the Maim attack misses, the skill is lost. This ability is useable once per day per purchase."
         },
         {
+          "id": "death-arrow",
           "name": "Death Arrow",
           "cp": 120,
           "tier": 12,
@@ -282,24 +322,28 @@
       "lore": "Artisans seek to be masters of their trades and crafts, and of merchandising in general. Most Artisans have focused on earning wealth and fame through trade and manufacturing rather than adventuring. Skilled marketers and vendors, streetwise and charming, Artisans prove that there's more ways to earn fame and fortune than spell and sword.",
       "abilities": [
         {
+          "id": "treasure-hunter",
           "name": "Treasure Hunter",
           "cp": 30,
           "tier": 3,
           "desc": "Artisans have a nose for gold. Treasure Hunter allows them to sense gold and silver at will by touching the target and performing a 3 count – \"Innate Sense Coin 1, Sense Coin 2, Sense Coin 3.\" If the target has gold or silver coins in their possession they must respond with \"Here!\" in a normal speaking voice.\n\nThe sense and response calls are considered out of game. Doing this does not let the Artisan know the exact pinpoint location of the gold, only that it is on the person. In game, this is the Artisan hearing the familiar jingle of coins and watching the target's body language as they move. This has no effect on coins not on a person but will work on corpses and immobile targets.\n\nEg: It cannot be used to detect gold inside chests.\n\nTreasure Hunter also helps Artisans loot bodies. Once per day per purchase, the Artisan may touch a target that is unconscious, dying or dead, and which they have already used Sense Coin on within the 3 seconds, and ask out of game one of the following questions: \"Innate Treasure Hunter – do you have any coins / magic items / gems / catalysts on you?\"\n\nDoing this will instantaneously loot the target of all tags of that type (coin, magic item, gem or catalyst). The target must hand over all the tags of that type on their person, regardless of whether the target has any ranks of Looting."
         },
         {
+          "id": "bribe",
           "name": "Bribe",
           "cp": 60,
           "tier": 6,
           "desc": "In times of dire need, an Artisan may slip out of dangerous situations by offering up a charm-infused bribe. If the Artisan offers a target an item worth at least 1 gold piece or 10 RM in base creation value which they have created themselves, they may be able to save their skin. While holding out the item the Artisan must declare \"Innate Magic Bribe!\" and strike the target with a spell packet.\n\nIf target defends against the Bribe, for every 3 gold or 50 RM in base creation value of the item, the Artisan may use an \"Innate Echo!\" effect in a second attempt. If the initial Bribe is resisted but the Echo is successful, the original Bribe attempt will be temporarily forgotten – its memory suppressed by the glamour of the item being offered a second time.\n\nIf the Bribe succeeds, the target will not be aware that they are being charmed until the effect wears off.\n\nWhen a Bribe is successful, the Artisan has 3 seconds to place the item on the ground or in the target's hands, as decided by the target. The target will then take the item. For the next minute, the target cannot take hostile action against the Artisan unless the Artisan initiates any hostile actions toward the target.\n\nActions are determined to be hostile or not by the target of the Bribe. The target will not necessarily trust the Artisan; they will simply avoid initiating hostilities. Bribe has no effect against mindless and Undead creatures and it can be resisted the same way as a magical charm. Items made with conventional production skills may be used for this skill.\n\nThis skill can be used once per day per purchase."
         },
         {
+          "id": "magnum-opus",
           "name": "Magnum Opus",
           "cp": 90,
           "tier": 9,
           "desc": "For each purchase of Magnum Opus an Artisan may choose to augment either their Production or Tradesman skills. At Logistics, they can craft a single item through their Production skills using any type of RM. Alternatively, the Artisan can focus on their Tradesman skills and increase the value of one item created by 3 gold.\n\nNo matter which of the abilities is used, a catalyst will be generated. This catalyst must be a physical tool that was used somehow in the item's creation. Both its type and emotion radiated may be decided by the Artisan. An Artisan may choose to stack uses of this ability to create a single, even more expensive item.\n\nFor example, they could use 3 uses of this ability to increase the value of the item by 9 gold. This skill may be used once per event (at Logistics) per purchase."
         },
         {
+          "id": "vault",
           "name": "Vault",
           "cp": 120,
           "tier": 12,
@@ -314,24 +358,28 @@
       "lore": "The Battle Mage Vocation allows a spell caster to improve their Battle Magic spells and create temporary magic items. This Vocation is popular with those who prefer to focus on battle spells and less on ritual magic, or those who simply want to increase the potency of their magic. Hybrid classes such as templars and wytch hunters might also find the skills in this vocation useful.",
       "abilities": [
         {
+          "id": "amulet",
           "name": "Amulet",
           "cp": 30,
           "tier": 3,
           "desc": "This class ability allows the Battle Mage to enchant any item smaller than an apple to store 1 Battle Magic spell, 3rd level or lower. The spell must be cast into the item and remains there for 5 days. Although the spell must be cast, it is immediately returned to the Battle Mage's memory and is not expended from the spell slot.\n\nOne Amulet may be created per purchase of this ability. Once created, the Amulet may be used by anyone by stating \"Activate: <Spell Name>\". Although the Amulet detects as magic and is affected by dispel magic, it can be destroyed by normal means. Only one Amulet can be active per purchase of this ability, when the spell within a Amulet is cast, that Amulet's state returns to that of the normal object originally used.\n\nThis skill may be used once per day per purchase."
         },
         {
+          "id": "maximize",
           "name": "Maximize",
           "cp": 60,
           "tier": 6,
           "desc": "In order to use this class ability, the Battle Mage must state \"Innate Maximize:\" before a spell incant for a spell that involves damaging or healing with numerical amounts and a duration of instant. If the spell is successfully cast, those healing or damaging numbers are x2. The Battle Mage must state the total number at the end of the incant.\n\nThis is extremely taxing to the Battle Mage and after the spell is cast they are stunned for 5 seconds and cannot use any skills whatsoever. While stunned, the Battle Mage is unable to take any action, including blocking, moving and the use of skills, minus the ability to call \"interrupt\" against killing blows.\n\nThey may also interrupt any counts against them. Automatic defenses such as Shield Magic will still operate, but ones requiring conscious thought such as Advanced Shield Magic will not.\n\nMaximize may be used once per day per purchase and if the spell is miscanted the maximize ability will be wasted."
         },
         {
+          "id": "twin-spell",
           "name": "Twin Spell",
           "cp": 90,
           "tier": 9,
           "desc": "When casting a Battle Magic spell and using Twin Spell, the Battle Mage is able to throw two packets simultaneously, either two packets in one hand or a packet in each hand. Both packets are considered the same spell and either packet will do what the spell would normally do. No more than 1 second can pass between throwing both packets.\n\nFor defensive purposes they are considered two separate spells. In order to activate this class ability, the Battle Mage must state \"Innate Twin Spell:\" before the incant. Although considered two spells, only one spell is removed from the mage's memory and spell slot. If the spell is miscanted, the Twin Spell ability will be wasted.\n\nThe magical energy required to duplicate a spell is taxing on the mind, the Battle Mage will thus be stunned for the next 5 seconds after using this ability. The effects of this stun are identical to those of Maximize. Twin Spell can be used once per day per purchase."
         },
         {
+          "id": "wizard-staff",
           "name": "Wizard Staff",
           "cp": 120,
           "tier": 12,
@@ -346,24 +394,28 @@
       "lore": "As their name implies, Blood Reavers collect blood from magic users and use it as the source of their power. The most proficient Blood Reavers can draw forth magic spells and abilities and can make their enemies more vulnerable to their attacks. Blood Reavers come in many forms, from the scholarly mage studying the fringes of magical theory to the shamanistic orc who rips magic from the minds of their enemies.\n\nWoe be to those who cross the path of the Wytch who studies this art.",
       "abilities": [
         {
+          "id": "blood-harvest",
           "name": "Blood Harvest",
           "cp": 30,
           "tier": 3,
           "desc": "By touching a target and stating, \"Innate Magic Blood Harvest\", a Blood Reaver can instantly magically transfer 1 litre of blood from the target to an empty vessel which is waiting in their off hand. The Blood Reaver's hand will briefly glow red and cause 1 Magic Body damage to the target. If the damage is negated, Blood Harvest will fail.\n\nBlood collected in this manner will last for 3 months, not the standard 1 month duration. This ability can be resisted via Resist Magic, Shield Magic and other forms of defence against magical spell-like touch-casts. If used against targets without blood or used without an appropriate empty vessel, it will have no effect and the ability will be used up.\n\nIf successfully used, the tag for Blood Harvest should be signed by the target OOG when next possible, and the tag must be affixed to the vessel used to hold the blood until it is used or expires.\n\nThis ability is useable once per day per purchase."
         },
         {
+          "id": "master-of-vitae",
           "name": "Master of Vitae",
           "cp": 60,
           "tier": 6,
           "desc": "The Blood Reaver can now utilise the power they've been studying. By stating \"Innate Master of Vitae\" while holding 1 litre of blood from a specific target in their off hand, the Blood Reaver will have 10 minutes to physically touch that same living target and state \"Arcane Blood Infusion\". Doing so will consume the blood, heal the Blood Reaver to full Body and will reset the duration of any active Battle Magic spells on the Blood Reaver as if they had just been cast.\n\nA Blood Reaver cannot use their own blood for this ability and must use the blood of a target which is capable of resurrection. This ability is useable once per day per purchase."
         },
         {
+          "id": "blood-boil",
           "name": "Blood Boil",
           "cp": 90,
           "tier": 9,
           "desc": "By possessing at least one litre of a target's blood, the Blood Reaver may cause that target to become vulnerable to the Blood Reaver's attacks. To activate this ability the Blood Reaver must hold their target's blood in one hand (within a container) while pointing at the target and stating, \"Arcane Power Word Directed: Blood Boil\".\n\nUnless the target resists the ability, all physical attacks made by the Blood Reaver for the next 10 minutes will have their damage doubled against the target. This damage should be calculated by the target, as the Blood Reaver might be unaware of duration or resistances. In addition, any Battle Magic spells successfully cast by the Blood Reaver against the target will gain the \"Penetrating\" prefix.\n\nActivating this ability will consume the blood, even if the target successfully resists. This ability is useable once per day per purchase."
         },
         {
+          "id": "tap-the-vein",
           "name": "Tap the Vein",
           "cp": 120,
           "tier": 12,
@@ -378,6 +430,7 @@
       "lore": "The Brew Master Vocation empowers its user through intoxication and the power of alcoholic drinks. The Brew Master's abilities either require its user to be drunk, or they cause intoxication through their use. Not uncommon among the Dwarves, Orcs and Einher, it's still possible to find a Brew Master in almost any tavern across Maud'madir.",
       "abilities": [
         {
+          "id": "iron-gut",
           "name": "Iron Gut",
           "cp": 30,
           "tier": 3,
@@ -385,18 +438,21 @@
           "maxPurchases": 1
         },
         {
+          "id": "mixologist",
           "name": "Mixologist",
           "cp": 60,
           "tier": 6,
           "desc": "The Mixologist Class Ability allows its user to spend 1 minute concocting a special alcoholic drink. There are three different types of drink that can be created through Mixologist:\n1) A potent beverage that does 20 points of Stamina damage and has 3 servings.\n2) A soothing drink that does 10 points of Mending for any creature that can drink it, but also does 4 Stamina damage.\n3) A flaming bottle of alcohol which explodes on impact when thrown (packet delivered or boffer-safe bottle rep) and does 10 Elemental Fire damage. \"10 Elemental Fire!\" is the call when thrown.\nA Brew Master can create 1 drink total per day, per purchase. Each drink lasts 5 days before becoming inert. These drinks cannot be time-extended."
         },
         {
+          "id": "firebreathing",
           "name": "Firebreathing",
           "cp": 90,
           "tier": 9,
           "desc": "At 9th level, a Brew Master can ingest pure alcohol then spit it out and light it on fire. This is a packet delivered attack that does 25 points of Elemental Fire damage. Even though the alcohol is never swallowed it is still potent enough to cause 5 Stamina damage to the Brew Master each time Firebreathing is used.\n\nFirebreathing may only be used once per day per purchase and the call is \"Innate Firebreathing – 25 Elemental Fire!\""
         },
         {
+          "id": "drunken-master",
           "name": "Drunken Master",
           "cp": 120,
           "tier": 12,
@@ -411,24 +467,28 @@
       "lore": "Bounty Hunters are specialists in the art of capture or killing of criminals and fugitives for bounties. Some Bounty Hunters will hunt to kill and others will track, then capture people to extract information or a reward. Most Bounty Hunters operate in a grey area between the laws. Their motivations vary – some do the work for coins and will take bounties from anyone, while others are politically motivated or work with the law to assist in the apprehension of criminals.",
       "abilities": [
         {
+          "id": "mercy",
           "name": "Mercy",
           "cp": 30,
           "tier": 3,
           "desc": "This ability allows a Bounty Hunter to add the suffix \"Mercy\" to the end of a weapon swing call. Eg: \"4 Normal Mercy\". A \"Mercy\" suffix means that the attack will not drop the target below 0 Body regardless of how much numerical damage it does. This ability may be combined with other weapon skills.\n\nThis ability may be used at will. Note that Mercy will not prevent damage from other sources."
         },
         {
+          "id": "bola",
           "name": "Bola",
           "cp": 60,
           "tier": 6,
           "desc": "Bolas are a special thrown item designed to trip up a target's legs and force them to the ground. This ability is delivered via a spell packet, which represents multiple weighted balls attached together with rope.\n\nThe call is \"Innate Bola – Physical Snare\". If successfully struck by the spell packet, the victim's right foot will be stuck to the ground as per the Snare spell. A target can only be affected by one Bola at a time. The Bounty Hunter must be holding a Bola phys-rep in their off hand at the time of the throw.\n\nThis ability can be used at will so long as the player has 1 Bola tag for each Bola thrown. A Bola may be cut through with a two-minute count and may also be ripped free from by the victim if a +2 or greater strength is used, both of which will destroy the Bola. Ripping free will cause the victim to take 2 points of damage straight to Body regardless of threshold.\n\nIt takes three seconds to rip free from the Bola. Bola tags can be reused if the Bola spell packet is recovered in game and has not been destroyed. A Bounty Hunter can recover the Bola if it misses the target, or if they remove the Bola from the victim on a 5 count. Bola tags cost 20 RM of blacksmithing material to create.\n\nBounty Hunters can make a number of Bolas up to their number of purchases of this ability during Logistics. This does not require the Blacksmithing skill. Bolas expire 2 years after creation. Bolas are considered tools, not weapons, and cannot be enchanted, augmented, made of silver, etc. Bola phys-reps should be a string or small rope with a ball at each end and should never actually be thrown."
         },
         {
+          "id": "smoke-bomb",
           "name": "Smoke Bomb",
           "cp": 90,
           "tier": 9,
           "desc": "This area-of-effect blindness attack is activated by the Bounty Hunter throwing a spell packet at their feet and declaring \"Innate Alchemical Smoke Bomb!\" This will blind anyone within a 10-foot radius of the Bounty Hunter for 10 seconds, except for the Bounty Hunter.\n\nThis is usable once per day per purchase."
         },
         {
+          "id": "impale",
           "name": "Impale",
           "cp": 120,
           "tier": 12,
@@ -443,24 +503,28 @@
       "lore": "Conquerors are larger than life heroes who charge into battle and leave strategy to the bookworms. They fight the biggest monsters, earn the most glory and believe that every minute you spend talking you could be punching the bad guy in the mouth instead. They believe that shields are for cowards, hate monologues and think brute force is the only effective problem solver.\n\nThey specialize in two-handed weapons and kicking ass.",
       "abilities": [
         {
+          "id": "grit",
           "name": "Grit",
           "cp": 30,
           "tier": 3,
           "desc": "This ability allows the user to resist one physical attack that would destroy, detach, disable or break one of their limbs, once per day per purchase."
         },
         {
+          "id": "ego-armour",
           "name": "Ego Armour",
           "cp": 60,
           "tier": 6,
           "desc": "While wearing 20 or fewer points of physical armour, a Conqueror may state \"Innate Ego Armour\" to double their physical armour points using this ability. This is not magical in nature. It simply makes the armour being worn twice as effective. Each purchase of this ability will raise the maximum armour that this ability can be used with by 5.\n\nEgo Armour cannot be repaired once damaged. If any armour is physically removed or put on, the effect will end. Otherwise, the additional points will remain until destroyed or until skill reset. This ability does not stack with itself.\n\nThis ability is useable once per day per purchase."
         },
         {
+          "id": "breakthrough",
           "name": "Breakthrough",
           "cp": 90,
           "tier": 9,
           "desc": "This ability only works against targets with shields. The Conqueror must state \"Innate Physical Breakthrough\". They can then swing, once, for 40 points of damage to the shield itself. The swing must strike the shield itself. Regardless of whether the shield is destroyed by that damage, the target must drop it.\n\nIf the shield is destroyed by the damage, the target will also be stunned for 5 seconds. This ability is useable once per day per purchase."
         },
         {
+          "id": "rallying-cry",
           "name": "Rallying Cry",
           "cp": 120,
           "tier": 12,
@@ -475,24 +539,28 @@
       "lore": "Shamans are practitioners of mysterious arts which link themselves to the spirits of the animal kingdom, called 'Animists'. Almost every culture on Maud'madir has versions of Shamans within it – mystical seers, wise storytellers and potent allies. To the Wild Elves they are called 'Wildspeakers', communing with nature directly.\n\nEinher Shamans are distrusted but highly valued for their wisdom and divination. Goblin Shamans are powerful 'Warcallers' in battle, augmenting the strength of their Warband. Some Shamans are reclusive, interacting with only their own kin or when aid is directly requested. Other Shamans take the role of advisors or soothsayers.\n\nShamans tend not to take direct action. Instead, they aid those who join them by sharing their wisdom or empowering them through magical Fetishes. The Shaman's closest allies are called 'Braids', which Shamans name. Braids are almost always the same race as the Shaman, although rare exceptions may be made.\n\nNo person can ever be a member of more than one Braid at a time. If a Braid member ever becomes a Shaman they will be removed from the Braid to forge their own path. Likewise, if a Braid or Shaman's Fetish is not Empowered for a year, their connection to the Braid will fade and they will be removed from it.\n\nIf the Shaman finals, the Braid connection disappears.",
       "abilities": [
         {
+          "id": "rite-of-weaving-unweaving",
           "name": "Rite of Weaving/Unweaving",
           "cp": 30,
           "tier": 3,
           "desc": "This rite allows a Shaman to induct new members into their Braid, build them a Fetish, and Empower a Braid member's Fetish when its power fades. The first time a Shaman uses a Rite of Weaving they will do so for themselves, creating their own Fetish and becoming a true Shaman. Fetishes are sacred items that should be personal and important to the Braid member.\n\nCreating or Empowering a Fetish requires the Shaman to perform a ceremony at least 10 minutes long. The specifics of the ceremony will depend on the Shaman's culture, race and style.\n\nIf the Braid member is new, the Shaman will decide on an Animist animal for the new Braid member based on their personality and will present them with their Fetish. This Fetish must be made by the Shaman and should be smaller than a child's doll, but otherwise can be anything. The Braid's Animist may be any land-based animal and is considered to be either a Predator or a Prey Animist.\n\nThe animal must be a natural, non-magical animal – bears are acceptable, basilisks are not. The Shaman states \"Innate Rite of Weaving\" and attaches the tag for their Rite of Weaving to the Fetish. Once the ceremony is complete, this new Fetish will grant Animal Kinship with that animal group for the Braid member at will.\n\nAnimal Kinship will cause any animal of that group (eg: all 'cats' for a Lion Animist) to see the Braid member as friendly. It is used by stating \"Innate Magic Animal Kinship <animal>\". Animals in this group will not initiate hostilities against the Braid member but will respond to hostility normally.\n\nA Shaman may induct a new Braid member by creating a new Fetish for them once per day per purchase.\n\nThe Rite of Weaving may also be used to empower expired Fetishes at will by the Shaman. Being inducted into the Braid is considered a lifelong commitment, but the power of a Fetish will last for 5 days before needing to be empowered again. Should the Fetish be destroyed or leave their person, membership in the Braid continues, but the Rite of Weaving must be performed again to create a new Fetish.\n\nEmpowering an existing Fetish does not use up a daily use of Rite of Weaving, but replacing a missing Fetish does. A Shaman may not empower another Shaman's Fetishes. A Shaman can have up to one Empowered Fetish per level of the Shaman, excluding themselves.\n\nA Shaman can sense their own Braid members with Empowered Fetishes. This can be accomplished by stating \"Sense Braid <Braid Name>!\". All Braid members with Empowered Fetishes must respond \"Here!\" out of game. This power may be used at will by the Shaman and once per day by Braid members.\n\nA Shaman can remove Braid members who have become disloyal – by force. To remove a Braid member, the Shaman must kill them and eat their heart to reclaim the Animist within it. The Shaman empowers each of the other Braid members with Empowered Fetishes who participate in this reclamation with +2 Strength for one hour once the body vanishes to resurrect or dies a final death.\n\nEither way they are removed from the Braid.\n\nFinally, Shaman are vulnerable to betrayal their own Braid members. A Shaman who is killed, directly or indirectly, by one of their Braid members who shares their race will have a 50% chance of taking two deaths upon resurrection. If the Braid member who committed the betrayal is of another race, this automatically raises to two deaths.\n\nThis occurs even if the Shaman is unaware of the betrayal. The death must have been intentionally caused by the Braid member. The Braid member should report this to the Shaper team if the Shaman is unaware. The Shaman is vulnerable to this effect for up to one year after the betrayal."
         },
         {
+          "id": "rite-of-war",
           "name": "Rite of War",
           "cp": 60,
           "tier": 6,
           "desc": "This ability allows the Shaman to strengthen and empower their Braid by banging on war drums, singing, or chanting. At the beginning of the Rite, the Shaman senses their Braid members with the Rite of Weaving. For each Braid member that the Shaman senses, the Shaman can resist any one physical strike or hostile Battle Magic spell.\n\nWhile the Rite of War is going on, all Braid members with Empowered Fetishes within earshot and line of sight will gain a power based on their Fetish, as described below. While the Rite of War is active, the Shaman can take no other action besides walking and performing the Rite. The Shaman cannot stop for more than 3 continuous seconds or the rite will end.\n\nTo initiate a Rite of War the Shaman must state \"Innate: Rite of War!\" and then begin their performance. This rite is usable once per day per purchase and lasts for up to ten minutes.\n\nPredator: Predator Braid members with an Empowered Fetish participating in the Rite of War gain temporary hide armour worth 5 Armour Points. This armour increases by 5 AP for each Braid member, other than the Shaman and themselves, who participates in the Rite of War who has an Empowered Fetish. This armour functions like normal armour except that it cannot be refitted or repaired.\n\nTo repair their natural hide, the Braid member must heal it as though it were Body points.\n\nPrey: When any Braid member with an Empowered Fetish falls into their Bleed or Death Count during the Rite of War, Braid members with Prey Animists may touch their fallen bodies and state \"Innate Spirit Walk 1, Innate Spirit Walk 2, Innate Spirit Walk 3\". This transfers the body in spirit form to the Shaman's location by calling on the target's Animist.\n\nUpon reaching the Shaman the body, including its possessions returns to the material world with the same Spirit Walk count. During this travel time, their Bleed or Death count will continue and their body cannot be Lifed because their spirit is not in it. If the spirit cannot find or reach the Shaman, they will return to their body.\n\nTheir spirit will pass through non-magical barriers if any block their route to the Shaman, but must travel around magical barriers. This ability may be used at will by Prey Braids with Empowered Fetishes during the Rite of War."
         },
         {
+          "id": "rite-of-vision",
           "name": "Rite of Vision",
           "cp": 90,
           "tier": 9,
           "desc": "The Rite of Vision is a one minute ceremony that allows the Shaman to become a ghostly version of their Animist for a period of time. This ability may be used once per day. For each Braid present in the ceremony with an Empowered Fetish, the Rite of Vision becomes more powerful.\n\nTo begin, the Shaman must create a new Fetish of their mortal form, the size of a child's doll or larger. This Fetish will take the place of their body and has 1 Body point. All damage to this Fetish will cause the Shaman's physical body to fall into its Death Count when the Shaman returns to it. If there is no Marshal present when the Fetish is damaged, the killer must find a Marshal and inform them that they damaged the Fetish.\n\nThe Marshal will then inform the Shaman. The Shaman's character sheet should be left with the Fetish along with the tag for the Rite of Vision.\n\nOnce their Fetish is prepared the Shaman will state \"Innate Rite of Vision!\". This will manifest a shimmering, transparent version of their Animist which they now possess. The Shaman's physical body and all items on them will be absorbed into their special Fetish. The Fetish cannot be moved by any means until the Shaman returns to it.\n\nThe ghostly Animist is now controlled by the Shaman and all that it experiences will be experienced by the Shaman. The Animist has a silver threshold, 25 Body points, two claws which swing for 5 Normal each, and 25 hide Armour Points. This armour functions like normal armour except that it cannot be refitted or repaired.\n\nTo repair their natural hide, the Shaman must heal it as though it were Body points. The Shaman may speak in this form.\n\nThe Shaman may touch cast one memorised spell through their claws for each Braid member that participated in the Rite of Vision. No other skills or abilities may be used and no items of any kind may be carried by the Animist. This possession will last for 10 minutes per Braid with an Empowered Fetish who participated in the Rite.\n\nWhen the duration expires or the Animist reaches 0 Body, the Shaman's spirit will return to their Fetish and their body will reform, along with anything it was wearing. If the Animist was destroyed by reaching 0 Body, when the Shaman's spirit returns to its body they will be at 2 Body. For the next hour, 2 Body will be their maximum Body.\n\nIf a Shaman's special Fetish suffered damage during the Rite of Vision, upon returning to its body the Shaman enters their Death Count."
         },
         {
+          "id": "rite-of-the-monolith",
           "name": "Rite of the Monolith",
           "cp": 120,
           "tier": 12,
@@ -507,24 +575,28 @@
       "lore": "The Stalwart vocation trains a character to master the use of a shield and in turn become a defensive force. Although one does not have to be a warrior to learn this vocation, its purpose is to defend the user – and others – from physical harm. This vocation is popular with guards, soldiers and those who have something of value they want to protect.\n\nOaths and chivalry are not a requirement as the name might suggest, however being duty-bound is not uncommon to those who would risk their lives to protect others or ideals.",
       "abilities": [
         {
+          "id": "shield-parry",
           "name": "Shield Parry",
           "cp": 30,
           "tier": 3,
           "desc": "This skill allows a Stalwart to call an \"Innate Shield Parry!\" defense to any physical attack that strikes their shield, once a day per purchase. All normal parry rules apply. This ability does not allow the Stalwart to parry with their weapon; the incoming strike must successfully strike their shield."
         },
         {
+          "id": "conviction",
           "name": "Conviction",
           "cp": 60,
           "tier": 6,
           "desc": "The Stalwart's Conviction ability allows them to grant themselves +10 temporary Body points once per day per purchase, stating \"Innate Conviction\". These Body points cannot be stacked with other temporary Body point bonuses (they will remove and over-ride the previous) except with other activations of this ability.\n\nThese Body points cannot be healed and are taken off first when damage is struck to Body. These extra Body points will fade after exactly 24 hours have passed."
         },
         {
+          "id": "fortress",
           "name": "Fortress",
           "cp": 90,
           "tier": 9,
           "desc": "When Fortress is used, the Stalwart gains the ability to activate a defensive stance that grants the Stalwart a 5 Normal threshold and +40 armour points that remain as long as the Stalwart keeps one foot planted. The Stalwart also gains an immunity to fear effects during this time. While in Fortress, the Stalwart is immune to Strength-based pushing, magical or physical.\n\nThis ability can be activated once per day per purchase by planting a foot and stating \"Innate Fortress!\". When the defensive stance ends by the planted foot being raised or moved (it may swivel to change facing), the Stalwart needs a respite due to the sheer amount of physical and mental energy required.\n\nFor 1 minute after Fortress ends, the Stalwart possesses -2 Strength and is unable to use any skills that have limited uses."
         },
         {
+          "id": "imbue-shield",
           "name": "Imbue Shield",
           "cp": 120,
           "tier": 12,
@@ -539,24 +611,28 @@
       "lore": "Swashbucklers are flamboyant and daring, larger than life adventurers who use their speed and wits rather than heavy armour and brute strength in combat. They come in many forms – pirates, duelists and brigands are all examples of Swashbucklers. Most Swashbucklers are romantics at heart, more concerned with winning fame and fortune than safety or consequence, though some Swashbucklers are far more dark and self serving in their motivations.\n\nYou might encounter Swashbucklers on the high seas raising a cutlass over a canon, in gambling dens with aces up their sleeves or attempting to win your heart with a sword in hand and rose between their teeth. Most swashbucklers live very short lives but their legends may continue for centuries.",
       "abilities": [
         {
+          "id": "finesse",
           "name": "Finesse",
           "cp": 30,
           "tier": 3,
           "desc": "Light on their feet and nimble, a Swashbuckler trains to maneuver around weapon strikes and absorb the inertia of blows. Each time this ability is purchased the Swashbuckler gains 5 Armour Points. These 5 AP are considered armour, but they cannot be repaired, refitted or augmented in any way. Finesse AP are removed before regular AP if the Swashbuckler takes damage.\n\nFinesse AP will regenerate as a Swashbuckler's energy returns. For every 60 second spent roleplaying limbering up, calming their breathing, tightening straps, etc., the Swashbuckler will regain up to 10 Finesse AP. During this time no other skills may be used. AP from Finesse will be temporarily lost if the Swashbuckler wears metal armour.\n\nIf Finesse's AP are lost because of these restrictions it will take 10 seconds for them to return after the restrictions have been met. Finesse AP cannot be used if the Swashbuckler is unable to move."
         },
         {
+          "id": "en-garde",
           "name": "En Garde!",
           "cp": 60,
           "tier": 6,
           "desc": "This ability improves a Swashbuckler's skill at fighting with a weapon in one hand against a single target. En Garde! Grants the Swashbuckler +1 damage with their main weapon for 10 minutes. This bonus damage is not granted to their off-hand weapon, if they use one. If the Swashbuckler has two weapons, they may select their 'main' weapon when the ability is activated.\n\nTo activate this ability the Swashbuckler will point or motion toward one target and state: \"Innate En Garde!\" En Garde! only grants this damage bonus against the declared target. Each time this ability is purchased the Swashbuckler will gain an additional +1 damage and another 10 minute period in which they can use En Garde! per day.\n\nEg: If purchased 3 times the Swashbuckler will gain +3 to main weapon damage for 10 minutes, three times a day. Only one En Garde! can be active at the same time."
         },
         {
+          "id": "prise-de-fer",
           "name": "Prise de Fer",
           "cp": 90,
           "tier": 9,
           "desc": "This physical attack will disarm an opponent's weapon and cause it to land in the Swashbuckler's hand. By striking the opponent's weapon with their own and calling \"Innate Prise de Fer!\" the Swashbuckler can force their opponent to give them the targeted weapon, if the Prise de Fer is successful. A Swashbuckler has a 3 second grace period to determine what to do with the captured weapon before any negative effects from the Swashbuckler weapon restrictions begin.\n\nPrise de Fer is considered a physical attack. It will not grant the skill to use the weapon captured. Prise de Fer will only function against 1-handed weapons unless two Prise de Fers are used at once. If the Swashbuckler does not have a free hand to catch the weapon it will fall on the ground at their feet.\n\nPrise de Fer is usable once per day per purchase."
         },
         {
+          "id": "aegis",
           "name": "Aegis",
           "cp": 120,
           "tier": 12,
@@ -571,24 +647,28 @@
       "lore": "Undead Hunters have undergone specialized training to hunt and destroy Undead creatures. This training is mostly appealing to those with physical combat training who want to refine their capabilities. An Undead Hunter's tools are potent. They have the means to heal themselves while damaging undead, force sunlight upon them and even destroy them outright.",
       "abilities": [
         {
+          "id": "hunter-s-focus",
           "name": "Hunter's Focus",
           "cp": 30,
           "tier": 3,
           "desc": "When the Undead Hunter wields any silver, Master Crafted or Legendary weapon they may call magic damage. This ability is usable at will."
         },
         {
+          "id": "hunter-s-attrition",
           "name": "Hunter's Attrition",
           "cp": 60,
           "tier": 6,
           "desc": "Hunter's Attrition is a powerful magical ability that damages Undead while healing the Undead Hunter. By using a weapon appropriate for Hunter's Focus, an Undead Hunter may call \"Innate Spellstrike Hunter's Attrition: 25 Magic Healing\". When successfully delivered, this ability does 25 Magic Healing damage (100 Magic Body damage vs Undead) and also mends the Undead Hunter for 25 Body, in the appropriate type for them to heal from, regardless of race.\n\nThis damage is considered healing magic for all purposes. In order for the healing function of this ability to function an Undead must have been successfully damaged. Hunter's Attrition can be used once per day per purchase."
         },
         {
+          "id": "crystal-of-light",
           "name": "Crystal of Light",
           "cp": 90,
           "tier": 9,
           "desc": "At 9th level an Undead Hunter can create and throw a magical crystal of sunlight, which when striking an Undead causes it to explode in natural sunlight. This sunlight will bathe the Undead for 1 minute and cause it to be affected as though it was between the hours of 6:00 AM and 6:00 PM. This will strip magical thresholds and supernatural strength from Undead and may have additional effects based on the Undead type.\n\nIf the target is not Undead the crystal will have no effect and will not activate magical defenses. It may be used once per day per purchase and the call is \"Innate Arcane Crystal of Light\"."
         },
         {
+          "id": "final-rest",
           "name": "Final Rest",
           "cp": 120,
           "tier": 12,
@@ -608,6 +688,7 @@
       "ref": "Soul Frag 2.10 p.47",
       "abilities": [
         {
+          "id": "defender",
           "name": "Defender",
           "cp": 30,
           "tier": 3,
@@ -616,12 +697,14 @@
           "ref": "Soul Frag 2.10 p.47"
         },
         {
+          "id": "holy-ring",
           "name": "Holy Ring",
           "cp": 60,
           "tier": 6,
           "desc": "This ring grants the Paladin a magic aura for any weapon they swing with the hand the ring is on. It will also allow the Paladin to touch cast or Spellstrike a Light Bolt once per day.\n\nThe call for this is \"Activate Light Bolt 20 Light\" if it is touch cast or \"Activate Spellstrike Light Bolt 20 Light\" if it is Spellstruck. This damage will be halved if the target has any active Bless spell on their person. These powers only work via the hand wearing the ring. They will work for two-handed weapons and missile weapons.\n\nEach additional purchase of this ability allows the Paladin to create a new ring with the same properties."
         },
         {
+          "id": "holy-symbol",
           "name": "Holy Symbol",
           "cp": 90,
           "tier": 9,
@@ -629,6 +712,7 @@
           "ref": "Soul Frag 2.10 pp.47-48"
         },
         {
+          "id": "headpiece-paladin",
           "name": "Headpiece",
           "cp": 120,
           "tier": 12,
@@ -647,6 +731,7 @@
       "ref": "Soul Frag 2.10 p.45",
       "abilities": [
         {
+          "id": "harbinger-s-blade",
           "name": "Harbinger's Blade",
           "cp": 30,
           "tier": 3,
@@ -655,12 +740,14 @@
           "ref": "Soul Frag 2.10 p.45"
         },
         {
+          "id": "unholy-ring",
           "name": "Unholy Ring",
           "cp": 60,
           "tier": 6,
           "desc": "This ring grants the Dread Knight a magic aura for any weapon they swing with the hand the ring is on. It will also allow the Dread Knight to touch cast or Spellstrike a Dark Bolt once per day.\n\nThe call for this is \"Activate Dark Bolt 20 Dark\" if it is touch cast or \"Activate Spellstrike Dark Bolt 20 Dark\" if it is Spellstruck. This damage will be halved if the target has any active Bless spell on their person. These powers only work via the hand wearing the ring. They will work for two-handed weapons and missile weapons.\n\nEach additional purchase of this ability allows the Dread Knight to create a new ring with the same properties."
         },
         {
+          "id": "unholy-symbol",
           "name": "Unholy Symbol",
           "cp": 90,
           "tier": 9,
@@ -668,6 +755,7 @@
           "ref": "Soul Frag 2.10 p.46"
         },
         {
+          "id": "headpiece-dread-knight",
           "name": "Headpiece",
           "cp": 120,
           "tier": 12,
@@ -684,6 +772,7 @@
       "lore": "Lightweavers are the voice of the Gods of Light. They create Holy Altars devoted to their God, serve as spiritual leaders, and access divine power through sacred bonds and vessels. Each Holy Altar requires a physical representation in game decorated to match the God to which it is devoted. The Altar is empowered for 5 days at a time and has 100 Body and a 10 Normal threshold once empowered.",
       "abilities": [
         {
+          "id": "holy-altar",
           "name": "Holy Altar",
           "cp": 30,
           "tier": 3,
@@ -691,6 +780,7 @@
           "ref": "Soul Frag 2.10 p.52"
         },
         {
+          "id": "sacred-bond-lightweaver",
           "name": "Sacred Bond",
           "cp": 60,
           "tier": 6,
@@ -698,6 +788,7 @@
           "ref": "Soul Frag 2.10 pp.52-53"
         },
         {
+          "id": "sacred-vessel-lightweaver",
           "name": "Sacred Vessel",
           "cp": 90,
           "tier": 9,
@@ -705,6 +796,7 @@
           "ref": "Soul Frag 2.10 p.53"
         },
         {
+          "id": "church-lightweaver",
           "name": "Church",
           "cp": 120,
           "tier": 12,
@@ -722,6 +814,7 @@
       "lore": "Darkweavers are the voice of the Gods of Darkness. They create Unholy Altars devoted to their God, serve as spiritual leaders, and access unholy power through sacred bonds and vessels. Each Unholy Altar requires a physical representation in game decorated to match the God to which it is devoted. The Altar is empowered for 5 days at a time and has 100 Body and a 10 Normal threshold once empowered.",
       "abilities": [
         {
+          "id": "unholy-altar",
           "name": "Unholy Altar",
           "cp": 30,
           "tier": 3,
@@ -729,6 +822,7 @@
           "ref": "Soul Frag 2.10 p.49"
         },
         {
+          "id": "sacred-bond-darkweaver",
           "name": "Sacred Bond",
           "cp": 60,
           "tier": 6,
@@ -736,6 +830,7 @@
           "ref": "Soul Frag 2.10 pp.49-50"
         },
         {
+          "id": "sacred-vessel-darkweaver",
           "name": "Sacred Vessel",
           "cp": 90,
           "tier": 9,
@@ -743,6 +838,7 @@
           "ref": "Soul Frag 2.10 p.50"
         },
         {
+          "id": "church-darkweaver",
           "name": "Church",
           "cp": 120,
           "tier": 12,
@@ -760,6 +856,7 @@
       "lore": "Dragon Knights are devoted servants of the great Dragons of Maud'madir. They create Draconic Shrines devoted to their patron Dragon and access draconic power through covenants and troves. Each Draconic Shrine requires a physical representation in game decorated to match the Dragon to which it is devoted.\n\nThe Shrine is empowered for 5 days at a time and has 100 Body and a 10 Normal threshold once empowered.",
       "abilities": [
         {
+          "id": "draconic-shrine",
           "name": "Draconic Shrine",
           "cp": 30,
           "tier": 3,
@@ -767,6 +864,7 @@
           "ref": "Soul Frag 2.10 p.55"
         },
         {
+          "id": "draconic-covenant",
           "name": "Draconic Covenant",
           "cp": 60,
           "tier": 6,
@@ -774,6 +872,7 @@
           "ref": "Soul Frag 2.10 pp.55-56"
         },
         {
+          "id": "draconic-trove",
           "name": "Draconic Trove",
           "cp": 90,
           "tier": 9,
@@ -781,6 +880,7 @@
           "ref": "Soul Frag 2.10 p.56"
         },
         {
+          "id": "temple",
           "name": "Temple",
           "cp": 120,
           "tier": 12,
@@ -793,8 +893,8 @@
   "vocationPrereqs": {
     "Archer": {
       "auto": [
-        "Weapon Group Proficiency: Medium|Weapon Group Proficiency: Large",
-        "Specialization +1: Weapon Specific|Specialization +1: Weapon Group"
+        "weapon-group-proficiency-medium|weapon-group-proficiency-large",
+        "specialization-1-weapon-specific|specialization-1-weapon-group"
       ],
       "choice": []
     },
@@ -806,17 +906,17 @@
           "anyOf": [
             [
               {
-                "skill": "Tradesman",
+                "skill": "tradesman",
                 "count": 10
               }
             ],
             [
               {
-                "skill": "Tradesman",
+                "skill": "tradesman",
                 "count": 5
               },
               {
-                "skill": "Alchemy|Blacksmith|Create Scroll|Trapper|Artifice|Chemistry",
+                "skill": "alchemy|blacksmith|create-scroll|trapper|artifice|chemistry",
                 "count": 5
               }
             ]
@@ -832,7 +932,7 @@
           "anyOf": [
             [
               {
-                "skill": "Sphere of Magic: 2nd"
+                "skill": "sphere-2"
               }
             ],
             [
@@ -846,9 +946,9 @@
     },
     "Blood Reaver": {
       "auto": [
-        "Self Mutilate",
-        "Anatomy",
-        "First Aid"
+        "self-mutilate",
+        "anatomy",
+        "first-aid"
       ],
       "choice": []
     },
@@ -860,13 +960,13 @@
           "anyOf": [
             [
               {
-                "skill": "Create Alcohol",
+                "skill": "create-alcohol",
                 "count": 5
               }
             ],
             [
               {
-                "skill": "Alchemy",
+                "skill": "alchemy",
                 "count": 5
               }
             ]
@@ -876,16 +976,16 @@
     },
     "Bounty Hunter": {
       "auto": [
-        "Sap",
-        "Ambidexterity"
+        "sap",
+        "ambidexterity"
       ],
       "choice": []
     },
     "Conqueror": {
       "auto": [
-        "Weapon Group Proficiency: Large|Weapon Specific Proficiency: Exotic",
-        "Specialization +1: Weapon Specific|Specialization +1: Weapon Group",
-        "Slay/Parry|Slay/Parry: Master"
+        "weapon-group-proficiency-large|weapon-specific-proficiency-exotic",
+        "specialization-1-weapon-specific|specialization-1-weapon-group",
+        "slay-parry|slay-parry-master"
       ],
       "choice": []
     },
@@ -897,7 +997,7 @@
           "anyOf": [
             [
               {
-                "skill": "Mysticism",
+                "skill": "mysticism",
                 "count": 7
               }
             ],
@@ -913,17 +1013,17 @@
     },
     "Stalwart": {
       "auto": [
-        "Heavy Armour",
-        "Shield",
-        "Weapon Group Proficiency: Medium|Weapon Group Proficiency: Large|Weapon Specific Proficiency: Exotic",
-        "Specialization +1: Weapon Specific|Specialization +1: Weapon Group",
-        "Slay/Parry|Slay/Parry: Master"
+        "heavy-armour",
+        "shield",
+        "weapon-group-proficiency-medium|weapon-group-proficiency-large|weapon-specific-proficiency-exotic",
+        "specialization-1-weapon-specific|specialization-1-weapon-group",
+        "slay-parry|slay-parry-master"
       ],
       "choice": []
     },
     "Swashbuckler": {
       "auto": [
-        "Ambidexterity"
+        "ambidexterity"
       ],
       "choice": [
         {
@@ -931,12 +1031,12 @@
           "anyOf": [
             [
               {
-                "skill": "Slay/Parry|Slay/Parry: Master"
+                "skill": "slay-parry|slay-parry-master"
               }
             ],
             [
               {
-                "skill": "Dodge"
+                "skill": "dodge"
               }
             ]
           ]
@@ -945,7 +1045,7 @@
     },
     "Undead Hunter": {
       "auto": [
-        "Necromantic Arts"
+        "necromantic-arts"
       ],
       "choice": [
         {
@@ -953,7 +1053,7 @@
           "anyOf": [
             [
               {
-                "skill": "Specialization +1: Weapon Specific|Specialization +1: Weapon Group"
+                "skill": "specialization-1-weapon-specific|specialization-1-weapon-group"
               }
             ],
             [

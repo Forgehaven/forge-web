@@ -23,6 +23,7 @@
       ],
       "purchased": [
         {
+          "id": "cat-like-reflexes",
           "name": "Cat-Like Reflexes",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -51,6 +52,7 @@
       ],
       "purchased": [
         {
+          "id": "stone-skin",
           "name": "Stone Skin",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -60,6 +62,7 @@
           "desc": "A Gargylen who has purchased this skill has learned a finer degree of control over their crafted body. When the skill is used, the Gargylen's skin becomes as hard as stone, making them less susceptible to all weapons. The Gargylen must declare \"Innate Stone Skin\" and proceed to complete a 30 second count.\n\nOnce this count is completed, for the duration of 1 hour a Gargylen gains temporary Body points based on the Gargylen's level. At 1st level the Body bonus is 20 Body points, at 5th level it is 30 and at 10th level it is 40. These Body points act as normal Body points with the exception that they are damaged and removed first from the Gargylen's Body point Total and cannot be healed or refit.\n\nWhile Stone Skin is active, the Gargylen suffers x2 damage from all Battle Magic spells and magic abilities that replicate a Battle Magic spell which damage into Body, such as Ego Rend, Necrotic Blast, etc. This x2 damage will extend past the bonus Body points allotted by Stone Skin and will carry over onto the Gargylen's permanent Body points. After all of the Stone Skin Body points are removed, the x2 vulnerability will end (although any damage from the final strike that rolls over into the Gargylen's normal Body will still include the vulnerability).\n\nStone Skin may be ended by the Gargylen with an uninterruptible 30 second count. A Gargylen's Stone Skin will not affect, in any way, their Armour Points or any other magical or non-magical protections. This skill is usable once per day, per purchase."
         },
         {
+          "id": "body-point-bonus-gargylen",
           "name": "Body Point Bonus (Gargylen)",
           "maxPurchases": 2,
           "bodyBonus": 5,
@@ -88,6 +91,7 @@
       ],
       "purchased": [
         {
+          "id": "body-point-bonus-mountain-dwarf",
           "name": "Body Point Bonus (Mountain Dwarf)",
           "maxPurchases": 3,
           "bodyBonus": 5,
@@ -116,6 +120,7 @@
       ],
       "purchased": [
         {
+          "id": "spite-blood",
           "name": "Spite Blood",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -144,6 +149,7 @@
       ],
       "purchased": [
         {
+          "id": "resist-psionics",
           "name": "Resist Psionics",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -172,6 +178,7 @@
       ],
       "purchased": [
         {
+          "id": "nature-s-cache",
           "name": "Nature's Cache",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -181,6 +188,7 @@
           "desc": "Once a day per purchase, a Wild Elf is able to construct a small temporary shelter for themselves and up to 4 allies chosen at the time of creation. This 10 foot by 10 foot area provides multiple benefits and lasts 1 hour or less.\n\nIt can only be constructed outdoors, but functions on any terrain. To use it the Wild Elf should affix their Nature's Cache tag to a location, which then becomes the center of the cache and state \"Innate Nature's Cache\".\n\nHidden Scent: Those inside the cache are undetectable by hostile animals and insects.\n\nForage: The Wild Elf can spend 10 minutes searching for healing herbs, which will provide 10 Healing points total, divided up as desired, to all within the shelter. These herbs will expire with the shelter if unused.\n\nThe Pack: For the hour after the cache ends, all members of the camp will gain +1 damage with weapons against any opponent with which they all have simultaneous line of sight. This damage bonus does not stack with other uses of The Pack.\n\nNatural Intuition: While in the cache, the Wild Elf may query the surrounding lands, detecting its current state of being and any areas of impurity or corruption. This is a difficult task and is not always successful. The Wild Elf should attempt to find a Shaper prior or during the use of Nature's Cache. If no Shaper is available, the lands are unclear with their answer."
         },
         {
+          "id": "body-point-bonus-wild-elf",
           "name": "Body Point Bonus (Wild Elf)",
           "maxPurchases": 1,
           "bodyBonus": 5,
@@ -209,6 +217,7 @@
       ],
       "purchased": [
         {
+          "id": "charm-break",
           "name": "Charm Break",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -237,6 +246,7 @@
       ],
       "purchased": [
         {
+          "id": "orcish-constitution",
           "name": "Orcish Constitution",
           "maxPurchases": 1,
           "bodyBonus": 5,
@@ -265,6 +275,7 @@
       ],
       "purchased": [
         {
+          "id": "ancestor-s-wisdom",
           "name": "Ancestor's Wisdom",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -294,6 +305,7 @@
       ],
       "purchased": [
         {
+          "id": "berserker-rage",
           "name": "Berserker Rage",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -303,6 +315,7 @@
           "desc": "A Northman can incite in himself a powerful Berserker Rage. The character must cry out \"Innate BERSERK!\" for a ten-count, i.e., \"Berserk 1, berserk 2, berserk 3...\" while working themselves into a frothing frenzy. For the duration of one combat, the character gains +1 Strength, +5 Body, and is immune to Fear effects.\n\nFrom the point at which the fight ends, it takes 5 minutes for the effects of Berserk to wear off. The character cannot end the rage sooner and must continue to fight so long as opponents are visible. Multiple uses of this skill may be expended to stack its effects, although this will not increase the duration. This skill is usable once per day, per purchase."
         },
         {
+          "id": "body-point-bonus-einher",
           "name": "Body Point Bonus (Einher)",
           "maxPurchases": 1,
           "bodyBonus": 5,
@@ -312,6 +325,7 @@
           "desc": "This skill represents extra constitutional training the Einher has gone though, beyond what is standard for their race and grants +5 Body. This skill can only be purchased once throughout the character's entire existence."
         },
         {
+          "id": "strength-point-bonus-einher",
           "name": "Strength Point Bonus (Einher)",
           "maxPurchases": 1,
           "bodyBonus": 0,
@@ -340,6 +354,7 @@
       ],
       "purchased": [
         {
+          "id": "racial-dodge",
           "name": "Racial Dodge",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -363,6 +378,7 @@
       ],
       "purchased": [
         {
+          "id": "body-point-bonus-human",
           "name": "Body Point Bonus (Human)",
           "maxPurchases": 1,
           "bodyBonus": 5,
@@ -394,6 +410,7 @@
       ],
       "purchased": [
         {
+          "id": "clobber",
           "name": "Clobber",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -423,6 +440,7 @@
       ],
       "purchased": [
         {
+          "id": "forest-revival",
           "name": "Forest Revival",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -453,6 +471,7 @@
       ],
       "purchased": [
         {
+          "id": "fae-ward",
           "name": "Fae Ward",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -484,6 +503,7 @@
       ],
       "purchased": [
         {
+          "id": "kaboom",
           "name": "KABOOM!",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -518,6 +538,7 @@
       ],
       "purchased": [
         {
+          "id": "ogre-smash",
           "name": "Ogre Smash",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -547,6 +568,7 @@
       ],
       "purchased": [
         {
+          "id": "venomous-spit",
           "name": "Venomous Spit",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -579,6 +601,7 @@
       ],
       "purchased": [
         {
+          "id": "create-goggles",
           "name": "Create Goggles",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -610,6 +633,7 @@
       ],
       "purchased": [
         {
+          "id": "spirit-fusing",
           "name": "Spirit Fusing",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -640,6 +664,7 @@
       ],
       "purchased": [
         {
+          "id": "reflect-divine",
           "name": "Reflect Divine",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -669,6 +694,7 @@
       ],
       "purchased": [
         {
+          "id": "endurance",
           "name": "Endurance",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -699,6 +725,7 @@
       ],
       "purchased": [
         {
+          "id": "amorphic-mucus",
           "name": "Amorphic Mucus",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -728,6 +755,7 @@
       ],
       "purchased": [
         {
+          "id": "spirit-skinning",
           "name": "Spirit Skinning",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -760,6 +788,7 @@
       ],
       "purchased": [
         {
+          "id": "sense-undead",
           "name": "Sense Undead",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -770,6 +799,7 @@
           "ref": "Soul Frag 2.10 p.21"
         },
         {
+          "id": "strength-bonus-wolven",
           "name": "Strength Bonus (Wolven)",
           "maxPurchases": 1,
           "bodyBonus": 0,
@@ -799,6 +829,7 @@
       ],
       "purchased": [
         {
+          "id": "enemy-of-my-enemy",
           "name": "Enemy of my Enemy",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -829,6 +860,7 @@
       ],
       "purchased": [
         {
+          "id": "greater-resist-magic",
           "name": "Greater Resist Magic",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -858,6 +890,7 @@
       ],
       "purchased": [
         {
+          "id": "unmasked",
           "name": "Unmasked",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -889,6 +922,7 @@
       ],
       "purchased": [
         {
+          "id": "gnomish-device",
           "name": "Gnomish Device",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -920,6 +954,7 @@
       ],
       "purchased": [
         {
+          "id": "memories-in-flesh",
           "name": "Memories in Flesh",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -952,6 +987,7 @@
       ],
       "purchased": [
         {
+          "id": "magic-echo",
           "name": "Magic Echo",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -981,6 +1017,7 @@
       ],
       "purchased": [
         {
+          "id": "endure-fire",
           "name": "Endure Fire",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -1002,6 +1039,7 @@
       "racialCharacteristicAddition": "A noticeable snow-white streak of fur, at least 6 inches long, either on the face or starting on the face and moving into the hairline. If the fur pattern naturally included streaks, the Taliss streak should replace one of them.",
       "purchased": [
         {
+          "id": "redeemer-s-claws",
           "name": "Redeemer's Claws",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -1020,6 +1058,7 @@
       "racialCharacteristicAddition": "Any exposed skin must have granite-like flecks of black and white.",
       "purchased": [
         {
+          "id": "granite-skin",
           "name": "Granite Skin",
           "maxPurchases": 5,
           "bodyBonus": 5,
@@ -1038,6 +1077,7 @@
       "racialCharacteristicAddition": "Light blue around the eyes and white streaks in the beard.",
       "purchased": [
         {
+          "id": "ice-blade",
           "name": "Ice Blade",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -1056,6 +1096,7 @@
       "racialCharacteristicAddition": "Purple veins instead of black.",
       "purchased": [
         {
+          "id": "death-clad",
           "name": "Death Clad",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -1074,6 +1115,7 @@
       "racialCharacteristicAddition": "Milky white fingernails and lips.",
       "purchased": [
         {
+          "id": "ritual-affinity",
           "name": "Ritual Affinity",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -1092,6 +1134,7 @@
       "racialCharacteristicAddition": "\"Webbed\", serrated ears.",
       "purchased": [
         {
+          "id": "freedom-of-movement",
           "name": "Freedom of Movement",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -1110,6 +1153,7 @@
       "racialCharacteristicAddition": "Colourful swirling \"Fae style\" marks on the face and neck, typically matching the personality of the True Fae who sponsored them.",
       "purchased": [
         {
+          "id": "blessing-of-the-queen",
           "name": "Blessing of the Queen",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -1128,6 +1172,7 @@
       "racialCharacteristicAddition": "Blood coloured mandible-shaped scars around lower mouth and chin, or scars around the face resembling eyes.",
       "purchased": [
         {
+          "id": "brood-constitution",
           "name": "Brood Constitution",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -1146,6 +1191,7 @@
       "racialCharacteristicAddition": "Flowing black script written on the cheek under the cheekbones that describes some ancestors and their names.",
       "purchased": [
         {
+          "id": "spirit-hook",
           "name": "Spirit Hook",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -1164,6 +1210,7 @@
       "racialCharacteristicAddition": "Pictish-style war paint covering any exposed flesh.",
       "purchased": [
         {
+          "id": "berserker-poison",
           "name": "Berserker Poison",
           "maxPurchases": 10,
           "bodyBonus": 0,
@@ -1182,6 +1229,7 @@
       "racialCharacteristicAddition": "Consuming the toxin when joining the bakery causes a permanent purple discolouration around the mouth and lips.",
       "purchased": [
         {
+          "id": "adapted-insides",
           "name": "Adapted Insides",
           "maxPurchases": 10,
           "bodyBonus": 0,

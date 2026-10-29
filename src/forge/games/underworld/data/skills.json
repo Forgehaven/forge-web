@@ -6,100 +6,100 @@
   },
   "favouredCosts": {
     "Champion": {
-      "Alchemy": 90,
-      "Artifice": 85,
-      "Blacksmith": 75,
-      "Chemistry": 100,
-      "Create Scroll": 50,
-      "Tradesman": 40,
-      "Trapper": 85,
-      "Anatomy": 40,
-      "Demonic/Angelic Arts": 40,
-      "Elemental Attunement": 25,
-      "First Aid": 60,
-      "Mysticism": 50,
-      "Necromantic Arts": 40,
-      "Physician": 45,
-      "Read & Write": 50,
-      "Read Magic": 30,
-      "Read Magic: Advanced": 50,
-      "Read Magic: Ritual": 50,
-      "Advanced Ritual Casting": 275,
-      "Ambidexterity": 40,
-      "Florentine": 50,
-      "Flurry of Blows": 45,
-      "Heavy Armour": 10,
-      "Self Mutilate": 15,
-      "Shield": 50,
-      "Slay/Parry": 120,
-      "Slay/Parry: Master": 140,
-      "Slay/Parry: Subsequent": 120,
-      "Slay/Parry: Master Subsequent": 140,
-      "Specialization +1: Weapon Group": 160,
-      "Specialization +1: Weapon Specific": 100,
-      "Weapon Group Proficiency: Medium": 40,
-      "Weapon Group Proficiency: Large": 70,
-      "Weapon Specific Proficiency: Exotic": 110,
-      "Weapon Refocus": 70,
-      "Critical +2: Specific": 140,
-      "Critical +2: Group": 180,
-      "Dodge": 170,
-      "Dodge: Additional": 170,
-      "Execute": 170,
-      "Execute: Master": 190,
-      "Execute: Subsequent": 170,
-      "Execute: Master Subsequent": 190,
-      "Garrotte": 140,
-      "Sap": 55,
-      "Vital Blow": 85
+      "alchemy": 90,
+      "artifice": 85,
+      "blacksmith": 75,
+      "chemistry": 100,
+      "create-scroll": 50,
+      "tradesman": 40,
+      "trapper": 85,
+      "anatomy": 40,
+      "demonic-angelic-arts": 40,
+      "elemental-attunement": 25,
+      "first-aid": 60,
+      "mysticism": 50,
+      "necromantic-arts": 40,
+      "physician": 45,
+      "read-write": 50,
+      "read-magic": 30,
+      "read-magic-advanced": 50,
+      "read-magic-ritual": 50,
+      "advanced-ritual-casting": 275,
+      "ambidexterity": 40,
+      "florentine": 50,
+      "flurry-of-blows": 45,
+      "heavy-armour": 10,
+      "self-mutilate": 15,
+      "shield": 50,
+      "slay-parry": 120,
+      "slay-parry-master": 140,
+      "slay-parry-subsequent": 120,
+      "slay-parry-master-subsequent": 140,
+      "specialization-1-weapon-group": 160,
+      "specialization-1-weapon-specific": 100,
+      "weapon-group-proficiency-medium": 40,
+      "weapon-group-proficiency-large": 70,
+      "weapon-specific-proficiency-exotic": 110,
+      "weapon-refocus": 70,
+      "critical-2-specific": 140,
+      "critical-2-group": 180,
+      "dodge": 170,
+      "dodge-additional": 170,
+      "execute": 170,
+      "execute-master": 190,
+      "execute-subsequent": 170,
+      "execute-master-subsequent": 190,
+      "garrotte": 140,
+      "sap": 55,
+      "vital-blow": 85
     },
     "Demagogue": {
-      "Alchemy": 70,
-      "Artifice": 120,
-      "Blacksmith": 110,
-      "Chemistry": 80,
-      "Create Scroll": 40,
-      "Tradesman": 40,
-      "Trapper": 85,
-      "Anatomy": 40,
-      "Demonic/Angelic Arts": 45,
-      "Elemental Attunement": 25,
-      "First Aid": 60,
-      "Mysticism": 50,
-      "Necromantic Arts": 45,
-      "Physician": 45,
-      "Read & Write": 40,
-      "Read Magic": 15,
-      "Read Magic: Advanced": 25,
-      "Read Magic: Ritual": 40,
-      "Advanced Ritual Casting": 200,
-      "Ambidexterity": 75,
-      "Florentine": 110,
-      "Flurry of Blows": 100,
-      "Heavy Armour": 65,
-      "Self Mutilate": 15,
-      "Shield": 100,
-      "Slay/Parry": 200,
-      "Slay/Parry: Master": 220,
-      "Slay/Parry: Subsequent": 200,
-      "Slay/Parry: Master Subsequent": 220,
-      "Specialization +1: Weapon Group": 200,
-      "Specialization +1: Weapon Specific": 180,
-      "Weapon Group Proficiency: Medium": 80,
-      "Weapon Group Proficiency: Large": 130,
-      "Weapon Specific Proficiency: Exotic": 150,
-      "Weapon Refocus": 40,
-      "Critical +2: Specific": 180,
-      "Critical +2: Group": 200,
-      "Dodge": 200,
-      "Dodge: Additional": 200,
-      "Execute": 200,
-      "Execute: Master": 220,
-      "Execute: Subsequent": 200,
-      "Execute: Master Subsequent": 220,
-      "Garrotte": 150,
-      "Sap": 60,
-      "Vital Blow": 100
+      "alchemy": 70,
+      "artifice": 120,
+      "blacksmith": 110,
+      "chemistry": 80,
+      "create-scroll": 40,
+      "tradesman": 40,
+      "trapper": 85,
+      "anatomy": 40,
+      "demonic-angelic-arts": 45,
+      "elemental-attunement": 25,
+      "first-aid": 60,
+      "mysticism": 50,
+      "necromantic-arts": 45,
+      "physician": 45,
+      "read-write": 40,
+      "read-magic": 15,
+      "read-magic-advanced": 25,
+      "read-magic-ritual": 40,
+      "advanced-ritual-casting": 200,
+      "ambidexterity": 75,
+      "florentine": 110,
+      "flurry-of-blows": 100,
+      "heavy-armour": 65,
+      "self-mutilate": 15,
+      "shield": 100,
+      "slay-parry": 200,
+      "slay-parry-master": 220,
+      "slay-parry-subsequent": 200,
+      "slay-parry-master-subsequent": 220,
+      "specialization-1-weapon-group": 200,
+      "specialization-1-weapon-specific": 180,
+      "weapon-group-proficiency-medium": 80,
+      "weapon-group-proficiency-large": 130,
+      "weapon-specific-proficiency-exotic": 150,
+      "weapon-refocus": 40,
+      "critical-2-specific": 180,
+      "critical-2-group": 200,
+      "dodge": 200,
+      "dodge-additional": 200,
+      "execute": 200,
+      "execute-master": 220,
+      "execute-subsequent": 200,
+      "execute-master-subsequent": 220,
+      "garrotte": 150,
+      "sap": 60,
+      "vital-blow": 100
     }
   },
   "categories": [
@@ -107,6 +107,7 @@
       "cat": "Production",
       "skills": [
         {
+          "id": "alchemy",
           "name": "Alchemy",
           "costs": {
             "Mercenary": 80,
@@ -129,6 +130,7 @@
           "desc": "Purchasing this skill opens up the world of Alchemy to your character. Each level of Alchemy purchased allows your character to create new Alchemical recipes from the in-game list of known alchemies. Alchemies with an asterisk beside them require special components to create, which must be found in-game.\n\nAn Alchemist can also create mundane role play related effects with little effort. By spending 10 minutes gathering common and easily found herbs and ingredients, the Alchemist can create elixirs to cure many role-played ailments. These only cure mundane ill effects and cannot be used to mimic any spell effect or ability. It requires no skill to willingly drink an Alchemical concoction or to pour an elixir down an unconscious victim's throat.\n\nTo use any non-ingested Alchemical creation, it must be shaken vigorously and prepared with a three count. You may only have one non-ingested Alchemical creation prepared at a time and you must prepare your own. Non-ingested Alchemy only remains prepared for 10 minutes, after which it must be prepared again before being used.\n\nIdentify Alchemy: Each Alchemist has a basic knowledge of plants and herbs that allows them to identify known Alchemical concoctions after having examined the substance for one minute.\nApply Ingested Alchemy (Level 2): For an ingested Alchemy to take effect the Alchemist must somehow attach the Alchemy tag onto or under the item holding the food/drink.\nApply Contact Alchemy (Level 4): The Alchemist must spend one minute applying the contact elixir to the item. Contact alchemy may be applied to weapons or any other object. Contact alchemy on a weapon or other object lasts 5 days or until the first swing or touch.\nReverse Engineer (Level 5): The Alchemist may reverse engineer Alchemy into its basic state, destroying the Alchemy but returning half its Raw Material value.\nThrow Gas Globe (Level 6): The declaration for all thrown Alchemy is \"<type> Gas\". Orange packets are used to represent Alchemical gas globes.\nApply Contact on a 30 Count (Level 7): The Alchemist now only needs thirty seconds to apply contact alchemy to items.\nPrepare Alchemy on a 2 Count (Level 10): The Alchemist may now prepare alchemy on a 2 count.\n\nRecipes unlocked by level (Raw Material cost of the most expensive recipe you can make):\nLevel 1: Recipes up to 4 RM\nLevel 2: Recipes up to 8 RM\nLevel 3: Recipes up to 12 RM\nLevel 4: Recipes up to 16 RM\nLevel 5: Recipes up to 24 RM\nLevel 6: Recipes up to 32 RM\nLevel 7: Recipes up to 46 RM\nLevel 8: Recipes up to 52 RM\nLevel 9: Recipes up to 68 RM\nLevel 10: All recipes\n\nAlchemy comes in three forms: Contact (a tag signed by a Shaper), Ingested (the volume of a potion) and Gas Globe (an orange packet). Each recipe has its own RM cost per form. Characters may create as many items as they have the RM for at Logistics."
         },
         {
+          "id": "artifice",
           "name": "Artifice",
           "costs": {
             "Mercenary": 75,
@@ -149,13 +151,14 @@
           "_weaponChoice": null,
           "prereqs": [
             {
-              "name": "Blacksmith",
+              "id": "blacksmith",
               "minCount": 10
             }
           ],
           "desc": "The pinnacle of achievement for a Blacksmith is creating Blueprinted items. Blueprints are physical items that contain special instructions to allow a Legendary Blacksmith to craft powerful items. Given the right exotic material, Catalysts, time and the proper Blueprint, the Artificer can make armour and weapons that possess special and unique properties.\n\nEach Blueprint, and all the requirements, are different and must be found in-game.\n\nAn Artificer may craft 1 Blueprinted item per event per level of Artificing. Only Artificers can read Blueprints. Artificers can read Blueprints even if they cannot read and write.\n\nLegendary items (see Blacksmith) are the base material for any Blueprint. A Legendary item will not expire while it has a Blueprint on it, and its 5 year expiry resets when the Blueprint expires."
         },
         {
+          "id": "blacksmith",
           "name": "Blacksmith",
           "costs": {
             "Mercenary": 65,
@@ -178,6 +181,7 @@
           "desc": "This production skill allows the character to craft new weapons and armour as well as repairing damaged armour. Crafting new weapons and armour may only be done at logistics. Armour costs 1 Raw Material (RM) per point of armour, before any physrep point reductions. Characters may create any item unlocked at or below their level.\n\nRefitting (repairing) armour takes 60 seconds for every 10 points of armour to be refit and requires the Blacksmith and target to remain stationary. It can be done anywhere, but the Blacksmith must carry a set of refitting tools (untagged). A second Blacksmith may help, lowering the time by 10 seconds to a minimum of 10 seconds. Only two Blacksmiths may refit one target at once. A Blacksmith can tell how much of a target's armour has been damaged by placing both hands on their torso and stating, \"Blacksmithing 1, Blacksmithing 2, Blacksmithing 3, how much armour are you missing?\"\n\nRepair While Moving (Level 3): The Blacksmith may now repair armour while moving.\nReforge (Level 5): The Blacksmith may Reforge any shield, piece of armour or weapon, back into half of its value, rounded down, in Raw Material. Reforging may only be done at Logistics. Expired tags and Legendary items cannot be Reforged.\n+1 Strength (Levels 6 and 10): Hours and hours spent hammering metal have given the Blacksmith the kind of muscles every warrior desires. This Strength stacks with other Strength bonuses, including itself.\n\nUnlocked by level:\nLevel 1: Simple Weapons, Leather Armour, Wooden Shields, Repair Speed 60 seconds\nLevel 2: Medium Weapons, Studded Leather Armour\nLevel 3: Large Weapons, Chainmail Armour, Repair While Moving\nLevel 4: Exotic Weapons, Plate Armour, Repair Speed 40 seconds\nLevel 5: Iron Weapons, Iron Bound Shields, Reforge\nLevel 6: Silver Weapons, Metal Shields, +1 Strength\nLevel 7: Master Crafted Simple Weapons, Master Crafted Wooden Shields, Repair Speed 20 seconds\nLevel 8: Master Crafted Medium Weapons, Master Crafted Iron Bound Shields\nLevel 9: Master Crafted Large/Exotic Weapons, Master Crafted Metal Shields, Repair Speed 10 seconds\nLevel 10: Legendary Items, +1 Strength\n\nBase RM costs:\nSimple Weapon: 4 RM\nMedium Weapon: 24 RM\nLarge Weapon: 40 RM\nExotic Weapon: 48 RM\nArrows or Bolts (x6): 1 RM\nWooden Shield: 10 RM\nIron Bound Shield: 20 RM\nMetal Shield: 30 RM\n\nIron: Iron weapons cost 150% of the base RM and the entire striking surface must be iron to call iron damage.\nSilver: Silver weapons cost 400% of the base RM. A weapon may be iron or silver, not both, chosen when it is created.\nMaster Crafted: Costs 500% of the normal RM (cumulative with iron or silver). Master Crafted weapons can be enchanted and resist 3 attempts to shatter or destroy them, after which they are Normal. Master Crafted shields have 3 \"Render\" resists vs destroy/shatter effects.\nLegendary: Costs 1000% of the original RM (Legendary shields cost a flat 200 RM). Legendary items are immune to permanent destruction, Legendary armour gives +1 Armour Point per location, and they resist ritual magic (enchantments fade after 10 minutes to a few days, chosen by a Ritual Marshal).\nExpiry: Normal weapons and shields expire after 2 years, iron and silver weapons after 3 years, Master Crafted and Legendary items after 5 years. Armour does not expire. Normal arrows need no tags. Normal weapons may be steel, wood or bone."
         },
         {
+          "id": "chemistry",
           "name": "Chemistry",
           "costs": {
             "Mercenary": 90,
@@ -198,13 +202,14 @@
           "_weaponChoice": null,
           "prereqs": [
             {
-              "name": "Alchemy",
+              "id": "alchemy",
               "minCount": 10
             }
           ],
           "desc": "When an Alchemist has mastered everything Alchemy has to teach them, they can learn Chemistry. Chemistry Formulas create powerful alchemical concoctions.\n\nGiven the right exotic material, Catalysts, time and the proper Formula, the Alchemist can make potions and elixirs that possess special and unique properties. Each Formula, and all the requirements, are different and must be found in-game.\n\nA Chemist may brew 1 Chemistry item per event per level of Chemistry. Chemistry is considered 'ritual level'. Only Chemists can read Chemistry Formulas. Chemists can read Chemistry Formulas even if they cannot read and write."
         },
         {
+          "id": "create-scroll",
           "name": "Create Scroll",
           "costs": {
             "Mercenary": 75,
@@ -225,13 +230,14 @@
           "_weaponChoice": null,
           "prereqs": [
             {
-              "name": "Read Magic",
+              "id": "read-magic",
               "minCount": 1
             }
           ],
           "desc": "This skill allows a character to create Battle Magic Scrolls. To make a Magical Scroll, the character must be able to cast that specific spell from memory.\n\nGlowing Ink (Level 2): This allows the scrollcrafter to create scrolls which can be cast in darkness.\nScavenge Scroll (Level 4): The scribe may carefully salvage the scrollcrafting materials of an existing scroll to turn it into something new, returning half its Raw Material value.\nCreate Tome (Level 6): The scrollcrafter has learned to create powerful Tomes of magic. This Tome may contain one of each Battle Magic scroll in a single sphere and is spirit linked to the first person who memorises from it.\nScroll Mastery (Level 10): The scrollcrafter has now mastered all they need to create any scroll from the core rulebook, even if they cannot cast the sphere that scroll is from, although they will still need to be able to cast a spell of that level. Scrolls created with Scroll Mastery cost an additional 100% of the base Raw Material cost.\n\nScrolls unlocked by level (Level N unlocks Battle Magic scrolls up to that spell level):\nLevel 1: Level 1 and Level 2 Scrolls\nLevel 2: Glowing Ink\nLevel 3: Level 3 and Level 4 Scrolls\nLevel 4: Scavenge Scroll\nLevel 5: Level 5 and Level 6 Scrolls\nLevel 6: Create Tome\nLevel 7: Level 7 Scrolls\nLevel 8: Level 8 Scrolls\nLevel 9: Level 9 Scrolls\nLevel 10: Scroll Mastery\n\nRaw Material (RM) cost per scroll by spell level:\nSpell level 1: 4 RM\nSpell level 2: 4 RM\nSpell level 3: 8 RM\nSpell level 4: 8 RM\nSpell level 5: 16 RM\nSpell level 6: 16 RM\nSpell level 7: 32 RM\nSpell level 8: 32 RM\nSpell level 9: 64 RM\n\nGlowing Ink scrolls cost an additional 50% of the base RM (tags are marked \"Glow\"). Scroll Mastery scrolls cost an additional 100%. Creating a Tome costs 100 RM. Scrolls cannot be made using magic items or other scrolls, and Create Scroll cannot create Ritual Magic. Scavenging a scroll can only be done at Logistics."
         },
         {
+          "id": "tradesman",
           "name": "Tradesman",
           "costs": {
             "Mercenary": 40,
@@ -254,6 +260,7 @@
           "desc": "The Tradesman skill is a catch-all term for all other jobs or occupations. When purchasing this skill, a player must choose their trade. For each level of Tradesman the player has, they will receive either 3 silver worth of product or 5 units of Raw Material at Logistics.\n\nPlayers must choose which type of Raw Material (maximum of one) the skill can produce when it is purchased and have this approved by a Logistics Marshal. An appropriate Tradesman skill may aid in certain role-playing situations as determined by the Shaper running the encounter."
         },
         {
+          "id": "trapper",
           "name": "Trapper",
           "costs": {
             "Mercenary": 75,
@@ -281,6 +288,7 @@
       "cat": "Scholar",
       "skills": [
         {
+          "id": "anatomy",
           "name": "Anatomy",
           "costs": {
             "Mercenary": 40,
@@ -303,6 +311,7 @@
           "desc": "This skill allows a user to check an individual's vital signs. Anatomy can be used on any living creature to glean information about their health and physical state.\n\nTo use Anatomy, the player must place both hands on the torso of the target, call out \"Anatomy 1, Anatomy 2, Anatomy 3\", and then ask the player, out of game, one of the following questions: \"Are you alive?\", \"Are you in your bleed count?\", \"Are you in your death count?\", \"Are you paralysed?\", \"Are you asleep?\", \"Are you unconscious?\", \"Is there alcohol in your system?\", \"Is there a toxin in your system?\", \"Is there a non-Magical disease in your system?\" and \"How much damage have you taken?\" This skill is usable at will."
         },
         {
+          "id": "mysticism",
           "name": "Mysticism",
           "costs": {
             "Mercenary": 50,
@@ -325,6 +334,7 @@
           "desc": "The art of the Mystic is one that has both amazed and frightened the unaware since the dawn of time. A Mystic excels in the contacting of lost spirits or ghosts to ask for, coerce, steal, or outright force their aid.\n\nMysticism skills must be purchased in order of level and no level may be purchased more than once.\n\nA Mystic who finds themselves close to final death finds themselves with easier access to the Deadlands; if a Mystic has no free deaths left on their character card, they will be given two additional uses of any one skill of their choice that they have purchased.\n\nLevel 1: Dead Sight. View lost souls and ghosts normally invisible to the mundane eye.\nLevel 2: Augury. Consult with Spirits via a medium of their choosing.\nLevel 3: Eyes of the Soul. Touch a corpse to attempt to lure the Spirit into retelling how it died (1 in 10 chance, costs 1 hour of blindness).\nLevel 4: Foresight. Implant subconscious foresight of upcoming danger into a target.\nLevel 5: Manifest. Rise as a visible spirit during Death Count.\nLevel 6: Grim Counsel. Speak directly to spirits and ghosts; combine with Augury to target a specific spirit.\nLevel 7: Séance. Gather Mystics to summon a specific spirit to answer 3 questions.\nLevel 8: Unfetter: Manifest without the 10-foot restriction, remaining within line-of-sight.\nLevel 9: Haunt. Attempt to have a spirit choose a home as their connection to the mortal realm.\nLevel 10: Betwixt and Between. Immunity to Forget effects, 50% chance to remember deaths, doubles Death Count while Manifesting with a lantern."
         },
         {
+          "id": "demonic-angelic-arts",
           "name": "Demonic/Angelic Arts",
           "costs": {
             "Mercenary": 75,
@@ -347,6 +357,7 @@
           "desc": "Demonic/Angelic Arts allow the user to identify and recognize the various holy and unholy creatures that exist on all the planes of the Heavens and Hells.\n\nThis skill may only be used to answer the following questions: \"Are you a Demonic/Angelic creature?\", \"What kind of Demon/Angel are you?\", \"Are you a greater or lesser Demon/Angel?\", (Angelic only) \"Which God do you serve, if any?\", (Demonic only) \"Are you currently under contract?\" These questions are asked out of game, not to the Demon or Angel directly.\n\nCharacters with Demonic/Angelic Arts take 2 less damage (to a minimum of 1) from attacks by their identified target no matter the type of attack. Only one target may be active at a time. To change targets, the user may ask one of the questions above, or simply state \"Demonic/Angelic Arts 1, 2, 3\" if the new target has already been identified."
         },
         {
+          "id": "elemental-attunement",
           "name": "Elemental Attunement",
           "costs": {
             "Mercenary": 25,
@@ -367,7 +378,7 @@
           "_weaponChoice": null,
           "prereqs": [
             {
-              "name": "Sphere of Magic: 1st",
+              "id": "sphere-1",
               "minCount": 1
             }
           ],
@@ -375,6 +386,7 @@
           "ref": "Core 5.6.5 p.53 (requires the Elemental sphere)"
         },
         {
+          "id": "first-aid",
           "name": "First Aid",
           "costs": {
             "Mercenary": 60,
@@ -395,13 +407,14 @@
           "_weaponChoice": null,
           "prereqs": [
             {
-              "name": "Anatomy",
+              "id": "anatomy",
               "minCount": 1
             }
           ],
           "desc": "Allows the user to bind wounds sufficiently to stop bleeding and heal some minor wounds. The process takes 1 minute to use and as long as it is being used, the target's Bleed Count is halted. If First Aid is interrupted, or if the wounded target moves or is moved in any way, the skill fails and the wounded target must continue their Bleed Count from where they left off.\n\nAfter a successful 1 minute of First Aid, the wounded target is healed to zero Body, bringing them to unconsciousness and halting their bleeding.\n\nFirst Aid also allows the character to bandage a target, healing one Body for each minute of bandaging up to the maximum allowed by their Physician level. A target in their Bleed Count cannot be bandaged. The player cannot bandage the same target more than once a day. It will not affect Undead in any way, with the exception that a player with Necromantic Arts may use this skill to heal Risen in Undead form."
         },
         {
+          "id": "necromantic-arts",
           "name": "Necromantic Arts",
           "costs": {
             "Mercenary": 75,
@@ -424,6 +437,7 @@
           "desc": "Necromantic Arts allows a user to recognize and identify whether or not standard identifiable signs of Undeath are present in an individual. It will not verify that something is alive, only whether or not it is Undead.\n\nThis skill may only be used to answer the following questions: \"Are you Undead?\", \"What kind of Undead are you?\", \"Are you lesser, greater or ancient Undead?\", \"How much damage have you taken (only to Undead)?\"\n\nCharacters with Necromantic Arts take 1 less damage (to a minimum of 1) from attacks by their identified target no matter the type of attack. Only one target may be active at a time. To change targets, the user may ask one of the questions above, or simply state \"Necromantic Arts 1, 2, 3\" if the new target has already been identified."
         },
         {
+          "id": "physician",
           "name": "Physician",
           "costs": {
             "Mercenary": 45,
@@ -444,13 +458,14 @@
           "_weaponChoice": null,
           "prereqs": [
             {
-              "name": "First Aid",
+              "id": "first-aid",
               "minCount": 1
             }
           ],
           "desc": "After having mastered the art of Anatomy and First Aid, a character is ready to uncover the secrets of the living body. Every level of Physician will increase the amount of Body healed through First Aid bandaging by one, to a maximum of 11.\n\nLevel 1 Barber: Perform First Aid on a moving target and extend their Bleed Count by 1 minute.\nLevel 2 Pharmacist: Identify and cure non-Magical diseases (1 minute roleplay, once per 5 days per patient).\nLevel 3 Physicker: Identify and purge toxins; target must be lying down unmoving for 1 minute.\nLevel 4 Doctor: Perform minor surgeries (10 minutes, patient unconscious 30 minutes after); extend a dying target's Death Count by 5 minutes via CPR.\nLevel 5 Surgeon: Perform major surgeries including re-attachment of lost limbs, removal of foreign life forms, and organ transplants.\nLevel 6 Stasis Director: With a fellow physician, postpone death indefinitely by actively role playing keeping the patient's vitals in check.\nLevel 7 Vital Warden: Perform a major surgery which restores all the target's hit points.\nLevel 8 War Surgeon: Bandage at a rate of 2 Body per minute when working alone.\nLevel 9 Specialist: Use intensive care single-handedly; perform anatomy checks while using any other physician skill.\nLevel 10 Master Physician: Major and minor surgery time and patient unconsciousness period halved; a second surgery may be performed within five days."
         },
         {
+          "id": "read-write",
           "name": "Read & Write",
           "costs": {
             "Mercenary": 70,
@@ -473,6 +488,7 @@
           "desc": "This skill allows the character to read and write. Without this skill, you are illiterate. Without this skill a person can only know the letters to their own name and can count on their fingers. A character with this skill can read the names of Battle Magic spell scrolls, but nothing else."
         },
         {
+          "id": "read-magic",
           "name": "Read Magic",
           "costs": {
             "Mercenary": 45,
@@ -493,13 +509,14 @@
           "_weaponChoice": null,
           "prereqs": [
             {
-              "name": "Read & Write",
+              "id": "read-write",
               "minCount": 1
             }
           ],
           "desc": "This skill allows the user to cast Battle Magic spells from scrolls. They are limited to casting only Battle Magic from spell level 1 to level 4.\n\nTo activate the scroll, the caster must have enough light to properly read the scroll. They must then read and speak the incantation of the spell. When used, a Battle Magic scroll is consumed and destroyed."
         },
         {
+          "id": "read-magic-advanced",
           "name": "Read Magic: Advanced",
           "costs": {
             "Mercenary": 50,
@@ -520,13 +537,14 @@
           "_weaponChoice": null,
           "prereqs": [
             {
-              "name": "Read Magic",
+              "id": "read-magic",
               "minCount": 1
             }
           ],
           "desc": "This skill is the same as Read Magic, except that it allows the user to cast Battle Magic spells from spell level 5 to level 9."
         },
         {
+          "id": "read-magic-ritual",
           "name": "Read Magic: Ritual",
           "costs": {
             "Mercenary": 90,
@@ -547,13 +565,14 @@
           "_weaponChoice": null,
           "prereqs": [
             {
-              "name": "Read Magic: Advanced",
+              "id": "read-magic-advanced",
               "minCount": 1
             }
           ],
           "desc": "This skill allows the user to read Ritual Magic scrolls."
         },
         {
+          "id": "advanced-ritual-casting",
           "name": "Advanced Ritual Casting",
           "costs": {
             "Mercenary": 300,
@@ -574,7 +593,7 @@
           "_weaponChoice": null,
           "prereqs": [
             {
-              "name": "Ritual Slot",
+              "id": "ritual-slot",
               "minCount": 1
             }
           ],
@@ -587,6 +606,7 @@
       "cat": "Warrior",
       "skills": [
         {
+          "id": "ambidexterity",
           "name": "Ambidexterity",
           "costs": {
             "Mercenary": 20,
@@ -609,6 +629,7 @@
           "desc": "This skill allows a character to wield two one-handed weapons in combat. The player may wield a Medium or Simple Weapon they have proficiency with in their main hand and a Simple Weapon in their off hand."
         },
         {
+          "id": "florentine",
           "name": "Florentine",
           "costs": {
             "Mercenary": 40,
@@ -629,13 +650,14 @@
           "_weaponChoice": null,
           "prereqs": [
             {
-              "name": "Ambidexterity",
+              "id": "ambidexterity",
               "minCount": 1
             }
           ],
           "desc": "This skill improves a character's training in the art of two weapon fighting. The player may now wield any one-handed weapon they have proficiency with in their main and off hand."
         },
         {
+          "id": "flurry-of-blows",
           "name": "Flurry of Blows",
           "costs": {
             "Mercenary": 40,
@@ -658,6 +680,7 @@
           "desc": "Through discipline and training, your character has learned the secret of tapping into raw emotion and harnessing it into strength defying attacks. This skill will allow the player to swing for +5 additional damage of the character's normal swinging type for the next 3 swings, hit or miss.\n\nThe Flurry will stay active for 1 minute. If all 3 swings are not used by the end of the minute, they are lost. To activate this skill, the player must call \"Flurry of Blows\".\n\nThis skill does not stack with other per-day use skills, abilities or spells, or itself. This skill is usable once per day per purchase."
         },
         {
+          "id": "heavy-armour",
           "name": "Heavy Armour",
           "costs": {
             "Mercenary": 15,
@@ -680,6 +703,7 @@
           "desc": "This skill will allow the character to wear multiple layers of armour and increase their Armour Points far past the normal maximum. With this skill, the player may stack two types of armour on one location and add their AP values.\n\nA player is still limited to the AP that their out-of-game reps allow. Armour of the same type (eg: chain on chain) will not stack."
         },
         {
+          "id": "self-mutilate",
           "name": "Self Mutilate",
           "costs": {
             "Mercenary": 15,
@@ -702,6 +726,7 @@
           "desc": "This skill represents the character's ability to overcome the instinct of self-preservation. A character may not willingly accept or cause themselves 1 Body or more worth of damage without this skill, and must actively fight any attempt to harm them, even if it is in their best interest.\n\nWithout Self Mutilate, you may still enter a fight even without armour, but you must fight back or defend yourself and not simply allow yourself to be injured. This skill must also be purchased for a character to actively kill themselves or to consent to their own demise."
         },
         {
+          "id": "shield",
           "name": "Shield",
           "costs": {
             "Mercenary": 50,
@@ -724,6 +749,7 @@
           "desc": "This skill allows a character to properly use a shield or buckler. A shield will stop strikes from weapons only. Shields will also block Slays, using them up without harming the shield user, even if the shield is broken by the Slay.\n\nA buckler is a small shield strapped to the forearm that acts like a normal shield but can be used while holding something in the same hand. A buckler cannot be larger than 15 inches in diameter and cannot be disarmed while strapped to the forearm.\n\nShields will not stop packet delivered or Spellstrike attacks. Without this skill, a player may use a shield if they hold it in both hands and do not use any other skills or abilities. A character with this skill may wield two shields at the same time, but only if both are held by their handles."
         },
         {
+          "id": "slay-parry",
           "name": "Slay/Parry",
           "costs": {
             "Mercenary": 100,
@@ -744,13 +770,14 @@
           "_weaponChoice": "specific",
           "prereqs": [
             {
-              "name": "Specialization +1: Weapon Group|Specialization +1: Weapon Specific",
+              "id": "specialization-1-weapon-group|specialization-1-weapon-specific",
               "minCount": 1
             }
           ],
           "desc": "This skill allows a character to use one Slay or Parry, per day, with a single weapon that the character is proficient in, chosen at purchase. Each additional purchase of Slay/Parry requires an additional purchase of the weapon specialisation. The player chooses whether to use this skill as a Slay or as a Parry each time they use it.\n\nA Slay is a powerful attack which does 50 points of damage; nothing besides Slay stacking may change this number. To use a Slay, the attacker must declare \"You are not prepared!\" and strike their opponent, then call \"50 Slay!\"\n\nA Parry enables the player to parry any weapon blow, as well as touch cast spells, by calling \"Parry\". Parry cannot block Massive damage, Spellstrikes, or Surprise Attacks."
         },
         {
+          "id": "slay-parry-master",
           "name": "Slay/Parry: Master",
           "costs": {
             "Mercenary": 120,
@@ -771,13 +798,14 @@
           "_weaponChoice": "group",
           "prereqs": [
             {
-              "name": "Specialization +1: Weapon Group",
+              "id": "specialization-1-weapon-group",
               "minCount": 1
             }
           ],
           "desc": "This skill is the same as Slay/Parry, except that it is purchased for an entire Weapon Group rather than a specific weapon. The Slay or Parry may be used with any of the weapons within that Weapon Group."
         },
         {
+          "id": "slay-parry-subsequent",
           "name": "Slay/Parry: Subsequent",
           "costs": {
             "Mercenary": 100,
@@ -798,18 +826,19 @@
           "_weaponChoice": "specific",
           "prereqs": [
             {
-              "name": "Slay/Parry",
+              "id": "slay-parry",
               "minCount": 1,
               "primaryGate": true
             },
             {
-              "name": "Specialization +1: Weapon Group|Specialization +1: Weapon Specific",
+              "id": "specialization-1-weapon-group|specialization-1-weapon-specific",
               "minCount": 1
             }
           ],
           "desc": "Requires Slay/Parry to be purchased first. Each purchase requires an additional Weapon Specialization (Group or Specific). Functions identically to Slay/Parry for a single weapon the character is proficient in, chosen at purchase."
         },
         {
+          "id": "slay-parry-master-subsequent",
           "name": "Slay/Parry: Master Subsequent",
           "costs": {
             "Mercenary": 120,
@@ -830,18 +859,19 @@
           "_weaponChoice": "group",
           "prereqs": [
             {
-              "name": "Slay/Parry: Master",
+              "id": "slay-parry-master",
               "minCount": 1,
               "primaryGate": true
             },
             {
-              "name": "Specialization +1: Weapon Group",
+              "id": "specialization-1-weapon-group",
               "minCount": 1
             }
           ],
           "desc": "Requires Slay/Parry: Master to be purchased first. Each purchase requires an additional Weapon Group Specialization. Functions identically to Slay/Parry: Master for an entire Weapon Group."
         },
         {
+          "id": "specialization-1-weapon-group",
           "name": "Specialization +1: Weapon Group",
           "costs": {
             "Mercenary": 120,
@@ -862,7 +892,7 @@
           "_weaponChoice": "group",
           "prereqs": [
             {
-              "name": "Weapon Group Proficiency: Medium|Weapon Group Proficiency: Large",
+              "id": "weapon-group-proficiency-medium|weapon-group-proficiency-large",
               "minCount": 1
             }
           ],
@@ -870,6 +900,7 @@
           "ref": "Core 5.6.5 p.54-55 (no group proficiency exists for Exotic)"
         },
         {
+          "id": "specialization-1-weapon-specific",
           "name": "Specialization +1: Weapon Specific",
           "costs": {
             "Mercenary": 100,
@@ -890,13 +921,14 @@
           "_weaponChoice": "specific",
           "prereqs": [
             {
-              "name": "Weapon Group Proficiency: Medium|Weapon Group Proficiency: Large|Weapon Specific Proficiency: Exotic",
+              "id": "weapon-group-proficiency-medium|weapon-group-proficiency-large|weapon-specific-proficiency-exotic",
               "minCount": 1
             }
           ],
           "desc": "This skill grants the player a +1 damage bonus with a single weapon that the character is proficient in, chosen at purchase. If purchased for Summoned Weapons it will apply to all Summoned Weapons within an individual sphere."
         },
         {
+          "id": "weapon-group-proficiency-medium",
           "name": "Weapon Group Proficiency: Medium",
           "costs": {
             "Mercenary": 40,
@@ -919,6 +951,7 @@
           "desc": "This skill allows the player to properly wield the following one-handed weapons: Bow, Sword, Mace, Spears, Battle Axe, and any other non-Exotic weapon with a base damage of 2. Bows do Body damage."
         },
         {
+          "id": "weapon-group-proficiency-large",
           "name": "Weapon Group Proficiency: Large",
           "costs": {
             "Mercenary": 70,
@@ -941,6 +974,7 @@
           "desc": "This skill allows the player to properly wield the following two-handed weapons: Crossbow, Sword, Axe, Mace, Pole Arm, and any other non-Exotic weapon with a base damage of 4.\n\nBonus damage from Strength will be applied to Large Weapon swings at a rate of +1 damage for every 1 point of Strength, rather than the standard +1 damage for every 2 points. Strength bonuses will not increase Crossbow damage. Crossbows do Body damage."
         },
         {
+          "id": "weapon-specific-proficiency-exotic",
           "name": "Weapon Specific Proficiency: Exotic",
           "costs": {
             "Mercenary": 100,
@@ -963,6 +997,7 @@
           "desc": "This skill allows the player to properly wield one of the following weapons: Stiletto (1 Body damage), two-handed Maul (5 damage), Bastard Sword (2 damage if wielded in one hand or 4 damage if wielded in both hands), or any other weapon that does Body damage or is summoned through magical means.\n\nBonus damage from Strength will be applied to Maul swings at a rate of +1 damage for every 1 point of Strength, rather than the standard +1 damage for every 2 points. This skill can be purchased multiple times to allow a character to become proficient in multiple Exotic Weapons."
         },
         {
+          "id": "weapon-refocus",
           "name": "Weapon Refocus",
           "costs": {
             "Mercenary": 40,
@@ -990,6 +1025,7 @@
       "cat": "Rogue",
       "skills": [
         {
+          "id": "critical-2-specific",
           "name": "Critical +2: Specific",
           "costs": {
             "Mercenary": 150,
@@ -1010,13 +1046,14 @@
           "_weaponChoice": "specific",
           "prereqs": [
             {
-              "name": "Weapon Group Proficiency: Medium|Weapon Group Proficiency: Large|Weapon Specific Proficiency: Exotic",
+              "id": "weapon-group-proficiency-medium|weapon-group-proficiency-large|weapon-specific-proficiency-exotic",
               "minCount": 1
             }
           ],
           "desc": "This skill allows the player to swing for +2 damage when striking a target from behind and +½ damage from the front, with a single weapon that the character is proficient in, chosen at purchase.\n\nThe attack must hit the target on the back of their body (Upper Back, Mid Back, or Lower Back locations) to grant the +2 damage. The damage call is \"<damage> Critical\" when striking from behind. This skill is always active."
         },
         {
+          "id": "critical-2-group",
           "name": "Critical +2: Group",
           "costs": {
             "Mercenary": 170,
@@ -1037,7 +1074,7 @@
           "_weaponChoice": null,
           "prereqs": [
             {
-              "name": "Weapon Group Proficiency: Medium|Weapon Group Proficiency: Large",
+              "id": "weapon-group-proficiency-medium|weapon-group-proficiency-large",
               "minCount": 1
             }
           ],
@@ -1045,6 +1082,7 @@
           "ref": "Core 5.6.5 p.54-55 (no group proficiency exists for Exotic)"
         },
         {
+          "id": "dodge",
           "name": "Dodge",
           "costs": {
             "Mercenary": 170,
@@ -1065,13 +1103,14 @@
           "_weaponChoice": null,
           "prereqs": [
             {
-              "name": "Critical +2: Specific|Critical +2: Group|Feint",
+              "id": "critical-2-specific|critical-2-group|feint",
               "minCount": 1
             }
           ],
           "desc": "This skill allows the player to dodge any attack except a Surprise Attack, Gaze Attack, Power Word, Area of Effect, Massive damage attack or other unreasonable damage-causing incident, such as falling off a cliff. Dodge is a Conscious defense. This skill is usable once per day per purchase."
         },
         {
+          "id": "dodge-additional",
           "name": "Dodge: Additional",
           "costs": {
             "Mercenary": 170,
@@ -1092,18 +1131,19 @@
           "_weaponChoice": null,
           "prereqs": [
             {
-              "name": "Dodge",
+              "id": "dodge",
               "minCount": 1,
               "primaryGate": true
             },
             {
-              "name": "Critical +2: Specific|Critical +2: Group|Feint",
+              "id": "critical-2-specific|critical-2-group|feint",
               "minCount": 1
             }
           ],
           "desc": "Requires Dodge to be purchased first. Each purchase requires an additional Critical +2 (Specific or Group) or Feint. Usable once per day per purchase."
         },
         {
+          "id": "execute",
           "name": "Execute",
           "costs": {
             "Mercenary": 170,
@@ -1124,13 +1164,14 @@
           "_weaponChoice": "specific",
           "prereqs": [
             {
-              "name": "Critical +2: Specific|Critical +2: Group",
+              "id": "critical-2-specific|critical-2-group",
               "minCount": 1
             }
           ],
           "desc": "This skill will strike the victim's vital organs, mortally wounding them, with a single weapon that the character is proficient in, chosen at purchase. Each additional purchase of Execute requires an additional purchase of an appropriate Critical skill.\n\nAn Execute must strike the target's torso and directly damage their Body points, rather than armour, to be successful. A successful Execute will instantly reduce a victim's Body points to -1 and drop them into their Bleed Count.\n\nThe call for this skill is \"Execute\". If used from behind and strikes between the target's shoulder blades, the call will be \"Surprise Execute\".\n\nExecute may only be used in combination with the skills Shiv, Silent Strike, and Penetration. This skill is usable once per day per purchase."
         },
         {
+          "id": "execute-master",
           "name": "Execute: Master",
           "costs": {
             "Mercenary": 190,
@@ -1151,13 +1192,14 @@
           "_weaponChoice": null,
           "prereqs": [
             {
-              "name": "Critical +2: Group",
+              "id": "critical-2-group",
               "minCount": 1
             }
           ],
           "desc": "This skill is the same as Execute, except that it is purchased for an entire Weapon Group rather than a specific weapon. The Execute may be used with any of the weapons within that Weapon Group."
         },
         {
+          "id": "execute-subsequent",
           "name": "Execute: Subsequent",
           "costs": {
             "Mercenary": 170,
@@ -1178,18 +1220,19 @@
           "_weaponChoice": "specific",
           "prereqs": [
             {
-              "name": "Execute",
+              "id": "execute",
               "minCount": 1,
               "primaryGate": true
             },
             {
-              "name": "Critical +2: Specific|Critical +2: Group",
+              "id": "critical-2-specific|critical-2-group",
               "minCount": 1
             }
           ],
           "desc": "Requires Execute to be purchased first. Each purchase requires an additional Critical +2 (Specific or Group). Usable once per day per purchase."
         },
         {
+          "id": "execute-master-subsequent",
           "name": "Execute: Master Subsequent",
           "costs": {
             "Mercenary": 190,
@@ -1210,18 +1253,19 @@
           "_weaponChoice": null,
           "prereqs": [
             {
-              "name": "Execute: Master",
+              "id": "execute-master",
               "minCount": 1,
               "primaryGate": true
             },
             {
-              "name": "Critical +2: Group",
+              "id": "critical-2-group",
               "minCount": 1
             }
           ],
           "desc": "Requires Execute: Master to be purchased first. Each purchase requires an additional Critical +2: Group. Usable once per day per purchase."
         },
         {
+          "id": "garrotte",
           "name": "Garrotte",
           "costs": {
             "Mercenary": 100,
@@ -1244,6 +1288,7 @@
           "desc": "This skill allows a player to kill a target by simulating the use of a Garrotte or razor wire around the target's neck. To use a Garrotte attack, the attacker must place both hands on the shoulders of the victim from behind and call \"Surprise Garrotte\". If the attack succeeds, the victim is silenced and drops anything they were holding.\n\nGarroting takes 20 seconds to take effect; the attacker must call \"Garrotte 1, Garrotte 2, etc.\" After 20 seconds, the victim falls into their Death Count.\n\nThe player must have a tagged Garrotte phys-rep held in one hand for the duration. If the victim is wearing a gorget (covering the front of the neck worth at least 2 AP), the Garrotte fails. A defending player may resist a Garrotte if the defender alone has at least +2 more Strength than the attacker. This skill is usable at will."
         },
         {
+          "id": "sap",
           "name": "Sap",
           "costs": {
             "Mercenary": 55,
@@ -1266,6 +1311,7 @@
           "desc": "Sap is a Surprise Attack which allows a character to knock out a victim by touching them in the Upper Back armour location with a coreless, red hand to hand weapon.\n\nThe attacker must be holding the tagged weapon they are Sapping with but does not physically strike the target. Upon a successful strike, the victim loses 1 Body point and is knocked unconscious for 10 minutes.\n\nThe base damage for Sap is 1; this damage may only be increased by Strength. The call for Sap is \"<damage> <type> Sap\". A Sapped character will awaken only once the Sap Body point damage is healed or 10 minutes have passed. No skills, spells, or abilities may be used in conjunction with Sap, except to change the damage type. This skill is usable once per day per purchase."
         },
         {
+          "id": "vital-blow",
           "name": "Vital Blow",
           "costs": {
             "Mercenary": 85,
@@ -1293,6 +1339,7 @@
       "cat": "Warrior Class Frag Skills",
       "skills": [
         {
+          "id": "battlefield-repair",
           "name": "Battlefield Repair",
           "costs": null,
           "frag": 25,
@@ -1307,6 +1354,7 @@
           "_fragOnly": true
         },
         {
+          "id": "cripple",
           "name": "Cripple",
           "costs": null,
           "frag": 30,
@@ -1321,6 +1369,7 @@
           "_fragOnly": true
         },
         {
+          "id": "decapitate",
           "name": "Decapitate",
           "costs": null,
           "frag": 75,
@@ -1331,7 +1380,7 @@
           "_weaponChoice": null,
           "prereqs": [
             {
-              "name": "Slay/Parry",
+              "id": "slay-parry",
               "minCount": 1
             }
           ],
@@ -1340,6 +1389,7 @@
           "_fragOnly": true
         },
         {
+          "id": "dirt-in-the-eye",
           "name": "Dirt in the Eye",
           "costs": null,
           "frag": 30,
@@ -1354,6 +1404,7 @@
           "_fragOnly": true
         },
         {
+          "id": "disembowel",
           "name": "Disembowel",
           "costs": null,
           "frag": 75,
@@ -1364,7 +1415,7 @@
           "_weaponChoice": null,
           "prereqs": [
             {
-              "name": "Specialization +1: Weapon Group|Specialization +1: Weapon Specific",
+              "id": "specialization-1-weapon-group|specialization-1-weapon-specific",
               "minCount": 1
             }
           ],
@@ -1373,6 +1424,7 @@
           "_fragOnly": true
         },
         {
+          "id": "trip",
           "name": "Trip",
           "costs": null,
           "frag": 20,
@@ -1387,6 +1439,7 @@
           "_fragOnly": true
         },
         {
+          "id": "whirlwind-of-blows",
           "name": "Whirlwind of Blows",
           "costs": null,
           "frag": 40,
@@ -1397,7 +1450,7 @@
           "_weaponChoice": null,
           "prereqs": [
             {
-              "name": "Flurry of Blows",
+              "id": "flurry-of-blows",
               "minCount": 1
             }
           ],
@@ -1411,6 +1464,7 @@
       "cat": "Rogue Class Frag Skills",
       "skills": [
         {
+          "id": "blindfighter",
           "name": "Blindfighter",
           "costs": null,
           "frag": 15,
@@ -1425,6 +1479,7 @@
           "_fragOnly": true
         },
         {
+          "id": "escape",
           "name": "Escape",
           "costs": null,
           "frag": 20,
@@ -1439,6 +1494,7 @@
           "_fragOnly": true
         },
         {
+          "id": "riposte",
           "name": "Riposte",
           "costs": null,
           "frag": 75,
@@ -1453,6 +1509,7 @@
           "_fragOnly": true
         },
         {
+          "id": "sucker-punch",
           "name": "Sucker Punch",
           "costs": null,
           "frag": 30,
@@ -1467,6 +1524,7 @@
           "_fragOnly": true
         },
         {
+          "id": "thieves-cant",
           "name": "Thieves Cant",
           "costs": null,
           "frag": 20,
@@ -1481,6 +1539,7 @@
           "_fragOnly": true
         },
         {
+          "id": "tumble",
           "name": "Tumble",
           "costs": null,
           "frag": 30,
@@ -1500,6 +1559,7 @@
       "cat": "Scholar Class Frag Skills",
       "skills": [
         {
+          "id": "combat-wizardry",
           "name": "Combat Wizardry",
           "costs": null,
           "frag": 50,
@@ -1510,7 +1570,7 @@
           "_weaponChoice": null,
           "prereqs": [
             {
-              "name": "Self Mutilate",
+              "id": "self-mutilate",
               "minCount": 1
             }
           ],
@@ -1519,6 +1579,7 @@
           "_fragOnly": true
         },
         {
+          "id": "harvest",
           "name": "Harvest",
           "costs": null,
           "frag": 50,
@@ -1533,6 +1594,7 @@
           "_fragOnly": true
         },
         {
+          "id": "mortician",
           "name": "Mortician",
           "costs": null,
           "frag": 75,
@@ -1543,7 +1605,7 @@
           "_weaponChoice": null,
           "prereqs": [
             {
-              "name": "Anatomy",
+              "id": "anatomy",
               "minCount": 1
             }
           ],
@@ -1552,6 +1614,7 @@
           "_fragOnly": true
         },
         {
+          "id": "refocus",
           "name": "Refocus",
           "costs": null,
           "frag": 30,
@@ -1566,6 +1629,7 @@
           "_fragOnly": true
         },
         {
+          "id": "spell-parry",
           "name": "Spell Parry",
           "costs": null,
           "frag": 35,
@@ -1580,6 +1644,7 @@
           "_fragOnly": true
         },
         {
+          "id": "spell-switch",
           "name": "Spell Switch",
           "costs": null,
           "frag": 50,
@@ -1594,6 +1659,7 @@
           "_fragOnly": true
         },
         {
+          "id": "spell-versatility",
           "name": "Spell Versatility",
           "costs": null,
           "frag": 0,
@@ -1614,6 +1680,7 @@
       "cat": "Frag Skills",
       "skills": [
         {
+          "id": "arcane-spirit",
           "name": "Arcane Spirit",
           "costs": null,
           "frag": 10,
@@ -1628,6 +1695,7 @@
           "_fragOnly": true
         },
         {
+          "id": "battlefield-medic",
           "name": "Battlefield Medic",
           "costs": null,
           "frag": 50,
@@ -1638,7 +1706,7 @@
           "_weaponChoice": null,
           "prereqs": [
             {
-              "name": "First Aid",
+              "id": "first-aid",
               "minCount": 1
             }
           ],
@@ -1647,6 +1715,7 @@
           "_fragOnly": true
         },
         {
+          "id": "cold-dead-hands",
           "name": "Cold Dead Hands",
           "costs": null,
           "frag": 30,
@@ -1661,6 +1730,7 @@
           "_fragOnly": true
         },
         {
+          "id": "create-alcohol",
           "name": "Create Alcohol",
           "costs": null,
           "frag": 10,
@@ -1675,6 +1745,7 @@
           "_fragOnly": true
         },
         {
+          "id": "heavy-drinker",
           "name": "Heavy Drinker",
           "costs": null,
           "frag": 10,
@@ -1689,6 +1760,7 @@
           "_fragOnly": true
         },
         {
+          "id": "intuition",
           "name": "Intuition",
           "costs": null,
           "frag": 50,
@@ -1703,6 +1775,7 @@
           "_fragOnly": true
         },
         {
+          "id": "looting",
           "name": "Looting",
           "frag": 5,
           "cp": 15,
@@ -1726,6 +1799,7 @@
           "desc": "This skill trains the player in the art of both hiding and finding. This skill allows the target to subtract ten seconds from the standard 60-second loot count for every level of Looting they have purchased, to a minimum of ten seconds.\n\nThis skill will also add ten seconds per level to any person trying to loot the player with the Looting skill.\n\nIf a player with Looting is being looted, they need not inform the looter how long they will have to loot for OOG. Should the searching player search for the appropriate additional time, the target must give the searching player all items as per standard searching rules. This ability can be purchased a maximum of five times."
         },
         {
+          "id": "paragon",
           "name": "Paragon",
           "frag": 100,
           "cp": 0,
@@ -1740,6 +1814,7 @@
           "desc": "Paragons are those who have proven to be faithful adherents of their God, without having devoted their lives to their service. Being a Paragon allows a character to add one Light or Dark spell, no higher than 7th circle depending on the God served, to their repertoire. Once the spell is chosen, the choice is permanent.\n\nThe Paragon may then memorize that spell in the place of one of their regular spell slots. The Paragon must have a holy symbol to memorize and cast the spell.\n\nRequires Lead Shaper Approval. CP cost equals the level of the chosen spell slot + 10. Requires at least 1 spell slot. This skill may only be purchased once ever."
         },
         {
+          "id": "possum",
           "name": "Possum",
           "costs": null,
           "frag": 25,
@@ -1754,6 +1829,7 @@
           "_fragOnly": true
         },
         {
+          "id": "teacher",
           "name": "Teacher",
           "costs": null,
           "frag": 50,

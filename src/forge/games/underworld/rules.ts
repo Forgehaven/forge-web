@@ -37,13 +37,13 @@ export const SCHOOLS_OF_MAGIC: string[] = RULES.schools
 export const EXCLUSIVE_SPHERES: Record<string, string[]> = RULES.exclusiveSpheres
 // +SPHERE_SURCHARGE_FRAGS per purchased sphere of these schools.
 export const SURCHARGE_SPHERES: string[] = RULES.surchargeSpheres
-export const SPHERES: { name: string; costs: Record<string, number>; favouredCosts: Record<string, number> }[] = RULES.spheres
-export const SPHERE_NAMES = SPHERES.map(s => s.name)
+export const SPHERES: { id: string; name: string; costs: Record<string, number>; favouredCosts: Record<string, number> }[] = RULES.spheres
 // 4th+ spheres cost the same as the 3rd (Soul Frag 2.10 Chart 4-3: "3rd or Higher").
 export const sphereAt = (i: number) => SPHERES[Math.min(i, SPHERES.length - 1)]
 export const sphereName = (i: number) => `Sphere of Magic: ${ordinal(i + 1)}`
-export function sphereIndex(name: string) {
-  const m = /^Sphere of Magic: (\d+)(st|nd|rd|th)$/.exec(name)
+export const sphereId = (i: number) => `sphere-${i + 1}`
+export function sphereIndex(id: string) {
+  const m = /^sphere-(\d+)$/.exec(id)
   return m ? Number(m[1]) - 1 : -1
 }
 // Keyed by circle, then occupation.

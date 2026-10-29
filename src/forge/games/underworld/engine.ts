@@ -1,19 +1,23 @@
 import {
   BASE_CP, CULTURE_FRAG_COST, DEFAULT_MAX, ELEMENTS, EXCLUSIVE_SPHERES, MAX_BLANKETS_PER_MONTH,
   MAX_RITUAL_SLOTS, OCC_CLASS, RACIAL_CP, RITUAL_BASE_COSTS, SLOTS_PER_CIRCLE,
-  SPELL_CIRCLE_COSTS, SPHERE_NAMES, sphereAt, sphereIndex, sphereName, MAX_SLOTS_PER_CIRCLE, SPHERE_SURCHARGE_FRAGS,
+  SPELL_CIRCLE_COSTS, sphereAt, sphereId, sphereIndex, sphereName, MAX_SLOTS_PER_CIRCLE, SPHERE_SURCHARGE_FRAGS,
   SURCHARGE_SPHERES, TABLE, WEAPON_GROUPS, ordinal,
   type LevelRow,
 } from './rules'
 import { CULTURES, FAVOURED_COSTS, FAVOURED_VOCATIONS, FRAG_RACES, OCC_ABILITIES, RACES, SKILLS, VOCATIONS, VOCATION_PREREQS } from './data'
-import type { PrereqCondition, Race, Skill, Vocation } from './types'
+import type { Prereq, PrereqCondition, Race, Skill, Vocation } from './types'
 
-export const SPELL_SLOT = 'Spell Slot'
-export const RITUAL_SLOT = 'Ritual Slot'
-export const ELEMENTAL_ATTUNEMENT = 'Elemental Attunement'
-export const PARAGON = 'Paragon'
-export const SPELL_VERSATILITY = 'Spell Versatility'
-export const TRADESMAN = 'Tradesman'
+// Skill ids the engine special-cases.
+export const SPELL_SLOT = 'spell-slot'
+export const RITUAL_SLOT = 'ritual-slot'
+export const ELEMENTAL_ATTUNEMENT = 'elemental-attunement'
+export const PARAGON = 'paragon'
+export const SPELL_VERSATILITY = 'spell-versatility'
+export const TRADESMAN = 'tradesman'
+export const READ_MAGIC = 'read-magic'
+export const READ_MAGIC_ADVANCED = 'read-magic-advanced'
+const READ_MAGIC_RITUAL = 'read-magic-ritual'
 // Raw Material a trade produces; the trade's name is free text after a '|'.
 export const TRADE_MATERIALS = ['Blacksmith', 'Scrollcraft', 'Alchemy', 'Trapper']
 export function slotCost(b: Build, circle: number) {
@@ -82,14 +86,41 @@ export function vocationData(voc: string): Vocation | null {
   return VOCATIONS[voc] ?? FAVOURED_VOCATIONS[voc] ?? null
 }
 
+// Display names by id.
+const NAMES = new Map<string, string>([
+  [SPELL_SLOT, 'Spell Slot'], [RITUAL_SLOT, 'Ritual Slot'],
+  ...[
+    ...SKILLS.flatMap(c => c.skills),
+    ...Object.values({ ...RACES, ...FRAG_RACES }).flatMap(r => r.purchased),
+    ...Object.values(CULTURES).flatMap(c => c.purchased ?? []),
+    ...Object.values(OCC_ABILITIES).flat(),
+    ...Object.values({ ...VOCATIONS, ...FAVOURED_VOCATIONS }).flatMap(v => v.abilities),
+  ].map(s => [s.id, s.name] as const),
+])
+
+export function skillName(id: string) {
+  const sphere = sphereIndex(id)
+  return sphere >= 0 ? sphereName(sphere) : NAMES.get(id) ?? id
+}
+
+export const prereqLabel = (p: Prereq) =>
+  `${(p.minCount ?? 1) > 1 ? `${p.minCount}x ` : ''}${p.level ? `Level ${p.level}` : (p.id ?? '').split('|').map(skillName).join(' or ')}`
+
+// Saves made before skills had ids stored names.
+const LEGACY = new Map([...NAMES].map(([id, name]) => [name, id]))
+export function legacyId(skill: string) {
+  const m = /^Sphere of Magic: (\d+)/.exec(skill)
+  return m ? sphereId(Number(m[1]) - 1) : LEGACY.get(skill) ?? skill
+}
+
 const abilitiesOf = (b: Build) => vocationData(b.vocation)?.abilities ?? OCC_ABILITIES[b.occupation] ?? []
 
 // Changing occupation or vocation swaps each owned ability for the new set's
 // ability of the same tier (3/6/9/12), in every plan mode.
 export function switchRole(b: Build, patch: Partial<Pick<Build, 'occupation' | 'vocation'>>): Build {
   const next = { ...b, ...patch }
-  const to = new Map(abilitiesOf(next).map(a => [a.tier, a.name]))
-  const rename = new Map(abilitiesOf(b).flatMap(a => (to.has(a.tier) ? [[a.name, to.get(a.tier)!] as const] : [])))
+  const to = new Map(abilitiesOf(next).map(a => [a.tier, a.id]))
+  const rename = new Map(abilitiesOf(b).flatMap(a => (to.has(a.tier) ? [[a.id, to.get(a.tier)!] as const] : [])))
   const fix = (ps: Purchase[]) => ps.map(p => (rename.has(p.skill) ? { ...p, skill: rename.get(p.skill)! } : p))
   return {
     ...next,
@@ -183,9 +214,9 @@ export function catalog(b: Build): { cat: string; skills: CatalogSkill[] }[] {
       skills: abilities.map(ab => {
         const prev = abilities.find(a => a.tier === ab.tier - 3)
         return {
-          name: ab.name, costs: null, cp: ab.cp, frag: 0, maxPurchases: ab.maxPurchases ?? DEFAULT_MAX,
+          id: ab.id, name: ab.name, costs: null, cp: ab.cp, frag: 0, maxPurchases: ab.maxPurchases ?? DEFAULT_MAX,
           bodyBonus: ab.bodyBonus ?? 0, strBonus: 0, prereqPerPurchase: false,
-          prereqs: prev ? [{ name: prev.name, minCount: 1 }] : [],
+          prereqs: prev ? [{ id: prev.id, minCount: 1 }] : [],
           desc: ab.desc, tier: ab.tier, category: 'Occupational Abilities',
         }
       }),
@@ -244,15 +275,15 @@ function newState(): ReplayState {
 const count = (st: ReplayState, name: string) => st.counts.get(name) ?? 0
 
 export function weaponGroups(st: ReplayState) {
-  return ['Simple', ...['Medium', 'Large'].filter(g => count(st, `Weapon Group Proficiency: ${g}`) > 0)]
+  return ['Simple', ...['Medium', 'Large'].filter(g => count(st, `weapon-group-proficiency-${g.toLowerCase()}`) > 0)]
 }
 
 // Legal answers for a choice skill given what is owned so far.
 export function choiceOptions(sk: Skill, st: ReplayState): string[] {
-  if (sk.name === ELEMENTAL_ATTUNEMENT) return ELEMENTS.filter(e => !st.attunements.includes(e))
-  if (sk.name === TRADESMAN) return TRADE_MATERIALS
-  if (sk.name === SPELL_SLOT) return ['1', '2', '3', '4', '5', '6', '7', '8', '9']
-  if (sk.name === SPELL_VERSATILITY) return ['1', '2', '3', '4', '5', '6', '7', '8', '9'].filter(c => st.circles[+c] > st.versatile[+c])
+  if (sk.id === ELEMENTAL_ATTUNEMENT) return ELEMENTS.filter(e => !st.attunements.includes(e))
+  if (sk.id === TRADESMAN) return TRADE_MATERIALS
+  if (sk.id === SPELL_SLOT) return ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+  if (sk.id === SPELL_VERSATILITY) return ['1', '2', '3', '4', '5', '6', '7', '8', '9'].filter(c => st.circles[+c] > st.versatile[+c])
   if (sk._paragon) {
     const circles = [1, 2, 3, 4, 5, 6, 7].filter(c => st.circles[c] > 0)
     return ['Light', 'Dark'].flatMap(sp => circles.map(c => `${sp}|${c}`))
@@ -260,60 +291,60 @@ export function choiceOptions(sk: Skill, st: ReplayState): string[] {
   if (sk._weaponChoice === 'exotic') return WEAPON_GROUPS.Exotic.filter(w => !st.exotics.includes(w))
   if (sk._weaponChoice === 'group') return weaponGroups(st)
   if (sk._weaponChoice === 'specific') {
-    const summoned = sk.name === 'Specialization +1: Weapon Specific'
+    const summoned = sk.id === 'specialization-1-weapon-specific'
     return st.weapons.filter(w => w !== 'Summoned Weapon' || summoned)
   }
   return []
 }
 
 export function needsChoice(sk: Skill) {
-  return !!sk._weaponChoice || !!sk._paragon || sk.name === ELEMENTAL_ATTUNEMENT || sk.name === SPELL_SLOT || sk.name === SPELL_VERSATILITY || sk.name === TRADESMAN
+  return !!sk._weaponChoice || !!sk._paragon || sk.id === ELEMENTAL_ATTUNEMENT || sk.id === SPELL_SLOT || sk.id === SPELL_VERSATILITY || sk.id === TRADESMAN
 }
 
-export function choiceLabel(skillName: string, choice?: string) {
-  if (!choice) return skillName
-  if (skillName === SPELL_SLOT) return `Spell Slot: ${ordinal(Number(choice))} Circle`
-  if (skillName === SPELL_VERSATILITY) return `Spell Versatility: ${ordinal(Number(choice))} Circle`
-  if (skillName === TRADESMAN) {
+export function choiceLabel(skill: string, choice?: string) {
+  const name = skillName(skill)
+  if (!choice) return name
+  if (skill === SPELL_SLOT) return `Spell Slot: ${ordinal(Number(choice))} Circle`
+  if (skill === SPELL_VERSATILITY) return `Spell Versatility: ${ordinal(Number(choice))} Circle`
+  if (skill === TRADESMAN) {
     const [material, name] = choice.split('|')
     return `Tradesman: ${name || 'Unnamed'} (${material})`
   }
-  if (skillName === PARAGON) {
+  if (skill === PARAGON) {
     const [sp, c] = choice.split('|')
     return `Paragon (${sp}, ${ordinal(Number(c))} Circle)`
   }
-  return `${skillName}: ${choice}`
+  return `${name}: ${choice}`
 }
 
 function lookup(b: Build) {
   const map = new Map<string, CatalogSkill>()
-  for (const c of catalog(b)) for (const s of c.skills) if (!map.has(s.name)) map.set(s.name, s)
+  for (const c of catalog(b)) for (const s of c.skills) if (!map.has(s.id)) map.set(s.id, s)
   return map
 }
 
 function skillCost(sk: CatalogSkill, b: Build, choice?: string): number {
   if (sk.racial) return RACIAL_CP
   if (sk._paragon) return Number(choice?.split('|')[1] ?? 0) + 10
-  if (sk.name === SPELL_VERSATILITY) return versatilityCost(b, choice)
+  if (sk.id === SPELL_VERSATILITY) return versatilityCost(b, choice)
   const fav = favouredTable(b)
-  if (sk.costs && fav && fav[sk.name] !== undefined) return fav[sk.name]
+  if (sk.costs && fav && fav[sk.id] !== undefined) return fav[sk.id]
   if (sk.costs) return occCost(sk.costs, b)
   return sk.cp ?? 0
 }
 
 function prereqError(sk: CatalogSkill, st: ReplayState, level: number): string | null {
-  const have = count(st, sk.name)
+  const have = count(st, sk.id)
   for (const pre of sk.prereqs) {
-    if (pre.name.startsWith('Level ')) {
-      const req = parseInt(pre.name.slice(6))
-      if (level < req) return `Requires level ${req}`
+    if (pre.level) {
+      if (level < pre.level) return `Requires level ${pre.level}`
       continue
     }
-    const options = pre.name.split('|').map(o => o.trim())
+    const options = (pre.id ?? '').split('|')
     const need = pre.minCount ?? 1
     const required = !pre.primaryGate && sk.prereqPerPurchase ? need * (have + 1) : need
     const got = options.reduce((sum, o) => sum + count(st, o), 0)
-    if (got < required) return `Requires ${required > 1 ? `${required}x ` : ''}${options.join(' or ')}`
+    if (got < required) return `Requires ${required > 1 ? `${required}x ` : ''}${options.map(skillName).join(' or ')}`
   }
   return null
 }
@@ -338,8 +369,8 @@ function check(p: Purchase, st: ReplayState, ctx: Ctx, strictChoice: boolean): [
     const frag = SURCHARGE_SPHERES.includes(school) ? SPHERE_SURCHARGE_FRAGS : 0
     if (!b.occupation) return [cost, frag, 'Pick an occupation first']
     if (count(st, p.skill) > 0) return [cost, frag, 'Already owned']
-    const pre = sphereIdx === 0 ? 'Read Magic' : sphereName(sphereIdx - 1)
-    if (count(st, pre) === 0) return [cost, frag, `Requires ${pre}`]
+    const pre = sphereIdx === 0 ? READ_MAGIC : sphereId(sphereIdx - 1)
+    if (count(st, pre) === 0) return [cost, frag, `Requires ${skillName(pre)}`]
     return [cost, frag, null]
   }
 
@@ -348,8 +379,8 @@ function check(p: Purchase, st: ReplayState, ctx: Ctx, strictChoice: boolean): [
     const cost = slotCost(b, circle)
     if (!b.occupation) return [cost, 0, 'Pick an occupation first']
     if (!(circle >= 1 && circle <= 9)) return [cost, 0, 'Pick a circle']
-    if (count(st, SPHERE_NAMES[0]) === 0) return [cost, 0, `Requires ${SPHERE_NAMES[0]}`]
-    if (circle >= 5 && count(st, 'Read Magic: Advanced') === 0) return [cost, 0, 'Requires Read Magic: Advanced']
+    if (count(st, sphereId(0)) === 0) return [cost, 0, `Requires ${sphereName(0)}`]
+    if (circle >= 5 && count(st, READ_MAGIC_ADVANCED) === 0) return [cost, 0, 'Requires Read Magic: Advanced']
     const pyramid = pyramidError(st.circles, circle)
     if (pyramid) return [cost, 0, pyramid]
     return [cost, 0, null]
@@ -358,7 +389,7 @@ function check(p: Purchase, st: ReplayState, ctx: Ctx, strictChoice: boolean): [
   if (p.skill === RITUAL_SLOT) {
     const cost = occCost(RITUAL_BASE_COSTS, b) * (st.rituals + 1)
     if (!b.occupation) return [cost, 0, 'Pick an occupation first']
-    if (count(st, 'Read Magic: Ritual') === 0) return [cost, 0, 'Requires Read Magic: Ritual']
+    if (count(st, READ_MAGIC_RITUAL) === 0) return [cost, 0, 'Requires Read Magic: Ritual']
     if (st.circles[9] < 1) return [cost, 0, 'Requires a 9th Circle slot']
     if (st.rituals >= MAX_RITUAL_SLOTS) return [cost, 0, 'Maxed']
     return [cost, 0, null]
@@ -367,13 +398,13 @@ function check(p: Purchase, st: ReplayState, ctx: Ctx, strictChoice: boolean): [
   const sk = ctx.skills.get(p.skill)
   if (!sk) return [0, 0, 'Not available to this character']
   const cost = skillCost(sk, b, p.choice)
-  const frag = sk.name === SPELL_VERSATILITY ? versatilityCost(b, p.choice) : sk.frag
+  const frag = sk.id === SPELL_VERSATILITY ? versatilityCost(b, p.choice) : sk.frag
   const err = (e: string): [number, number, string] => [cost, frag, e]
-  const have = count(st, sk.name)
+  const have = count(st, sk.id)
 
   if (sk.costs && !b.occupation) return err('Pick an occupation first')
-  if (sk.name === ELEMENTAL_ATTUNEMENT) {
-    const elemental = b.schools.some((s, i) => s === 'Elemental' && count(st, sphereName(i)) > 0)
+  if (sk.id === ELEMENTAL_ATTUNEMENT) {
+    const elemental = b.schools.some((s, i) => s === 'Elemental' && count(st, sphereId(i)) > 0)
     if (!elemental) return err('Requires the Elemental sphere')
     if (!b.attunement) return err('Pick a primary attunement')
   }
@@ -388,7 +419,7 @@ function check(p: Purchase, st: ReplayState, ctx: Ctx, strictChoice: boolean): [
   if (pre) return err(pre)
   if (needsChoice(sk)) {
     if (p.choice === undefined) return [cost, frag, strictChoice ? 'Make a choice' : null]
-    const pick = sk.name === TRADESMAN ? p.choice.split('|')[0] : p.choice
+    const pick = sk.id === TRADESMAN ? p.choice.split('|')[0] : p.choice
     if (!choiceOptions(sk, st).includes(pick)) return err(`${pick} not available`)
   }
   return [cost, frag, null]
@@ -403,9 +434,9 @@ function apply(p: Purchase, st: ReplayState, ctx: Ctx, cost: number, frag: numbe
   if (p.skill === SPELL_VERSATILITY) st.versatile[Number(p.choice)]++
   if (p.skill === ELEMENTAL_ATTUNEMENT && p.choice) st.attunements.push(p.choice)
   if (ctx.skills.get(p.skill)?.racial) st.racial++
-  if (p.skill === 'Weapon Group Proficiency: Medium') st.weapons.push(...WEAPON_GROUPS.Medium)
-  if (p.skill === 'Weapon Group Proficiency: Large') st.weapons.push(...WEAPON_GROUPS.Large)
-  if (p.skill === 'Weapon Specific Proficiency: Exotic' && p.choice) {
+  if (p.skill === 'weapon-group-proficiency-medium') st.weapons.push(...WEAPON_GROUPS.Medium)
+  if (p.skill === 'weapon-group-proficiency-large') st.weapons.push(...WEAPON_GROUPS.Large)
+  if (p.skill === 'weapon-specific-proficiency-exotic' && p.choice) {
     st.exotics.push(p.choice)
     st.weapons.push(p.choice)
   }
@@ -589,7 +620,7 @@ export function evaluate(b: Build, probe?: Purchase, loose = false): Evaluation 
   }
   body += (race?.bodyBonusPerLevel ?? 0) * level
   strength += (race?.strBonusPerFiveLevels ?? 0) * Math.ceil(level / 5)
-  const bs = count(st, 'Blacksmith')
+  const bs = count(st, 'blacksmith')
   strength += bs >= 10 ? 2 : bs >= 6 ? 1 : 0
   const cls = OCC_CLASS[b.occupation]
 
@@ -617,16 +648,16 @@ function buildWarnings(b: Build, st: ReplayState): string[] {
   const prereqs = VOCATION_PREREQS[b.vocation]
   for (const need of prereqs?.auto ?? []) {
     const options = need.split('|')
-    if (!options.some(o => count(st, o) > 0)) w.push(`${b.vocation} expects ${options.join(' or ')}`)
+    if (!options.some(o => count(st, o) > 0)) w.push(`${b.vocation} expects ${options.map(skillName).join(' or ')}`)
   }
   const met = (c: PrereqCondition) =>
     (!c.skill || c.skill.split('|').reduce((n, s) => n + count(st, s), 0) >= (c.count ?? 1)) &&
-    (!c.circle || (st.circles[c.circle] > 0 && (!c.sphere || b.schools.some((s, i) => s === c.sphere && count(st, sphereName(i)) > 0))))
+    (!c.circle || (st.circles[c.circle] > 0 && (!c.sphere || b.schools.some((s, i) => s === c.sphere && count(st, sphereId(i)) > 0))))
   for (const c of prereqs?.choice ?? []) {
     if (!c.anyOf.some(alt => alt.every(met))) w.push(`${b.vocation} expects ${c.label}`)
   }
   b.schools.forEach((school, i) => {
-    if (!school || count(st, sphereName(i)) === 0) return
+    if (!school || count(st, sphereId(i)) === 0) return
     const allowed = EXCLUSIVE_SPHERES[school]
     if (allowed && !allowed.includes(b.vocation)) w.push(`${school} sphere is limited to ${allowed.join(', ')}`)
   })

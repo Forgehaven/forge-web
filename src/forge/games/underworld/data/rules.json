@@ -245,7 +245,8 @@
       "favouredCosts": {
         "Champion": 50,
         "Demagogue": 50
-      }
+      },
+      "id": "sphere-1"
     },
     {
       "name": "Sphere of Magic: 2nd",
@@ -263,7 +264,8 @@
       "favouredCosts": {
         "Champion": 200,
         "Demagogue": 175
-      }
+      },
+      "id": "sphere-2"
     },
     {
       "name": "Sphere of Magic: 3rd",
@@ -281,7 +283,8 @@
       "favouredCosts": {
         "Champion": 300,
         "Demagogue": 225
-      }
+      },
+      "id": "sphere-3"
     }
   ],
   "spellCircleCosts": {
