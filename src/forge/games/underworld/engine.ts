@@ -1,7 +1,7 @@
 import {
   BASE_CP, CULTURE_FRAG_COST, DEFAULT_MAX, ELEMENTS, EXCLUSIVE_SPHERES, MAX_BLANKETS_PER_MONTH,
-  MAX_RITUAL_SLOTS, OCC_CLASS, SPIRITUAL_RESOLVE_MAX_LEVEL, RACIAL_CP, RITUAL_BASE_COSTS, SLOTS_PER_CIRCLE,
-  SPELL_CIRCLE_COSTS, sphereAt, sphereId, sphereIndex, sphereName, MAX_SLOTS_PER_CIRCLE, SPHERE_SURCHARGE_FRAGS,
+  MAX_RITUAL_SLOTS, OCC_CLASS, SPIRITUAL_RESOLVE_MAX_LEVEL, RACIAL_CP, RITUAL_BASE_COSTS, FAVOURED_SPELL_CIRCLE_COSTS, FAVOURED_RITUAL_BASE_COSTS,
+  SPELL_CIRCLE_COSTS, sphereAt, sphereId, sphereIndex, sphereName, SPHERE_SURCHARGE_FRAGS, PYRAMID_ORDER,
   SURCHARGE_SPHERES, TABLE, WEAPON_GROUPS, ordinal,
   type LevelRow,
 } from './rules'
@@ -21,6 +21,8 @@ const READ_MAGIC_RITUAL = 'read-magic-ritual'
 // Raw Material a trade produces; the trade's name is free text after a '|'.
 export const TRADE_MATERIALS = ['Blacksmith', 'Scrollcraft', 'Alchemy', 'Trapper']
 export function slotCost(b: Build, circle: number) {
+  const g = favouredGroup(b)
+  if (g) return FAVOURED_SPELL_CIRCLE_COSTS[String(circle)]?.[g] ?? 0
   const costs = SPELL_CIRCLE_COSTS[String(circle)]
   return costs ? occCost(costs, b) : 0
 }
@@ -134,10 +136,15 @@ export function switchRole(b: Build, patch: Partial<Pick<Build, 'occupation' | '
   }
 }
 
-function favouredTable(b: Build) {
+// 'Champion' or 'Demagogue' for a Favoured vocation.
+function favouredGroup(b: Build) {
   const fv = FAVOURED_VOCATIONS[b.vocation]
-  if (!fv) return null
-  return FAVOURED_COSTS[fv.group ?? 'Champion']
+  return fv ? fv.group ?? 'Champion' : null
+}
+
+function favouredTable(b: Build) {
+  const g = favouredGroup(b)
+  return g ? FAVOURED_COSTS[g] : null
 }
 
 // 0 until an occupation is picked; costed purchases are blocked until then.
@@ -202,7 +209,9 @@ export function catalog(b: Build): { cat: string; skills: CatalogSkill[] }[] {
 
   const culture = CULTURES[b.culture]
   const race = raceData(b.race)
-  const racial = (culture?.purchased ?? race?.purchased ?? []).map(s => ({
+  // A culture replaces the race's purchasable ability but keeps its Body/Strength bonuses (Core p.29).
+  const own = race?.purchased ?? []
+  const racial = (culture ? [...(culture.purchased ?? []), ...own.filter(s => s.bodyBonus || s.strBonus)] : own).map(s => ({
     costs: null, frag: 0, prereqPerPurchase: false, ...s, racial: true, category: 'Racial',
   }))
   out.push({ cat: 'Racial', skills: racial })
@@ -329,7 +338,7 @@ function lookup(b: Build) {
 
 function skillCost(sk: CatalogSkill, b: Build, choice?: string): number {
   if (sk.racial) return RACIAL_CP
-  if (sk._paragon) return Number(choice?.split('|')[1] ?? 0) + 10
+  if (sk._paragon) return slotCost(b, Number(choice?.split('|')[1])) + 10
   if (sk.id === SPELL_VERSATILITY) return versatilityCost(b, choice)
   const fav = favouredTable(b)
   if (sk.costs && fav && fav[sk.id] !== undefined) return fav[sk.id]
@@ -346,7 +355,8 @@ function prereqError(sk: CatalogSkill, st: ReplayState, level: number): string |
     }
     const options = (pre.id ?? '').split('|')
     const need = pre.minCount ?? 1
-    const required = !pre.primaryGate && sk.prereqPerPurchase ? need * (have + 1) : need
+    // Each further purchase needs one more (Core p.68: "an additional purchase of the weapon specialisation").
+    const required = !pre.primaryGate && sk.prereqPerPurchase ? need + have : need
     const got = options.reduce((sum, o) => sum + count(st, o), 0)
     if (got < required) return `Requires ${required > 1 ? `${required}x ` : ''}${options.map(skillName).join(' or ')}`
   }
@@ -391,7 +401,8 @@ function check(p: Purchase, st: ReplayState, ctx: Ctx, strictChoice: boolean): [
   }
 
   if (p.skill === RITUAL_SLOT) {
-    const cost = occCost(RITUAL_BASE_COSTS, b) * (st.rituals + 1)
+    const g = favouredGroup(b)
+    const cost = (g ? FAVOURED_RITUAL_BASE_COSTS[g] : occCost(RITUAL_BASE_COSTS, b)) * (st.rituals + 1)
     if (!b.occupation) return [cost, 0, 'Pick an occupation first']
     if (count(st, READ_MAGIC_RITUAL) === 0) return [cost, 0, 'Requires Read Magic: Ritual']
     if (st.circles[9] < 1) return [cost, 0, 'Requires a 9th Circle slot']
@@ -517,26 +528,19 @@ export function sortedPurchases(b: Build) {
   return out
 }
 
-// Core p.105-106. circles[c] = slots owned at circle c (1-9).
+// Slots are bought one at a time in Chart 8-1 order (Core p.106); once the
+// 5-wide pyramid is full a second tower repeats the same order. circles[c] = slots at circle c.
+export const SLOT_ORDER = [...PYRAMID_ORDER, ...PYRAMID_ORDER]
+const slotTotal = (circles: number[]) => circles.reduce((a, n) => a + n, 0)
+// The circle the next slot must be, or undefined when both towers are full.
+export const nextSlotCircle = (circles: number[]) => SLOT_ORDER[slotTotal(circles)]
+// The only slot that may be removed: the last one bought.
+export const lastSlotCircle = (circles: number[]) => SLOT_ORDER[slotTotal(circles) - 1]
+
 export function pyramidError(circles: number[], circle: number): string | null {
-  const full = [1, 2, 3, 4, 5, 6, 7, 8, 9].every(c => circles[c] >= SLOTS_PER_CIRCLE)
-  if (full) {
-    if (circles[circle] >= MAX_SLOTS_PER_CIRCLE) return `${ordinal(circle)} Circle is at the maximum of ${MAX_SLOTS_PER_CIRCLE}`
-    if (circle > 1 && circles[circle] + 1 > circles[circle - 1]) return `Needs another ${ordinal(circle - 1)} Circle slot first`
-    return null
-  }
-  if (circles[circle] >= SLOTS_PER_CIRCLE) return `${ordinal(circle)} Circle is full until the whole pyramid is 5 wide`
-  if (circle > 1) {
-    const need = Math.min(circles[circle] + 2, SLOTS_PER_CIRCLE)
-    if (circles[circle - 1] < need) return `Needs ${need} ${ordinal(circle - 1)} Circle slots`
-  }
-  // Two more slots in a circle than the one above forces the next buy upward.
-  for (let c = 1; c < 9; c++) {
-    if (circles[c] >= circles[c + 1] + 2 && circles[c + 1] < SLOTS_PER_CIRCLE) {
-      return c + 1 === circle ? null : `Next slot must be ${ordinal(c + 1)} Circle`
-    }
-  }
-  return null
+  const next = nextSlotCircle(circles)
+  if (next === undefined) return 'Both spell towers are full'
+  return circle === next ? null : `Next slot must be ${ordinal(next)} Circle`
 }
 
 export interface Evaluation {
@@ -578,6 +582,8 @@ export function evaluate(b: Build, probe?: Purchase, loose = false): Evaluation 
   })
 
   const st = newState()
+  // Elemental Attunement buys additional elements, never the primary (Core p.61).
+  if (b.attunement) st.attunements.push(b.attunement)
   const fv = FAVOURED_VOCATIONS[b.vocation]
   if (fv?.cpCost) st.spent += fv.cpCost
 

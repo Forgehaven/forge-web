@@ -428,5 +428,48 @@
       "Bastard Sword",
       "Summoned Weapon"
     ]
-  }
+  },
+  "favouredSpellCircleCosts": {
+    "1": {
+      "Champion": 10,
+      "Demagogue": 10
+    },
+    "2": {
+      "Champion": 20,
+      "Demagogue": 10
+    },
+    "3": {
+      "Champion": 40,
+      "Demagogue": 20
+    },
+    "4": {
+      "Champion": 40,
+      "Demagogue": 20
+    },
+    "5": {
+      "Champion": 50,
+      "Demagogue": 30
+    },
+    "6": {
+      "Champion": 60,
+      "Demagogue": 30
+    },
+    "7": {
+      "Champion": 70,
+      "Demagogue": 40
+    },
+    "8": {
+      "Champion": 80,
+      "Demagogue": 40
+    },
+    "9": {
+      "Champion": 100,
+      "Demagogue": 50
+    }
+  },
+  "favouredRitualBaseCosts": {
+    "Champion": 30,
+    "Demagogue": 10
+  },
+  "favouredSlotRef": "Soul Frag 2.10 p.58 (Chart 4-3)"
 }

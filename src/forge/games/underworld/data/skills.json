@@ -832,7 +832,7 @@
             },
             {
               "id": "specialization-1-weapon-group|specialization-1-weapon-specific",
-              "minCount": 1
+              "minCount": 2
             }
           ],
           "desc": "Requires Slay/Parry to be purchased first. Each purchase requires an additional Weapon Specialization (Group or Specific). Functions identically to Slay/Parry for a single weapon the character is proficient in, chosen at purchase."
@@ -865,7 +865,7 @@
             },
             {
               "id": "specialization-1-weapon-group",
-              "minCount": 1
+              "minCount": 2
             }
           ],
           "desc": "Requires Slay/Parry: Master to be purchased first. Each purchase requires an additional Weapon Group Specialization. Functions identically to Slay/Parry: Master for an entire Weapon Group."
@@ -1137,7 +1137,7 @@
             },
             {
               "id": "critical-2-specific|critical-2-group|feint",
-              "minCount": 1
+              "minCount": 2
             }
           ],
           "desc": "Requires Dodge to be purchased first. Each purchase requires an additional Critical +2 (Specific or Group) or Feint. Usable once per day per purchase."
@@ -1226,7 +1226,7 @@
             },
             {
               "id": "critical-2-specific|critical-2-group",
-              "minCount": 1
+              "minCount": 2
             }
           ],
           "desc": "Requires Execute to be purchased first. Each purchase requires an additional Critical +2 (Specific or Group). Usable once per day per purchase."
@@ -1259,7 +1259,7 @@
             },
             {
               "id": "critical-2-group",
-              "minCount": 1
+              "minCount": 2
             }
           ],
           "desc": "Requires Execute: Master to be purchased first. Each purchase requires an additional Critical +2: Group. Usable once per day per purchase."
@@ -1380,7 +1380,7 @@
           "_weaponChoice": null,
           "prereqs": [
             {
-              "id": "slay-parry",
+              "id": "slay-parry|slay-parry-master|slay-parry-subsequent|slay-parry-master-subsequent",
               "minCount": 1
             }
           ],
@@ -1663,7 +1663,7 @@
           "name": "Spell Versatility",
           "costs": null,
           "frag": 0,
-          "maxPurchases": 45,
+          "maxPurchases": 90,
           "bodyBonus": 0,
           "strBonus": 0,
           "prereqPerPurchase": false,
@@ -1801,6 +1801,8 @@
         {
           "id": "paragon",
           "name": "Paragon",
+          "costNote": "slot + 10 CP",
+          "ref": "Soul Frag 2.10 p.88",
           "frag": 100,
           "cp": 0,
           "costs": null,
@@ -1811,7 +1813,7 @@
           "prereqs": [],
           "_fragOnly": true,
           "_paragon": true,
-          "desc": "Paragons are those who have proven to be faithful adherents of their God, without having devoted their lives to their service. Being a Paragon allows a character to add one Light or Dark spell, no higher than 7th circle depending on the God served, to their repertoire. Once the spell is chosen, the choice is permanent.\n\nThe Paragon may then memorize that spell in the place of one of their regular spell slots. The Paragon must have a holy symbol to memorize and cast the spell.\n\nRequires Lead Shaper Approval. CP cost equals the level of the chosen spell slot + 10. Requires at least 1 spell slot. This skill may only be purchased once ever."
+          "desc": "Paragons are those who have proven to be faithful adherents of their God, without having devoted their lives to their service. Being a Paragon allows a character to add one Light or Dark spell, no higher than 7th circle depending on the God served, to their repertoire. Once the spell is chosen, the choice is permanent.\n\nThe Paragon may then memorize that spell in the place of one of their regular spell slots. The Paragon must have a holy symbol to memorize and cast the spell.\n\nRequires Lead Shaper Approval and a spell slot of the chosen circle. This skill may only be purchased once ever.\n\nCost: 100 frags, plus CP equal to a spell slot of the chosen circle + 10 (e.g. a Mage's 3rd circle slot costs 20 CP, so Paragon at 3rd circle is 30 CP)."
         },
         {
           "id": "possum",

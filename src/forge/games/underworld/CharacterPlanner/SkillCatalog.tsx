@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import {
-  catalog, choiceLabel, choiceOptions, evaluate, needsChoice, prereqLabel, stateAt, vocationNeeds, SPELL_VERSATILITY, TRADESMAN, versatilityCost,
+  catalog, choiceLabel, choiceOptions, evaluate, needsChoice, prereqLabel, slotCost, stateAt, vocationNeeds, SPELL_VERSATILITY, TRADESMAN, versatilityCost,
   type Build, type CatalogSkill, type Evaluation,
 } from '../engine'
 import { stepLabel } from './util'
@@ -33,6 +33,10 @@ interface Row {
 
 function optionLabel(sk: CatalogSkill, o: string, build: Build) {
   if (sk.id === SPELL_VERSATILITY) return `${ordinal(+o)} Circle (${versatilityCost(build, o)} CP, ${versatilityCost(build, o)}f)`
+  if (sk._paragon) {
+    const [sp, c] = o.split('|')
+    return `${sp}, ${ordinal(+c)} Circle (${slotCost(build, +c) + 10} CP)`
+  }
   return o.replace('|', ', circle ')
 }
 
@@ -84,7 +88,7 @@ function SkillRow({ row, owned, needFor, hasOccupation, onAdd, onRemove }: {
         </button>
         <span className="text-xs font-mono text-[#9ca3af] whitespace-nowrap text-right">
           {sk.costNote ?? (showCost ? `${cost} CP` : '–')}
-          {frag && !sk.costNote ? <span className="text-violet-300/80"> · {frag}f</span> : null}
+          {frag ? <span className="text-violet-300/80"> · {frag}f</span> : null}
         </span>
         {owned > 0 && (
           <button
@@ -129,7 +133,7 @@ function SkillRow({ row, owned, needFor, hasOccupation, onAdd, onRemove }: {
               setTrade('')
             }}
           >
-            <option value="" disabled>Choose {sk._weaponChoice === 'group' ? 'a weapon group' : sk._weaponChoice ? 'a weapon' : sk._paragon ? 'sphere and circle' : sk.id === SPELL_VERSATILITY ? 'a slot' : sk.id === TRADESMAN ? (row.trades?.length ? 'a trade' : 'its material') : 'an element'}…</option>
+            <option value="" disabled>Choose {sk._weaponChoice === 'group' ? 'a weapon group' : sk._weaponChoice ? 'a weapon' : sk._paragon ? 'a sphere and circle' : sk.id === SPELL_VERSATILITY ? 'a slot' : sk.id === TRADESMAN ? (row.trades?.length ? 'a trade' : 'its material') : 'an element'}…</option>
             {row.trades?.length ? (
               <>
                 <optgroup label="Level up">

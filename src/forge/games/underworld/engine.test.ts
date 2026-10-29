@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { OCC_ORDER, PYRAMID_ORDER, RITUAL_BASE_COSTS, SPELL_CIRCLE_COSTS, SPHERES } from './rules'
 import { SKILLS } from './data'
 import {
-  copyPicks, cpAt, emptyBuild, evaluate, insertBlanket, lastBlanketAtLevel, levelRow, nextBlanketMonth, pastBlankets, priorityView, simpleView, switchRole, unbuy, vocationNeeds,
+  catalog, choiceOptions, copyPicks, cpAt, emptyBuild, evaluate, insertBlanket, lastBlanketAtLevel, levelRow, nextBlanketMonth, pastBlankets, priorityView, simpleView, stateAt, switchRole, unbuy, vocationNeeds,
   type Build, type Purchase,
 } from './engine'
 
@@ -216,17 +216,17 @@ describe('spell pyramid (Core p.105-106)', () => {
     expect(errors([...magic(), ...slots(...PYRAMID_ORDER)]).every(e => e === null)).toBe(true)
   })
 
-  it('needs two slots below to open a circle and forces the next buy upward', () => {
+  it('buys strictly in book order', () => {
     // Reordered into book order within the step, so order of entry does not matter.
     expect(errors([...magic(), ...slots(2, 1, 1)])).toEqual([null, null, null])
-    expect(errors([...magic(), ...slots(1, 2)])).toEqual([null, 'Needs 2 1st Circle slots'])
+    expect(errors([...magic(), ...slots(1, 2)])).toEqual([null, 'Next slot must be 1st Circle'])
     expect(errors([...magic(), ...slots(1, 1, 1)])).toEqual([null, null, 'Next slot must be 2nd Circle'])
   })
 
-  it('widens to 10 only after the pyramid is full, never past the circle below', () => {
-    expect(errors([...magic(), ...slots(...PYRAMID_ORDER, 1, 2)]).slice(-2)).toEqual([null, null])
-    expect(errors([...magic(), ...slots(...PYRAMID_ORDER, 2)]).slice(-1)).toEqual(['Needs another 1st Circle slot first'])
-    expect(errors([...magic(), ...slots(1, 1, 2, 1, 2, 1, 1)]).slice(-1)).toEqual(['Next slot must be 3rd Circle'])
+  it('starts a second tower in the same order once the first is full', () => {
+    expect(errors([...magic(), ...slots(...PYRAMID_ORDER, ...PYRAMID_ORDER)]).every(e => e === null)).toBe(true)
+    expect(errors([...magic(), ...slots(...PYRAMID_ORDER, 1, 1, 1)]).slice(-1)).toEqual(['Next slot must be 2nd Circle'])
+    expect(errors([...magic(), ...slots(...PYRAMID_ORDER, ...PYRAMID_ORDER, 1)]).slice(-1)).toEqual(['Both spell towers are full'])
   })
 })
 
@@ -253,6 +253,45 @@ describe('spell slot ordering across steps', () => {
     expect([three.cost, three.frag, three.error]).toEqual([SPELL_CIRCLE_COSTS['3'].Mage / 2 + 5, SPELL_CIRCLE_COSTS['3'].Mage / 2 + 5, null])
     expect(again.error).toBe('3 not available')
     expect([one.cost, one.frag, one.error]).toEqual([SPELL_CIRCLE_COSTS['1'].Mage / 2 + 5, SPELL_CIRCLE_COSTS['1'].Mage / 2 + 5, null])
+  })
+
+  it('prices Paragon as a slot of the chosen circle + 10 CP (Soul Frag 2.10 p.88)', () => {
+    const magic = [buy('read-write'), buy('read-magic'), buy('sphere-1')]
+    const slots = [1, 1, 2, 1, 2, 3].map(c => buy('spell-slot', 0, String(c)))
+    const paragon = buy('paragon', 0, 'Light|3')
+    const r = evaluate(build({ occupation: 'Mage', purchases: [...magic, ...slots, paragon] }), undefined, true).results.get(paragon.id)!
+    expect([r.cost, r.frag, r.error]).toEqual([SPELL_CIRCLE_COSTS['3'].Mage + 10, 100, null])
+  })
+
+  it('keeps the race Body bonus alongside a culture ability (Core p.29)', () => {
+    const racial = catalog(build({ race: 'Mountain Dwarf', culture: 'Clan Icebreaker' })).find(c => c.cat === 'Racial')!.skills.map(s => s.id)
+    expect(racial).toEqual(['ice-blade', 'body-point-bonus-mountain-dwarf'])
+  })
+
+  it('prices Favoured spell and ritual slots off Chart 4-3 (Soul Frag 2.10 p.58)', () => {
+    const magic = [buy('read-write'), buy('read-magic'), buy('sphere-1')]
+    const slot = buy('spell-slot', 0, '1')
+    const ritual = buy('ritual-slot')
+    const cost = (vocation: string) => {
+      const ev = evaluate(build({ occupation: 'Mage', vocation, purchases: [...magic, slot, ritual] }), undefined, true)
+      return [ev.results.get(slot.id)!.cost, ev.results.get(ritual.id)!.cost]
+    }
+    expect(cost('Paladin')).toEqual([10, 30])
+    expect(cost('Lightweaver')).toEqual([10, 10])
+  })
+
+  it('needs one more Specialization per Slay/Parry: Subsequent (Core p.68)', () => {
+    const base = [buy('weapon-group-proficiency-medium'), buy('specialization-1-weapon-specific', 0, 'Sword (1H)'), buy('slay-parry', 0, 'Sword (1H)')]
+    const sub = buy('slay-parry-subsequent', 0, 'Sword (1H)')
+    const err = (extra: Purchase[]) => evaluate(build({ purchases: [...base, ...extra, sub] }), undefined, true).results.get(sub.id)!.error
+    expect(err([])).toMatch(/Requires 2x/)
+    expect(err([buy('specialization-1-weapon-specific', 0, 'Sword (1H)')])).toBeNull()
+  })
+
+  it('offers only additional elements for Elemental Attunement (Core p.61)', () => {
+    const b = build({ occupation: 'Mage', schools: ['Elemental', '', ''], attunement: 'Fire', purchases: [buy('read-write'), buy('read-magic'), buy('sphere-1')] })
+    const sk = catalog(b).flatMap(c => c.skills).find(s => s.id === 'elemental-attunement')!
+    expect(choiceOptions(sk, stateAt(b, 0, true))).toEqual(['Stone', 'Lightning', 'Ice'])
   })
 
   it('warns where level 16 ends buying back lives, and where to stop', () => {
@@ -298,9 +337,9 @@ describe('spell slot ordering across steps', () => {
     expect(bad.error).toBe('Gold not available')
   })
 
-  it('orders slots past the full pyramid by the circle below', () => {
+  it('reorders a second-tower step into book order', () => {
     const magic = [buy('read-write'), buy('read-magic'), buy('sphere-1'), buy('read-magic-advanced')]
-    const slots = [...PYRAMID_ORDER, 2, 1].map(c => buy('spell-slot', 0, String(c)))
+    const slots = [...PYRAMID_ORDER, 2, 1, 1].map(c => buy('spell-slot', 0, String(c)))
     const ev = evaluate(build({ occupation: 'Mage', purchases: [...magic, ...slots] }), undefined, true)
     expect([...ev.results.values()].every(r => r.error === null)).toBe(true)
   })

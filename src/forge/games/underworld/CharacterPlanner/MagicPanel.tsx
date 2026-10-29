@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { evaluate, READ_MAGIC, READ_MAGIC_ADVANCED, RITUAL_SLOT, SPELL_SLOT, skillName, type Build, type Evaluation } from '../engine'
+import { evaluate, lastSlotCircle, nextSlotCircle, READ_MAGIC, READ_MAGIC_ADVANCED, RITUAL_SLOT, SPELL_SLOT, skillName, type Build, type Evaluation } from '../engine'
 import {
-  ELEMENTS, EXCLUSIVE_SPHERES, MAX_RITUAL_SLOTS, SCHOOLS_OF_MAGIC, SLOTS_PER_CIRCLE,
+  ELEMENTS, EXCLUSIVE_SPHERES, MAX_RITUAL_SLOTS, MAX_SLOTS_PER_CIRCLE, SCHOOLS_OF_MAGIC, SLOTS_PER_CIRCLE,
   SURCHARGE_SPHERES, ordinal, PYRAMID_ORDER, sphereId, sphereName,
 } from '../rules'
 import { stepLabel } from './util'
@@ -50,22 +50,30 @@ export function MagicPanel({ build, ev, active, loose, setBuild, onAdd, onRemove
     setBuild(b => ({ ...b, schools: b.schools.map((s, j) => (j === i ? school : s)) }))
   const removeSphere = () => setBuild(b => ({ ...b, schools: b.schools.slice(0, -1) }))
   const hasElemental = build.schools.includes('Elemental')
+  // Slots come off in reverse buying order, so only the last one bought can go.
+  const lastSlot = lastSlotCircle(ev.final.circles)
+  const nextSlot = nextSlotCircle(ev.final.circles)
+  const nextProbe = nextSlot ? probe(SPELL_SLOT, String(nextSlot)) : null
+  // A full 5-wide pyramid opens a second row of 5 per circle.
+  const wide = ev.final.circles.slice(1, 10).every(n => n >= SLOTS_PER_CIRCLE)
 
   // Skills a pyramid through `target` needs that the plan doesn't own yet.
   const missingPrereqs = (target: number) =>
     ['read-write', READ_MAGIC, sphereId(0), ...(target >= 5 ? [READ_MAGIC_ADVANCED] : [])]
       .filter(id => owned(id) === 0)
-  const missingSlots = (target: number) => {
-    const stop = PYRAMID_ORDER.indexOf(target)
+  // Layer 2 repeats the pyramid order on top of a full 5-wide pyramid (Core p.106).
+  const missingSlots = (layer: number, target: number) => {
+    // Target 10 = the whole 5-wide layer.
+    const upTo = target === 10 ? PYRAMID_ORDER : PYRAMID_ORDER.slice(0, PYRAMID_ORDER.indexOf(target) + 1)
     const have = [...ev.final.circles]
-    return PYRAMID_ORDER.slice(0, stop + 1).filter(circle => {
+    return (layer === 2 ? [...PYRAMID_ORDER, ...upTo] : upTo).filter(circle => {
       if (have[circle] > 0) { have[circle]--; return false }
       return true
     })
   }
-  const target = Number(fillTo)
-  const fillPrereqs = target ? missingPrereqs(target) : []
-  const fillSlots = target ? missingSlots(target) : []
+  const [layer, target] = fillTo ? fillTo.split('-').map(Number) : [1, 0]
+  const fillPrereqs = target ? missingPrereqs(layer === 2 ? 10 : target) : []
+  const fillSlots = target ? missingSlots(layer, target) : []
 
   const fillPyramid = () => {
     fillPrereqs.forEach(id => onAdd(id))
@@ -128,6 +136,19 @@ export function MagicPanel({ build, ev, active, loose, setBuild, onAdd, onRemove
         </div>
 
         <div className="flex flex-col gap-4">
+          <div className="flex flex-wrap gap-2">
+            <button
+              className="forge-btn-accent disabled:opacity-40 disabled:cursor-not-allowed"
+              title={nextProbe?.error ?? undefined}
+              disabled={!nextSlot || !!nextProbe?.error}
+              onClick={() => onAdd(SPELL_SLOT, String(nextSlot))}
+            >{nextSlot ? `Add next spell slot (${ordinal(nextSlot)}, ${nextProbe?.cost} CP)` : 'Spell towers full'}</button>
+            {lastSlot && (
+              <button className="forge-btn" onClick={() => onRemove(SPELL_SLOT, String(lastSlot))}>
+                Remove last spell slot ({ordinal(lastSlot)})
+              </button>
+            )}
+          </div>
           <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
             {Array.from({ length: 9 }, (_, i) => i + 1).map(circle => {
               const n = ev.final.circles[circle]
@@ -135,15 +156,15 @@ export function MagicPanel({ build, ev, active, loose, setBuild, onAdd, onRemove
               return (
                 <div key={circle} className="rounded-md border border-[#2a2d3a] p-2 flex flex-col items-center gap-1.5">
                   <span className="text-xs text-[#e2e4ed]">{ordinal(circle)}</span>
-                  <div className="flex gap-0.5">
-                    {Array.from({ length: Math.max(SLOTS_PER_CIRCLE, n) }, (_, k) => (
+                  <div className="grid grid-cols-5 gap-0.5">
+                    {Array.from({ length: wide ? MAX_SLOTS_PER_CIRCLE : SLOTS_PER_CIRCLE }, (_, k) => (
                       <span key={k} className={`w-2 h-2 rounded-full ${k < n ? 'bg-[#c4af64]' : 'bg-[#2a2d3a]'}`} />
                     ))}
                   </div>
                   <span className="text-[10px] font-mono text-[#6b7280]">{p?.cost} CP</span>
-                  <div className="flex gap-1">
-                    {n > 0 && <RemoveButton label={`Remove ${ordinal(circle)} circle slot`} onClick={() => onRemove(SPELL_SLOT, String(circle))} />}
-                    <AddButton label={`Add ${ordinal(circle)} circle slot`} probe={p} onClick={() => onAdd(SPELL_SLOT, String(circle))} />
+                  <div className="flex gap-1 min-h-7">
+                    {circle === lastSlot && <RemoveButton label={`Remove ${ordinal(circle)} circle slot`} onClick={() => onRemove(SPELL_SLOT, String(circle))} />}
+                    {circle === nextSlot && <AddButton label={`Add ${ordinal(circle)} circle slot`} probe={p} onClick={() => onAdd(SPELL_SLOT, String(circle))} />}
                   </div>
                 </div>
               )
@@ -169,7 +190,12 @@ export function MagicPanel({ build, ev, active, loose, setBuild, onAdd, onRemove
                 Through the first
                 <select aria-label="Fill through circle" className="forge-input !w-auto" value={fillTo} onChange={e => setFillTo(e.target.value)}>
                   <option value="">circle…</option>
-                  {Array.from({ length: 9 }, (_, i) => i + 1).map(c => <option key={c} value={c}>{ordinal(c)} circle</option>)}
+                  {[1, 2].map(l => (
+                    <optgroup key={l} label={l === 1 ? 'First pyramid (5 wide)' : 'Second pyramid (10 wide)'}>
+                      {Array.from({ length: 9 }, (_, i) => i + 1).map(c => <option key={c} value={`${l}-${c}`}>{ordinal(c)} circle{l === 2 ? ', 2nd pyramid' : ''}</option>)}
+                      <option value={`${l}-10`}>Whole {l === 1 ? 'first' : 'second'} pyramid</option>
+                    </optgroup>
+                  ))}
                 </select>
                 <button
                   className="forge-btn-accent"

@@ -94,7 +94,7 @@ function VocationEntry({ name, voc }: { name: string; voc: Vocation }) {
 }
 
 function SkillEntry({ s }: { s: Skill }) {
-  const tags = [s.costs ? 'cost by occupation' : `${s.cp} CP`, ...(s.frag ? [`${s.frag} frags`] : []), `max ${s.maxPurchases}`]
+  const tags = [s.costNote ?? (s.costs ? 'cost by occupation' : `${s.cp} CP`), ...(s.frag ? [`${s.frag} frags`] : []), `max ${s.maxPurchases}`]
   return (
     <Entry title={s.name} tags={tags}>
       <Prose text={s.desc} />

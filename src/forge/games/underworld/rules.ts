@@ -52,6 +52,9 @@ export function sphereIndex(id: string) {
 export const SPELL_CIRCLE_COSTS: Record<string, Record<string, number>> = RULES.spellCircleCosts
 // Ritual slot N costs base * N.
 export const RITUAL_BASE_COSTS: Record<string, number> = RULES.ritualBaseCosts
+// Champion/Demagogue price slots off their own chart (Soul Frag 2.10 Chart 4-3).
+export const FAVOURED_SPELL_CIRCLE_COSTS: Record<string, Record<string, number>> = RULES.favouredSpellCircleCosts
+export const FAVOURED_RITUAL_BASE_COSTS: Record<string, number> = RULES.favouredRitualBaseCosts
 export const WEAPON_GROUPS: Record<string, string[]> = RULES.weaponGroups
 
 export const ELEMENTS = ['Fire', 'Stone', 'Lightning', 'Ice']
