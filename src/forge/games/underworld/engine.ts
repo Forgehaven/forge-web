@@ -6,7 +6,7 @@ import {
   type LevelRow,
 } from './rules'
 import { CULTURES, FAVOURED_COSTS, FAVOURED_VOCATIONS, FRAG_RACES, OCC_ABILITIES, RACES, SKILLS, VOCATIONS, VOCATION_PREREQS } from './data'
-import type { Race, Skill, Vocation } from './types'
+import type { PrereqCondition, Race, Skill, Vocation } from './types'
 
 export const SPELL_SLOT = 'Spell Slot'
 export const RITUAL_SLOT = 'Ritual Slot'
@@ -80,6 +80,23 @@ export function raceData(race: string): Race | null {
 
 export function vocationData(voc: string): Vocation | null {
   return VOCATIONS[voc] ?? FAVOURED_VOCATIONS[voc] ?? null
+}
+
+const abilitiesOf = (b: Build) => vocationData(b.vocation)?.abilities ?? OCC_ABILITIES[b.occupation] ?? []
+
+// Changing occupation or vocation swaps each owned ability for the new set's
+// ability of the same tier (3/6/9/12), in every plan mode.
+export function switchRole(b: Build, patch: Partial<Pick<Build, 'occupation' | 'vocation'>>): Build {
+  const next = { ...b, ...patch }
+  const to = new Map(abilitiesOf(next).map(a => [a.tier, a.name]))
+  const rename = new Map(abilitiesOf(b).flatMap(a => (to.has(a.tier) ? [[a.name, to.get(a.tier)!] as const] : [])))
+  const fix = (ps: Purchase[]) => ps.map(p => (rename.has(p.skill) ? { ...p, skill: rename.get(p.skill)! } : p))
+  return {
+    ...next,
+    purchases: fix(next.purchases),
+    simple: next.simple && { ...next.simple, purchases: fix(next.simple.purchases) },
+    priority: next.priority && { ...next.priority, purchases: fix(next.priority.purchases) },
+  }
 }
 
 function favouredTable(b: Build) {
@@ -597,9 +614,16 @@ function buildWarnings(b: Build, st: ReplayState): string[] {
   if (voc?.occupations?.length && !voc.occupations.includes(b.occupation)) {
     w.push(`${b.vocation} is limited to ${voc.occupations.join(', ')}`)
   }
-  for (const need of VOCATION_PREREQS[b.vocation]?.auto ?? []) {
+  const prereqs = VOCATION_PREREQS[b.vocation]
+  for (const need of prereqs?.auto ?? []) {
     const options = need.split('|')
     if (!options.some(o => count(st, o) > 0)) w.push(`${b.vocation} expects ${options.join(' or ')}`)
+  }
+  const met = (c: PrereqCondition) =>
+    (!c.skill || c.skill.split('|').reduce((n, s) => n + count(st, s), 0) >= (c.count ?? 1)) &&
+    (!c.circle || (st.circles[c.circle] > 0 && (!c.sphere || b.schools.some((s, i) => s === c.sphere && count(st, sphereName(i)) > 0))))
+  for (const c of prereqs?.choice ?? []) {
+    if (!c.anyOf.some(alt => alt.every(met))) w.push(`${b.vocation} expects ${c.label}`)
   }
   b.schools.forEach((school, i) => {
     if (!school || count(st, sphereName(i)) === 0) return

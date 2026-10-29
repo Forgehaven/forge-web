@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { OCC_ORDER, PYRAMID_ORDER, RITUAL_BASE_COSTS, SPELL_CIRCLE_COSTS, SPHERES } from './rules'
 import { SKILLS } from './data'
 import {
-  copyPicks, cpAt, emptyBuild, evaluate, insertBlanket, levelRow, nextBlanketMonth, pastBlankets, priorityView, simpleView, unbuy,
+  copyPicks, cpAt, emptyBuild, evaluate, insertBlanket, levelRow, nextBlanketMonth, pastBlankets, priorityView, simpleView, switchRole, unbuy,
   type Build, type Purchase,
 } from './engine'
 
@@ -253,6 +253,29 @@ describe('spell slot ordering across steps', () => {
     expect([three.cost, three.frag, three.error]).toEqual([SPELL_CIRCLE_COSTS['3'].Mage / 2 + 5, SPELL_CIRCLE_COSTS['3'].Mage / 2 + 5, null])
     expect(again.error).toBe('3 not available')
     expect([one.cost, one.frag, one.error]).toEqual([SPELL_CIRCLE_COSTS['1'].Mage / 2 + 5, SPELL_CIRCLE_COSTS['1'].Mage / 2 + 5, null])
+  })
+
+  it('checks vocation prerequisites, including either/or ones', () => {
+    // Weapon-choice skills get the Medium group; Tradesman a Miner trade.
+    const pick = (sk: string) => buy(sk, 0, /Weapon Group$|Master$/.test(sk) ? 'Medium' : sk === 'Tradesman' ? 'Blacksmith|Miner' : undefined)
+    const warn = (vocation: string, skills: string[], occupation = 'Mercenary') =>
+      evaluate(build({ occupation, vocation, purchases: skills.map(pick) }), undefined, true).warnings.filter(w => w.startsWith(vocation))
+    const parry = ['Weapon Group Proficiency: Medium', 'Specialization +1: Weapon Group', 'Slay/Parry: Master']
+    expect(warn('Stalwart', ['Heavy Armour', 'Shield'])).toContain('Stalwart expects Slay/Parry or Slay/Parry: Master')
+    expect(warn('Stalwart', ['Heavy Armour', 'Shield', ...parry])).toEqual([])
+    expect(warn('Swashbuckler', ['Ambidexterity'])).toEqual(['Swashbuckler expects a Slay (Specific or Master) or a Dodge'])
+    expect(warn('Swashbuckler', ['Ambidexterity', ...parry])).toEqual([])
+    const trade = Array(5).fill('Tradesman')
+    expect(warn('Artisan', trade)).toHaveLength(1)
+    expect(warn('Artisan', [...trade, 'Blacksmith', 'Blacksmith', 'Blacksmith', 'Alchemy', 'Alchemy'])).toEqual([])
+  })
+
+  it('swaps owned occupational abilities by tier when the role changes', () => {
+    const b = build({ occupation: 'Mage', purchases: [buy('Identify Magic Item'), buy('Shield')], simple: { blankets: 0, purchases: [buy('Mana Harvest')] } })
+    const merc = switchRole(b, { occupation: 'Mercenary' })
+    expect(merc.purchases.map(p => p.skill)).toEqual(['Hamstring', 'Shield'])
+    expect(merc.simple!.purchases.map(p => p.skill)).toEqual(['Head-Butt'])
+    expect(switchRole(merc, { occupation: 'Mage' }).purchases[0].skill).toBe('Identify Magic Item')
   })
 
   it('names a Tradesman trade and checks its material', () => {

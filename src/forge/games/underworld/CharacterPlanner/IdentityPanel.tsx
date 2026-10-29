@@ -1,6 +1,6 @@
 import { CULTURES, FAVOURED_VOCATIONS, FRAG_RACES, RACES, VOCATIONS } from '../data'
 import { OCC_CLASS, OCC_ORDER } from '../rules'
-import { raceData, vocationData, type Build, type Evaluation } from '../engine'
+import { raceData, switchRole, vocationData, type Build, type Evaluation } from '../engine'
 import { Collapsible } from '../../../../components/Collapsible'
 import { Prose } from '../components/Prose'
 
@@ -73,7 +73,7 @@ export function IdentityPanel({ build, ev, setBuild }: Props) {
           </select>
         </Field>
         <Field label="Occupation">
-          <select className="forge-input" value={build.occupation} onChange={e => set({ occupation: e.target.value })}>
+          <select className="forge-input" value={build.occupation} onChange={e => { const occupation = e.target.value; setBuild(b => switchRole(b, { occupation })) }}>
             <option value="">Choose…</option>
             {(['warrior', 'rogue', 'scholar'] as const).map(cls => (
               <optgroup key={cls} label={cls[0].toUpperCase() + cls.slice(1)}>
@@ -83,7 +83,7 @@ export function IdentityPanel({ build, ev, setBuild }: Props) {
           </select>
         </Field>
         <Field label="Vocation">
-          <select className="forge-input" value={build.vocation} onChange={e => set({ vocation: e.target.value })}>
+          <select className="forge-input" value={build.vocation} onChange={e => { const vocation = e.target.value; setBuild(b => switchRole(b, { vocation })) }}>
             <option value="">None</option>
             <optgroup label="Vocations (150 frags)">
               {Object.keys(VOCATIONS).map(v => <option key={v} value={v}>{v}</option>)}

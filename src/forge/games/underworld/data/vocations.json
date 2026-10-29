@@ -802,44 +802,24 @@
       "auto": [],
       "choice": [
         {
-          "label": "Level 10 Tradesman OR Level 5 Tradesman + 5 levels of production skills (total)",
-          "groups": [
-            {
-              "label": "Option A: Level 10 Tradesman (10 purchases)",
-              "skills": [
-                "Tradesman",
-                "Tradesman",
-                "Tradesman",
-                "Tradesman",
-                "Tradesman",
-                "Tradesman",
-                "Tradesman",
-                "Tradesman",
-                "Tradesman",
-                "Tradesman"
-              ]
-            },
-            {
-              "label": "Option B: Level 5 Tradesman (5 purchases) + 5 levels of any production skills",
-              "skills": [
-                "Tradesman",
-                "Tradesman",
-                "Tradesman",
-                "Tradesman",
-                "Tradesman"
-              ],
-              "flexible": {
-                "total": 5,
-                "pool": [
-                  "Alchemy",
-                  "Blacksmith",
-                  "Create Scroll",
-                  "Trapper",
-                  "Artifice",
-                  "Chemistry"
-                ]
+          "label": "Level 10 Tradesman, or Level 5 Tradesman and 5 levels of production skills",
+          "anyOf": [
+            [
+              {
+                "skill": "Tradesman",
+                "count": 10
               }
-            }
+            ],
+            [
+              {
+                "skill": "Tradesman",
+                "count": 5
+              },
+              {
+                "skill": "Alchemy|Blacksmith|Create Scroll|Trapper|Artifice|Chemistry",
+                "count": 5
+              }
+            ]
           ]
         }
       ]
@@ -848,23 +828,18 @@
       "auto": [],
       "choice": [
         {
-          "label": "Sphere of Magic: 2nd OR a 4th Circle Spell Slot",
-          "groups": [
-            {
-              "label": "Option A: Purchase Sphere of Magic: 2nd (requires Read Magic + Sphere 1 first)",
-              "skills": [
-                "Read Magic"
-              ],
-              "spellLevel": null,
-              "buySphereTo": 2
-            },
-            {
-              "label": "Option B: Buy spell slots to 4th Circle",
-              "skills": [
-                "Read Magic"
-              ],
-              "spellLevel": 4
-            }
+          "label": "Sphere of Magic: 2nd or a 4th Circle Spell Slot",
+          "anyOf": [
+            [
+              {
+                "skill": "Sphere of Magic: 2nd"
+              }
+            ],
+            [
+              {
+                "circle": 4
+              }
+            ]
           ]
         }
       ]
@@ -881,28 +856,20 @@
       "auto": [],
       "choice": [
         {
-          "label": "Level 5 Create Alcohol OR Level 5 Alchemy",
-          "groups": [
-            {
-              "label": "Option A: 5× Create Alcohol",
-              "skills": [],
-              "flexible": {
-                "total": 5,
-                "pool": [
-                  "Create Alcohol"
-                ]
+          "label": "Level 5 Create Alcohol or Level 5 Alchemy",
+          "anyOf": [
+            [
+              {
+                "skill": "Create Alcohol",
+                "count": 5
               }
-            },
-            {
-              "label": "Option B: 5× Alchemy",
-              "skills": [],
-              "flexible": {
-                "total": 5,
-                "pool": [
-                  "Alchemy"
-                ]
+            ],
+            [
+              {
+                "skill": "Alchemy",
+                "count": 5
               }
-            }
+            ]
           ]
         }
       ]
@@ -916,9 +883,9 @@
     },
     "Conqueror": {
       "auto": [
-        "Weapon Group Proficiency: Large",
-        "Specialization +1: Weapon Group",
-        "Slay/Parry"
+        "Weapon Group Proficiency: Large|Weapon Specific Proficiency: Exotic",
+        "Specialization +1: Weapon Specific|Specialization +1: Weapon Group",
+        "Slay/Parry|Slay/Parry: Master"
       ],
       "choice": []
     },
@@ -926,25 +893,20 @@
       "auto": [],
       "choice": [
         {
-          "label": "Level 7 Mysticism OR a 5th Circle Spell Slot (Nature sphere)",
-          "groups": [
-            {
-              "label": "Option A: 7× Mysticism",
-              "skills": [],
-              "flexible": {
-                "total": 7,
-                "pool": [
-                  "Mysticism"
-                ]
+          "label": "Level 7 Mysticism or a 5th Circle Spell Slot (Nature sphere)",
+          "anyOf": [
+            [
+              {
+                "skill": "Mysticism",
+                "count": 7
               }
-            },
-            {
-              "label": "Option B: Buy spell slots to 5th Circle (Nature sphere)",
-              "skills": [
-                "Read Magic"
-              ],
-              "spellLevel": 5
-            }
+            ],
+            [
+              {
+                "circle": 5,
+                "sphere": "Nature"
+              }
+            ]
           ]
         }
       ]
@@ -952,31 +914,12 @@
     "Stalwart": {
       "auto": [
         "Heavy Armour",
-        "Shield"
+        "Shield",
+        "Weapon Group Proficiency: Medium|Weapon Group Proficiency: Large|Weapon Specific Proficiency: Exotic",
+        "Specialization +1: Weapon Specific|Specialization +1: Weapon Group",
+        "Slay/Parry|Slay/Parry: Master"
       ],
-      "choice": [
-        {
-          "label": "A Parry: Slay/Parry (Specific weapon) OR Slay/Parry: Master (Weapon Group)",
-          "groups": [
-            {
-              "label": "Option A: Slay/Parry (Specific weapon)",
-              "skills": [
-                "Weapon Group Proficiency: Medium",
-                "Specialization +1: Weapon Specific",
-                "Slay/Parry"
-              ]
-            },
-            {
-              "label": "Option B: Slay/Parry: Master (Weapon Group)",
-              "skills": [
-                "Weapon Group Proficiency: Medium",
-                "Specialization +1: Weapon Group",
-                "Slay/Parry: Master"
-              ]
-            }
-          ]
-        }
-      ]
+      "choice": []
     },
     "Swashbuckler": {
       "auto": [
@@ -984,32 +927,18 @@
       ],
       "choice": [
         {
-          "label": "A Slay (Specific or Master) OR a Dodge",
-          "groups": [
-            {
-              "label": "Option A: Slay/Parry (Specific weapon)",
-              "skills": [
-                "Weapon Group Proficiency: Medium",
-                "Specialization +1: Weapon Specific",
-                "Slay/Parry"
-              ]
-            },
-            {
-              "label": "Option B: Slay/Parry: Master (Weapon Group)",
-              "skills": [
-                "Weapon Group Proficiency: Medium",
-                "Specialization +1: Weapon Group",
-                "Slay/Parry: Master"
-              ]
-            },
-            {
-              "label": "Option C: Dodge (requires Critical +2: Specific or Group)",
-              "skills": [
-                "Weapon Group Proficiency: Medium",
-                "Critical +2: Specific",
-                "Dodge"
-              ]
-            }
+          "label": "a Slay (Specific or Master) or a Dodge",
+          "anyOf": [
+            [
+              {
+                "skill": "Slay/Parry|Slay/Parry: Master"
+              }
+            ],
+            [
+              {
+                "skill": "Dodge"
+              }
+            ]
           ]
         }
       ]
@@ -1020,29 +949,19 @@
       ],
       "choice": [
         {
-          "label": "Weapon Specialization (Specific or Group) OR a 5th Circle Spell Slot (Healing sphere)",
-          "groups": [
-            {
-              "label": "Option A: Specialization +1: Weapon Specific",
-              "skills": [
-                "Weapon Group Proficiency: Medium",
-                "Specialization +1: Weapon Specific"
-              ]
-            },
-            {
-              "label": "Option B: Specialization +1: Weapon Group",
-              "skills": [
-                "Weapon Group Proficiency: Medium",
-                "Specialization +1: Weapon Group"
-              ]
-            },
-            {
-              "label": "Option C: Buy spell slots to 5th Circle (Healing sphere)",
-              "skills": [
-                "Read Magic"
-              ],
-              "spellLevel": 5
-            }
+          "label": "Weapon Specialization (Specific or Group) or a 5th Circle Spell Slot (Healing sphere)",
+          "anyOf": [
+            [
+              {
+                "skill": "Specialization +1: Weapon Specific|Specialization +1: Weapon Group"
+              }
+            ],
+            [
+              {
+                "circle": 5,
+                "sphere": "Healing"
+              }
+            ]
           ]
         }
       ]

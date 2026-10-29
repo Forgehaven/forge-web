@@ -7,6 +7,7 @@ type Props = {
   confirmLabel?: string
   cancelLabel?: string
   className?: string
+  ariaLabel?: string
 }
 
 export function ConfirmButton({
@@ -14,7 +15,7 @@ export function ConfirmButton({
   confirmPrompt = 'Sure?',
   confirmLabel = 'Yes',
   cancelLabel = 'No',
-  className,
+  className, ariaLabel,
 }: Props) {
   const [confirming, setConfirming] = useState(false)
 
@@ -36,6 +37,7 @@ export function ConfirmButton({
 
   return (
     <button
+      aria-label={ariaLabel}
       onClick={() => setConfirming(true)}
       className={className ?? 'text-xs text-[#4b5563] hover:text-[#9ca3af] transition-colors cursor-pointer'}
     >

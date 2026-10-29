@@ -83,18 +83,20 @@ export interface Vocation {
   abilities: Ability[]
 }
 
+// One condition: `count` purchases across the skills in "A|B", or a spell
+// slot of `circle` (with a sphere of that school owned).
+export interface PrereqCondition {
+  skill?: string
+  count?: number
+  circle?: number
+  sphere?: string
+}
+
 export interface VocationPrereqs {
+  // Each entry is required; "A|B" means either.
   auto: string[]
-  choice: {
-    label: string
-    groups: {
-      label: string
-      skills: string[]
-      flexible?: { total: number; pool: string[] }
-      spellLevel?: number | null
-      buySphereTo?: number
-    }[]
-  }[]
+  // Each needs at least one alternative with all its conditions met.
+  choice: { label: string; anyOf: PrereqCondition[][] }[]
 }
 
 export interface Spell {

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { Fragment, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { assignColumns } from '../lib/assignColumns'
 
 export interface MasonryItem {
@@ -14,12 +14,14 @@ export function Masonry({ items, minWidth, gap = 12 }: { items: MasonryItem[]; m
   const ref = useRef<HTMLDivElement>(null)
   const [cols, setCols] = useState(1)
 
-  useEffect(() => {
+  // Layout effect: the first count is set before paint, so no one-column flash.
+  useLayoutEffect(() => {
     const el = ref.current
-    if (!el || typeof ResizeObserver === 'undefined') return
-    const ro = new ResizeObserver(([entry]) => {
-      setCols(Math.max(1, Math.floor((entry.contentRect.width + gap) / (minWidth + gap))))
-    })
+    if (!el) return
+    const fit = (width: number) => setCols(Math.max(1, Math.floor((width + gap) / (minWidth + gap))))
+    fit(el.clientWidth)
+    if (typeof ResizeObserver === 'undefined') return
+    const ro = new ResizeObserver(([entry]) => fit(entry.contentRect.width))
     ro.observe(el)
     return () => ro.disconnect()
   }, [minWidth, gap])

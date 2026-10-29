@@ -3,6 +3,7 @@ import { insertBlanket, nextBlanketMonth, pastBlankets, sortedPurchases, type Bu
 import { MAX_BLANKETS_PER_MONTH } from '../rules'
 import { monthLabel, stepLabel } from './util'
 import { MonthSelect } from '../components/MonthSelect'
+import { ConfirmButton } from '../../../../components/ConfirmButton'
 
 interface Props {
   build: Build
@@ -91,6 +92,12 @@ export function Timeline({ build, ev, active, setActive, setBuild }: Props) {
   const final = lastStep.row.level
   // Newest first. The "Today" line sits above the latest step not after this month.
   const todayAt = ev.steps.findLast(s => s.month <= now)?.at
+  // CP bar: spent through today, spent on planned blankets, and left over.
+  const total = lastStep.cp
+  const used = todayAt === undefined ? 0 : ev.steps[todayAt].spent
+  const planned = lastStep.spent - used
+  const free = total - lastStep.spent
+  const pct = (n: number) => (total > 0 ? Math.max(0, Math.min(100, (n / total) * 100)) : 0)
 
   return (
     <section className="flex flex-col gap-3">
@@ -101,6 +108,19 @@ export function Timeline({ build, ev, active, setActive, setBuild }: Props) {
           {span(Math.max(0, monthsBetween(build.startMonth, lastStep.month)))} · reaches Level {final}
         </p>
       </header>
+
+      <div className="flex flex-col gap-1" title="CP spent up to today, CP spent on planned blankets, and CP not yet spent">
+        <div className="flex h-2.5 rounded-full overflow-hidden bg-[#2a2d3a]">
+          <div className="bg-[#c4af64]" style={{ width: `${pct(used)}%` }} />
+          <div className="bg-sky-400/70" style={{ width: `${pct(planned)}%` }} />
+        </div>
+        <div className="flex flex-wrap gap-x-3 text-xs font-mono text-[#c4c7d0]">
+          <span><span className="text-[#c4af64]">■</span> {used} used</span>
+          <span><span className="text-sky-400/70">■</span> {planned} planned</span>
+          <span className={free < 0 ? 'text-red-400' : ''}><span className="text-[#3a3d4a]">■</span> {free} unspent</span>
+          <span className="ml-auto text-[#9ca3af]">{total} CP</span>
+        </div>
+      </div>
 
       <details className="group text-xs">
         <summary className="cursor-pointer list-none text-[#6b7280] hover:text-[#9ca3af] select-none">
@@ -185,15 +205,18 @@ export function Timeline({ build, ev, active, setActive, setBuild }: Props) {
                       onChange={m => (step.at === 0 ? setBuild(b => ({ ...b, startMonth: m })) : setMonth(step.at, m))}
                     />
                     {step.at > 0 && (
-                      <button
-                        aria-label={`Remove blanket ${step.at}`}
-                        className="ml-auto text-[#4b5563] hover:text-red-400 cursor-pointer leading-none"
-                        onClick={e => {
-                          e.stopPropagation()
-                          setBuild(b => removeBlanket(b, step.at))
-                          if (active >= step.at) setActive(Math.max(0, active - 1))
-                        }}
-                      >×</button>
+                      <span className="ml-auto" onClick={e => e.stopPropagation()}>
+                        <ConfirmButton
+                          label="×"
+                          ariaLabel={`Remove blanket ${step.at}`}
+                          confirmPrompt="Remove?"
+                          className="text-[#4b5563] hover:text-red-400 cursor-pointer leading-none"
+                          onConfirm={() => {
+                            setBuild(b => removeBlanket(b, step.at))
+                            if (active >= step.at) setActive(Math.max(0, active - 1))
+                          }}
+                        />
+                      </span>
                     )}
                   </div>
                   <div className="mt-1 flex items-center gap-2">
@@ -202,7 +225,7 @@ export function Timeline({ build, ev, active, setActive, setBuild }: Props) {
                         {step.at === 0 ? `Level ${step.row.level}` : `Reached Level ${step.row.level}`}
                       </span>
                     )}
-                    <span className={`ml-auto text-xs font-mono ${over ? 'text-red-400' : 'text-[#6b7280]'}`}>{step.spent}/{step.cp} CP</span>
+                    <span className={`ml-auto text-sm font-mono ${over ? 'text-red-400' : 'text-[#c4c7d0]'}`}>{step.spent}/{step.cp} CP</span>
                   </div>
                   {step.error && <p className="text-xs text-red-400 mt-1">{step.error}</p>}
                   {ids.length > 0 && (
