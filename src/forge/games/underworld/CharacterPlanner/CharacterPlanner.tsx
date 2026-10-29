@@ -1,6 +1,5 @@
 import { useEffect, useEffectEvent, useMemo, useState } from 'react'
-import { activePurchases, copyPicks, evaluate, priorityMonths, priorityView, simpleView, unbuy, withPurchases, type PlanMode } from '../engine'
-import { VOCATION_PREREQS } from '../data'
+import { activePurchases, copyPicks, evaluate, priorityMonths, priorityView, simpleView, unbuy, vocationNeeds, withPurchases, type PlanMode } from '../engine'
 import { useBuildStore } from '../hooks/useBuildStore'
 import { MournfallCard } from '../components/MournfallCard'
 import { BuildBar } from './BuildBar'
@@ -56,10 +55,7 @@ export default function CharacterPlanner() {
     setBuild(b => withPurchases(b, [...activePurchases(b), { id: uid(), skill, at: timeline ? active : 0, choice }]))
   const remove = (skill: string, choice?: string) => setBuild(b => unbuy(b, skill, choice))
   const invalid = activePurchases(build).filter(p => ev.results.get(p.id)?.error).length
-  // Each entry is "A|B": any option satisfies it; the button buys the first.
-  const missingPrereqs = (VOCATION_PREREQS[build.vocation]?.auto ?? [])
-    .filter(need => !need.split('|').some(n => ev.final.counts.get(n)))
-    .map(need => need.split('|')[0])
+  const needsHighlighted = vocationNeeds(view, ev.final).size > 0
 
   return (
     <div className={`grid gap-4 lg:h-full lg:grid-rows-[minmax(0,1fr)] ${timeline ? 'lg:grid-cols-[22rem_minmax(0,1fr)_24rem]' : 'lg:grid-cols-[24rem_minmax(0,1fr)]'}`}>
@@ -90,13 +86,7 @@ export default function CharacterPlanner() {
                 >Remove them</button>
               </p>
             )}
-            {missingPrereqs.length > 0 && (
-              <p>
-                <button className="underline cursor-pointer" onClick={() => missingPrereqs.forEach(n => add(n))}>
-                  Add {build.vocation} prerequisites
-                </button>{' '}at the selected step.
-              </p>
-            )}
+            {needsHighlighted && <p>Skills that help qualify for {build.vocation} are highlighted in the Skills tab.</p>}
           </div>
         )}
 

@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import {
-  catalog, choiceLabel, choiceOptions, evaluate, needsChoice, prereqLabel, stateAt, SPELL_VERSATILITY, TRADESMAN, versatilityCost,
+  catalog, choiceLabel, choiceOptions, evaluate, needsChoice, prereqLabel, stateAt, vocationNeeds, SPELL_VERSATILITY, TRADESMAN, versatilityCost,
   type Build, type CatalogSkill, type Evaluation,
 } from '../engine'
 import { stepLabel } from './util'
@@ -36,9 +36,11 @@ function optionLabel(sk: CatalogSkill, o: string, build: Build) {
   return o.replace('|', ', circle ')
 }
 
-function SkillRow({ row, owned, hasOccupation, onAdd, onRemove }: {
+function SkillRow({ row, owned, needFor, hasOccupation, onAdd, onRemove }: {
   row: Row
   owned: number
+  // Vocation this skill would help qualify for.
+  needFor?: string
   hasOccupation: boolean
   onAdd: (choice?: string) => void
   onRemove: () => void
@@ -54,7 +56,7 @@ function SkillRow({ row, owned, hasOccupation, onAdd, onRemove }: {
   const showCost = hasOccupation || !sk.costs
 
   return (
-    <li className={`border-b border-[#2a2d3a] last:border-b-0 ${owned ? 'border-l-2 border-l-[#c4af64]/60 -ml-3 pl-2.5' : ''}`}>
+    <li className={`border-b border-[#2a2d3a] last:border-b-0 ${owned ? 'border-l-2 border-l-[#c4af64]/60 -ml-3 pl-2.5' : needFor ? 'border-l-2 border-l-amber-400/70 bg-amber-400/5 -ml-3 pl-2.5' : ''}`}>
       <div className="flex items-center gap-2 py-1 group">
         <button
           className="flex-1 min-w-0 text-left cursor-pointer"
@@ -64,6 +66,7 @@ function SkillRow({ row, owned, hasOccupation, onAdd, onRemove }: {
           <span className={`text-sm ${blocked && !maxed ? 'text-[#6b7280]' : 'text-[#e2e4ed] group-hover:text-white'}`}>
             {sk.name}
           </span>
+          {needFor && <span className="ml-1.5 text-[10px] text-amber-300 whitespace-nowrap">needed for {needFor}</span>}
           {sk.tier && <span className="ml-1.5 text-[10px] text-[#6b7280]">L{sk.tier}</span>}
           {owned > 0 && (
             <span className="ml-1.5 text-[10px] font-mono text-[#c4af64]">
@@ -181,6 +184,7 @@ export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove }: Prop
 
   const q = query.trim().toLowerCase()
   const owned = (name: string) => ev.final.counts.get(name) ?? 0
+  const needs = useMemo(() => vocationNeeds(build, ev.final), [build, ev.final])
   const hasOccupation = !!build.occupation
 
   return (
@@ -234,6 +238,7 @@ export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove }: Prop
                       key={r.sk.id}
                       row={r}
                       owned={owned(r.sk.id)}
+                      needFor={needs.has(r.sk.id) ? build.vocation : undefined}
                       hasOccupation={hasOccupation}
                       onAdd={choice => onAdd(r.sk.id, choice)}
                       onRemove={() => onRemove(r.sk.id)}

@@ -637,6 +637,26 @@ export function evaluate(b: Build, probe?: Purchase, loose = false): Evaluation 
   }
 }
 
+function condMet(b: Build, st: ReplayState, c: PrereqCondition) {
+  return (!c.skill || c.skill.split('|').reduce((n, s) => n + count(st, s), 0) >= (c.count ?? 1)) &&
+    (!c.circle || (st.circles[c.circle] > 0 && (!c.sphere || b.schools.some((s, i) => s === c.sphere && count(st, sphereId(i)) > 0))))
+}
+
+// Skills that would help meet an unmet vocation prerequisite, for highlighting.
+export function vocationNeeds(b: Build, st: ReplayState): Set<string> {
+  const p = VOCATION_PREREQS[b.vocation]
+  const out = new Set<string>()
+  for (const need of p?.auto ?? []) {
+    const options = need.split('|')
+    if (!options.some(o => count(st, o) > 0)) options.forEach(o => out.add(o))
+  }
+  for (const c of p?.choice ?? []) {
+    if (c.anyOf.some(alt => alt.every(cond => condMet(b, st, cond)))) continue
+    for (const cond of c.anyOf.flat()) cond.skill?.split('|').forEach(s => out.add(s))
+  }
+  return out
+}
+
 function buildWarnings(b: Build, st: ReplayState): string[] {
   const w: string[] = []
   const culture = CULTURES[b.culture]
@@ -650,11 +670,8 @@ function buildWarnings(b: Build, st: ReplayState): string[] {
     const options = need.split('|')
     if (!options.some(o => count(st, o) > 0)) w.push(`${b.vocation} expects ${options.map(skillName).join(' or ')}`)
   }
-  const met = (c: PrereqCondition) =>
-    (!c.skill || c.skill.split('|').reduce((n, s) => n + count(st, s), 0) >= (c.count ?? 1)) &&
-    (!c.circle || (st.circles[c.circle] > 0 && (!c.sphere || b.schools.some((s, i) => s === c.sphere && count(st, sphereId(i)) > 0))))
   for (const c of prereqs?.choice ?? []) {
-    if (!c.anyOf.some(alt => alt.every(met))) w.push(`${b.vocation} expects ${c.label}`)
+    if (!c.anyOf.some(alt => alt.every(cond => condMet(b, st, cond)))) w.push(`${b.vocation} expects ${c.label}`)
   }
   b.schools.forEach((school, i) => {
     if (!school || count(st, sphereId(i)) === 0) return

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { OCC_ORDER, PYRAMID_ORDER, RITUAL_BASE_COSTS, SPELL_CIRCLE_COSTS, SPHERES } from './rules'
 import { SKILLS } from './data'
 import {
-  copyPicks, cpAt, emptyBuild, evaluate, insertBlanket, levelRow, nextBlanketMonth, pastBlankets, priorityView, simpleView, switchRole, unbuy,
+  copyPicks, cpAt, emptyBuild, evaluate, insertBlanket, levelRow, nextBlanketMonth, pastBlankets, priorityView, simpleView, switchRole, unbuy, vocationNeeds,
   type Build, type Purchase,
 } from './engine'
 
@@ -265,6 +265,8 @@ describe('spell slot ordering across steps', () => {
     expect(warn('Stalwart', ['heavy-armour', 'shield', ...parry])).toEqual([])
     expect(warn('Swashbuckler', ['ambidexterity'])).toEqual(['Swashbuckler expects a Slay (Specific or Master) or a Dodge'])
     expect(warn('Swashbuckler', ['ambidexterity', ...parry])).toEqual([])
+    const swash = build({ occupation: 'Mercenary', vocation: 'Swashbuckler', purchases: [pick('ambidexterity')] })
+    expect([...vocationNeeds(swash, evaluate(swash, undefined, true).final)]).toEqual(['slay-parry', 'slay-parry-master', 'dodge'])
     const trade = Array(5).fill('tradesman')
     expect(warn('Artisan', trade)).toHaveLength(1)
     expect(warn('Artisan', [...trade, 'blacksmith', 'blacksmith', 'blacksmith', 'alchemy', 'alchemy'])).toEqual([])
