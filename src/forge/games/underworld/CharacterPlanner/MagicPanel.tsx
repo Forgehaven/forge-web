@@ -138,13 +138,13 @@ export function MagicPanel({ build, ev, active, loose, setBuild, onAdd, onRemove
         <div className="flex flex-col gap-4">
           <div className="flex flex-wrap gap-2">
             <button
-              className="forge-btn-accent disabled:opacity-40 disabled:cursor-not-allowed"
+              className="forge-btn-accent w-64 disabled:opacity-40 disabled:cursor-not-allowed"
               title={nextProbe?.error ?? undefined}
               disabled={!nextSlot || !!nextProbe?.error}
               onClick={() => onAdd(SPELL_SLOT, String(nextSlot))}
             >{nextSlot ? `Add next spell slot (${ordinal(nextSlot)}, ${nextProbe?.cost} CP)` : 'Spell towers full'}</button>
             {lastSlot && (
-              <button className="forge-btn" onClick={() => onRemove(SPELL_SLOT, String(lastSlot))}>
+              <button className="forge-btn w-64" onClick={() => onRemove(SPELL_SLOT, String(lastSlot))}>
                 Remove last spell slot ({ordinal(lastSlot)})
               </button>
             )}
