@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AuthContext } from '../../../../auth/authContext'
 import CharacterPlanner from './CharacterPlanner'
@@ -189,6 +189,13 @@ describe('CharacterPlanner build bar', () => {
     await user.selectOptions(screen.getByLabelText('Status'), 'complete')
     expect(screen.getByRole('button', { name: 'Add Shield' })).toBeDisabled()
     expect(screen.getByLabelText('Occupation')).toBeDisabled()
+    // Read-only still lets you open cards and skill details.
+    const warrior = screen.getByRole('button', { name: /^▸Warrior\d/ })
+    fireEvent.click(warrior)
+    expect(warrior).toHaveAttribute('aria-expanded', 'false')
+    fireEvent.click(warrior)
+    fireEvent.click(screen.getByRole('button', { name: /^Shield/ }))
+    expect(screen.getByText(/A buckler cannot be larger/)).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: 'Back to planning' }))
     expect(screen.getByRole('button', { name: 'Add Shield' })).toBeEnabled()
   })

@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
+import { toggleProps } from '../../../../lib/toggleProps'
 import { SPELLS } from '../data'
 import { PARAGON, SPELL_SLOT, type Build, type Evaluation } from '../engine'
 import { ordinal, sphereId } from '../rules'
@@ -45,6 +46,20 @@ function SlotRow({ label, value, options, attunement, onChange }: {
   )
 }
 
+// A circle's card; the header collapses it.
+function Section({ title, sub, children }: { title: string; sub: string; children: ReactNode }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <section className="forge-card !p-3">
+      <h3 className="flex items-center gap-1.5 text-xs font-semibold text-[#c4af64] cursor-pointer" {...toggleProps(open, () => setOpen(o => !o))}>
+        <span className={`text-[10px] text-[#6b7280] transition-transform ${open ? 'rotate-90' : ''}`}>▸</span>
+        {title} <span className="text-[#6b7280] font-normal">· {sub}</span>
+      </h3>
+      {open && <div className="mt-1">{children}</div>}
+    </section>
+  )
+}
+
 export function Spellbook({ build, ev, setBuild }: Props) {
   const schools = build.schools.filter((s, i) => s && (ev.final.counts.get(sphereId(i)) ?? 0) > 0)
   const set = (k: string, v: string) => setBuild(b => {
@@ -67,8 +82,7 @@ export function Spellbook({ build, ev, setBuild }: Props) {
         if (!n) return null
         const options = SPELLS.filter(s => s.level === circle && schools.includes(s.sphere))
         return (
-          <section key={circle} className="forge-card !p-3">
-            <h3 className="text-xs font-semibold text-[#c4af64] mb-1">{ordinal(circle)} Circle <span className="text-[#6b7280] font-normal">· {n} slot{n > 1 ? 's' : ''}</span></h3>
+          <Section key={circle} title={`${ordinal(circle)} Circle`} sub={`${n} slot${n > 1 ? 's' : ''}`}>
             <ul>
               {Array.from({ length: n }, (_, s) => (
                 <SlotRow
@@ -81,12 +95,11 @@ export function Spellbook({ build, ev, setBuild }: Props) {
                 />
               ))}
             </ul>
-          </section>
+          </Section>
         )
       })}
       {paragon && (
-        <section className="forge-card !p-3">
-          <h3 className="text-xs font-semibold text-[#c4af64] mb-1">Paragon <span className="text-[#6b7280] font-normal">· {paragon.sphere}, {ordinal(paragon.circle)} Circle</span></h3>
+        <Section title="Paragon" sub={`${paragon.sphere}, ${ordinal(paragon.circle)} Circle`}>
           <ul>
             <SlotRow
               label="Gift"
@@ -96,7 +109,7 @@ export function Spellbook({ build, ev, setBuild }: Props) {
               onChange={v => set('paragon', v)}
             />
           </ul>
-        </section>
+        </Section>
       )}
       {ev.final.counts.get(SPELL_SLOT) === undefined && !paragon && (
         <p className="text-xs text-[#6b7280]">No spell slots yet.</p>

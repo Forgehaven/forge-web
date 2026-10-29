@@ -5,6 +5,7 @@ import {
   SURCHARGE_SPHERES, ordinal, PYRAMID_ORDER, sphereId, sphereName,
 } from '../rules'
 import { stepLabel } from './util'
+import { MobileSection } from '../../../../components/MobileSection'
 
 interface Props {
   build: Build
@@ -87,6 +88,7 @@ export function MagicPanel({ build, ev, active, loose, setBuild, onAdd, onRemove
 
       <div className="grid lg:grid-cols-[16rem_minmax(0,1fr)] gap-4 items-start">
         <div className="flex flex-col gap-2">
+          <MobileSection title="Spheres" summary={build.schools.filter((s, i) => s && owned(sphereId(i)) > 0).join(', ') || 'none owned'}>
           {build.schools.map((_, i) => {
             const id = sphereId(i)
             const name = sphereName(i)
@@ -133,6 +135,7 @@ export function MagicPanel({ build, ev, active, loose, setBuild, onAdd, onRemove
               <span className="text-[#6b7280]">Extra elements: buy Elemental Attunement in Skills.</span>
             </label>
           )}
+          </MobileSection>
         </div>
 
         <div className="flex flex-col gap-4">

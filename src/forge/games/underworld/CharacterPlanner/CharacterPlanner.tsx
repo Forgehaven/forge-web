@@ -13,6 +13,7 @@ import { Spellbook } from './Spellbook'
 import { Sheet } from './Sheet'
 import { uid } from './util'
 import { ConfirmButton } from '../../../../components/ConfirmButton'
+import { MobileSection } from '../../../../components/MobileSection'
 
 const TABS = ['Skills', 'Magic', 'Spellbook', 'Sheet'] as const
 type Tab = typeof TABS[number]
@@ -63,6 +64,7 @@ export default function CharacterPlanner() {
   const remove = (skill: string, choice?: string) => setBuild(b => unbuy(b, skill, choice))
   const invalid = activePurchases(build).filter(p => ev.results.get(p.id)?.error).length
   const needsHighlighted = vocationNeeds(view, ev.final).size > 0
+  const alerts = ev.warnings.length + (invalid > 0 ? 1 : 0) + (needsHighlighted ? 1 : 0)
 
   return (
     <div className={`grid gap-4 pb-6 lg:pb-0 lg:h-full lg:grid-rows-[minmax(0,1fr)] ${pane ? 'lg:grid-cols-[22rem_24rem_minmax(0,1fr)]' : 'lg:grid-cols-[24rem_minmax(0,1fr)]'}`}>
@@ -85,11 +87,14 @@ export default function CharacterPlanner() {
             <button className="underline cursor-pointer" onClick={() => setStatus('planning')}>Back to planning</button>
           </div>
         )}
+        <MobileSection
+          title="Character"
+          summary={<>{build.name || 'Unnamed'} · Level {ev.stats.level}{alerts > 0 && <span className="text-amber-300"> · {alerts} warning{alerts > 1 ? 's' : ''}</span>}</>}
+        >
         <IdentityPanel build={build} ev={ev} setBuild={setBuild} locked={locked} setStatus={setStatus} />
 
         <fieldset disabled={locked} className="contents">
-
-        {(ev.warnings.length > 0 || invalid > 0) && (
+        {alerts > 0 && (
           <div className="rounded-md border border-amber-500/30 bg-amber-500/5 px-4 py-2 text-xs text-amber-200 flex flex-col gap-1">
             {ev.warnings.map(w => <p key={w}>{w}</p>)}
             {invalid > 0 && (
@@ -104,6 +109,11 @@ export default function CharacterPlanner() {
             {needsHighlighted && <p>Skills that help qualify for {build.vocation} are highlighted in the Skills tab.</p>}
           </div>
         )}
+        </fieldset>
+        </MobileSection>
+
+        <MobileSection title="Plan" summary={MODES.find(m => m.mode === mode)?.label}>
+        <fieldset disabled={locked} className="contents">
 
         <div className="flex flex-col gap-1">
           <div className="flex rounded-md border border-[#2a2d3a] overflow-hidden" role="radiogroup" aria-label="Planning mode">
@@ -142,16 +152,19 @@ export default function CharacterPlanner() {
         </div>
         {mode === 'sandbox' && <SimplePlan build={build} ev={ev} setBuild={setBuild} />}
         </fieldset>
-        <MournfallCard compact />
+        </MobileSection>
+        <div className="hidden lg:block"><MournfallCard compact /></div>
       </aside>
 
       {pane && (
-        <div className="lg:min-h-0 lg:overflow-y-auto lg:pr-2">
-          <fieldset disabled={locked} className="contents">
-            {timeline
-              ? <Timeline build={build} ev={ev} active={active} setActive={setActive} setBuild={setBuild} />
-              : <PriorityPlan view={view} build={build} ev={ev} setBuild={setBuild} />}
-          </fieldset>
+        <div className="flex flex-col gap-4 lg:block lg:min-h-0 lg:overflow-y-auto lg:pr-2">
+          <MobileSection title={timeline ? 'Timeline' : 'Priority list'} summary={`${build.blankets.length} blanket${build.blankets.length === 1 ? '' : 's'}`}>
+            <fieldset disabled={locked} className="contents">
+              {timeline
+                ? <Timeline build={build} ev={ev} active={active} setActive={setActive} setBuild={setBuild} />
+                : <PriorityPlan view={view} build={build} ev={ev} setBuild={setBuild} />}
+            </fieldset>
+          </MobileSection>
         </div>
       )}
 
@@ -172,6 +185,8 @@ export default function CharacterPlanner() {
           {tab === 'Sheet' && <Sheet build={view} ev={ev} />}
         </div>
       </div>
+      {/* Phones get the guild card after the catalog. */}
+      <div className="lg:hidden"><MournfallCard compact /></div>
     </div>
   )
 }

@@ -8,6 +8,8 @@ import { stepLabel } from './util'
 import { ordinal } from '../rules'
 import { Prose } from '../components/Prose'
 import { Masonry, type MasonryItem } from '../../../../components/Masonry'
+import { isNarrow } from '../../../../lib/isNarrow'
+import { toggleProps } from '../../../../lib/toggleProps'
 import type { Place } from '../../../../lib/assignColumns'
 
 interface Props {
@@ -79,11 +81,7 @@ function SkillRow({ row, owned, needFor, hasOccupation, onAdd, onRemove }: {
   return (
     <li className={`border-b border-[#2a2d3a] last:border-b-0 ${owned ? 'border-l-2 border-l-[#c4af64]/60 -ml-3 pl-2.5' : needFor ? 'border-l-2 border-l-amber-400/70 bg-amber-400/5 -ml-3 pl-2.5' : ''}`}>
       <div className="flex items-center gap-2 py-1 group">
-        <button
-          className="flex-1 min-w-0 text-left cursor-pointer"
-          aria-expanded={open}
-          onClick={() => setOpen(o => !o)}
-        >
+        <div className="flex-1 min-w-0 text-left cursor-pointer" {...toggleProps(open, () => setOpen(o => !o))}>
           <span className={`text-sm ${blocked && !maxed ? 'text-[#6b7280]' : 'text-[#e2e4ed] group-hover:text-white'}`}>
             {sk.name}
           </span>
@@ -95,7 +93,7 @@ function SkillRow({ row, owned, needFor, hasOccupation, onAdd, onRemove }: {
             </span>
           )}
           {reason && <span className="block text-[11px] text-amber-200/45 truncate" title={reason}>{reason}</span>}
-        </button>
+        </div>
         <span className="text-xs font-mono text-[#9ca3af] whitespace-nowrap text-right">
           {sk.costNote ?? (showCost ? `${cost} CP` : '–')}
           {frag ? <span className="text-violet-300/80"> · {frag}f</span> : null}
@@ -182,6 +180,9 @@ export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove }: Prop
     try { localStorage.setItem(STORAGE_KEYS.uwOnlyBuyable, on ? '1' : '0') } catch { /* private mode */ }
   }
   const [closed, setClosed] = useState<Record<string, boolean>>({})
+  // Cards start collapsed on phones.
+  const [narrow] = useState(isNarrow)
+  const isCardClosed = (cat: string) => closed[cat] ?? narrow
 
   const rows = useMemo(() => {
     const st = stateAt(build, active, loose)
@@ -236,15 +237,14 @@ export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove }: Prop
           // Columns come from full category sizes, so filtering or buying never moves
           // a card; a category with nothing to show hides in its slot.
           if (!shown.length) return [{ key: cat, place: place(cat), weight: skills.length + 2, node: null }]
-          const isClosed = closed[cat] && !q
+          const isClosed = isCardClosed(cat) && !q
           const ownedHere = skills.filter(r => owned(r.sk.id) > 0).length
           const buyable = skills.filter(r => !r.reason).length
           return [{ key: cat, place: place(cat), weight: skills.length + 2, node: (
             <section className="forge-card !p-0 overflow-hidden">
-              <button
+              <div
                 className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-[#e2e4ed] bg-[#2a2d3a]/30 hover:bg-[#2a2d3a]/60 cursor-pointer"
-                aria-expanded={!isClosed}
-                onClick={() => setClosed(c => ({ ...c, [cat]: !c[cat] }))}
+                {...toggleProps(!isClosed, () => setClosed(c => ({ ...c, [cat]: !isCardClosed(cat) })))}
               >
                 <span className={`text-[10px] text-[#6b7280] transition-transform ${isClosed ? '' : 'rotate-90'}`}>▸</span>
                 {cat}
@@ -252,7 +252,7 @@ export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove }: Prop
                   {ownedHere > 0 && <span className="text-[#c4af64]">{ownedHere} owned · </span>}
                   {buyable} buyable
                 </span>
-              </button>
+              </div>
               {!isClosed && (
                 <ul className="px-3">
                   {shown.map(r => (
