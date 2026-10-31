@@ -50,7 +50,7 @@ const sections: { section: string; games: GameEntry[] }[] = [
     section: 'Underworld LARP',
     games: [
       { path: `${G}/underworld/planner`,   label: 'Character Planner' },
-      { path: `${G}/underworld/reference`, label: 'Data Reference' },
+      { path: `${G}/underworld/compendium`, label: 'Rules Compendium' },
     ],
   },
 ]

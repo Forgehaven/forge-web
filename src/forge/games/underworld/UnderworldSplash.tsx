@@ -14,7 +14,7 @@ export function UnderworldSplash() {
       </div>
       <div className="flex gap-6 text-sm">
         <Link to="/games/underworld/planner" className="text-forge-accent hover:underline">Character Planner →</Link>
-        <Link to="/games/underworld/reference" className="text-forge-accent hover:underline">Data Reference →</Link>
+        <Link to="/games/underworld/compendium" className="text-forge-accent hover:underline">Rules Compendium →</Link>
         <a href="https://underworldlarp.com" target="_blank" rel="noopener noreferrer" className="text-forge-accent hover:underline">underworldlarp.com →</a>
       </div>
       <div className="w-full max-w-sm text-left"><MournfallCard /></div>

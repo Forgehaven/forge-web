@@ -2,19 +2,19 @@ import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AuthContext } from '../../../../auth/authContext'
-import Reference from './DataReference'
+import Compendium from './RulesCompendium'
 
 const loggedOut = {
   user: null, loading: false, isAuthenticated: false,
   login: vi.fn(), logout: vi.fn(), clearAuth: vi.fn(),
 }
 
-const DataReference = () => <AuthContext.Provider value={loggedOut}><Reference /></AuthContext.Provider>
+const RulesCompendium = () => <AuthContext.Provider value={loggedOut}><Compendium /></AuthContext.Provider>
 
-describe('DataReference', () => {
+describe('RulesCompendium', () => {
   it('searches every section from the All tab', async () => {
     const user = userEvent.setup()
-    render(<DataReference />)
+    render(<RulesCompendium />)
     expect(screen.getByText(/Search races, cultures/)).toBeInTheDocument()
 
     await user.type(screen.getByPlaceholderText('Search everything…'), 'goblin')
@@ -27,24 +27,24 @@ describe('DataReference', () => {
 
   it('searches traits and abilities, not just names and lore', async () => {
     const user = userEvent.setup()
-    render(<DataReference />)
+    render(<RulesCompendium />)
     await user.type(screen.getByPlaceholderText('Search everything…'), 'parasites')
     expect(screen.getByText('Goblin')).toBeInTheDocument()
   })
 
   it('lists out of game frag purchases like Spiritual Resolve', async () => {
     const user = userEvent.setup()
-    render(<DataReference />)
+    render(<RulesCompendium />)
     await user.type(screen.getByPlaceholderText('Search everything…'), 'spiritual resolve')
     expect(screen.getByText('100 frags at level 1-4, 250 at level 5-9, 500 at level 10-15')).toBeInTheDocument()
   })
 })
 
-describe('DataReference favourites', () => {
+describe('RulesCompendium favourites', () => {
   it('stars an entry and lists it under the star tab', async () => {
     localStorage.clear()
     const user = userEvent.setup()
-    render(<DataReference />)
+    render(<RulesCompendium />)
     await user.click(screen.getByRole('button', { name: 'Favourites' }))
     expect(screen.getByText(/Tap ☆ on any entry/)).toBeInTheDocument()
 

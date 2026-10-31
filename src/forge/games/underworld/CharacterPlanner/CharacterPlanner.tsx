@@ -76,16 +76,21 @@ export default function CharacterPlanner() {
 
   return (
     <div className={`grid gap-3 pb-6 lg:pb-0 lg:h-full lg:grid-rows-[minmax(0,1fr)] ${pane ? 'lg:grid-cols-[22rem_24rem_minmax(0,1fr)]' : 'lg:grid-cols-[24rem_minmax(0,1fr)]'}`}>
-      <aside className="flex flex-col gap-3 lg:min-h-0 lg:overflow-y-auto lg:pr-2">
+      <aside className="flex flex-col gap-3 lg:min-h-0 lg:overflow-y-auto lg:pr-1 lg:[scrollbar-gutter:stable]">
         <header>
-          <h1 className="text-xl font-semibold text-forge-text">Character Planner</h1>
+          <h1 className="text-xl font-semibold text-forge-text flex flex-wrap items-center gap-x-2">
+            UW Character Planner
+            <span className="rounded border border-amber-400/40 bg-amber-400/10 px-1.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-amber-300">Unofficial</span>
+          </h1>
+          <p className="text-xs text-forge-dim mt-1 leading-snug">
+            A fan-made tool for planning builds. Nothing here changes your actual character for UW LARP. The rulebooks win on any conflict.
+          </p>
           {!store.isAuthenticated && (
             <p className="text-xs text-forge-accent mt-1 leading-snug">
-              You're not logged in, so this character is only saved in this browser.
-              Log in (bottom of the sidebar) to save builds to your account and open them anywhere.
+              Not logged in, so plans are only kept in this browser.
+              Log in (bottom of the sidebar) to keep them in your Forgehaven account and open them anywhere.
             </p>
           )}
-          <p className="text-[11px] text-forge-muted mt-1">Unofficial. The rulebook wins on any conflict.</p>
         </header>
 
         <BuildBar store={store} />
@@ -99,7 +104,7 @@ export default function CharacterPlanner() {
           title="Character"
           summary={<>{build.name || 'Unnamed'} · Level {ev.stats.level}{alerts > 0 && <span className="text-amber-300"> · {alerts} warning{alerts > 1 ? 's' : ''}</span>}</>}
         >
-        <IdentityPanel build={build} ev={ev} setBuild={setBuild} locked={locked} setStatus={setStatus} blankets={mode === 'sandbox' ? <SimpleBlankets build={build} ev={ev} setBuild={setBuild} /> : undefined} />
+        <IdentityPanel build={build} ev={ev} setBuild={setBuild} locked={locked} blankets={mode === 'sandbox' ? <SimpleBlankets build={build} ev={ev} setBuild={setBuild} /> : undefined} />
 
         <fieldset disabled={locked} className="contents">
         {alerts > 0 && (

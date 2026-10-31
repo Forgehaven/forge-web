@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ConfirmButton } from '../../../../components/ConfirmButton'
 import { useAuth } from '../../../../auth/authContext'
-import { emptyBuild } from '../engine'
+import { BUILD_STATUSES, emptyBuild, type BuildStatus } from '../engine'
 import { toggleProps } from '../../../../lib/toggleProps'
 import type { BuildStore, SaveEntry, SaveKind } from '../hooks/useBuildStore'
 
@@ -24,7 +24,7 @@ function CloudIcon() {
 
 const KIND: Record<SaveKind, { icon: React.ReactNode; title: string; color: string }> = {
   local: { icon: <DeviceIcon />, title: 'Saved on this device', color: 'text-forge-dim' },
-  server: { icon: <CloudIcon />, title: 'Saved to your Discord account', color: 'text-sky-300' },
+  server: { icon: <CloudIcon />, title: 'Saved to your Forgehaven account (Discord login)', color: 'text-sky-300' },
 }
 
 const shortDate = (iso: string | null) => (iso ? new Date(iso).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : '')
@@ -109,7 +109,7 @@ export function BuildBar({ store }: { store: BuildStore }) {
         <p className="text-[11px] text-forge-muted leading-snug">
           Saves stay on this device.{' '}
           <button className="text-forge-accent hover:underline cursor-pointer" onClick={login}>Log in</button>{' '}
-          to keep builds in your Discord account and open them anywhere.
+          to keep plans in your Forgehaven account and open them anywhere.
         </p>
       )}
 
@@ -158,13 +158,21 @@ export function BuildBar({ store }: { store: BuildStore }) {
         </ul>
       )}
 
-      {(store.build.status ?? 'planning') === 'planning' && <div className="flex justify-end border-t border-forge-border pt-2">
-        <ConfirmButton
-          label="Reset everything"
-          confirmPrompt="Clear the whole character?"
+      <div className="flex items-center gap-2 border-t border-forge-border pt-2">
+        {current && (
+          <label className="flex items-center gap-2 text-xs text-forge-dim">
+            Status
+            <select className="forge-input !w-auto !py-1 text-xs" value={store.build.status ?? 'planning'} onChange={e => setBuild(b => ({ ...b, status: e.target.value as BuildStatus }))}>
+              {BUILD_STATUSES.map(s => <option key={s} value={s}>{s[0].toUpperCase() + s.slice(1)}</option>)}
+            </select>
+          </label>
+        )}
+        {(store.build.status ?? 'planning') === 'planning' && <span className="ml-auto"><ConfirmButton
+          label="Reset this character"
+          confirmPrompt="Reset this current character?"
           onConfirm={() => setBuild(b => emptyBuild(b.startMonth))}
-        />
-      </div>}
+        /></span>}
+      </div>
       </>}
 
       {conflict && (

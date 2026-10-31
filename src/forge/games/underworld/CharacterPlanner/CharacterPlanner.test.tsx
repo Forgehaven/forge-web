@@ -48,7 +48,7 @@ describe('CharacterPlanner', () => {
     const draft = JSON.parse(localStorage.getItem('forgegames_uw_planner_v1')!)
     expect(draft.build.mode).toBe('timeline')
     expect(draft.build.purchases).toMatchObject([{ skill: 'read-write', at: 1 }])
-    expect(screen.getByText(/only saved in this browser/)).toBeInTheDocument()
+    expect(screen.getByText(/only kept in this browser/)).toBeInTheDocument()
   })
 
   it('flags purchases whose prereq is removed', async () => {
@@ -194,6 +194,7 @@ describe('CharacterPlanner build bar', () => {
     const user = userEvent.setup()
     renderPlanner()
     await user.selectOptions(screen.getByLabelText('Occupation'), 'Mercenary')
+    await user.click(screen.getByRole('button', { name: 'Save' }))
     await user.selectOptions(screen.getByLabelText('Status'), 'complete')
     expect(screen.getByRole('button', { name: 'Add Shield' })).toBeDisabled()
     expect(screen.getByLabelText('Occupation')).toBeDisabled()

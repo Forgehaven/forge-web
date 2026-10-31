@@ -9,7 +9,7 @@ import type { Race, Skill, Vocation } from '../types'
 import { MournfallCard } from '../components/MournfallCard'
 import { Prose } from '../components/Prose'
 import { Equipment } from './Equipment'
-import { useReferenceFavourites } from '../hooks/useReferenceFavourites'
+import { useCompendiumFavourites } from '../hooks/useCompendiumFavourites'
 
 const STAR = '★'
 const TABS = ['All', STAR, 'Races', 'Cultures', 'Occupations', 'Vocations', 'Skills', 'Spells', 'Armour & Weapons', 'Levels', 'Sources'] as const
@@ -283,13 +283,13 @@ function section(tab: Searchable, { q, sphere, circle, category, favs }: Filters
   }
 }
 
-export default function DataReference() {
+export default function RulesCompendium() {
   const [tab, setTab] = useState<Tab>('All')
   const [query, setQuery] = useState('')
   const [sphere, setSphere] = useState('')
   const [circle, setCircle] = useState('')
   const [category, setCategory] = useState('')
-  const { favs, toggle } = useReferenceFavourites()
+  const { favs, toggle } = useCompendiumFavourites()
   const q = query.trim().toLowerCase()
   const nothing = <p className="text-xs text-forge-muted">Nothing matches "{query.trim()}".</p>
   const hits = (tab === 'All' && q) || tab === STAR
@@ -300,7 +300,7 @@ export default function DataReference() {
     <Favs.Provider value={{ favs, toggle }}>
     <div className="flex flex-col gap-4 max-w-6xl">
       <header>
-        <h1 className="text-xl font-semibold text-forge-text">Data Reference</h1>
+        <h1 className="text-xl font-semibold text-forge-text">Rules Compendium</h1>
         <p className="text-xs text-forge-muted">
           Races, skills, vocations and spells used by the Character Planner. Unofficial: the{' '}
           <a href={SOURCES.index} target="_blank" rel="noopener noreferrer" className="text-forge-accent hover:underline">official rulebooks</a> win on any conflict.

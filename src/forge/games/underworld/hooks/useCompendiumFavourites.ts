@@ -10,9 +10,9 @@ const write = (items: string[]) => {
   try { localStorage.setItem(STORAGE_KEYS.uwFavourites, JSON.stringify(items)) } catch { /* private mode */ }
 }
 
-// Starred Data Reference entries: kept in this browser, and merged with the
+// Starred Rules Compendium entries: kept in this browser, and merged with the
 // account's list when logged in.
-export function useReferenceFavourites() {
+export function useCompendiumFavourites() {
   const { isAuthenticated } = useAuth()
   const [favs, setFavs] = useState(read)
 

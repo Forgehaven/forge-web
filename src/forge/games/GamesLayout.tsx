@@ -25,7 +25,7 @@ import { GamesSettings } from './GamesSettings'
 
 // Lazy: the Underworld rules data is large and only these pages need it.
 const CharacterPlanner = lazyWithReload(() => import('./underworld/CharacterPlanner/CharacterPlanner'))
-const DataReference = lazyWithReload(() => import('./underworld/DataReference/DataReference'))
+const RulesCompendium = lazyWithReload(() => import('./underworld/RulesCompendium/RulesCompendium'))
 const lazyPage = (Page: React.ComponentType) => <Suspense fallback={null}><Page /></Suspense>
 
 export default function GamesLayout() {
@@ -59,7 +59,8 @@ export default function GamesLayout() {
           <Route path="ffxi/map/:zoneId" element={<InteractiveMap />} />
           <Route path="underworld" element={<UnderworldSplash />} />
           <Route path="underworld/planner" element={lazyPage(CharacterPlanner)} />
-          <Route path="underworld/reference" element={lazyPage(DataReference)} />
+          <Route path="underworld/compendium" element={lazyPage(RulesCompendium)} />
+          <Route path="underworld/reference" element={<Navigate to="/games/underworld/compendium" replace />} />
           <Route path="*" element={<NotFound backTo="/games" backLabel="Back to games" />} />
         </Route>
       </Routes>

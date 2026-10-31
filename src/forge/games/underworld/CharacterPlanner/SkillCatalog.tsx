@@ -47,8 +47,8 @@ function optionLabel(sk: CatalogSkill, o: string, build: Build) {
 // Card placement per column count: 3 wide on desktop, 2 wide on tablets. One
 // column reads the 2-wide columns top to bottom.
 const LAYOUTS: Record<number, string[][]> = {
-  2: [['Racial', 'Production', 'Frag Skills', 'Occupational Abilities', 'Class Frag Skills'], ['Warrior', 'Scholar', 'Rogue']],
-  3: [['Racial', 'Production', 'Warrior'], ['Frag Skills', 'Scholar'], ['Occupational Abilities', 'Class Frag Skills', 'Rogue']],
+  2: [['Racial', 'Production', 'Soul Frag Skills', 'Occupational Abilities', 'Class Frag Skills'], ['Warrior', 'Scholar', 'Rogue']],
+  3: [['Racial', 'Production', 'Warrior'], ['Soul Frag Skills', 'Scholar'], ['Occupational Abilities', 'Class Frag Skills', 'Rogue']],
 }
 // Class Frag Skills is whichever class applies.
 const group = (cat: string) => (cat.endsWith('Class Frag Skills') ? 'Class Frag Skills' : cat)

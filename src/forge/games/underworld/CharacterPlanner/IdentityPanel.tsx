@@ -1,6 +1,6 @@
 import { CULTURES, FAVOURED_VOCATIONS, FRAG_RACES, RACES, VOCATIONS } from '../data'
 import { OCC_CLASS, OCC_ORDER } from '../rules'
-import { BUILD_STATUSES, raceData, switchRole, vocationData, type Build, type BuildStatus, type Evaluation } from '../engine'
+import { raceData, switchRole, vocationData, type Build, type Evaluation } from '../engine'
 import { Collapsible } from '../../../../components/Collapsible'
 import { Prose } from '../components/Prose'
 
@@ -9,7 +9,6 @@ interface Props {
   ev: Evaluation
   setBuild: (fn: (b: Build) => Build) => void
   locked: boolean
-  setStatus: (status: BuildStatus) => void
   // Sandbox blanket count and CP bar, shown under occupation and vocation.
   blankets?: React.ReactNode
 }
@@ -34,7 +33,7 @@ function Stat({ label, value, warn }: { label: string; value: string | number; w
 
 const fragTiers = ['Uncommon', 'Rare', 'Obscure']
 
-export function IdentityPanel({ build, ev, setBuild, locked, setStatus, blankets }: Props) {
+export function IdentityPanel({ build, ev, setBuild, locked, blankets }: Props) {
   const set = (patch: Partial<Build>) => setBuild(b => ({ ...b, ...patch }))
   const race = raceData(build.race)
   const culture = CULTURES[build.culture]
@@ -44,8 +43,7 @@ export function IdentityPanel({ build, ev, setBuild, locked, setStatus, blankets
 
   return (
     <div className="forge-card !p-3 flex flex-col gap-3">
-      <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-3 gap-y-2">
-        <label className="min-w-0">
+      <label className="min-w-0">
           <span className="forge-label">Character name</span>
           <input
             className="forge-input !py-1.5"
@@ -56,12 +54,6 @@ export function IdentityPanel({ build, ev, setBuild, locked, setStatus, blankets
             onChange={e => set({ name: e.target.value })}
           />
         </label>
-        <Field label="Status">
-          <select className="forge-input !py-1.5" value={build.status ?? 'planning'} onChange={e => setStatus(e.target.value as BuildStatus)}>
-            {BUILD_STATUSES.map(s => <option key={s} value={s}>{s[0].toUpperCase() + s.slice(1)}</option>)}
-          </select>
-        </Field>
-      </div>
       <fieldset disabled={locked} className="grid grid-cols-2 gap-x-3 gap-y-2 min-w-0">
         <Field label="Race">
           <select className="forge-input !py-1.5" value={build.race} onChange={e => set({ race: e.target.value, culture: '' })}>

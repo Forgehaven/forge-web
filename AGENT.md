@@ -399,8 +399,8 @@ Login is only an upgrade (cross-device sync), never a gate.
 
 ## Underworld LARP (`src/forge/games/underworld/`)
 
-Routes: `/games/underworld` (splash), `underworld/planner` (Character Planner), `underworld/reference`
-(Data Reference). Planner + reference are `lazyWithReload` chunks in GamesLayout (`src/lib/lazyWithReload.ts`)
+Routes: `/games/underworld` (splash), `underworld/planner` (Character Planner), `underworld/compendium`
+(Rules Compendium). Planner + compendium are `lazyWithReload` chunks in GamesLayout (`src/lib/lazyWithReload.ts`)
 so FFXI pages never load the ~450KB rules JSON.
 
 - **Rules data is JSON** in `data/*.json` (rules, races, skills, vocations, spells) plus `data/sources.json`
@@ -430,7 +430,7 @@ so FFXI pages never load the ~450KB rules JSON.
 - **Spell pyramid** (Core p.105-106): `pyramidError()` enforces the book order (k-th slot needs min(k+1,5)
   in the circle below; 2 more than the next circle forces buying upward; 5 wide until full, then up to 10).
   `sortedPurchases()` re-sequences slots within a step so click order does not matter.
-- **Data Reference** tabs include Armour & Weapons (`data/equipment.json` + `images/armour-locations.webp`
+- **Rules Compendium** tabs include Armour & Weapons (`data/equipment.json` + `images/armour-locations.webp`
   from the Weapon and Armour Guide 1.4). Entries verified against a book carry `ref` (printed page).
 - `components/MournfallCard.tsx`: promo for Mournfall (Ottawa chapter) on the splash, planner and reference.
 

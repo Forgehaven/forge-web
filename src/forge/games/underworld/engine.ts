@@ -218,7 +218,7 @@ export function catalog(b: Build): { cat: string; skills: CatalogSkill[] }[] {
   }))
   out.push({ cat: 'Racial', skills: racial })
 
-  const frag = SKILLS.find(c => c.cat === 'Frag Skills')
+  const frag = SKILLS.find(c => c.cat === 'Soul Frag Skills')
   if (frag) out.push(tag(frag.cat, frag.skills))
 
   const voc = vocationData(b.vocation)
@@ -240,7 +240,7 @@ export function catalog(b: Build): { cat: string; skills: CatalogSkill[] }[] {
 
   const cls = OCC_CLASS[b.occupation]
   for (const c of SKILLS) {
-    if (['General', 'Frag Skills'].includes(c.cat) || c.cat.endsWith('Class Frag Skills')) continue
+    if (['General', 'Soul Frag Skills'].includes(c.cat) || c.cat.endsWith('Class Frag Skills')) continue
     out.push(tag(c.cat, c.skills))
     const classFrag = SKILLS.find(f => f.cat === `${c.cat} Class Frag Skills`)
     if (classFrag && cls === c.cat.toLowerCase()) out.push(tag(classFrag.cat, classFrag.skills))
