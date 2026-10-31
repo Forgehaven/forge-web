@@ -72,10 +72,11 @@ export default function CharacterPlanner() {
   const remove = (skill: string, choice?: string) => setBuild(b => unbuy(b, skill, choice))
   const invalid = activePurchases(build).filter(p => ev.results.get(p.id)?.error).length
   const needsHighlighted = vocationNeeds(view, ev.final).size > 0
-  const alerts = ev.warnings.length + (ev.lifeWarning ? 1 : 0) + (invalid > 0 ? 1 : 0) + (needsHighlighted ? 1 : 0)
+  const alerts = ev.warnings.length + (ev.lifeWarning ? 1 : 0)
+  const skillAlerts = ev.skillWarnings.length + (invalid > 0 ? 1 : 0) + (needsHighlighted ? 1 : 0)
 
   return (
-    <div className={`relative grid gap-3 pb-6 lg:pb-0 lg:h-full lg:grid-rows-[minmax(0,1fr)] ${pane ? 'lg:grid-cols-[22rem_24rem_minmax(0,1fr)]' : 'lg:grid-cols-[24rem_minmax(0,1fr)]'}`}>
+    <div className={`relative grid gap-3 pb-6 lg:pb-0 lg:h-full lg:grid-rows-[minmax(0,1fr)] ${pane ? 'lg:grid-cols-[22rem_24rem_minmax(0,1fr)]' : 'lg:grid-cols-[22rem_minmax(0,1fr)]'}`}>
       {/* The rules drawer portals here so it covers the left panes, not the skills. */}
       <div id="uw-rules-slot" className="contents" />
       <aside className="flex flex-col gap-3 lg:min-h-0 lg:overflow-y-auto lg:pr-1 lg:[scrollbar-gutter:stable]">
@@ -85,7 +86,7 @@ export default function CharacterPlanner() {
             <span className="rounded border border-amber-400/40 bg-amber-400/10 px-1.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-amber-300">Unofficial</span>
           </h1>
           <p className="text-xs text-forge-dim mt-1 leading-snug">
-            A fan-made tool for planning builds. Nothing here changes your actual character for UW LARP. The rulebooks win on any conflict.
+            A tool for planning builds. Nothing here changes your actual character for UW LARP. The rulebooks win on any conflict.
           </p>
           {!store.isAuthenticated && (
             <p className="text-xs text-forge-accent mt-1 leading-snug">
@@ -123,16 +124,6 @@ export default function CharacterPlanner() {
                 />
               </p>
             )}
-            {invalid > 0 && (
-              <p>
-                {invalid} purchase{invalid > 1 ? 's are' : ' is'} invalid{timeline ? ' (red on the timeline)' : ''}.{' '}
-                <button
-                  className="underline cursor-pointer"
-                  onClick={() => setBuild(b => withPurchases(b, activePurchases(b).filter(p => !ev.results.get(p.id)?.error)))}
-                >Remove them</button>
-              </p>
-            )}
-            {needsHighlighted && <p>Skills that help qualify for {build.vocation} are highlighted in the Skills tab.</p>}
           </div>
         )}
         {build.ignoreLifeWarning && (
@@ -143,7 +134,7 @@ export default function CharacterPlanner() {
         </fieldset>
         </MobileSection>
 
-        <MobileSection title="Plan" summary={MODES.find(m => m.mode === mode)?.label}>
+        <MobileSection title="Plan" summary={<>{MODES.find(m => m.mode === mode)?.label}{skillAlerts > 0 && <span className="text-amber-300"> · {skillAlerts} warning{skillAlerts > 1 ? 's' : ''}</span>}</>}>
         <fieldset disabled={locked} className="contents">
 
         <div className="flex flex-col gap-1">
@@ -181,6 +172,21 @@ export default function CharacterPlanner() {
             )}
           </div>
         </div>
+        {skillAlerts > 0 && (
+          <div className="rounded-md border border-amber-500/30 bg-amber-500/5 px-4 py-2 text-xs text-amber-200 flex flex-col gap-1">
+            {ev.skillWarnings.map(w => <p key={w}>{w}</p>)}
+            {invalid > 0 && (
+              <p>
+                {invalid} purchase{invalid > 1 ? 's are' : ' is'} invalid{timeline ? ' (red on the timeline)' : ''}.{' '}
+                <button
+                  className="underline cursor-pointer"
+                  onClick={() => setBuild(b => withPurchases(b, activePurchases(b).filter(p => !ev.results.get(p.id)?.error)))}
+                >Remove them</button>
+              </p>
+            )}
+            {needsHighlighted && <p>Skills that help qualify for {build.vocation} are highlighted in the Skills tab.</p>}
+          </div>
+        )}
         {mode === 'sandbox' && <SimplePlan build={build} ev={ev} setBuild={setBuild} />}
         </fieldset>
         </MobileSection>

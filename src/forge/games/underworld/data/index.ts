@@ -8,6 +8,7 @@ import spellsJson from './spells.json'
 import rulesJson from './rules.json'
 import equipmentJson from './equipment.json'
 import productionJson from './production.json'
+import monstersJson from './monsters.json'
 
 export interface DataMeta {
   source: string
@@ -29,11 +30,12 @@ export const VOCATION_PREREQS = vocationsJson.vocationPrereqs as unknown as Reco
 export const SPELLS = spellsJson.spells as Spell[]
 export const EQUIPMENT = equipmentJson
 export const PRODUCTION = productionJson.skills as Record<string, Production>
+export const MONSTERS = monstersJson
 
 export const DATA_SOURCES: Record<string, DataMeta> = {
   rules: rulesJson.meta, races: racesJson.meta, skills: skillsJson.meta,
   vocations: vocationsJson.meta, spells: spellsJson.meta, equipment: equipmentJson.meta,
-  production: productionJson.meta,
+  production: productionJson.meta, monsters: monstersJson.meta,
 }
 
 export { default as SOURCES } from './sources.json'

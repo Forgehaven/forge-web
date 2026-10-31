@@ -327,7 +327,7 @@ describe('spell slot ordering across steps', () => {
     // Weapon-choice skills get the Medium group; Tradesman a Miner trade.
     const pick = (sk: string) => buy(sk, 0, /weapon-group$|master$/.test(sk) ? 'Medium' : sk === 'tradesman' ? 'Blacksmith|Miner' : undefined)
     const warn = (vocation: string, skills: string[], occupation = 'Mercenary') =>
-      evaluate(build({ occupation, vocation, purchases: skills.map(pick) }), undefined, true).warnings.filter(w => w.startsWith(vocation))
+      evaluate(build({ occupation, vocation, purchases: skills.map(pick) }), undefined, true).skillWarnings.filter(w => w.startsWith(vocation))
     const parry = ['weapon-group-proficiency-medium', 'specialization-1-weapon-group', 'slay-parry-master']
     expect(warn('Stalwart', ['heavy-armour', 'shield'])).toContain('Stalwart expects Slay/Parry or Slay/Parry: Master')
     expect(warn('Stalwart', ['heavy-armour', 'shield', ...parry])).toEqual([])

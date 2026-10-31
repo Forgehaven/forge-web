@@ -1,0 +1,662 @@
+{
+  "meta": {
+    "source": "Underworld LARP Monster Abilities 3.4",
+    "rulebook": "Monster Abilities 3.4",
+    "updated": "2026-10-31"
+  },
+  "intro": "Note: This list does not include spells, alchemy, skills, etc. that appear in the Core Rulebook or Soul Frag Book. The following abilities are presented in alphabetical order, with exception to Undead State, which appears at the end in its own section.\n\nAdditionally, the \"Type of Delivery/Effect\" heading for each ability lists what is nearly exclusively used for the prefix and delivery method of that ability. However, with careful discretion, a Shaper can alter this to their needs. For example, while the Dominate ability usually has the prefix of \"Alchemical\" or \"Magic\" it is not impossible for a Shaper to stat a monster with a \"Ritual Dominate\" or \"Spellstrike Dominate\" as appropriate, as the Ritual and Spellstrike prefixes are still Magic and therefore could work with the ability.",
+  "abilities": [
+    {
+      "name": "Absorb <Effect>",
+      "delivery": "N/A",
+      "call": "\"Absorb <Effect>\"",
+      "desc": "The monster can absorb an effect at range and suffer no ill effects from it. The effect must pass within, or occur within, 10 feet of the monster using this skill, such as a thrown packet or weapon swing. Once absorbed the monster may be able to do other abilities with the absorbed effect such as use the abilities \"Heal From\" or \"Ricochet\". If it can use neither, the effect is simply negated. \"Absorb Magic\" affects both Battle Magic and Ritual Magic-level effects (with the exception of Elemental damage), while \"Absorb Arcane\" affects all levels and types of magic.",
+      "ref": "Monster Abilities 3.4 p.1"
+    },
+    {
+      "name": "Acidic Blood",
+      "delivery": "N/A",
+      "call": "\"Acidic Blood\" (After the first Body damaging weapon strike against it by each individual attacker, once each)",
+      "desc": "Metal weapons which successfully do Body damage to the monster take an \"Alchemical Shatter\" effect (see \"Shatter\" below) after 1 minute. If after combat the weapon used can be proven via its tag to a Shaper to not be made of metal, it is unaffected (use discretion).",
+      "ref": "Monster Abilities 3.4 p.1"
+    },
+    {
+      "name": "Age <X>",
+      "delivery": "Weapon Swing (Carrier Effect), Packet Delivered (Magic)",
+      "call": "Ex. Weapon Swing (Carrier Effect): \"10 Magic Body Age 2\" OR Packet Delivered: \"Magic Age 10\"",
+      "desc": "An effect which ages the target by X years each time it occurs. Usually reserved for Spirits or Undead that can drain away one's lifeforce.",
+      "ref": "Monster Abilities 3.4 p.1"
+    },
+    {
+      "name": "Alien Anatomy",
+      "delivery": "N/A",
+      "call": "N/A",
+      "desc": "The monster has a strange physiology that is aberrant or atypical of most natural vertebrates. It is immune to effects that target vital organs, the head or eyes, or requires knowledge of Anatomy, such as Decapitate, Sap, Head-Butt, Dirt in the Eye, Vital Blow, Execute, First Aid, etc.) unless an exception is stated in the monster's statistics (such as insects and arachnids in the \"Vermin\" section). It would state \"No Effect\" to any such effect. However, it is not immune to having its limbs broken or severed, such as with Fracture or Dismember.",
+      "ref": "Monster Abilities 3.4 p.1"
+    },
+    {
+      "name": "Amphibious",
+      "delivery": "N/A",
+      "call": "\"Sinking Below\" on a 3-count (see below)",
+      "desc": "This monster is at home on land or in the water. It can breathe both on land and underwater, or hold its breath underwater for a limited or unlimited amount of time, as indicated in the monster's statistics. If in sufficiently deep water, it may sink below the water with a 3-count, \"Sinking Below 1, Sinking Below 2, Sinking Below 3\". A creature below the water can't be attacked by anything above the water, and vice versa.",
+      "ref": "Monster Abilities 3.4 p.2"
+    },
+    {
+      "name": "Aquatic",
+      "delivery": "N/A",
+      "call": "\"Sinking Below\" on a 3-count (see below)",
+      "desc": "This monster can only exist in water. If it leaves the water for 1 minute, it begins to suffocate, entering its Death Count after another minute. While in water, the monster has the Free Action ability, but outside of water it is under a Swampwalk effect. If in sufficiently deep water, it may sink below the water with a 3-count, \"Sinking Below 1, Sinking Below 2, Sinking Below 3\". A creature below the water can't be attacked by anything above the water, and vice versa.",
+      "ref": "Monster Abilities 3.4 p.2"
+    },
+    {
+      "name": "Bite",
+      "delivery": "Weapon Swing",
+      "call": "Ex. \"10 Body Bite\" OR \"2 Magic Body Nausea Bite\"",
+      "desc": "This physical attack suffix is used with two claw reps which represent a jaw or mouth. Both claws must hit the target simultaneously for the bite to be successful, and is negated if at least one boffer is blocked. Bites do \"Body\" damage to the target and can be combined with other abilities (see \"Carrier Effect\" below) as shown on the stat block.",
+      "ref": "Monster Abilities 3.4 p.2"
+    },
+    {
+      "name": "Blink",
+      "delivery": "N/A",
+      "call": "\"Blink\" OR \"Blink <Number>\"",
+      "desc": "This ability allows the monster to instantly teleport short distances. It is typically done by using two or more NPCs who are dressed identically, only one of which is In-Game at any time. The In-Game NPC may call \"Blink <Number>!\" which causes the other NPC or NPC who has been given a number to appear In-Game in a different location, replacing the NPC who made the call. Only 1 NPC should be In-Game at any given time. Otherwise, a monster using Blink can disappear, walking Out-of-Game in a straight line up to 30 feet before reappearing back In-Game. In such a case, it doesn't allow the monster to bypass any obstacle that would normally impede its walk.",
+      "ref": "Monster Abilities 3.4 p.2"
+    },
+    {
+      "name": "Breach Armour",
+      "delivery": "Weapon Swing, Packet Delivered (Alchemical, Magic, Physical)",
+      "call": "Ex. Weapon Swing: \"Physical Breach Armour\" OR Packet Delivered: \"Alchemical Breach Armour\"",
+      "desc": "This attack causes the target's armour (if any) to instantly be reduced to 0 Armour Points and be considered breached. This attack will breach any type of armour, including Legendary Armour.",
+      "ref": "Monster Abilities 3.4 p.2"
+    },
+    {
+      "name": "Burn",
+      "delivery": "Weapon Swing, Packet Delivered",
+      "call": "\"Elemental Burn\"",
+      "desc": "Burn is an Elemental attack that will light the target on fire. The target takes \"1 Elemental Fire\" per second until it drops to the ground and rolls around on a 10-count to snuff out the fire or is submerged in water. If the target is immune to Elemental Fire or uses defences against Elemental Fire damage (such as Elemental Shield) then Burn will fail. If used as a weapon swing, it can be blocked by a boffer as normal.",
+      "ref": "Monster Abilities 3.4 p.3"
+    },
+    {
+      "name": "Burrow",
+      "delivery": "N/A",
+      "call": "\"Burrowing\" on a 3-count (see below)",
+      "desc": "This ability allows the monster to burrow and travel underground. Burrow may be done on a 3-count, \"Burrowing 1, Burrowing 2, Burrowing 3\". During this count the monster may still be attacked, however this does not interrupt the count. Once burrowed the monster goes Out-of-Game and may move by tunneling. While moving underground the monster must inform others with the Out-of-Game sensation: \"You feel rumbling under the ground\". The monster may remain burrowed for up to 30 seconds.",
+      "ref": "Monster Abilities 3.4 p.3"
+    },
+    {
+      "name": "Burst Forth",
+      "delivery": "N/A",
+      "call": "\"Burst Forth\"",
+      "desc": "This ability is always paired with an ability that grants an Out-of-Game or altered state (Burrow, <Realm> Walk, Fly, Gaseous Form, sinking below water with Amphibious/Aquatic, etc.). Upon using this ability, the monster emerges from or ends that state.",
+      "ref": "Monster Abilities 3.4 p.3"
+    },
+    {
+      "name": "Carrier Effect",
+      "delivery": "Weapon Swing (Carrier Effect)",
+      "call": "Ex. \"5 Magic Bind\" OR \"2 Normal Weakness\" OR \"10 Magic Nausea\"",
+      "desc": "These are physical weapon attacks that have additional effects/abilities that are added as suffix modifiers. The original attack must be successful and strike the target to Body in order for the Carrier Effect to apply.",
+      "ref": "Monster Abilities 3.4 p.3"
+    },
+    {
+      "name": "Chronomancy: <Time Rewind or Time Stop>",
+      "delivery": "Time Rewind: N/A Time Stop: Packet Delivered (Arcane), Spellstrike (Arcane)",
+      "call": "Time Rewind: \"Arcane Time Rewind\" Time Stop: \"Arcane Time Stop\" OR \"Spellstrike Arcane Time Stop\"",
+      "desc": "This extremely powerful ability allows a monster to manipulate time in one of two rudimentary ways. It may have one or both of these abilities, as listed on its stat block. It can only be used by powerful Angels of Vesmir and arcane constructs derived from that God, and can never be used by a different monster without direct Lead Shaper permission (and in such cases, the monster should have a singular use of it before some tragic detriment befalls it).\n\nTime Rewind: The monster reverses its own timeline to defend against any effect or instance of damage. Alternatively, when it misses with one of its abilities, or that ability is defended against, it can reverse its own timeline to regain the use of that ability.\n\nTime Stop: The monster freezes a creature in time. This acts as an Arcane Paralysis effect that can affect all creatures regardless of any immunity to Mind Altering Effects, and additionally pauses all counts on the target for its 10 minute duration. The monster can choose to touch the target and state \"Arcane Time Start\" to end the effect early if they desire.",
+      "ref": "Monster Abilities 3.4 p.4"
+    },
+    {
+      "name": "Consume Corpse",
+      "delivery": "N/A",
+      "call": "\"Consuming Corpse\" on a 30-count (see below)",
+      "desc": "This effect has the monster roleplay eating part of the target for the duration of the count while it is in its Bleed or Death Count. After that time, the target is automatically Killing Blowed if it was in its Bleed Count, and the monster receives Mending to its full amount of Body Points. If the monster is interrupted in its count it must restart from the beginning. Once a target has been successfully affected by Consume Corpse, it can't be the target of it again until it regains at least 1 Body Point.",
+      "ref": "Monster Abilities 3.4 p.4"
+    },
+    {
+      "name": "Cower",
+      "delivery": "Weapon Swing (Carrier Effect), Packet Delivered (Magic)",
+      "call": "Ex. Weapon Swing (Carrier Effect): \"2 Magic Cower\" OR Packet Delivered: \"Magic Cower\"",
+      "desc": "A Fear Effect which causes the target struck to hide from the attacker. The target must attempt to flee and cower behind any large physical object (cannot be a creature) for 10 seconds before it regains its nerve. If no such object exists, it will simply flee to the best of its ability until it can find a suitable object, but for no longer than 30 seconds. If the target finds an object to cower behind, it may use skills and abilities like normal while the 10 second timer activates. The target cannot attack the monster that affected it with Cower until the effect is removed or ends. If the target becomes cornered in a way that it cannot escape and is attacked by the source of the Cower, the effect will immediately end.",
+      "ref": "Monster Abilities 3.4 p.4"
+    },
+    {
+      "name": "Create Replica",
+      "delivery": "N/A ",
+      "call": "\"Create Replica\"",
+      "desc": "This monster is able to create one or more illusionary-style duplicates of itself, typically played by other NPCs who appear identical to the original monster. These likenesses are invulnerable to all attacks and effects (stating No Effect), but are limited to using only 1 physical weapon strike or Monster Ability per 10 seconds. No Replica may exist for more than 60 seconds, but the monster may be able to spawn more of them. A monster is limited in how many Replicas it may create within a given amount of time (Ex. 2x/Minute, or 3x/10 Minutes, etc.) A monster with Create Replica and Blink (see \"Blink\" above) can use Blink to seamlessly change places with one of its duplicates.",
+      "ref": "Monster Abilities 3.4 p.5"
+    },
+    {
+      "name": "Crush <X Massive>",
+      "delivery": "N/A",
+      "call": "\"Crushing\" on a 3-count (see below)  \"X Massive\"",
+      "desc": "Always paired with the Grab ability (see \"Grab\" below). The monster has means to squeeze targets it has grabbed with force. While the target is held in the grab, the monster can begin crushing it on an at will 3-count, \"Crushing 1, Crushing 2, Crushing 3\". If the target is not freed from the grab before the end of the count, it takes \"X Massive\".",
+      "ref": "Monster Abilities 3.4 p.5"
+    },
+    {
+      "name": "Curse of Arrhythmia",
+      "delivery": "Packet Delivered (Magic), Spellstrike",
+      "call": "Ex. Packet Delivered: \"Magic Lesser Curse of Arrhythmia\" OR Spellstrike: \"Spellstrike Greater Curse of Arrhythmia\"",
+      "desc": "This curse causes the target to reply to all Sense calls by yelling instead of a normal speaking voice. It can be either a Lesser or Greater Curse with the Lesser version lasting 1 hour and the Greater version following the Core Rulebook definition; lasting until removed.",
+      "ref": "Monster Abilities 3.4 p.5"
+    },
+    {
+      "name": "Curse of Destruction",
+      "delivery": "Packet Delivered (Magic), Spellstrike",
+      "call": "Ex. Packet Delivered: \"Magic Lesser Curse of Destruction\" OR Spellstrike: \"Spellstrike Greater Curse of Destruction\"",
+      "desc": "This curse causes the target to take x2 numerical damage from all sources. It can be either a Lesser or Greater Curse with the Lesser version lasting 1 hour and the Greater version following the Core Rulebook definition; lasting until removed.",
+      "ref": "Monster Abilities 3.4 p.5"
+    },
+    {
+      "name": "Destroy <X> Armour",
+      "delivery": "Weapon Swing, Packet Delivered (Alchemical, Magic)",
+      "call": "Ex. Weapon Swing: \"Physical Destroy 10 Armour\" OR Packet Delivered: \"Alchemical Destroy 10 Legendary Armour\"",
+      "desc": "If struck, the Armour Points of the target takes the X amount of damage and if the armour breaches the damage done is permanent (Ex. If the target has 50 Armour Points total and its armour is breached via \"Destroy 20 Armour\", then 20 points worth of its Armour Tags will be permanently destroyed, rounded down). This effect will not do damage to Body Points or harm the armour's wearer in any way. This has no effect on Legendary Armour unless the rare prefix \"Legendary\" is used with this ability. If a target is breached by this rare type of Destroy Armour, the number of Armour Points destroyed is taken from any Legendary Armour it is wearing first before regular armour.",
+      "ref": "Monster Abilities 3.4 p.5"
+    },
+    {
+      "name": "Directed Attack <Type> <Damage or Ability>",
+      "delivery": "N/A",
+      "call": "\"Directed Attack\" on a 10-count (see below)  Ex. \"Directed Attack Physical 10 Massive\" OR \"Directed Attack Magic Death\"",
+      "desc": "This special attack requires the monster to point at the target, stop moving and perform a 10-count loudly, \"Directed Attack 1, Directed Attack 2, Directed Attack 3, etc\". After the 10-count if the target is still in view of the monster, it states the complete Directed Attack call, and the target takes the effect. If the monster moves or cannot see, this ability is considered interrupted. Note: The monster may specify the target Out-of-Game at the end of the complete call for clarification if needed.",
+      "ref": "Monster Abilities 3.4 p.6"
+    },
+    {
+      "name": "Disarm",
+      "delivery": "Weapon Swing, Packet Delivered (Physical)",
+      "call": "Weapon Swing: \"Physical Disarm\" OR Packet Delivered: \"Physical Disarm <Object to be Dropped>\"",
+      "desc": "This physical ability causes the target to drop what is in its hand. If struck by a physical weapon swing on the target's limb, weapon, or shield, the target must drop whatever is in the corresponding hand. If the weapon strikes anywhere else (such as the torso or leg) it has no effect. If the Disarm is packet delivered, it may hit the target anywhere, as the object to be dropped is specified in the call. If the object is omitted from the packet delivered call, the target is free to choose to drop an object from either hand. The dropped item may immediately be picked up again if desired.",
+      "ref": "Monster Abilities 3.4 p.6"
+    },
+    {
+      "name": "Dominate",
+      "delivery": "Packet Delivered (Alchemical, Magic)",
+      "call": "Ex. \"Magic Dominate\"",
+      "desc": "This Charm Effect will cause the target to follow the orders of the monster exactly. It cannot be commanded to harm itself in any way, but can be ordered to attack other targets. The duration is 10 minutes.",
+      "ref": "Monster Abilities 3.4 p.6"
+    },
+    {
+      "name": "Drain",
+      "delivery": "N/A (Special Damage Suffix; see below)",
+      "call": "Ex. \"1 Magic Body Drain\" OR \"20 Massive Drain\"",
+      "desc": "A damage suffix that always follows a damage type that hits directly to Body. This effect both damages the target and applies the Body damage to the monster in the form of Mending. Additionally, any Mending that exceeds the monster's maximum Body Points grants them Temporary Body Points equal to the excess. Temporary Body Points gained from this ability last 1 hour, but don't stack.",
+      "ref": "Monster Abilities 3.4 p.6"
+    },
+    {
+      "name": "Echo",
+      "delivery": "N/A",
+      "call": "\"Echo\"",
+      "desc": "If a target successfully uses a defence against a magical effect originating from the monster, the monster can Echo it. This causes the target to be instantly hit by the effect again. This can be used on every magical effect the monster has, unless otherwise stated.",
+      "ref": "Monster Abilities 3.4 p.6"
+    },
+    {
+      "name": "Elemental Form: <Element>",
+      "delivery": "N/A",
+      "call": "N/A",
+      "desc": "Monsters with this ability are typically from the Elemental Planes. This is usually listed in the \"Monster Features and Vulnerabilities\" section of a stat block. They have the following attributes:\n\nx4 damage from the opposing Element: Fire opposes Water (Ice), Earth (Stone) opposes Air (Lightning), Life (Healing) opposes Death (Infliction). In the case of Healing from any Sphere, such effects deal Magic Body damage to monsters of the Death Element. This is considered a Racial Vulnerability.\n\nHeals From its own Element if packet delivered or via Spellstrike. Immune to its own Element if struck by a physical weapon strike. Immune to all effects that target a physical body or its nervous system, including its limbs, vital organs, and method of breathing, such as Garrotte, Paralysis, Sap, Hamstring, Head-Butt, Dirt in the Eye, Sucker Punch, Stun, Decapitate, Dismember, Execute, etc.) Immune to all Alchemy/Chemistry, including Acid damage. Immune to Disease. Can't be knocked unconscious, including by Sleep effects. Any effect that banishes an Elemental, will send the monster back to the Elemental Plane its Element is tied to for a year and a day.",
+      "ref": "Monster Abilities 3.4 p.7"
+    },
+    {
+      "name": "Engulf",
+      "delivery": "Weapon Swing",
+      "call": "\"Physical Engulf\"",
+      "desc": "This attack is used with two claw reps, and causes a target to be pulled into the monster. If the claw reps strike the target or anything it is holding, it is swallowed whole. Once swallowed, the target stands beside the monster Out-of-Game, and any damage done to the monster will also damage the target (if it would damage it normally). While inside the monster, the target is considered completely blinded and immobilized and cannot act in any way. After being inside the monster for 1 minute, it suffocates and enters its Death Count. Targets that do not need to breathe are immune to this suffocation. A target can only remain in the monster for a maximum of 1 hour before it and items on its body are immediately spat out. If the monster is reduced to 0 Body Points, targets who are still conscious can emerge from it on a 3-count, otherwise it must be cut from the monster's stomach on a 5-count with an edged weapon. Monsters with this ability may only engulf one target at a time, unless otherwise noted. If an effect is used to reflect Engulf in any way (such as Riposte), it only defends against Engulf instead.",
+      "ref": "Monster Abilities 3.4 p.7"
+    },
+    {
+      "name": "Explosive Death <X Feet, Effect>",
+      "delivery": "N/A",
+      "call": "Ex. \"Explosive Death: 10 Feet, 5 Acid\" OR \"Explosive Death: 10 Feet, Alchemical Festering Pox\"",
+      "desc": "3 seconds after the monster with this ability enters its Bleed Count, it explodes in a X foot radius, causing all targets in the area to take an effect (usually damage). The damage or other effect is listed in the monster's statistics.",
+      "ref": "Monster Abilities 3.4 p.7"
+    },
+    {
+      "name": "Extraplanar Being: <Realm>",
+      "delivery": "N/A",
+      "call": "N/A",
+      "desc": "The monster has no Bleed or Death Count and as such cannot be Spirit Severed. When it reaches 0 Body Points on a realm that isn't its native plane, it doesn't take a death, and instead returns to its own realm. If it is killed on its native plane, it takes a death as normal.",
+      "ref": "Monster Abilities 3.4 p.8"
+    },
+    {
+      "name": "Fae Mark",
+      "delivery": "Unique (see below)",
+      "call": "\"Arcane <Light/Dark> Fae Mark\"",
+      "desc": "A Fae Mark is similar to a unique magical tattoo (though depending on the True Fae, this mark may be invisible) that is placed upon a target with a spirit by a True Fae via touch or other more esoteric means. A Light Fae Mark indicates to other True Fae that the target is a friend to the granter of the mark, and functions as a Moonlight Mantle spell (which refreshes at the start of each game). A Dark Fae Mark indicates to other True Fae that the target is an enemy to the granter of the mark, and functions as a Lesser Curse of Destruction (which lasts as long as the Fae Mark does). Both types last until resurrection, although the same True Fae can remove its Fae Mark if it desires without effort. Additionally, a higher ranking True Fae of the same court or affiliation as the granter of the mark can also remove it. A target may have multiple Light and Dark Fae Marks, but their Moonlight Mantle/Curse of Destruction effects don't stack. Note: Despite a Dark Fae Mark conferring the effect of a curse, Fae Marks are not curses and can't be affected by effects that remove a curse, nor can the Lesser Curse of Destruction effect be cured before the Fae Mark is removed.",
+      "ref": "Monster Abilities 3.4 p.8"
+    },
+    {
+      "name": "Feed On <Target>",
+      "delivery": "N/A",
+      "call": "\"Feeding On <Target>\" on a 5-count, or 100-count (see below)",
+      "desc": "This ability comes in a variety of forms and can be used on either a type of object or a creature. If used on a creature, it must be willing or helpless. To use this ability the monster performs a 5-count, \"Feeding On <Target> 1, Feeding On <Target> 2, etc\". If the count is successful, the object is destroyed or the creature enters its Death Count. Some monsters gain beneficial effects from \"Feed On\" such as Mending or resetting of skills, but this will be indicated in its statistics, usually as a Special ability (see \"Special\" below). Monsters which have \"Feed On Magic\" are capable of destroying items such as Battle Magic scrolls and Healing Sphere potions. Monsters with \"Feed On Ritual Magic\" are capable of destroying magic items, ritual scrolls, or otherwise enchanted objects that aren't relics, but requires a 100-count instead of a 5-count.",
+      "ref": "Monster Abilities 3.4 p.8"
+    },
+    {
+      "name": "Flesh to <Material>",
+      "delivery": "Weapon Swing (Carrier Effect), Packet Delivered (Alchemical, Magic)",
+      "call": "Ex. Weapon Swing (Carrier Effect): \"5 Normal Flesh to Stone\" OR Packet Delivered: \"Magic Flesh to Ice\"",
+      "desc": "This ability turns the target into a stone (or sometimes other solid material) statue. For the duration of the effect, the target is immune to all physical effects (be they weapon swings or \"Physical\" prefix packet delivered attacks), excluding weapons that swing \"Magic\" damage (or equivalent), and anything that would cause it to age. It is also immune to all non-Ritual magic sources of forced movement. While the spell is in effect, the target may not move, see, speak, or use any skills. All spells and weapons that swing \"Magic\" damage as referenced above will affect it as normal. This effect lasts 1 hour (because roleplaying a statue is boring for a player), but may last longer at Shaper discretion for plotline reasons. It may only be reversed by Dispel Magic effects unless specified. If the target dies while petrified in this manner, it will revert to its normal form when it enters its Death Count.",
+      "ref": "Monster Abilities 3.4 p.9"
+    },
+    {
+      "name": "Fly",
+      "delivery": "N/A",
+      "call": "\"Flying up\" on a 3-count OR \"Flying down\" on a 3-count (see below)",
+      "desc": "A monster with this ability can fly up into the air. Doing so requires a 3-count to fly up or down, \"Flying up 1, etc.\" or \"Flying down 1, etc.\" While this ability is active, the monster is too high up and cannot be the target of any attacks, spells or abilities, save for Arrows, Crossbow Bolts, Power Words, or Directed Attacks (see \"Directed Attack\" above), and vice versa. The creature may still use abilities while flying. Typically found on monsters with wings.",
+      "ref": "Monster Abilities 3.4 p.9"
+    },
+    {
+      "name": "Free Action",
+      "delivery": "N/A",
+      "call": "N/A",
+      "desc": "This passive ability makes the monster immune to any binding effect that would physically constrict it, any effect that would stun it, and any effect that would slow its movement in any manner that is not a Mind Altering Effect or being knocked unconscious. This includes effects, such as Stun, Swampwalk, Snare, Bind, Web, Black Plague, Tread Water, etc., but not effects like Sap or Repel. It would state \"No Effect\" to any such effect.",
+      "ref": "Monster Abilities 3.4 p.9"
+    },
+    {
+      "name": "Frostbite",
+      "delivery": "Weapon Swing, Packet Delivered",
+      "call": "\"Elemental Frostbite\"",
+      "desc": "Frostbite is an Elemental attack which causes the target's hands to become unbearably cold. If successful, both hands are disarmed for 5 minutes, during which time it may not hold items including weapons, and may not cast any spells or use them in any way. If the target roleplays warming its hands for 1 minute continuously, it regains the use of its hands and is no longer disarmed. If the target is immune to Elemental Ice or uses defences against Elemental Ice damage (such as Elemental Shield) then Frostbite will fail. If used as a weapon swing, it can be blocked by a boffer as normal.",
+      "ref": "Monster Abilities 3.4 p.9"
+    },
+    {
+      "name": "Gaseous Form",
+      "delivery": "N/A",
+      "call": "\"Gaseous Form\" on a 3-count (see below)",
+      "desc": "With this ability the monster may turn its physical body into mist or smoke (or back to its normal form) on a 3-count, \"Gaseous Form 1, Gaseous Form 2, Gaseous Form 3\". All clothing and possessions also change with it. While in this form, it is immune to attacks and damage of all kinds. It cannot manipulate physical objects, use other abilities (including casting magic), or do anything more than move at a walking pace. However, while in this form the monster can now pass through very small openings such as keyholes. It can see and hear while in Gaseous Form but cannot speak. It should state \"Active Gaseous Form\" to those it passes to indicate its altered form.",
+      "ref": "Monster Abilities 3.4 p.10"
+    },
+    {
+      "name": "Gaze Attack",
+      "delivery": "N/A",
+      "call": "Ex. \"Magic Gaze Dominate\" OR \"Magic Gaze Wasting Death\"",
+      "desc": "This special attack requires the monster to meet the target's gaze for 5 seconds continuously. The monster does not have to count these seconds out loud. After 5 seconds, the monsters calls the effect. This is a magical effect that can be defended against with an appropriate spell or ability, but not with a Dodge. It can be used through barriers of any kind so long as eye contact is possible. Rarely, some monsters may possess Arcane Gaze Attacks.",
+      "ref": "Monster Abilities 3.4 p.10"
+    },
+    {
+      "name": "Gore",
+      "delivery": "Weapon Swing",
+      "call": "\"Prepare to Gore\" on a 3-count  Ex. \"Physical Gore 25 Normal\" OR \"Physical Gore 25 Magic\"",
+      "desc": "The monster prepares to Gore with a 3-count, \"Prepare to Gore 1, Prepare to Gore 2, Prepare to Gore 3\", sometimes stomping its feet as well. It then charges at a target and swings once for greater damage than its usual physical claw strikes, typically 25 or 50 damage, as per the monster's statistics. If the monster misses the attack, the ability is considered used. If the monster gains the ability to swing a different damage type with its claws, it is added to Gore's call.",
+      "ref": "Monster Abilities 3.4 p.10"
+    },
+    {
+      "name": "Grab",
+      "delivery": "Weapon Swing",
+      "call": "\"Physical Grab <X> Strength\"",
+      "desc": "Grab is a physical attack that uses the monster's Strength bonus. The monster must touch its target with one or both claw reps on either a limb or the torso (depending on the monster's statistics) and state Grab's call, where X is its Strength bonus. Once hit, that limb is completely immobile and can't be pulled from the monster's grasp. If the torso is hit then the target is immobilised from the neck down. In either case the target cannot move away from the monster until the grab is broken. To do so the target must declare its Strength bonus and, if it is greater than the monster's Strength, it can pull free of the grab with no other ill effects. Other characters may combine their Strength bonuses to pull the target away from the grab if that total Strength is higher than the monster's Strength. When a monster has a target grabbed it may have additional abilities it can use on the target, such as the Crush ability (see \"Crush\" above). If the monster chooses to remove its claw rep from the target to defend itself or take other actions, the target is free of the grab and may act normally. Note: Some extremely physically strong monsters can use \"Massive Physical Grab\" to take hold of a creature whether it blocks the claw reps or not. If an effect is used to reflect Grab in any way (such as Riposte), it only defends against Grab instead.",
+      "ref": "Monster Abilities 3.4 p.10"
+    },
+    {
+      "name": "Heals From: <Effect>",
+      "delivery": "N/A",
+      "call": "\"Heals From\"",
+      "desc": "The monster Mends from taking a certain damage of type or effect, such as Infliction or Elemental Fire damage. It states the call each time it is hit with such effects.",
+      "ref": "Monster Abilities 3.4 p.11"
+    },
+    {
+      "name": "Hivemind: <Death or No Effect>",
+      "delivery": "N/A",
+      "call": "N/A",
+      "desc": "The monster is connected to and controlled by a Hivemind. It will either take a Death effect or call \"No Effect\" if hit by a Charm Effect, as indicated in the monster's statistics. This is usually listed in the \"Monster Features and Vulnerabilities\" section of a stat block.",
+      "ref": "Monster Abilities 3.4 p.11"
+    },
+    {
+      "name": "Immunity: <Type>",
+      "delivery": "N/A",
+      "call": "N/A",
+      "desc": "The monster is immune to the specified type of damage, effect, or Sphere of Magic. They must say \"No Effect\" when hit with effects of that type (Ex. \"Immunity: Nature\" or \"Immunity: Effects that Target the Head or Limbs\"). If an immunity lists an element, such as just \"Fire\", the monster has immunity to both Magic and Elemental Fire attacks. This is usually listed in the \"Monster Features and Vulnerabilities\" section of a stat block.",
+      "ref": "Monster Abilities 3.4 p.11"
+    },
+    {
+      "name": "Infest",
+      "delivery": "N/A",
+      "call": "\"Infesting\" on a 10-count (see below)",
+      "desc": "The monster physically implants an egg or other such foreign body within a living or dead host, typically within the chest cavity, which requires a 10-count, \"Infesting 1, Infesting 2\", etc. The target can resist the infestation if they are conscious or not immobilized. The new creature will burst out of the target after a time determined by a Shaper or stated in the monster's statistics (usually as a \"Special\" ability), causing the host to enter its Death Count (if living).",
+      "ref": "Monster Abilities 3.4 p.11"
+    },
+    {
+      "name": "Instant",
+      "delivery": "N/A",
+      "call": "Ex. \"Instant Burrow\" OR \"Instant Gaseous Form\"",
+      "desc": "This ability is always paired with an ability that grants an Out-of-Game or altered state (Burrow, <Realm> Walk, Fly, Gaseous Form, etc.). This rare and taxing skill allows a monster to instantly use the ability it is attached to without a count to enter that state (not exit it; see \"Burst Forth\" above). It can never be used at will, and will always have some form of usage per time description.",
+      "ref": "Monster Abilities 3.4 p.11"
+    },
+    {
+      "name": "Juggernaut",
+      "delivery": "N/A",
+      "call": "\"Juggernaut\"",
+      "desc": "This monster cannot be instantly put into its Bleed or Death Count due to its size or extreme strength. Additionally, it can't be incapacitated, immobilised, take any abilities that target or sever external body parts or vital organs, be rendered helpless, or otherwise forcibly change its maximum Body Points. If Juggernaut negates any of the above, its call should be stated in a loud voice. This ability is typically added to monsters who are intended to be \"boss fights\" and thus make them last a fair amount of time in combat. It is advised that the \"Soft Resist\" ability (see below) be used in conjunction with Juggernaut if the monster isn't an Extreme Threat or of similar import. It is further advised each time a monster uses Juggernaut, it takes between 10 - 50 Arcane (at Shaper discretion based on the effect) to represent it pushing through the effect.",
+      "ref": "Monster Abilities 3.4 p.12"
+    },
+    {
+      "name": "Limb Break",
+      "delivery": "Weapon Swing",
+      "call": "\"Physical Limb Break\"",
+      "desc": "This physical ability causes a limb to break, becoming useless. The limb must be struck by the physical weapon swing, and if blocked is considered used. The broken limb may be used for nothing, not even locomotion. On basic bipedal creatures, arms or legs count as limbs, although pincers, tentacles, etc. qualify as limbs on many other creatures. The broken limb may be fixed with effects that restore limbs.",
+      "ref": "Monster Abilities 3.4 p.12"
+    },
+    {
+      "name": "Minimize",
+      "delivery": "N/A",
+      "call": "\"Minimize\"",
+      "desc": "This defensive ability reduces numeric damage dealt by a single source to only 1 point of damage no matter how much damage was done (assuming that damage breaches any Thresholds or defences). This will minimize all damage types (excluding Racial Vulnerabilities) unless otherwise stated. The monster must state \"Minimize\" when first hit with these effects (subsequent hits of the same damage type from the same source do not need to be repeated). Numeric attacks with Carrier Effects will have those effects still apply, and effects without numeric damage will function normally.",
+      "ref": "Monster Abilities 3.4 p.12"
+    },
+    {
+      "name": "Nausea",
+      "delivery": "Weapon Swing (Carrier Effect), Packet Delivered (Alchemical)",
+      "call": "Ex. Weapon Swing (Carrier Effect): \"8 Magic Nausea\" OR Packet Delivered: \"Alchemical Nausea\"",
+      "desc": "This attack counts as a Disease. The target is overwhelmed by nausea and cannot run or use tagged skills (including casting spells from memory, but not from magic items). The duration is 10 minutes. It can be removed by any means that removes a Disease from the target. The target may also end its nausea by roleplaying vomiting for a continuous 10-count.",
+      "ref": "Monster Abilities 3.4 p.12"
+    },
+    {
+      "name": "No Back",
+      "delivery": "N/A",
+      "call": "N/A",
+      "desc": "This monster has no discernable back, such as a manifestation, ooze, or some Elementals. If hit by an attack that requires the monster to have a back, such as physical weapon swings using the Critical skill, it states \"No Effect - No Back\" to indicate its lack of one.",
+      "ref": "Monster Abilities 3.4 p.12"
+    },
+    {
+      "name": "No Corpse",
+      "delivery": "N/A",
+      "call": "N/A",
+      "desc": "This monster does not leave a corpse behind when it dies, having no Bleed or Death Count. This may be an Undead creature that turns to dust, an Elemental that is sent back to the Elemental Plane from whence it came, and so on. When this monster dies, it Out-of-Game places its loot on the ground (should it have any) and dissipates. Monsters with this ability and Extraplanar Being have a Bleed and Death Count on its native plane, and may leave a corpse behind when killed on such a plane at Shaper discretion.",
+      "ref": "Monster Abilities 3.4 p.13"
+    },
+    {
+      "name": "No Metabolism",
+      "delivery": "N/A",
+      "call": "N/A",
+      "desc": "This monster has no metabolism and doesn't need to breathe, such as an ooze or golem. It is also immune to Disease, all Alchemy/Chemistry, with the exception of Acid damage, Sticky Paste, Rusting Dust, and any Alchemy/Chemistry that can be applied to a weapon to increase its damage. Additionally, it can't be affected by any ability that targets vital organs, or requires knowledge of Anatomy, such as Sap, Head-Butt, Dirt in the Eye, Vital Blow, Execute, First Aid, Disembowel, etc. It would state \"No Effect\" to any such effect.",
+      "ref": "Monster Abilities 3.4 p.13"
+    },
+    {
+      "name": "Non-Corporeal",
+      "delivery": "N/A",
+      "call": "N/A",
+      "desc": "This monster is non-corporeal, such as a Ghost or Ethereal Undead. This is usually listed in the \"Monster Features and Vulnerabilities\" section of a stat block. It has the following attributes:\n\nIt may move through all corporeal objects and barriers (including magical ones of Ritual-level or below; but not Vaults) on a 3-count, \"Phasing through wall 1, phasing through wall 2, phasing through wall 3\".\n\nIt has the Free Action ability, including immunity to being stunned. Immune to all Alchemy/Chemistry, including Acid damage, as it has no physical form to melt. Immune to Disease. Immune to being blinded by non-magical means. Can only be affected by spells or physical weapon attacks that deal \"Magic\" damage (or equivalent), while anything with the \"Physical\" prefix will fail. It also cannot be physically moved. Immune to all attacks which target or sever external body parts or vital organs such as Hamstring, Dismember, Decapitate, Disembowel, Vital Blow, Execute, etc., as it has no physical form to target.",
+      "ref": "Monster Abilities 3.4 p.13"
+    },
+    {
+      "name": "No Spirit",
+      "delivery": "N/A",
+      "call": "N/A",
+      "desc": "This monster has no spirit; it has been animated by some magic or outside force. It cannot be targeted by any further magic except spells or magical effects that do Elemental damage. Any other effects that require a spirit to work will fail. However, this doesn't allow the monster to walk through magical barriers, such as a Circle of Protection. A \"No Effect\" call should be used if struck by non-Elemental damaging magic. This monster has no Bleed or Death Count and will be considered destroyed or dead when it reaches 0 Body Points.",
+      "ref": "Monster Abilities 3.4 p.13"
+    },
+    {
+      "name": "Obliterate",
+      "delivery": "Packet Delivered (Arcane)",
+      "call": "\"Arcane Obliterate\"",
+      "desc": "This powerful ability is one of the most feared to any creature. It instantly kills the target, and severs its spirit so it cannot receive a Life effect, immediately sending it to go resurrect (if able). Furthermore, the attack so weakens its spirit that when attempting to resurrect, the death will count as 2 deaths, and the target may need to flip for Final Death twice should it have no free deaths remaining. It is considered an Arcane-level attack unless otherwise stated.",
+      "ref": "Monster Abilities 3.4 p.14"
+    },
+    {
+      "name": "Phase",
+      "delivery": "N/A",
+      "call": "\"Phase\"",
+      "desc": "This powerful defensive ability allows the monster to negate any attack or effect that isn't a Surprise attack, as its body briefly flickers out of existence. This will work on Area of Effects, Traps, Gaze Attacks, Power Words, and Arcane abilities unlike the Dodge skill, because the monster vanishes from reality then immediately reappears.",
+      "ref": "Monster Abilities 3.4 p.14"
+    },
+    {
+      "name": "Possession",
+      "delivery": "N/A",
+      "call": "\"Possessing\" on a 5-count (see below)",
+      "desc": "The monster can possess creatures with Mysticism by touch on an at will 5-count, \"Possessing 1, Possessing 2, etc\". Only creatures with Mysticism can interrupt the possession, but it can't be interrupted by a creature incapable of moving, such as one who is unconscious, or under the effect of Sleep, Paralysis, Web etc. The monster can end any effect that is causing its host to be incapable of moving when it successfully possesses it. Possessed creatures are controlled by the monster until it releases the creature by stating \"Release\", or either the monster or creature it is possessing drops to 0 Body Points, which ejects the monster from the creature's body. If the creature is using the Mysticism skill Manifest, it can't interrupt the monster trying to possess its body. If its body is possessed in this way, it immediately becomes an incorporeal version of itself that must follow its body, while the body is controlled by the monster. In this special state, as the body is still in its Death Count, the monster uses its Body Points instead of its host's Body Points. This lasts until the monster releases the target, the body is hit by an Exorcism, the monster reaches 0 Body Points, or the target resurrects via its Death Count ending. This ability is usually for Spirits, but some powerful Demons or other creatures may also be able to possess creatures with or without Mysticism, or even tagged objects. If a monster possesses an object, it can only hear around the object and cannot see, but doesn't Sense as being present.",
+      "ref": "Monster Abilities 3.4 p.14"
+    },
+    {
+      "name": "Pounce",
+      "delivery": "Packet Delivered (Physical)",
+      "call": "\"Physical Pounce\"",
+      "desc": "The monster `jumps' onto a target and stuns it for 5 seconds. This ability cannot be done to a target within boffer reach of the monster. After throwing the packet, the monster must run to roughly where it landed. Note: Do not actually jump on the target.",
+      "ref": "Monster Abilities 3.4 p.14"
+    },
+    {
+      "name": "Pull",
+      "delivery": "Weapon Swing, Packet Delivered (Physical)",
+      "call": "\"Physical Pull <X> Strength\"",
+      "desc": "This monster may pull targets toward itself using its superior strength. The target must move as close to the monster as possible, in a straight line, at a running pace if its Strength is less than the monster's Strength bonus. If the target has a higher Strength bonus than the number used in Pull's call, it may resist it by calling \"No Effect\". Note: Some monsters may pull a target to a specific location as described by a Shaper, such as tentacles dragging targets toward a pit. If an effect is used to reflect Pull in any way (such as Riposte), it only defends against Pull instead.",
+      "ref": "Monster Abilities 3.4 p.15"
+    },
+    {
+      "name": "Push",
+      "delivery": "Weapon Swing, Packet Delivered (Physical)",
+      "call": "Weapon Swing: \"Massive Physical Push <X> Strength\" OR Packet Delivered: \"Physical Push <X> Strength\"",
+      "desc": "This monster can generate incredible force that can send its enemies flying, either by buffeting wings, a ramming charge, or a supernatural shove. If delivered via a physical weapon strike, it will affect a creature whether it physically blocks the swing or not, akin to a Massive attack. The target must move directly away from the attacker as if it was pushed with Strength as normal. If the target has equal to or greater Strength than the number used in Push's call, it may resist it by calling \"No Effect\". If an effect is used to reflect Pull in any way (such as Riposte), it only defends against Pull instead.",
+      "ref": "Monster Abilities 3.4 p.15"
+    },
+    {
+      "name": "Rabid",
+      "delivery": "N/A",
+      "call": "N/A",
+      "desc": "Animals that are \"Rabid\" cannot be affected by Charm Effects, as their minds are too far gone. If the Animal has a Bite attack, it now adds the \"Nausea\" Carrier Effect to the attack. The physical description of the monster should be adjusted to include foaming at the mouth. This is usually listed in the \"Monster Features and Vulnerabilities\" section of a stat block, and is generally added to an existing Animal.",
+      "ref": "Monster Abilities 3.4 p.15"
+    },
+    {
+      "name": "<Realm> Walk",
+      "delivery": "N/A",
+      "call": "\"<Realm> Walk\" on a 3-count (see below)",
+      "desc": "A monster with this ability can enter a different plane mentioned in the name of the incant, such as the Plane of Faerie, the Celestial Realms, the Hellstack Plane, etc. Doing so requires a 3-count to exit or enter it, \"<Realm> Walk 1, <Realm> Walk 2, <Realm> Walk 3\". During this count the monster may still be attacked, however this does not interrupt the count. While this ability is active, the monster goes Out-of-Game and may pass through magical barriers (both Battle Magic and Ritual) but not more powerful types of barriers, such as Vaults. The monster can only see shapes in the plane it left. If the monster uses <Realm> Walk on the same plane as <Realm>, it can only remain Out-of-Game for 10 seconds. Note: A Fae that is touching iron in any way can't use Fae Walk, and a Demon/Angel that isn't a Demon Lord/Archangel or above can't Hell/Celestial Walk into/out of an effect that specifically prevents Demons/Angels from traversing through it.",
+      "ref": "Monster Abilities 3.4 p.15"
+    },
+    {
+      "name": "Reduce: <Type>",
+      "delivery": "N/A",
+      "call": "\"Reduce\"",
+      "desc": "The monster takes half damage from a certain damage type. They state this ability's call when hit with such damage to indicate this (use discretion in saying \"Active Reduce\" once if hit by the same damage type over and over by the same PC/group of PCs).",
+      "ref": "Monster Abilities 3.4 p.16"
+    },
+    {
+      "name": "Reflect <Type>",
+      "delivery": "N/A",
+      "call": "Ex. \"Reflect Magic\" OR \"Reflect Elemental\" OR \"Reflect Physical\"",
+      "desc": "The monster reflects effects of a certain type back at the attacker. The monster defends against the effect, and the attacker is immediately hit by that effect. \"Reflect Magic\" doesn't function against spells that deal Elemental damage. In such a case, the monster should have \"Reflect Elemental\".",
+      "ref": "Monster Abilities 3.4 p.16"
+    },
+    {
+      "name": "Regeneration (X Body/Y Unit of Time)",
+      "delivery": "N/A",
+      "call": "\"Visibly Regenerating\" when Body Points are regained via the Regeneration",
+      "desc": "This monster can slowly heal over time. <X> refers to the number of Body Points per <Y> number of units of time, which is the number of Body Points Mended in that time frame. Regeneration can only be stopped by a specific source (Ex. Acid, Fire, Silver, etc.) and should be stated in the individual monster's statistics. Ex. Regeneration (10 Body/Minute unless damaged by Fire). Any amount of damage from that specific source will prevent Regeneration from functioning for 10 minutes.",
+      "ref": "Monster Abilities 3.4 p.16"
+    },
+    {
+      "name": "Resist <Type> or <Lesser/Greater> Resist Magic",
+      "delivery": "N/A",
+      "call": "Ex. \"Resist Physical\" OR \"Lesser Resist Magic\" OR \"Greater Resist Magic\"",
+      "desc": "Allows the monster to resist one instance of one type of effect. If used for Magic, Lesser Resist Magic works on only Battle Magic-level effects. Greater Resist Magic will work on any magical effect Battle Magic-level or greater, including Arcane-level magic. \"Lesser/Greater Resist Magic\" doesn't function against spells that deal Elemental damage. These calls are especially important, as they indicate to the attacker that there is a finite amount of resists at the monster's disposal, as opposed to \"No Effect\" which indicates complete immunity.",
+      "ref": "Monster Abilities 3.4 p.16"
+    },
+    {
+      "name": "Ricochet <Magic/Arcane>",
+      "delivery": "Packet Delivered",
+      "call": "Ex. \"Ricochet Magic - Ego Rend\" OR \"Ricochet Arcane - Call Meteor\"",
+      "desc": "This ability will allow the monster to unleash stored Battle Magic or Ritual Magic (if \"Ricochet Magic\") or any level of magic (if \"Ricochet Arcane\") and return it back to the caster via its call. This is typically paired with the Absorb ability (see above) to unleash a spell stored by Absorb within 3 seconds of it being absorbed. The spell being ricocheted is an exact duplicate of the original spell with the monster considered to be the caster.",
+      "ref": "Monster Abilities 3.4 p.16"
+    },
+    {
+      "name": "Ritual Caster: <X>",
+      "delivery": "N/A",
+      "call": "N/A",
+      "desc": "The monster can read rituals, and cast rituals with <X> number of ritual slots listed. The rituals it can cast are based on the ones it knows from the Sphere of <Sphere Name> ability unless otherwise stated.",
+      "ref": "Monster Abilities 3.4 p.17"
+    },
+    {
+      "name": "Sense <Type>",
+      "delivery": "N/A",
+      "call": "Ex. \"Sense Life\" OR \"Sense Demonic\" OR \"Sense Wounded\"",
+      "desc": "This an Out-of-Game call which a monster uses to detect <Type>, similar to a sonar ping. To use this ability, it states the call in a normal speaking voice, and anything the Sense call applies to that can hear the call Out-of-Game must answer back \"Here\" at speaking level, also Out-of-Game. Covering your ears does not make you immune to this call.",
+      "ref": "Monster Abilities 3.4 p.17"
+    },
+    {
+      "name": "Shadow Walk",
+      "delivery": "N/A",
+      "call": "\"Shadow Walk\" on a 3-count (see below)",
+      "desc": "This monster can become invisible and intangible in darkness, which is defined as being unable to read words on a page at arm's length. While in darkness, it may perform a whispered 3-count, \"Shadow Walk 1, Shadow Walk 2, Shadow Walk 3\". During this count the monster may still be attacked, however this does not interrupt the count. At the end of the count, the monster enters the shadows and goes Out-of-Game. While Shadow Walking, the monster can still see and hear around it, and will still Sense as being present, but cannot use any skills or manipulate physical objects in any way, much like the Gaseous Form ability. Additionally, while Out-of-Game in shadows, the monster can see any other creature also in shadows via this ability. If the area becomes lit so that it is no longer considered to be in darkness, the monster will be forced to immediately exit the Shadow Walk by stating \"Burst Forth\", becoming material once again. This also counts as the <Realm> Walk ability (see above) for the purposes of what the monster can pass through, with the caveat that it must remain in darkness.",
+      "ref": "Monster Abilities 3.4 p.17"
+    },
+    {
+      "name": "Shatter",
+      "delivery": "Weapon Swing, Packet Delivered (Magic)",
+      "call": "Weapon Swing: \"Physical Shatter\" OR Packet Delivered: \"Magic Shatter <Weapon/Shield to be Shattered>\"",
+      "desc": "This ability will cause any weapon or shield held or carried by the target to shatter into many pieces if it is not indestructible or has defences against Shatter effects (such as Master Crafted resists, Shield Parry, etc.). If used as a physical weapon strike, it must hit the weapon or shield to be shattered, otherwise the Shatter will fail. If the Shatter is packet delivered, it may hit the target anywhere, as the weapon or shield to be shattered is specified in the call. If the weapon or shield is omitted from the packet delivered call, the target is free to choose which one it is holding takes the Shatter effect.",
+      "ref": "Monster Abilities 3.4 p.17"
+    },
+    {
+      "name": "Special <(Name)>",
+      "delivery": "Unique (see below)",
+      "call": "N/A",
+      "desc": "This is a special passive ability, or trait that modifies an ability, that the monster has. Its effects are designed by the Shaper specifically for the monster in question. Ex. An Earth Elemental being unable to run unless burrowed, an Owlbear being able to Spellstrike its Nature spells, or a Boogey Man being able to steal dreams. Note: If a Special ability gives the monster a specific vulnerability or weakness, it is considered a Racial Vulnerability.",
+      "ref": "Monster Abilities 3.4 p.18"
+    },
+    {
+      "name": "Sphere of <Sphere Name>",
+      "delivery": "N/A",
+      "call": "N/A",
+      "desc": "The monster has knowledge of Spheres of Magic, can cast spells using spell slots without need for memorization, and \"spawns In-Game\" with any possible spells a PC could have \"started the game with.\" Its spell pyramid will be indicated in its statistics (Ex. Sphere of Nature: 4/3/2/1). If it can cast multiple Spheres they will be separated by \"/\" and if it has a choice of Spheres each will be separated by the word \"OR\" (Ex. Sphere of Nature/Protection vs. Sphere of Nature OR Protection). The spells it casts can be countered by Wytch Hunters, as they are not innately produced. If the monster can cast spells silently without an incant, it states \"<Sphere> Magic <Spell Name>\" instead of the incant. This will be indicated as a Special ability; usually \"Special (Silent Spells)\" for Touch Cast or Packet Delivered spells, or \"Special (Spellstrikes)\" for the ability to Spellstrike its spells.",
+      "ref": "Monster Abilities 3.4 p.18"
+    },
+    {
+      "name": "Spider Web Poison",
+      "delivery": "Packet Delivered (Alchemical)",
+      "call": "\"Preparing web\" on a 3-count (see below)  \"Alchemical Spider Web Poison\"",
+      "desc": "This stacking alchemical attack represents a spider or similar creature spraying webbing across a creature. The webbing must be prepared with a 3-count, \"Preparing web 1, Preparing web 2, Preparing web 3.\" The webbing causes a Snare effect upon the 1st successful hit, a Bind effect on the 2nd hit, and a full Cocoon effect on the 3rd hit. These effects are cumulative. The Snare effect can be ripped free from with +2 Strength (taking 2 Body), or cut free with a 2-minute count. The Bind effect can be ripped free with +4 Strength (taking 4 Body), or cut free by another creature with a 4-minute count. Finally, the Cocoon effect can be ripped free with +8 Strength (taking 8 Body) and can be cut free by another creature with an 8-minute count. While cocooned, a creature is completely helpless, blinded, and silenced. A creature only needs to release itself from the greatest effect in order to be free. Ex. If a creature rips free of the Bind effect, it is also free of the Snare effect at no additional Body damage. This in all ways counts as the \"Sticky Paste\" alchemy, meaning that, for example, Physical and Rotting Undead (see \"Undead State\" below) are not immune to being sprayed with webs. One dose of Dissolvent alchemy applied to a webbed target will remove one effect of this ability from it, starting from the greatest effect. Ex. A cocooned target would need three doses of Dissolvent to fully release it, but one dose would reduce it to a Bind effect.",
+      "ref": "Monster Abilities 3.4 p.18"
+    },
+    {
+      "name": "Splashback <Effect>",
+      "delivery": "N/A",
+      "call": "Ex. \"Splashback 5 Acid\" OR \"Splashback Innate Magic Swampwalk\"",
+      "desc": "This ability lets a monster respond to being hit with a physical effect or weapon swing with a retaliatory effect. The attacker is hit with a specific effect such as an amount of damage, an Innate spell, or another effect. Splashback does not prevent the triggering damage/effect from affecting the monster that uses it. Splashback can be used against numerical damage only once every 10 seconds.",
+      "ref": "Monster Abilities 3.4 p.18"
+    },
+    {
+      "name": "Soft Resist",
+      "delivery": "N/A",
+      "call": "\"Soft Resist\"",
+      "desc": "This ability is something the Monster Marshal or Shaper may add to an existing monster. It can be used to resist any effect that will take the monster out of combat. The purpose of this skill is to allow certain specific monsters to challenge larger groups of players and not die too easily to a single spell or ability, thus ending the encounter too quickly. Any ability that is resisted through a \"Soft Resist\" is not considered used for the day and will return to the PC in 30 minutes. Ex. A PC hits a powerful monster with a Web spell. The monster calls \"Soft Resist!\" and takes no effect from the Web. 30 minutes later the PC has regained the use of that Web spell.",
+      "ref": "Monster Abilities 3.4 p.19"
+    },
+    {
+      "name": "Soul Leech",
+      "delivery": "N/A",
+      "call": "\"Soul Leech\" on a 5-count (see below)",
+      "desc": "This is a form of Killing Blow that is performed with a 5-count, \"Soul Leech 1, Soul Leech 2\", etc. At the end of the count, the target drops to its Death Count, the monster is Mended to its full Body Points, and any Natural Armour it has is restored to full (meaning Armour Points it possesses naturally not from worn physical armour). It requires physical touch by the monster on the target to perform, and visibly looks like the monster siphoning wisps of energy from the target.",
+      "ref": "Monster Abilities 3.4 p.19"
+    },
+    {
+      "name": "Steeled Will",
+      "delivery": "N/A",
+      "call": "N/A",
+      "desc": "This defensive ability grants the monster complete immunity to all non-Arcane Charm Effects and Mind Altering Effects. It would state \"No Effect\" to any such effect. If desired, these effects may be allowed through the defence to allow the monster to receive beneficial spells and effects.",
+      "ref": "Monster Abilities 3.4 p.19"
+    },
+    {
+      "name": "Stun",
+      "delivery": "Weapon Swing (Physical Weapon Strike, Elemental), Packet Delivered (Alchemical, Elemental, Physical)",
+      "call": "Ex. Weapon Swing: \"Physical Stun\" OR Packet Delivered: \"Elemental Stun\"",
+      "desc": "The monster stuns a target using a disorienting blow, electrifying it with energy, or alchemically affecting its body. While stunned, a target is unable to take any action, including blocking, moving, and the use of skills, with exception to being able to call \"interrupt\" against Killing Blows and any counts against it. Automatic defences such as Shield Magic will still operate, but ones requiring conscious thought such as Advanced Shield Magic will not. The stun will last 5 seconds, unless otherwise noted. If the target of \"Elemental Stun\" is immune to Elemental Lightning or uses defences against Elemental Lightning damage (such as Elemental Shield) then \"Elemental Stun\" will fail. If used as a weapon swing, it can be blocked by a boffer as normal.",
+      "ref": "Monster Abilities 3.4 p.19"
+    },
+    {
+      "name": "Suppress <Type of Magic>",
+      "delivery": "N/A",
+      "call": "\"Suppressing\" on a 10-count (see below)  Ex. \"Suppress Magic\" OR \"Suppress Protection\"",
+      "desc": "The monster can temporarily suppress magic it comes in contact with. It must touch the creature or object and perform a 10-count, \"Suppressing 1, Suppressing 2, Suppressing 3, etc.\" A conscious creature can call \"interrupt\" to this count. At the end of the count, the call is stated and any magic coming from the creature or object is suppressed. The magic within the target cannot be used until the monster is no longer in contact with it. More specialised forms of suppression may specify a specific Sphere of Magic, instead of \"Magic\" in general. A creature capable of casting spells cannot cast while suppressed, unless it casts a different Sphere of Magic than the one specified in the call. If \"Suppress Magic\" is used, it can't cast any spells at all.",
+      "ref": "Monster Abilities 3.4 p.20"
+    },
+    {
+      "name": "Thick Bones",
+      "delivery": "N/A",
+      "call": "N/A",
+      "desc": "This ability grants the monster complete immunity to being stunned or knocked unconscious by physical effects such as Head-Butt, Sap, Sucker Punch, etc., due to its dense skeletal structure. It would state \"No Effect\" to any such effect.",
+      "ref": "Monster Abilities 3.4 p.20"
+    },
+    {
+      "name": "Threshold",
+      "delivery": "N/A",
+      "call": "N/A",
+      "desc": "A Threshold grants immunity to all sources of damage which do not exceed the stated Threshold's number. There are 4 types of Thresholds: Normal, Silver, Magic, and Arcane. Any Racial Vulnerabilities a creature has will automatically bypass its Threshold. Ex. +2 Normal Threshold, or +0 Magic Threshold. It would state \"No Effect\" to any such damage that doesn't exceed the Threshold.",
+      "ref": "Monster Abilities 3.4 p.20"
+    },
+    {
+      "name": "Trample",
+      "delivery": "N/A",
+      "call": "\"Trampling\" on a 3-count (see below)",
+      "desc": "The monster can begin a 3-count when next to a creature lying on the ground or one that is stunned, \"Trampling 1, Trampling 2, Trampling 3\". If the creature does not get up or ends its stunned condition before the end of the count, it is Killing Blowed, entering its Death Count. Typically found on large or extremely heavy monsters.",
+      "ref": "Monster Abilities 3.4 p.20"
+    },
+    {
+      "name": "Venom",
+      "delivery": "Weapon Swing",
+      "call": "Ex. \"5 Body Venom Bite\"",
+      "desc": "This ability is considered an alchemical Poison, and must be combined with the Bite ability (see \"Bite\" above) unless otherwise stated in specific cases. Once affected, the target is in constant pain (RP effect only) and for 10 minutes it can't cast spells unless it has the Combat Wizardry skill. Additionally, it is considered to be taking damage for the purposes of skills or abilities that can be stopped by taking Body damage. The only exception is a Physician can still cure the Poison from itself using its Level 3 ability Physicker. After 10 minutes, the Poison will have worked its way through the target's system and it takes \"Alchemical 25 Body Poison\". This effect doesn't stack. While under the effects of Venom, the target cannot be affected by Venom again until the 10 minutes are up, or the Poison is removed from its system. This effect can be cured by any means that removes a Poison from a target.",
+      "ref": "Monster Abilities 3.4 p.20"
+    },
+    {
+      "name": "Vulnerability: <Type>",
+      "delivery": "N/A",
+      "call": "N/A",
+      "desc": "This monster takes additional damage from a certain damage type (Ex. \"Vulnerability: x4 from Fire\" would mean it takes quadruple the damage from both Magic and Elemental Fire attacks). This is usually listed in the \"Monster Features and Vulnerabilities\" section of a stat block.",
+      "ref": "Monster Abilities 3.4 p.21"
+    },
+    {
+      "name": "Wail of Death",
+      "delivery": "Packet Delivered (Magic)",
+      "call": "\"Magic Wail of Death\"",
+      "desc": "This monster uses a sonic attack that can rend the spirit from a target, instantly dropping it into its Death Count. This magical packet delivered attack can pass through all magical barriers (unless otherwise stated), but can only hit a conscious target capable of hearing it. The monster must make a loud scream or wail before the call. Covering your ears does not make you immune to this call.",
+      "ref": "Monster Abilities 3.4 p.21"
+    }
+  ],
+  "undeadState": {
+    "name": "Undead State",
+    "ref": "Monster Abilities 3.4 p.22",
+    "sections": [
+      {
+        "title": "",
+        "text": "Individual Undead types will have additional abilities and restrictions based on specific criteria listed here. This entire monster ability is usually listed in the \"Monster Features and Vulnerabilities\" section of a stat block. The following stats are common to all Undead regardless of other factors:"
+      },
+      {
+        "title": "Race",
+        "text": "Undead State is only possessed by beings with true undeath, and Undead are considered a race. Becoming Undead will replace the original race, removing both Racial Advantages and Disadvantages and replacing them with Undead State plus additional stats based on type and category. Very rarely, some Undead may allow the original racials to remain (Ex. Vampires), but this will be indicated in their description. One cannot become Undead via a Race Change effect, and an Undead cannot have their Undead race removed via Race Change effects."
+      },
+      {
+        "title": "Descriptor",
+        "text": "All Undead have a single descriptor (see \"Undead Descriptor\" in this ability): Ethereal, Physical, or Rotting."
+      },
+      {
+        "title": "Age",
+        "text": "All Undead have an age (see \"Undead Age\" in this ability): Lesser, Greater, or Ancient."
+      },
+      {
+        "title": "Permanent vs. Mortal",
+        "text": "Permanent Undead: The vast majority of Undead are considered \"Permanent\" Undead, meaning they will remain Undead until destroyed. Permanent Undead may never return to mortality or change their race. Some Permanent Undead may have means to resurrect (such as a Mummy Lord's sarcophagus), but in most cases once they are destroyed they are gone forever. These Undead are almost always NPCs.\n\nMortal Undead: Sometimes an Undead is raised on a temporary basis. These Mortal Undead have the option to resurrect as their original mortal race when they are destroyed and resurrect. If they instead choose to resurrect as Undead, they will become Permanent Undead from that point on and may never resurrect as their original race again. The decision to resurrect as an Undead is made by the player Out-of-Game and cannot be forced on the character in-game. If they choose to resurrect as mortal and become Undead once again in the future, they may once again decide to become Permanent Undead. Undead created via Battle Magic, a corpse in its Death Count, or a corpse with a spirit within are always raised as Mortal Undead."
+      },
+      {
+        "title": "Mindless vs. Sentient",
+        "text": "Mindless Undead: Without sentience, these Undead are typically monsters, highly aggressive toward the living and with no sense of self-preservation. At Shaper discretion, a target who doesn't sense as `Life' may be ignored by these Undead if no hostile action is taken against them, but this can vary.\n\nSentient Undead: Undead who retain the memories of their lives, and sometimes also the skills they possessed while living have gained a form of sentience powered by Necromancy. All sentient Undead may speak, either vocally or telepathically, including Lesser Undead who have sentience. Sentient Undead can't be fooled by targets who don't sense as `Life', but may have mixed reactions to the lack of ability to feel their lifeforce."
+      },
+      {
+        "title": "Advantages",
+        "text": "Sense Life: 1x/Minute - Undead may \"Sense Life\".\nHeals From Infliction: Undead are healed via Infliction magic.\nMental Immunity: Undead are immune to all Charm Effects and Mind Altering Effects, such as Charm, Dominate, Paralysis, Sleep, Ego Whip, Cower, etc. It also cannot be knocked unconscious.\nCompound Immunity: Undead are immune to all Poisons, Diseases, and Alchemy/Chemistry, with the exception of Acid damage, Sticky Paste, Rusting Dust, and any Alchemy/Chemistry that can be applied to a weapon to increase its damage.\nSilence Immunity: Undead cannot be silenced as any sounds it makes (speaking, incants, etc.) are not coming from lungs and vocal cords, which are the target of Silence effects.\nUnlife: Undead do not breathe, eat, or sleep unless stated otherwise (Ex. Vampires and Ghouls have feeding requirements, but they cannot \"die\" from starvation, only driven mad by hunger). In this way, Undead can't suffocate or be strangled by a garrotte wire."
+      },
+      {
+        "title": "Disadvantages",
+        "text": "Bleed / Death Counts: Undead have no Bleed or Death Counts. If its Body Points reach 0, it will turn to dust or disperse immediately unless it possesses a means of resurrection such as a Vampire's coffin or Lich's phylactery. In such cases the Undead's body will immediately vanish and return to its source of resurrection. The spirits of Mortal Undead will resurrect as normal (see above), while Permanent Undead (unless their description states otherwise) will not.\n\nHatred of the Living: All Undead suffer from a corruptive mental state which will cause it to develop a hostile, destructive hatred of living creatures. This begins immediately upon being raised as Undead and becomes stronger the longer the Undead exists. All Mindless Undead will feel the maximum effects immediately upon creation, whereas Sentient Undead will have its mind erode and decay toward pure rage at the living over time. Newly raised Sentient Undead will start by feeling a distrust of the living, which will quickly change to hostility and anger within a year's time. This condition cannot be avoided or negated, and will eventually manifest as a complete change in roleplay which is strictly enforced. Note: Sentient Undead under the maximum effects of this corruption are still rational enough to see reason in letting living creatures exist should it serve their overall purpose or goals, such as shared religious or reverential beliefs. However, this tolerance is easily eroded should the Undead in question attempt to spend more than brief aligned contact with such living creatures, and in no way allows cohabitation with them. While not the complete need for destruction present in Mindless Undead, this should be viewed through the lens of a creature highly impatient with, and easily infuriated by, the living. A creature masking itself from sensing as `Life' may only buy it a few precious minutes to convince a fully corrupted Sentient Undead why they should be allowed to continue to keep their flesh on their bones.\n\nHealing Vulnerability: All Undead are affected by Healing spells as if the reverse of the spell had been cast. All curative spells, regardless of Sphere, will do x4 the amount they would have healed a living creature as Magic Body damage to an Undead. Throwing a potion from the Sphere of Healing at, or on, an Undead will have no effect, but if the Undead somehow ingests the potion it will take Magic Body damage as stated above. In the Deadlands, Healing-based Magic Body damage is x2, rather than x4, against Undead targets. This is considered a Racial Vulnerability. Daytime Vulnerability: Undead take \"1 Arcane\" damage per second if uncovered and outside between 6 AM and 6 PM. To be considered covered, an Undead must wear clothing covering 90% of their body and this must include both the head and hands. If a Mortal Undead is uncovered during the day, it may not use any skills or abilities originating from their Undead form. A Permanent Undead does not suffer this penalty to its abilities but will still take the Arcane damage. During the day all Undead regardless of covering will lose any Thresholds or Strength bonuses it may possess and cannot receive the benefits of effects that grant either during that time. Being inside or underground during the day for at least 1 hour will nullify the effects of this Daytime Vulnerability until it goes outside again. This is considered a Racial Vulnerability."
+      },
+      {
+        "title": "Undead Descriptor: <Ethereal/Physical/Rotting>",
+        "text": "Undead come in 3 different types, based on how they are created or bound by Necromancy. Each gives them additional abilities that augment or alter Undead State. The types are as follows:\n\nEthereal Undead: The Undead is non-corporeal, such as Wraiths, Banshees, and Spectres.\n\nIt in all ways has the Non-Corporeal ability (see \"Non-Corporeal\" above).\nNote: The Clan Vinatore Ajaunti Racial Advantage \"Spirit Hook\" still affects Ethereal Undead with its \"Arcane Web\" effect, despite Non-Corporeal conferring the effects of the Free Action ability.\n\nPhysical Undead: The Undead is a corporeal and sturdy animated corpse or collection of bones. Examples would be Skeletons, Mummies, and Barrow Wights.\n\nImmune to physical effects that target vital organs, such as Execute, Vital Blow, Disembowel, etc., but not external body parts such as Hamstring, Dismember, Decapitate, etc.\n\nTakes half damage from physical weapons that deal Body damage (Ex. Stilettos, Arrows, and Crossbow Bolts). It should state \"Reduce\" when hit with such damage to indicate this.\n\nRotting Undead: The Undead is a rotting corpse, barely held together with Necromantic magic. Examples would be Rotted Zombies, Slitherflesh, and Plague Knights.\n\nIt can't move faster than a walking pace, unless stated otherwise (Ex. Plague Knights are a rare type of powerful Rotting Undead that can move quickly).\n\nImmune to physical effects that target vital organs, such as Execute, Vital Blow, Disembowel, etc., but not external body parts such as Hamstring, Dismember, Decapitate, etc.\n\nIt can't have its limbs reattached, or restored via magic, and can choose to willingly rip one of its own limbs off on a 3-count, dealing 1 Body to itself regardless of Threshold. This is mainly done to escape effects that are trapping one of its limbs.\n\nWhile it still has its head, any removed limbs can lurch at and attack creatures. This is represented by an NPC with a white headband picking up a boffer weapon (either the claw/weapon dropped by the Undead, or a stand-in) and playing the part of the severed limb. The limb is a Mindless Undead, swings \"1 Normal\", and has 2 Body Points, Undead State and Rotting Undead abilities. Subject to NPC availability.\n\nIf it is searched without wearing a hand covering, at Shaper discretion, it may inflict \"Alchemical Nausea\" or \"Alchemical Festering Pox\" as appropriate."
+      },
+      {
+        "title": "Undead Age: <Lesser/Greater/Ancient>",
+        "text": "Undead come in 3 different age categories, each one above the first confirming additional powers and abilities gained over the Undead's lifespan. Ancient Undead have the powers from both the Greater and Ancient templates. Older Undead allow shapers to empower their Undead to present more of a challenge to higher level characters, whereas young Undead are better suited to lower level guilds and characters. For the purpose of time frames, note that not all Undead of an extremely old age gain the Greater or Ancient template, despite existing for hundreds of years, and In-Game information on this phenomena is hypothetical at best. This is to allow for old tombs with what would otherwise all be Ancient Undead to still exist with younger Undead for lower level characters.\n\nNote: Strength and Thresholds given by the Greater or Ancient templates stack with each other, and any Strength or Thresholds the Undead already has (Ex. An Ancient Lich adds +4 to its existing +6 Magic Threshold for a total of +10, and adds +2 Strength from the Greater template and +4 Strength from the Ancient template to its existing +6 Strength for a total of +12). The ages are as follows:\n\nLesser: These Undead possess the default abilities listed in the Monster Manual along with the stats listed in their Undead Descriptor category.\n\nGreater: These Undead have existed for a considerable amount of time and have become more potent. In addition to their stats listed in the monster manual they also have the following abilities:\n\n1x/Target/Minute \"Control Lesser <Undead>\": Greater Undead have vocal control over Lesser Undead of the same category, overriding any previous control on the Undead (Ex. A Greater Skeleton can vocally control Lesser Skeletons). This includes control over variations of the same category of Lesser Undead, such as a Greater Zombie being able to control both Lesser Zombies and Lesser Rotted Zombies. Certain powerful Greater Undead can control all categories of Lesser Undead, such as Death Knights. The call is \"Power Word Directed Control Lesser <Undead>\" where <Undead> is the monster name of the Lesser Undead. Limited to once per target per day, and can only have 3 Lesser Undead under its control at a time.\n\n+0 Magic Threshold\n+2 Strength\n1x/Day \"Lesser Resist Magic\"\n\nAncient: These are the oldest and most powerful Undead of their type and are typically used as \"boss monsters,\" meant to fight entire towns of PCs or groups of high level characters (i.e. Level 12+). Alternatively, they can be particularly strong basic Undead, such as Zombies, Skeletons, or Ghouls, due to their more aged nature. If a PC permanently becomes an Ancient Undead, they must agree to retire their character. They have the following abilities added to their card, plus any additional statistics the Shaper team feels appropriate for their encounter (such as increased Body Points):\n\nDaytime Resilience: Instead of losing its Strength and Threshold while outside during the day due to its Daytime Vulnerability disadvantage, it has a minimum of +2 Strength and a +0 Silver Threshold while outside during the day.\n\nSoft Resists Death effects\n+4 Magic Threshold\n+4 Strength\n2x/Hour \"Greater Resist Magic\"\nImmune to being stunned and blinded by non-Arcane means\nImmune to all forms of control\n\"Control Lesser Undead\": It can vocally control all Lesser Undead at will, overriding any previous control on the Undead. This replaces the Greater Undead template ability of similar name. The call is: \"Power Word Directed Arcane Control Lesser Undead\".\n1x/Target/Day \"Control Greater Undead\": It can use \"Power Word Directed Arcane Control Greater Undead\" at will, but only once per target, per day. If not defended against, a Greater Undead will treat the Ancient Undead as a trusted ally, mimicking the effect of a Charm spell for 1 hour. A Lesser Undead is affected as if the Ancient Undead used its \"Control Lesser Undead\" above."
+      },
+      {
+        "title": "A Note on Final Rest",
+        "text": "The Undead Hunter Level 12 Occupational Ability \"Final Rest\" is anathema to undeath; Lesser and Greater Undead can only defend against its Arcane Destroy Greater Undead effect with Phase or Arcane Resist, whilst Ancient Undead can only use Arcane Resist to defend against it."
+      }
+    ]
+  }
+}

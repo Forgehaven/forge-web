@@ -46,7 +46,7 @@
       "covers": [
         "skills"
       ],
-      "parsed": false
+      "parsed": true
     },
     {
       "id": "weapons",
@@ -69,8 +69,10 @@
       "lastModified": "2026-10-23",
       "bytes": 573768,
       "sha256": "860c147acf7f093caa9efe45b3f3e98e56cd9947de9c037f4d8718dd27b4d4f3",
-      "covers": [],
-      "parsed": false
+      "covers": [
+        "monsters"
+      ],
+      "parsed": true
     }
   ]
 }

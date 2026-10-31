@@ -577,6 +577,7 @@ export interface Evaluation {
     strength: number
   }
   warnings: string[]
+  skillWarnings: string[]
   // Level 16 ends Spiritual Resolve; null when not reached or dismissed.
   lifeWarning: string | null
   probe: { cost: number; frag: number; error: string | null } | null
@@ -661,7 +662,7 @@ export function evaluate(b: Build, probe?: Purchase, loose = false): Evaluation 
 
   return {
     steps, results, final: st, probe: probeResult,
-    warnings: buildWarnings(b, st),
+    ...(({ character, skills }) => ({ warnings: character, skillWarnings: skills }))(buildWarnings(b, st)),
     lifeWarning: b.ignoreLifeWarning ? null : lifeWarning(steps, bonus),
     stats: {
       level, cpTotal: last.cp, cpSpent: st.spent, cpRemaining: last.cp - st.spent, frags,
@@ -703,8 +704,10 @@ function lifeWarning(steps: Step[], cpBonus: number): string | null {
   return `Blanket ${safe + 1} reaches level ${SPIRITUAL_RESOLVE_MAX_LEVEL + 1}: lives can no longer be bought back with frags (Spiritual Resolve). Stop at ${safe} blankets to keep that option.`
 }
 
-function buildWarnings(b: Build, st: ReplayState): string[] {
+// Character warnings (race, culture, vocation fit) and skill warnings (what the plan lacks).
+function buildWarnings(b: Build, st: ReplayState): { character: string[]; skills: string[] } {
   const w: string[] = []
+  const sk: string[] = []
   const culture = CULTURES[b.culture]
   if (culture && !culture.races.includes(b.race)) w.push(`${b.culture} is not open to ${b.race || 'this race'}`)
   const voc = VOCATIONS[b.vocation]
@@ -714,19 +717,19 @@ function buildWarnings(b: Build, st: ReplayState): string[] {
   const prereqs = VOCATION_PREREQS[b.vocation]
   for (const need of prereqs?.auto ?? []) {
     const options = need.split('|')
-    if (!options.some(o => count(st, o) > 0)) w.push(`${b.vocation} expects ${options.map(skillName).join(' or ')}`)
+    if (!options.some(o => count(st, o) > 0)) sk.push(`${b.vocation} expects ${options.map(skillName).join(' or ')}`)
   }
   for (const c of prereqs?.choice ?? []) {
-    if (!c.anyOf.some(alt => alt.every(cond => condMet(b, st, cond)))) w.push(`${b.vocation} expects ${c.label}`)
+    if (!c.anyOf.some(alt => alt.every(cond => condMet(b, st, cond)))) sk.push(`${b.vocation} expects ${c.label}`)
   }
   b.schools.forEach((school, i) => {
     if (!school || count(st, sphereId(i)) === 0) return
     const allowed = EXCLUSIVE_SPHERES[school]
-    if (allowed && !allowed.includes(b.vocation)) w.push(`${school} sphere is limited to ${allowed.join(', ')}`)
+    if (allowed && !allowed.includes(b.vocation)) sk.push(`${school} sphere is limited to ${allowed.join(', ')}`)
   })
   const dupes = b.schools.filter((s, i) => s && b.schools.indexOf(s) !== i)
-  if (dupes.length) w.push(`Duplicate sphere school: ${dupes.join(', ')}`)
-  return w
+  if (dupes.length) sk.push(`Duplicate sphere school: ${dupes.join(', ')}`)
+  return { character: w, skills: sk }
 }
 
 // State after every valid purchase up to and including step `at`.

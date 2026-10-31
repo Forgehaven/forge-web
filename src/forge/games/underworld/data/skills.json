@@ -2,7 +2,7 @@
   "meta": {
     "source": "UW-Character-Builder legacy web app (github.com/Arlit-Areth/UW-Character-Builder)",
     "rulebook": "Core Rulebook 5.6.5 + Soul Frag 2.10",
-    "updated": "2026-10-28"
+    "updated": "2026-10-31"
   },
   "favouredCosts": {
     "Champion": {
@@ -127,7 +127,39 @@
           "prereqPerPurchase": false,
           "_weaponChoice": null,
           "prereqs": [],
-          "desc": "Purchasing this skill opens up the world of Alchemy to your character. Each level of Alchemy purchased allows your character to create new Alchemical recipes from the in-game list of known alchemies. Alchemies with an asterisk beside them require special components to create, which must be found in-game.\n\nAn Alchemist can also create mundane role play related effects with little effort. By spending 10 minutes gathering common and easily found herbs and ingredients, the Alchemist can create elixirs to cure many role-played ailments. These only cure mundane ill effects and cannot be used to mimic any spell effect or ability. It requires no skill to willingly drink an Alchemical concoction or to pour an elixir down an unconscious victim's throat.\n\nTo use any non-ingested Alchemical creation, it must be shaken vigorously and prepared with a three count. You may only have one non-ingested Alchemical creation prepared at a time and you must prepare your own. Non-ingested Alchemy only remains prepared for 10 minutes, after which it must be prepared again before being used.\n\nIdentify Alchemy: Each Alchemist has a basic knowledge of plants and herbs that allows them to identify known Alchemical concoctions after having examined the substance for one minute.\nApply Ingested Alchemy (Level 2): For an ingested Alchemy to take effect the Alchemist must somehow attach the Alchemy tag onto or under the item holding the food/drink.\nApply Contact Alchemy (Level 4): The Alchemist must spend one minute applying the contact elixir to the item. Contact alchemy may be applied to weapons or any other object. Contact alchemy on a weapon or other object lasts 5 days or until the first swing or touch.\nReverse Engineer (Level 5): The Alchemist may reverse engineer Alchemy into its basic state, destroying the Alchemy but returning half its Raw Material value.\nThrow Gas Globe (Level 6): The declaration for all thrown Alchemy is \"<type> Gas\". Orange packets are used to represent Alchemical gas globes.\nApply Contact on a 30 Count (Level 7): The Alchemist now only needs thirty seconds to apply contact alchemy to items.\nPrepare Alchemy on a 2 Count (Level 10): The Alchemist may now prepare alchemy on a 2 count.\n\nRecipes unlocked by level (Raw Material cost of the most expensive recipe you can make):\nLevel 1: Recipes up to 4 RM\nLevel 2: Recipes up to 8 RM\nLevel 3: Recipes up to 12 RM\nLevel 4: Recipes up to 16 RM\nLevel 5: Recipes up to 24 RM\nLevel 6: Recipes up to 32 RM\nLevel 7: Recipes up to 46 RM\nLevel 8: Recipes up to 52 RM\nLevel 9: Recipes up to 68 RM\nLevel 10: All recipes\n\nAlchemy comes in three forms: Contact (a tag signed by a Shaper), Ingested (the volume of a potion) and Gas Globe (an orange packet). Each recipe has its own RM cost per form. Characters may create as many items as they have the RM for at Logistics."
+          "desc": "Purchasing this skill opens up the world of Alchemy to your character. Each level of Alchemy purchased allows your character to create new Alchemical recipes from the in-game list of known alchemies. Alchemies with an asterisk beside them require special components to create, which must be found in-game.\n\nAn Alchemist can also create mundane role play related effects with little effort. By spending 10 minutes gathering common and easily found herbs and ingredients, the Alchemist can create elixirs to cure many role-played ailments. These only cure mundane ill effects and cannot be used to mimic any spell effect or ability. It requires no skill to willingly drink an Alchemical concoction or to pour an elixir down an unconscious victim's throat.\n\nTo use any non-ingested Alchemical creation, it must be shaken vigorously and prepared with a three count. You may only have one non-ingested Alchemical creation prepared at a time and you must prepare your own. Non-ingested Alchemy only remains prepared for 10 minutes, after which it must be prepared again before being used.\n\nIdentify Alchemy: Each Alchemist has a basic knowledge of plants and herbs that allows them to identify known Alchemical concoctions after having examined the substance for one minute.\nApply Ingested Alchemy (Level 2): For an ingested Alchemy to take effect the Alchemist must somehow attach the Alchemy tag onto or under the item holding the food/drink.\nApply Contact Alchemy (Level 4): The Alchemist must spend one minute applying the contact elixir to the item. Contact alchemy may be applied to weapons or any other object. Contact alchemy on a weapon or other object lasts 5 days or until the first swing or touch.\nReverse Engineer (Level 5): The Alchemist may reverse engineer Alchemy into its basic state, destroying the Alchemy but returning half its Raw Material value.\nThrow Gas Globe (Level 6): The declaration for all thrown Alchemy is \"<type> Gas\". Orange packets are used to represent Alchemical gas globes.\nApply Contact on a 30 Count (Level 7): The Alchemist now only needs thirty seconds to apply contact alchemy to items.\nPrepare Alchemy on a 2 Count (Level 10): The Alchemist may now prepare alchemy on a 2 count.\n\nRecipes unlocked by level (Raw Material cost of the most expensive recipe you can make):\nLevel 1: Recipes up to 4 RM\nLevel 2: Recipes up to 8 RM\nLevel 3: Recipes up to 12 RM\nLevel 4: Recipes up to 16 RM\nLevel 5: Recipes up to 24 RM\nLevel 6: Recipes up to 32 RM\nLevel 7: Recipes up to 46 RM\nLevel 8: Recipes up to 52 RM\nLevel 9: Recipes up to 68 RM\nLevel 10: All recipes\n\nAlchemy comes in three forms: Contact (a tag signed by a Shaper), Ingested (the volume of a potion) and Gas Globe (an orange packet). Each recipe has its own RM cost per form. Characters may create as many items as they have the RM for at Logistics.",
+          "related": [
+            {
+              "title": "Ingested Alchemy Hits Once",
+              "text": "Ingested Alchemy will only affect the first person to eat or drink it. Multiple alchemies may be added to the same food or drink. Their effects will still only affect the first person to eat or drink the item. The person consuming the alchemy decides what order the alchemies hit them in, for the purposes of activating defenses, etc.",
+              "ref": "Core 5.6.5 p.55"
+            },
+            {
+              "title": "Contact Alchemy Delivery",
+              "text": "Once applied, the weapon swings with the suffix of \"Contact <alchemy>\" for one swing. This does not need to hit to Body to activate. If the target resists the alchemy they still take the weapon's damage. If the attack misses or is blocked, the alchemy is still used up. If the alchemy is placed on a non-weapon object, the alchemical effect is applied to the first person to touch the object with their skin. One dose of this alchemy will cover one square foot of a non-weapon object.",
+              "ref": "Core 5.6.5 p.56"
+            },
+            {
+              "title": "Limits of Identify Alchemy",
+              "text": "This will not allow Alchemists to identify ingested Alchemy which has been applied to food or drink, or contact Alchemy which has been applied to a surface. The Alchemist will now be able to determine whether contact Alchemy is present on an object after examining it for one minute, but they will be unable to discern what type of Alchemy it is.",
+              "ref": "Core 5.6.5 p.55-56"
+            },
+            {
+              "title": "Component Tags",
+              "text": "These components will be tags labelled \"[Alchemy] Components\". Each component tag may be used to create one copy of that alchemy.",
+              "ref": "Core 5.6.5 p.55"
+            },
+            {
+              "title": "Reverse Engineer is Logistics Only",
+              "text": "Reverse engineering will destroy the Alchemy but return to the Alchemist half its Raw Material value. This can only be done at Logistics.",
+              "ref": "Core 5.6.5 p.56"
+            },
+            {
+              "title": "Counter: Physicker",
+              "text": "A level 3 Physician (Physicker) can purge any alcohol or Alchemical toxin from a patient, once per patient every 5 days.",
+              "ref": "Core 5.6.5 p.65"
+            }
+          ]
         },
         {
           "id": "artifice",
@@ -155,7 +187,49 @@
               "minCount": 10
             }
           ],
-          "desc": "The pinnacle of achievement for a Blacksmith is creating Blueprinted items. Blueprints are physical items that contain special instructions to allow a Legendary Blacksmith to craft powerful items. Given the right exotic material, Catalysts, time and the proper Blueprint, the Artificer can make armour and weapons that possess special and unique properties.\n\nEach Blueprint, and all the requirements, are different and must be found in-game.\n\nAn Artificer may craft 1 Blueprinted item per event per level of Artificing. Only Artificers can read Blueprints. Artificers can read Blueprints even if they cannot read and write.\n\nLegendary items (see Blacksmith) are the base material for any Blueprint. A Legendary item will not expire while it has a Blueprint on it, and its 5 year expiry resets when the Blueprint expires."
+          "desc": "The pinnacle of achievement for a Blacksmith is creating Blueprinted items. Blueprints are physical items that contain special instructions to allow a Legendary Blacksmith to craft powerful items. Given the right exotic material, Catalysts, time and the proper Blueprint, the Artificer can make armour and weapons that possess special and unique properties.\n\nEach Blueprint, and all the requirements, are different and must be found in-game.\n\nAn Artificer may craft 1 Blueprinted item per event per level of Artificing. Only Artificers can read Blueprints. Artificers can read Blueprints even if they cannot read and write.\n\nLegendary items (see Blacksmith) are the base material for any Blueprint. A Legendary item will not expire while it has a Blueprint on it, and its 5 year expiry resets when the Blueprint expires.",
+          "related": [
+            {
+              "title": "Crafting Requirements",
+              "text": "All crafting attempts are made at logistics and cannot be attempted once logistics is closed. The crafter must have the physical Formula or Blueprint, the required catalysts, and 1 unused rank in the respective Synergy skill (Artificing or Chemistry) for each synergy they wish to create.",
+              "ref": "Synergy 1.8 p.18"
+            },
+            {
+              "title": "Blueprint Cost by Difficulty",
+              "text": "Artifice has set RM requirements based on the difficulty of the Blueprint. A difficulty 1 Blueprint requires 100RM and 1 catalyst, as specified on the Blueprint. Each additional level will add +25RM and +1 catalyst requirement.",
+              "ref": "Synergy 1.8 p.19"
+            },
+            {
+              "title": "Success Odds",
+              "text": "These resources are considered used regardless of success or failure. The marshal will prepare the bag of stones with 20 white stones. They will add black stones equal to the difficulty of the Formula or Blueprint and 5 black stones for each missing catalyst; any catalysts used to extend the duration of a Blueprint are considered catalysts. They will also add 1 white stone for each catalyst provided in excess of the required catalysts. A white stone means the craft was a success. A black stone means the craft has failed. There are no Flaw or Backlash results for both Artifice and Chemistry.",
+              "ref": "Synergy 1.8 p.20"
+            },
+            {
+              "title": "Stacking Blueprints",
+              "text": "For Artifice, stacking a Blueprint involves using the same Blueprint multiple times on an item to multiply its effect and duration. When a Blueprint is stacked, the catalysts, raw materials, and charges consumed will be the usual amounts for the Blueprint, multiplied by the number of times it is being stacked. Success will be calculated separately for each stack. The result of each Blueprint in the stack does not impact the result of any other part of the stack. There is no increase in difficulty when stacking and each stack will add +1 year to a maximum possible duration of 5 years. A Blueprint will indicate if it cannot be stacked.",
+              "ref": "Synergy 1.8 p.19"
+            },
+            {
+              "title": "Blueprint Expiry",
+              "text": "All items created via Artifice will have a default expiry of 1 year. This may be extended by Stacking during creation; see the section on Stacking for additional details. No Artifice Blueprint may have a duration longer than 5 years at any time; however, that duration may be \"topped up\" after creation to reset the 5-year duration via Blueprints such as Preserving Wax.",
+              "ref": "Synergy 1.8 p.19"
+            },
+            {
+              "title": "Resisting Rituals, Failed Crafts",
+              "text": "Items with Blueprints crafted on them are naturally resistant to magic. Any ritual placed on an item with an existing Blueprint will fade very quickly after being cast. This can be anywhere between 10 minutes and a few days, as determined by a marshal. Should a Blueprint crafting fail on a legendary item, it is not consumed or destroyed.",
+              "ref": "Synergy 1.8 p.18"
+            },
+            {
+              "title": "Base Items and Blueprint Count",
+              "text": "Weapons, shields, and armour to be the base for Artificing must be Legendary unless otherwise stated on the Blueprint. Multiple Blueprints can be placed on the same item with any amount of time between them. There is no maximum unlike Rituals.",
+              "ref": "Synergy 1.8 p.6"
+            },
+            {
+              "title": "Catalysts Are Consumed",
+              "text": "Finally, the use of a Catalyst in any recipe, blueprint or ritual will automatically consume both the item and the Catalyst. Any effect which consumes a Catalyst trumps all other rules on rendered or indestructible items.",
+              "ref": "Core 5.6.5 p.86"
+            }
+          ]
         },
         {
           "id": "blacksmith",
@@ -178,7 +252,39 @@
           "prereqPerPurchase": false,
           "_weaponChoice": null,
           "prereqs": [],
-          "desc": "This production skill allows the character to craft new weapons and armour as well as repairing damaged armour. Crafting new weapons and armour may only be done at logistics. Armour costs 1 Raw Material (RM) per point of armour, before any physrep point reductions. Characters may create any item unlocked at or below their level.\n\nRefitting (repairing) armour takes 60 seconds for every 10 points of armour to be refit and requires the Blacksmith and target to remain stationary. It can be done anywhere, but the Blacksmith must carry a set of refitting tools (untagged). A second Blacksmith may help, lowering the time by 10 seconds to a minimum of 10 seconds. Only two Blacksmiths may refit one target at once. A Blacksmith can tell how much of a target's armour has been damaged by placing both hands on their torso and stating, \"Blacksmithing 1, Blacksmithing 2, Blacksmithing 3, how much armour are you missing?\"\n\nRepair While Moving (Level 3): The Blacksmith may now repair armour while moving.\nReforge (Level 5): The Blacksmith may Reforge any shield, piece of armour or weapon, back into half of its value, rounded down, in Raw Material. Reforging may only be done at Logistics. Expired tags and Legendary items cannot be Reforged.\n+1 Strength (Levels 6 and 10): Hours and hours spent hammering metal have given the Blacksmith the kind of muscles every warrior desires. This Strength stacks with other Strength bonuses, including itself.\n\nUnlocked by level:\nLevel 1: Simple Weapons, Leather Armour, Wooden Shields, Repair Speed 60 seconds\nLevel 2: Medium Weapons, Studded Leather Armour\nLevel 3: Large Weapons, Chainmail Armour, Repair While Moving\nLevel 4: Exotic Weapons, Plate Armour, Repair Speed 40 seconds\nLevel 5: Iron Weapons, Iron Bound Shields, Reforge\nLevel 6: Silver Weapons, Metal Shields, +1 Strength\nLevel 7: Master Crafted Simple Weapons, Master Crafted Wooden Shields, Repair Speed 20 seconds\nLevel 8: Master Crafted Medium Weapons, Master Crafted Iron Bound Shields\nLevel 9: Master Crafted Large/Exotic Weapons, Master Crafted Metal Shields, Repair Speed 10 seconds\nLevel 10: Legendary Items, +1 Strength\n\nBase RM costs:\nSimple Weapon: 4 RM\nMedium Weapon: 24 RM\nLarge Weapon: 40 RM\nExotic Weapon: 48 RM\nArrows or Bolts (x6): 1 RM\nWooden Shield: 10 RM\nIron Bound Shield: 20 RM\nMetal Shield: 30 RM\n\nIron: Iron weapons cost 150% of the base RM and the entire striking surface must be iron to call iron damage.\nSilver: Silver weapons cost 400% of the base RM. A weapon may be iron or silver, not both, chosen when it is created.\nMaster Crafted: Costs 500% of the normal RM (cumulative with iron or silver). Master Crafted weapons can be enchanted and resist 3 attempts to shatter or destroy them, after which they are Normal. Master Crafted shields have 3 \"Render\" resists vs destroy/shatter effects.\nLegendary: Costs 1000% of the original RM (Legendary shields cost a flat 200 RM). Legendary items are immune to permanent destruction, Legendary armour gives +1 Armour Point per location, and they resist ritual magic (enchantments fade after 10 minutes to a few days, chosen by a Ritual Marshal).\nExpiry: Normal weapons and shields expire after 2 years, iron and silver weapons after 3 years, Master Crafted and Legendary items after 5 years. Armour does not expire. Normal arrows need no tags. Normal weapons may be steel, wood or bone."
+          "desc": "This production skill allows the character to craft new weapons and armour as well as repairing damaged armour. Crafting new weapons and armour may only be done at logistics. Armour costs 1 Raw Material (RM) per point of armour, before any physrep point reductions. Characters may create any item unlocked at or below their level.\n\nRefitting (repairing) armour takes 60 seconds for every 10 points of armour to be refit and requires the Blacksmith and target to remain stationary. It can be done anywhere, but the Blacksmith must carry a set of refitting tools (untagged). A second Blacksmith may help, lowering the time by 10 seconds to a minimum of 10 seconds. Only two Blacksmiths may refit one target at once. A Blacksmith can tell how much of a target's armour has been damaged by placing both hands on their torso and stating, \"Blacksmithing 1, Blacksmithing 2, Blacksmithing 3, how much armour are you missing?\"\n\nRepair While Moving (Level 3): The Blacksmith may now repair armour while moving.\nReforge (Level 5): The Blacksmith may Reforge any shield, piece of armour or weapon, back into half of its value, rounded down, in Raw Material. Reforging may only be done at Logistics. Expired tags and Legendary items cannot be Reforged.\n+1 Strength (Levels 6 and 10): Hours and hours spent hammering metal have given the Blacksmith the kind of muscles every warrior desires. This Strength stacks with other Strength bonuses, including itself.\n\nUnlocked by level:\nLevel 1: Simple Weapons, Leather Armour, Wooden Shields, Repair Speed 60 seconds\nLevel 2: Medium Weapons, Studded Leather Armour\nLevel 3: Large Weapons, Chainmail Armour, Repair While Moving\nLevel 4: Exotic Weapons, Plate Armour, Repair Speed 40 seconds\nLevel 5: Iron Weapons, Iron Bound Shields, Reforge\nLevel 6: Silver Weapons, Metal Shields, +1 Strength\nLevel 7: Master Crafted Simple Weapons, Master Crafted Wooden Shields, Repair Speed 20 seconds\nLevel 8: Master Crafted Medium Weapons, Master Crafted Iron Bound Shields\nLevel 9: Master Crafted Large/Exotic Weapons, Master Crafted Metal Shields, Repair Speed 10 seconds\nLevel 10: Legendary Items, +1 Strength\n\nBase RM costs:\nSimple Weapon: 4 RM\nMedium Weapon: 24 RM\nLarge Weapon: 40 RM\nExotic Weapon: 48 RM\nArrows or Bolts (x6): 1 RM\nWooden Shield: 10 RM\nIron Bound Shield: 20 RM\nMetal Shield: 30 RM\n\nIron: Iron weapons cost 150% of the base RM and the entire striking surface must be iron to call iron damage.\nSilver: Silver weapons cost 400% of the base RM. A weapon may be iron or silver, not both, chosen when it is created.\nMaster Crafted: Costs 500% of the normal RM (cumulative with iron or silver). Master Crafted weapons can be enchanted and resist 3 attempts to shatter or destroy them, after which they are Normal. Master Crafted shields have 3 \"Render\" resists vs destroy/shatter effects.\nLegendary: Costs 1000% of the original RM (Legendary shields cost a flat 200 RM). Legendary items are immune to permanent destruction, Legendary armour gives +1 Armour Point per location, and they resist ritual magic (enchantments fade after 10 minutes to a few days, chosen by a Ritual Marshal).\nExpiry: Normal weapons and shields expire after 2 years, iron and silver weapons after 3 years, Master Crafted and Legendary items after 5 years. Armour does not expire. Normal arrows need no tags. Normal weapons may be steel, wood or bone.",
+          "related": [
+            {
+              "title": "Shield Thresholds",
+              "text": "Any single attack, of any type, that does more damage than a shield's threshold, causes the shield to shatter. Wooden shields have a threshold of 10, iron bound shields have a threshold of 20, and solid metal shields have a threshold of 30.",
+              "ref": "Core 5.6.5 p.89"
+            },
+            {
+              "title": "Battlefield Repair (Warrior)",
+              "text": "A Warrior with the Soul Frag skill Battlefield Repair can repair a shield destroyed within the last hour (1 minute per 10 threshold), and can also restore 1 Render resist on a Master Crafted shield.",
+              "ref": "Soul Frag 2.10 p.81"
+            },
+            {
+              "title": "Armour Stacking",
+              "text": "If you are wearing more than one piece of armour in any one location, you may only claim the highest value armour for each location, unless you have the Heavy Armour skill. If you have the Heavy Armour skill, then you can claim the two types of armour for the same location. Two layers of the same type (chain, plate, leather, studded leather) will not stack with each other.",
+              "ref": "Core 5.6.5 p.94"
+            },
+            {
+              "title": "Healing Gargylen",
+              "text": "A Gargylen may be healed as if their body was made of armour. Every 1 minute of Blacksmithing will heal the Gargylen 10 Body. Any successful Refit while in the \"Bleed\" count will heal the Gargylen to 1 Body.",
+              "ref": "Core 5.6.5 p.26"
+            },
+            {
+              "title": "Magical Armour Cannot Be Refit",
+              "text": "Magical armour is removed before physical armour, and the 40 points of Magical armour from the Barkskin spell may not be Refit.",
+              "ref": "Core 5.6.5 p.122"
+            },
+            {
+              "title": "Enchanting Your Gear",
+              "text": "Weapons and shields that are to be the target of a Ritual spell are required to be Master Crafted unless otherwise stated. Any type of armour may be the target of a ritual spell. Unless the ritual states otherwise, only three separate ritual effects may be enchanted onto a suitable item at any time.",
+              "ref": "Synergy 1.8 p.5"
+            }
+          ]
         },
         {
           "id": "chemistry",
@@ -206,7 +312,34 @@
               "minCount": 10
             }
           ],
-          "desc": "When an Alchemist has mastered everything Alchemy has to teach them, they can learn Chemistry. Chemistry Formulas create powerful alchemical concoctions.\n\nGiven the right exotic material, Catalysts, time and the proper Formula, the Alchemist can make potions and elixirs that possess special and unique properties. Each Formula, and all the requirements, are different and must be found in-game.\n\nA Chemist may brew 1 Chemistry item per event per level of Chemistry. Chemistry is considered 'ritual level'. Only Chemists can read Chemistry Formulas. Chemists can read Chemistry Formulas even if they cannot read and write."
+          "desc": "When an Alchemist has mastered everything Alchemy has to teach them, they can learn Chemistry. Chemistry Formulas create powerful alchemical concoctions.\n\nGiven the right exotic material, Catalysts, time and the proper Formula, the Alchemist can make potions and elixirs that possess special and unique properties. Each Formula, and all the requirements, are different and must be found in-game.\n\nA Chemist may brew 1 Chemistry item per event per level of Chemistry. Chemistry is considered 'ritual level'. Only Chemists can read Chemistry Formulas. Chemists can read Chemistry Formulas even if they cannot read and write.",
+          "related": [
+            {
+              "title": "Crafting Requirements",
+              "text": "Chemistry can only be produced through logistics. The crafter must have the physical Formula or Blueprint, the required catalysts, and 1 unused rank in the respective Synergy skill (Artificing or Chemistry) for each synergy they wish to create.",
+              "ref": "Synergy 1.8 p.18"
+            },
+            {
+              "title": "Formula Cost and Expiry",
+              "text": "Chemistry Formulas have set RM and catalyst requirements based on the difficulty of the formula. A difficulty 1 Formula requires 50RM and 1 catalyst, as specified on the Formula. Each additional level will add +10RM and +1 catalyst. All Chemistry will expire 1 year after creation if unused. This expiry cannot be increased during production. Chemistry cannot be stacked.",
+              "ref": "Synergy 1.8 p.19"
+            },
+            {
+              "title": "Success Odds",
+              "text": "These resources are considered used regardless of success or failure. The marshal will prepare the bag of stones with 20 white stones. They will add black stones equal to the difficulty of the Formula or Blueprint and 5 black stones for each missing catalyst; any catalysts used to extend the duration of a Blueprint are considered catalysts. They will also add 1 white stone for each catalyst provided in excess of the required catalysts. A white stone means the craft was a success. A black stone means the craft has failed. There are no Flaw or Backlash results for both Artifice and Chemistry.",
+              "ref": "Synergy 1.8 p.20"
+            },
+            {
+              "title": "Catalysts Are Consumed",
+              "text": "Finally, the use of a Catalyst in any recipe, blueprint or ritual will automatically consume both the item and the Catalyst. Any effect which consumes a Catalyst trumps all other rules on rendered or indestructible items.",
+              "ref": "Core 5.6.5 p.86"
+            },
+            {
+              "title": "Discord Catalysts",
+              "text": "If a single Discord Catalyst was used in place of a catalyst or as an additional catalyst, a discord effect occurs. Only one Discord Catalyst may be used per Formula or Blueprint.",
+              "ref": "Synergy 1.8 p.20"
+            }
+          ]
         },
         {
           "id": "create-scroll",
@@ -234,7 +367,39 @@
               "minCount": 1
             }
           ],
-          "desc": "This skill allows a character to create Battle Magic Scrolls. To make a Magical Scroll, the character must be able to cast that specific spell from memory.\n\nGlowing Ink (Level 2): This allows the scrollcrafter to create scrolls which can be cast in darkness.\nScavenge Scroll (Level 4): The scribe may carefully salvage the scrollcrafting materials of an existing scroll to turn it into something new, returning half its Raw Material value.\nCreate Tome (Level 6): The scrollcrafter has learned to create powerful Tomes of magic. This Tome may contain one of each Battle Magic scroll in a single sphere and is spirit linked to the first person who memorises from it.\nScroll Mastery (Level 10): The scrollcrafter has now mastered all they need to create any scroll from the core rulebook, even if they cannot cast the sphere that scroll is from, although they will still need to be able to cast a spell of that level. Scrolls created with Scroll Mastery cost an additional 100% of the base Raw Material cost.\n\nScrolls unlocked by level (Level N unlocks Battle Magic scrolls up to that spell level):\nLevel 1: Level 1 and Level 2 Scrolls\nLevel 2: Glowing Ink\nLevel 3: Level 3 and Level 4 Scrolls\nLevel 4: Scavenge Scroll\nLevel 5: Level 5 and Level 6 Scrolls\nLevel 6: Create Tome\nLevel 7: Level 7 Scrolls\nLevel 8: Level 8 Scrolls\nLevel 9: Level 9 Scrolls\nLevel 10: Scroll Mastery\n\nRaw Material (RM) cost per scroll by spell level:\nSpell level 1: 4 RM\nSpell level 2: 4 RM\nSpell level 3: 8 RM\nSpell level 4: 8 RM\nSpell level 5: 16 RM\nSpell level 6: 16 RM\nSpell level 7: 32 RM\nSpell level 8: 32 RM\nSpell level 9: 64 RM\n\nGlowing Ink scrolls cost an additional 50% of the base RM (tags are marked \"Glow\"). Scroll Mastery scrolls cost an additional 100%. Creating a Tome costs 100 RM. Scrolls cannot be made using magic items or other scrolls, and Create Scroll cannot create Ritual Magic. Scavenging a scroll can only be done at Logistics."
+          "desc": "This skill allows a character to create Battle Magic Scrolls. To make a Magical Scroll, the character must be able to cast that specific spell from memory.\n\nGlowing Ink (Level 2): This allows the scrollcrafter to create scrolls which can be cast in darkness.\nScavenge Scroll (Level 4): The scribe may carefully salvage the scrollcrafting materials of an existing scroll to turn it into something new, returning half its Raw Material value.\nCreate Tome (Level 6): The scrollcrafter has learned to create powerful Tomes of magic. This Tome may contain one of each Battle Magic scroll in a single sphere and is spirit linked to the first person who memorises from it.\nScroll Mastery (Level 10): The scrollcrafter has now mastered all they need to create any scroll from the core rulebook, even if they cannot cast the sphere that scroll is from, although they will still need to be able to cast a spell of that level. Scrolls created with Scroll Mastery cost an additional 100% of the base Raw Material cost.\n\nScrolls unlocked by level (Level N unlocks Battle Magic scrolls up to that spell level):\nLevel 1: Level 1 and Level 2 Scrolls\nLevel 2: Glowing Ink\nLevel 3: Level 3 and Level 4 Scrolls\nLevel 4: Scavenge Scroll\nLevel 5: Level 5 and Level 6 Scrolls\nLevel 6: Create Tome\nLevel 7: Level 7 Scrolls\nLevel 8: Level 8 Scrolls\nLevel 9: Level 9 Scrolls\nLevel 10: Scroll Mastery\n\nRaw Material (RM) cost per scroll by spell level:\nSpell level 1: 4 RM\nSpell level 2: 4 RM\nSpell level 3: 8 RM\nSpell level 4: 8 RM\nSpell level 5: 16 RM\nSpell level 6: 16 RM\nSpell level 7: 32 RM\nSpell level 8: 32 RM\nSpell level 9: 64 RM\n\nGlowing Ink scrolls cost an additional 50% of the base RM (tags are marked \"Glow\"). Scroll Mastery scrolls cost an additional 100%. Creating a Tome costs 100 RM. Scrolls cannot be made using magic items or other scrolls, and Create Scroll cannot create Ritual Magic. Scavenging a scroll can only be done at Logistics.",
+          "related": [
+            {
+              "title": "Tomes",
+              "text": "The Tome, once created, is spirit linked to the first person who memorises from it. The spirit link lasts until the user resurrects or suffers a final death, after which point the Tome becomes a regular Spellbook, with one exception. When a Tome's owner resurrects, the Tome, and any scrolls it contains, will immediately appear in the resurrection circle and act as a spell focus for the appropriate sphere for 10 minutes. Because Tomes are not created using a sphere of magic, effects like Counter Magic and Dispel Magic do not affect them. When Tomes are first created, they contain no scrolls. If all of the scrolls in a Tome are removed, they may be replaced with scrolls from another sphere, as long as there are only ever scrolls from a single sphere in the Tome at any time.",
+              "ref": "Core 5.6.5 p.57"
+            },
+            {
+              "title": "Scroll Mastery Needs No Casting",
+              "text": "Scrolls created using this ability do not need to have the spell cast to create the scroll.",
+              "ref": "Core 5.6.5 p.58"
+            },
+            {
+              "title": "No Scrolls for Frag Spheres",
+              "text": "Soul Frag book spheres do not have Battle Magic scrolls and therefore do not require a Spellbook to memorize.",
+              "ref": "Core 5.6.5 p.102"
+            },
+            {
+              "title": "Elemental Scrolls",
+              "text": "Elemental scrolls are created with all 4 Elemental Magic types (fire, ice, lightning and stone). While casting from the scroll, the reader may choose any Magic type. Memorizing from the scroll limits the Mage to their attuned type.",
+              "ref": "Core 5.6.5 p.102"
+            },
+            {
+              "title": "Scrolls Feed Memorising",
+              "text": "A spell caster may memorize their spells from any Spellbook or scroll so long as they have previously purchased that Sphere of Magic.",
+              "ref": "Core 5.6.5 p.102"
+            },
+            {
+              "title": "What Counts as Darkness",
+              "text": "A character is in darkness (for the purposes of Dim, etc.) when words on a page held at arm's length cannot be read.",
+              "ref": "Core 5.6.5 p.104"
+            }
+          ]
         },
         {
           "id": "tradesman",
@@ -257,7 +422,29 @@
           "prereqPerPurchase": false,
           "_weaponChoice": null,
           "prereqs": [],
-          "desc": "The Tradesman skill is a catch-all term for all other jobs or occupations. When purchasing this skill, a player must choose their trade. For each level of Tradesman the player has, they will receive either 3 silver worth of product or 5 units of Raw Material at Logistics.\n\nPlayers must choose which type of Raw Material (maximum of one) the skill can produce when it is purchased and have this approved by a Logistics Marshal. An appropriate Tradesman skill may aid in certain role-playing situations as determined by the Shaper running the encounter."
+          "desc": "The Tradesman skill is a catch-all term for all other jobs or occupations. When purchasing this skill, a player must choose their trade. For each level of Tradesman the player has, they will receive either 3 silver worth of product or 5 units of Raw Material at Logistics.\n\nPlayers must choose which type of Raw Material (maximum of one) the skill can produce when it is purchased and have this approved by a Logistics Marshal. An appropriate Tradesman skill may aid in certain role-playing situations as determined by the Shaper running the encounter.",
+          "related": [
+            {
+              "title": "What Tradesman Can Make",
+              "text": "The 3 silver worth of product will be a mundane item related to the Tradesman type. Items and Raw Materials are considered to be `mundane' if they are not created by any other skill (eg: shields, scrolls, or alcohol). Some items are too special and unique to be created using Tradesman, such as catalysts, mithril or angel feathers. This can be divided up into multiple item tags with low value, or combined into a large single tag with a higher value.",
+              "ref": "Core 5.6.5 p.58"
+            },
+            {
+              "title": "Combining Production Skills",
+              "text": "You may also combine different Production skills to create a single item, such as a dagger (made by blacksmithing) with a gem in the pommel (made using Tradesman: Jeweler). Two or more characters with Tradesman or other Production skills can combine their abilities to make one or more items, such as a bejewelled book being made by a scribe and a jeweller. Tradesman can even be used to augment an extant item, such as adding a jewel to a helmet found on a dead enemy.",
+              "ref": "Core 5.6.5 p.58"
+            },
+            {
+              "title": "Multiple Levels and Trades",
+              "text": "A player may purchase this skill multiple times for the same trade or a new trade. The more Tradesman levels the player has in one trade, the better they understand that field of work. A player with 5 levels in Tradesman Hunter will be a far better hunter then a player with only 1 level. The average NPC Tradesman has 5 levels in their chosen field and is considered a professional.",
+              "ref": "Core 5.6.5 p.58"
+            },
+            {
+              "title": "Veterinarian",
+              "text": "If they have Tradesman (Veterinarian), they can use their skills on Animals.",
+              "ref": "Core 5.6.5 p.64"
+            }
+          ]
         },
         {
           "id": "trapper",
@@ -280,7 +467,24 @@
           "prereqPerPurchase": false,
           "_weaponChoice": null,
           "prereqs": [],
-          "desc": "This skill allows a character to create, set, and disarm traps. To arm or disarm a trap, the Trapper must have a level of Trapper equal to the level of trigger used. Traps and triggers can only be created at Logistics.\n\nAn armed trap may be moved any distance, if it remains in contact with the mover and they move no faster than walking speed. Should the trap be thrown, dropped, or move faster than a walk, the trap goes off instantly.\n\nThis skill also allows the character to create and pick in-game locks. A Trapper can pick a lock with a difficulty rating lower than or equal to their Trapper level, requiring a 1-minute count, once per day per purchase. A player with Trapper may also open locks by physically picking the phys-rep lock without consuming any daily uses.\n\nSalvage (Level 5): The Trapper may break down their locks and traps to repurpose the raw materials, returning half its value, rounded down, in Raw Material. Any trap or any lock under level 9 can be salvaged, at Logistics only.\n\nUnlocked by level:\nLevel 1: Mousetrap Trigger, Alarm Trap\nLevel 2: Weapon Trap\nLevel 3: Buzzer/Switch Trigger, Leg Snare Trap\nLevel 4: Explosive Trap, Dismember Trap\nLevel 5: Pressure Plate Trigger, Net Trap, Acid Trap, Salvage\nLevel 6: Fire Trap\nLevel 7: Timer Trigger, Gas Trap\nLevel 8: Needle Trap\nLevel 9: Massive Mechanical Trap\nLevel 10: Massive Net Trap, Threshold Trigger\n\nTrap Raw Material (RM) costs:\nAlarm Trap: 2 RM (reusable)\nWeapon Trap: 6 RM\nLeg Snare Trap: 6 RM\nExplosive Trap: 1 RM per 4 damage (4 to 60 damage)\nDismember Trap: 12 RM (weapon cost not included)\nNet Trap: 12 RM\nAcid Trap: 1 RM per 2 damage (4 to 40 damage)\nFire Trap: 1 RM per 3 damage (3 to 42 elemental fire damage)\nGas Trap: 5 RM (also needs 3 Alchemical Gas Globe tags)\nNeedle Trap: 5 RM\nMassive Mechanical Trap: determined by a Marshal\nMassive Net Trap: 30 RM\n\nLocks: A lock's difficulty can be up to your Trapper level (1 to 10). External locks cost 10 x level in RM, internal locks cost 15 x level. Each lock comes with one free key; extra keys cost 5 RM each and can only be made when the lock is created. Keys have no salvage value.\nLock strength: A lock can be destroyed by Strength equal to or greater than the amount for its level: Level 1: 1, Level 2: 2, Level 3: 4, Level 4: 6, Level 5: 8, Level 6: 10, Level 7: 12, Level 8: 14, Levels 9 and 10: Unbreakable. Manacles need double the Strength. Only one person's Strength may be used."
+          "desc": "This skill allows a character to create, set, and disarm traps. To arm or disarm a trap, the Trapper must have a level of Trapper equal to the level of trigger used. Traps and triggers can only be created at Logistics.\n\nAn armed trap may be moved any distance, if it remains in contact with the mover and they move no faster than walking speed. Should the trap be thrown, dropped, or move faster than a walk, the trap goes off instantly.\n\nThis skill also allows the character to create and pick in-game locks. A Trapper can pick a lock with a difficulty rating lower than or equal to their Trapper level, requiring a 1-minute count, once per day per purchase. A player with Trapper may also open locks by physically picking the phys-rep lock without consuming any daily uses.\n\nSalvage (Level 5): The Trapper may break down their locks and traps to repurpose the raw materials, returning half its value, rounded down, in Raw Material. Any trap or any lock under level 9 can be salvaged, at Logistics only.\n\nUnlocked by level:\nLevel 1: Mousetrap Trigger, Alarm Trap\nLevel 2: Weapon Trap\nLevel 3: Buzzer/Switch Trigger, Leg Snare Trap\nLevel 4: Explosive Trap, Dismember Trap\nLevel 5: Pressure Plate Trigger, Net Trap, Acid Trap, Salvage\nLevel 6: Fire Trap\nLevel 7: Timer Trigger, Gas Trap\nLevel 8: Needle Trap\nLevel 9: Massive Mechanical Trap\nLevel 10: Massive Net Trap, Threshold Trigger\n\nTrap Raw Material (RM) costs:\nAlarm Trap: 2 RM (reusable)\nWeapon Trap: 6 RM\nLeg Snare Trap: 6 RM\nExplosive Trap: 1 RM per 4 damage (4 to 60 damage)\nDismember Trap: 12 RM (weapon cost not included)\nNet Trap: 12 RM\nAcid Trap: 1 RM per 2 damage (4 to 40 damage)\nFire Trap: 1 RM per 3 damage (3 to 42 elemental fire damage)\nGas Trap: 5 RM (also needs 3 Alchemical Gas Globe tags)\nNeedle Trap: 5 RM\nMassive Mechanical Trap: determined by a Marshal\nMassive Net Trap: 30 RM\n\nLocks: A lock's difficulty can be up to your Trapper level (1 to 10). External locks cost 10 x level in RM, internal locks cost 15 x level. Each lock comes with one free key; extra keys cost 5 RM each and can only be made when the lock is created. Keys have no salvage value.\nLock strength: A lock can be destroyed by Strength equal to or greater than the amount for its level: Level 1: 1, Level 2: 2, Level 3: 4, Level 4: 6, Level 5: 8, Level 6: 10, Level 7: 12, Level 8: 14, Levels 9 and 10: Unbreakable. Manacles need double the Strength. Only one person's Strength may be used.",
+          "related": [
+            {
+              "title": "Thieves' Tools and Higher-Level Locks",
+              "text": "To use this skill, the player must have a set of thieves' tools with them. A player may pick a lock of a higher level than the player's Trapper level this way (by physically picking the phys-rep lock).",
+              "ref": "Core 5.6.5 p.58"
+            },
+            {
+              "title": "Phys-Rep Locks",
+              "text": "Phys-rep locks can never physically lock anything. Instead, they must be attached to the door, box, etc., in a way that does not actually lock the object, to allow for the use of duplicate key tags and to allow Trappers to `pick' the lock with their once per day ability. A lock cannot be placed on one side of a door or object to make the lock inaccessible from the other side. A lock can be picked from inside or outside.",
+              "ref": "Core 5.6.5 p.59"
+            },
+            {
+              "title": "Counter: Cindamite",
+              "text": "Cindamite will destroy locks. For each level of the lock, a Cindamite dose is required.",
+              "ref": "Core 5.6.5 p.73"
+            }
+          ]
         }
       ]
     },
@@ -308,7 +512,14 @@
           "prereqPerPurchase": false,
           "_weaponChoice": null,
           "prereqs": [],
-          "desc": "This skill allows a user to check an individual's vital signs. Anatomy can be used on any living creature to glean information about their health and physical state.\n\nTo use Anatomy, the player must place both hands on the torso of the target, call out \"Anatomy 1, Anatomy 2, Anatomy 3\", and then ask the player, out of game, one of the following questions: \"Are you alive?\", \"Are you in your bleed count?\", \"Are you in your death count?\", \"Are you paralysed?\", \"Are you asleep?\", \"Are you unconscious?\", \"Is there alcohol in your system?\", \"Is there a toxin in your system?\", \"Is there a non-Magical disease in your system?\" and \"How much damage have you taken?\" This skill is usable at will."
+          "desc": "This skill allows a user to check an individual's vital signs. Anatomy can be used on any living creature to glean information about their health and physical state.\n\nTo use Anatomy, the player must place both hands on the torso of the target, call out \"Anatomy 1, Anatomy 2, Anatomy 3\", and then ask the player, out of game, one of the following questions: \"Are you alive?\", \"Are you in your bleed count?\", \"Are you in your death count?\", \"Are you paralysed?\", \"Are you asleep?\", \"Are you unconscious?\", \"Is there alcohol in your system?\", \"Is there a toxin in your system?\", \"Is there a non-Magical disease in your system?\" and \"How much damage have you taken?\" This skill is usable at will.",
+          "related": [
+            {
+              "title": "Physician Upgrades",
+              "text": "Physician level 4 and 5 let Anatomy also check for foreign objects and foreign life forms inside a patient, and Physician level 9 allows Anatomy checks while using any other physician skill.",
+              "ref": "Core 5.6.5 p.65"
+            }
+          ]
         },
         {
           "id": "mysticism",
@@ -331,7 +542,29 @@
           "prereqPerPurchase": false,
           "_weaponChoice": null,
           "prereqs": [],
-          "desc": "The art of the Mystic is one that has both amazed and frightened the unaware since the dawn of time. A Mystic excels in the contacting of lost spirits or ghosts to ask for, coerce, steal, or outright force their aid.\n\nMysticism skills must be purchased in order of level and no level may be purchased more than once.\n\nA Mystic who finds themselves close to final death finds themselves with easier access to the Deadlands; if a Mystic has no free deaths left on their character card, they will be given two additional uses of any one skill of their choice that they have purchased.\n\nLevel 1: Dead Sight. View lost souls and ghosts normally invisible to the mundane eye.\nLevel 2: Augury. Consult with Spirits via a medium of their choosing.\nLevel 3: Eyes of the Soul. Touch a corpse to attempt to lure the Spirit into retelling how it died (1 in 10 chance, costs 1 hour of blindness).\nLevel 4: Foresight. Implant subconscious foresight of upcoming danger into a target.\nLevel 5: Manifest. Rise as a visible spirit during Death Count.\nLevel 6: Grim Counsel. Speak directly to spirits and ghosts; combine with Augury to target a specific spirit.\nLevel 7: Séance. Gather Mystics to summon a specific spirit to answer 3 questions.\nLevel 8: Unfetter: Manifest without the 10-foot restriction, remaining within line-of-sight.\nLevel 9: Haunt. Attempt to have a spirit choose a home as their connection to the mortal realm.\nLevel 10: Betwixt and Between. Immunity to Forget effects, 50% chance to remember deaths, doubles Death Count while Manifesting with a lantern."
+          "desc": "The art of the Mystic is one that has both amazed and frightened the unaware since the dawn of time. A Mystic excels in the contacting of lost spirits or ghosts to ask for, coerce, steal, or outright force their aid.\n\nMysticism skills must be purchased in order of level and no level may be purchased more than once.\n\nA Mystic who finds themselves close to final death finds themselves with easier access to the Deadlands; if a Mystic has no free deaths left on their character card, they will be given two additional uses of any one skill of their choice that they have purchased.\n\nLevel 1: Dead Sight. View lost souls and ghosts normally invisible to the mundane eye.\nLevel 2: Augury. Consult with Spirits via a medium of their choosing.\nLevel 3: Eyes of the Soul. Touch a corpse to attempt to lure the Spirit into retelling how it died (1 in 10 chance, costs 1 hour of blindness).\nLevel 4: Foresight. Implant subconscious foresight of upcoming danger into a target.\nLevel 5: Manifest. Rise as a visible spirit during Death Count.\nLevel 6: Grim Counsel. Speak directly to spirits and ghosts; combine with Augury to target a specific spirit.\nLevel 7: Séance. Gather Mystics to summon a specific spirit to answer 3 questions.\nLevel 8: Unfetter: Manifest without the 10-foot restriction, remaining within line-of-sight.\nLevel 9: Haunt. Attempt to have a spirit choose a home as their connection to the mortal realm.\nLevel 10: Betwixt and Between. Immunity to Forget effects, 50% chance to remember deaths, doubles Death Count while Manifesting with a lantern.",
+          "related": [
+            {
+              "title": "Manifest Limits",
+              "text": "In this state the Mystic cannot speak, make noise, move more than 10 feet away from their corpse or interact physically with anything in the living world. Should the Mystic become the target of a Life spell, their spirit is immediately sucked back into their body and any benefits from Manifest end. This ability is usable once per day.",
+              "ref": "Core 5.6.5 p.62"
+            },
+            {
+              "title": "Seance Odds",
+              "text": "This starts at a base 1 in 10 chance. Every Level 2 or higher Mystic increases the odds by +1 in their favor. Each additional Mystic must have a free use of Augury to participate. Failure in the initial odds could cause the spirit to become malicious, possess one of the Mystics, or not appear at all.",
+              "ref": "Core 5.6.5 p.62-63"
+            },
+            {
+              "title": "Unfetter Requirements",
+              "text": "In order to do so, they must leave behind a large white cloth with the words: \"You see <Character Name>'s body\" written upon it noticeably in some fashion. If a Mystic spends more time using Unfetter than the duration of their Death Count, their spirit will succumb, causing the Mystic to be ejected back into the mortal world.",
+              "ref": "Core 5.6.5 p.63"
+            },
+            {
+              "title": "Haunt Duration and Risk",
+              "text": "If the spirit finds the offerings offensive, the opposite will happen. The home will become haunted by a malicious poltergeist that seeks to make the Mystic miserable for disturbing its afterlife. No Mystic abilities may be used within the home and bad luck shall befall those within its walls. A Haunt will last 1 year before the spirit is pulled fully back into the Deadlands. This ability is usable once per day, but only one Haunt may be active per Mystic at any time.",
+              "ref": "Core 5.6.5 p.63"
+            }
+          ]
         },
         {
           "id": "demonic-angelic-arts",
@@ -354,7 +587,19 @@
           "prereqPerPurchase": false,
           "_weaponChoice": null,
           "prereqs": [],
-          "desc": "Demonic/Angelic Arts allow the user to identify and recognize the various holy and unholy creatures that exist on all the planes of the Heavens and Hells.\n\nThis skill may only be used to answer the following questions: \"Are you a Demonic/Angelic creature?\", \"What kind of Demon/Angel are you?\", \"Are you a greater or lesser Demon/Angel?\", (Angelic only) \"Which God do you serve, if any?\", (Demonic only) \"Are you currently under contract?\" These questions are asked out of game, not to the Demon or Angel directly.\n\nCharacters with Demonic/Angelic Arts take 2 less damage (to a minimum of 1) from attacks by their identified target no matter the type of attack. Only one target may be active at a time. To change targets, the user may ask one of the questions above, or simply state \"Demonic/Angelic Arts 1, 2, 3\" if the new target has already been identified."
+          "desc": "Demonic/Angelic Arts allow the user to identify and recognize the various holy and unholy creatures that exist on all the planes of the Heavens and Hells.\n\nThis skill may only be used to answer the following questions: \"Are you a Demonic/Angelic creature?\", \"What kind of Demon/Angel are you?\", \"Are you a greater or lesser Demon/Angel?\", (Angelic only) \"Which God do you serve, if any?\", (Demonic only) \"Are you currently under contract?\" These questions are asked out of game, not to the Demon or Angel directly.\n\nCharacters with Demonic/Angelic Arts take 2 less damage (to a minimum of 1) from attacks by their identified target no matter the type of attack. Only one target may be active at a time. To change targets, the user may ask one of the questions above, or simply state \"Demonic/Angelic Arts 1, 2, 3\" if the new target has already been identified.",
+          "related": [
+            {
+              "title": "Psionic Assault vs Demons and Angels",
+              "text": "Psionic-assault spells are those spells in the Psionic Sphere which do damage directly to Body. All Demonic and Angelic creatures are vulnerable to Psionic-assault magic. All such spells will do x4 the usual damage to any Demonic or Angelic creature compared to how they would affect a regular target. Furthermore, if a host is possessed by a Demonic or Angelic creature, Psionic-assault spells are the only attack which will harm said creatures without causing damage to the occupied host.",
+              "ref": "Core 5.6.5 p.103"
+            },
+            {
+              "title": "Physician Synergy",
+              "text": "If they have Demonic/Angelic Arts, they can use their skills on Demons and Angels.",
+              "ref": "Core 5.6.5 p.64"
+            }
+          ]
         },
         {
           "id": "elemental-attunement",
@@ -383,7 +628,24 @@
             }
           ],
           "desc": "This skill will allow an Elementalist to attune themselves to an additional Element. This additional attunement may be chosen when casting spells that require one.\n\nExample: A Fire Elementalist may purchase Elemental Attunement and choose Ice. The Elementalist can now choose between Ice or Fire when casting spells that require an Elemental type such as \"<type> Strike.\"\n\nThis skill can be purchased multiple times to grant access to additional Elements. The four elements are Fire, Ice, Stone and Lightning.",
-          "ref": "Core 5.6.5 p.53 (requires the Elemental sphere)"
+          "ref": "Core 5.6.5 p.53 (requires the Elemental sphere)",
+          "related": [
+            {
+              "title": "Starting Attunement",
+              "text": "Upon purchasing this spell list, the player MUST choose one of the four Elements which will become their <type> attunement (fire, stone, ice, or lightning). Once the Elementalist picks their attunement it cannot be changed, although additional attunements may be purchased later.",
+              "ref": "Core 5.6.5 p.110"
+            },
+            {
+              "title": "Attunements in Elemental Spells",
+              "text": "This self-cast spell will grant the caster affinity with Elementals of any and all of their attuned elements. This spell will grant control over any Lesser Elemental of the types the caster is attuned to.",
+              "ref": "Core 5.6.5 p.110-111"
+            },
+            {
+              "title": "Elemental Scrolls",
+              "text": "Elemental scrolls are created with all 4 Elemental Magic types (fire, ice, lightning and stone). While casting from the scroll, the reader may choose any Magic type. Memorizing from the scroll limits the Mage to their attuned type.",
+              "ref": "Core 5.6.5 p.102"
+            }
+          ]
         },
         {
           "id": "first-aid",
@@ -411,7 +673,39 @@
               "minCount": 1
             }
           ],
-          "desc": "Allows the user to bind wounds sufficiently to stop bleeding and heal some minor wounds. The process takes 1 minute to use and as long as it is being used, the target's Bleed Count is halted. If First Aid is interrupted, or if the wounded target moves or is moved in any way, the skill fails and the wounded target must continue their Bleed Count from where they left off.\n\nAfter a successful 1 minute of First Aid, the wounded target is healed to zero Body, bringing them to unconsciousness and halting their bleeding.\n\nFirst Aid also allows the character to bandage a target, healing one Body for each minute of bandaging up to the maximum allowed by their Physician level. A target in their Bleed Count cannot be bandaged. The player cannot bandage the same target more than once a day. It will not affect Undead in any way, with the exception that a player with Necromantic Arts may use this skill to heal Risen in Undead form."
+          "desc": "Allows the user to bind wounds sufficiently to stop bleeding and heal some minor wounds. The process takes 1 minute to use and as long as it is being used, the target's Bleed Count is halted. If First Aid is interrupted, or if the wounded target moves or is moved in any way, the skill fails and the wounded target must continue their Bleed Count from where they left off.\n\nAfter a successful 1 minute of First Aid, the wounded target is healed to zero Body, bringing them to unconsciousness and halting their bleeding.\n\nFirst Aid also allows the character to bandage a target, healing one Body for each minute of bandaging up to the maximum allowed by their Physician level. A target in their Bleed Count cannot be bandaged. The player cannot bandage the same target more than once a day. It will not affect Undead in any way, with the exception that a player with Necromantic Arts may use this skill to heal Risen in Undead form.",
+          "related": [
+            {
+              "title": "Bleed Count",
+              "text": "At -1 Body Points, your character is dying. You must immediately begin a 1-minute Bleed count. While in your Bleed count, any amount of healing from any source will bring you to 1 Body point. A Killing Blow delivered to you while in your Bleed count, or otherwise, will forfeit the Bleed count and take you into your Death count immediately.",
+              "ref": "Core 5.6.5 p.14"
+            },
+            {
+              "title": "Requirements and Limits",
+              "text": "All living entities are considered valid targets of this skill. For this portion of the skill, the player must carry with them real phys-reps to use as bandages (strips of cloth will do). If the user has no levels in physician, then they may only heal one Body. A player can only activate First Aid on one person at a time. You must be touching the torso of the target to First Aid them.",
+              "ref": "Core 5.6.5 p.60-61"
+            },
+            {
+              "title": "After Stabilising",
+              "text": "Unless you are healed or injured further, you will remain unconscious for 5 minutes, after which time you awaken with 1 Body point.",
+              "ref": "Core 5.6.5 p.14"
+            },
+            {
+              "title": "Natural Healing",
+              "text": "Once every 24 hours, occurring immediately after your ten-minute Reset, you may choose to spend an additional ten minutes cleaning your wounds; doing so will naturally heal 1 Body point.",
+              "ref": "Core 5.6.5 p.15"
+            },
+            {
+              "title": "Gargylen",
+              "text": "Gargylen cannot have Body restored by First Aid or Physician, but First Aid can still halt a Gargylen's Bleed Count and raise them to 0 Body. Blacksmithing heals them instead.",
+              "ref": "Core 5.6.5 p.26"
+            },
+            {
+              "title": "Upgrades",
+              "text": "Physician levels raise the Body healed by bandaging (up to 11), and the Soul Frag skill Battlefield Medic cuts the time to stabilise a patient from 60 seconds to 40.",
+              "ref": "Soul Frag 2.10 p.85"
+            }
+          ]
         },
         {
           "id": "necromantic-arts",
@@ -434,7 +728,19 @@
           "prereqPerPurchase": false,
           "_weaponChoice": null,
           "prereqs": [],
-          "desc": "Necromantic Arts allows a user to recognize and identify whether or not standard identifiable signs of Undeath are present in an individual. It will not verify that something is alive, only whether or not it is Undead.\n\nThis skill may only be used to answer the following questions: \"Are you Undead?\", \"What kind of Undead are you?\", \"Are you lesser, greater or ancient Undead?\", \"How much damage have you taken (only to Undead)?\"\n\nCharacters with Necromantic Arts take 1 less damage (to a minimum of 1) from attacks by their identified target no matter the type of attack. Only one target may be active at a time. To change targets, the user may ask one of the questions above, or simply state \"Necromantic Arts 1, 2, 3\" if the new target has already been identified."
+          "desc": "Necromantic Arts allows a user to recognize and identify whether or not standard identifiable signs of Undeath are present in an individual. It will not verify that something is alive, only whether or not it is Undead.\n\nThis skill may only be used to answer the following questions: \"Are you Undead?\", \"What kind of Undead are you?\", \"Are you lesser, greater or ancient Undead?\", \"How much damage have you taken (only to Undead)?\"\n\nCharacters with Necromantic Arts take 1 less damage (to a minimum of 1) from attacks by their identified target no matter the type of attack. Only one target may be active at a time. To change targets, the user may ask one of the questions above, or simply state \"Necromantic Arts 1, 2, 3\" if the new target has already been identified.",
+          "related": [
+            {
+              "title": "Healing and Infliction vs Undead",
+              "text": "All Undead are affected by Healing spells as if the reverse of the spell had been cast. All curative spells, regardless of sphere, will do x4 damage to an Undead as they would have healed in a living creature. Infliction is to the Undead as Healing is to the living. All Undead are affected by Infliction spells and are healed based on the amount of damage of the spell.",
+              "ref": "Core 5.6.5 p.103"
+            },
+            {
+              "title": "First Aid on Risen",
+              "text": "It will not affect Undead in any way, with the exception that a player with Necromantic Arts may use this skill to heal Risen in Undead form.",
+              "ref": "Core 5.6.5 p.60"
+            }
+          ]
         },
         {
           "id": "physician",
@@ -462,7 +768,44 @@
               "minCount": 1
             }
           ],
-          "desc": "After having mastered the art of Anatomy and First Aid, a character is ready to uncover the secrets of the living body. Every level of Physician will increase the amount of Body healed through First Aid bandaging by one, to a maximum of 11.\n\nLevel 1 Barber: Perform First Aid on a moving target and extend their Bleed Count by 1 minute.\nLevel 2 Pharmacist: Identify and cure non-Magical diseases (1 minute roleplay, once per 5 days per patient).\nLevel 3 Physicker: Identify and purge toxins; target must be lying down unmoving for 1 minute.\nLevel 4 Doctor: Perform minor surgeries (10 minutes, patient unconscious 30 minutes after); extend a dying target's Death Count by 5 minutes via CPR.\nLevel 5 Surgeon: Perform major surgeries including re-attachment of lost limbs, removal of foreign life forms, and organ transplants.\nLevel 6 Stasis Director: With a fellow physician, postpone death indefinitely by actively role playing keeping the patient's vitals in check.\nLevel 7 Vital Warden: Perform a major surgery which restores all the target's hit points.\nLevel 8 War Surgeon: Bandage at a rate of 2 Body per minute when working alone.\nLevel 9 Specialist: Use intensive care single-handedly; perform anatomy checks while using any other physician skill.\nLevel 10 Master Physician: Major and minor surgery time and patient unconsciousness period halved; a second surgery may be performed within five days."
+          "desc": "After having mastered the art of Anatomy and First Aid, a character is ready to uncover the secrets of the living body. Every level of Physician will increase the amount of Body healed through First Aid bandaging by one, to a maximum of 11.\n\nLevel 1 Barber: Perform First Aid on a moving target and extend their Bleed Count by 1 minute.\nLevel 2 Pharmacist: Identify and cure non-Magical diseases (1 minute roleplay, once per 5 days per patient).\nLevel 3 Physicker: Identify and purge toxins; target must be lying down unmoving for 1 minute.\nLevel 4 Doctor: Perform minor surgeries (10 minutes, patient unconscious 30 minutes after); extend a dying target's Death Count by 5 minutes via CPR.\nLevel 5 Surgeon: Perform major surgeries including re-attachment of lost limbs, removal of foreign life forms, and organ transplants.\nLevel 6 Stasis Director: With a fellow physician, postpone death indefinitely by actively role playing keeping the patient's vitals in check.\nLevel 7 Vital Warden: Perform a major surgery which restores all the target's hit points.\nLevel 8 War Surgeon: Bandage at a rate of 2 Body per minute when working alone.\nLevel 9 Specialist: Use intensive care single-handedly; perform anatomy checks while using any other physician skill.\nLevel 10 Master Physician: Major and minor surgery time and patient unconsciousness period halved; a second surgery may be performed within five days.",
+          "related": [
+            {
+              "title": "Surgery Rules",
+              "text": "A surgery can only be performed on a willing or unconscious target who is lying down. Minor surgeries take 10 uninterrupted minutes to perform and will leave the patient unconscious for 30 minutes after the surgery. Surgeries can only be performed once per patient every 5 days. Further attempts at surgery will cause the target to enter their Death Count, dropping their Body points to -1 and bypassing their Bleed Count completely. If the target resurrects, another surgery can be attempted normally. If a surgery is interrupted, it must be restarted, but the original attempt will not count as a surgery having been completed.",
+              "ref": "Core 5.6.5 p.65"
+            },
+            {
+              "title": "CPR",
+              "text": "Given enough time, a Physician can extend a dying target's Death Count by an additional 5 minutes on top of the amount of time already remaining. This requires 1 minute of role-played CPR which will not pause the Death Count. Neither the Physician nor the patient can be moved during CPR.",
+              "ref": "Core 5.6.5 p.65"
+            },
+            {
+              "title": "Intensive Care",
+              "text": "The patient's Death Count continues to count down from the extended five minutes, but will stop one second before dissipation as long as the physicians remain working, uninterrupted. If either physician is interrupted, the patient may not be extended again until their next Death Count. The assisting physician requires a minimum physician level of one and acts as a nurse. This is usable once per death per person.",
+              "ref": "Core 5.6.5 p.65"
+            },
+            {
+              "title": "Physicker Limits",
+              "text": "If the physician is interrupted, either they or the target takes damage, or the target moves, the skill fails and cannot be attempted again for 5 days. If the target resurrects, the skill can be attempted again. If successful, this skill will purge any alcohol or Alchemical toxin from the target's system. This skill is usable once per patient every 5 days.",
+              "ref": "Core 5.6.5 p.64"
+            },
+            {
+              "title": "Tools and Environment",
+              "text": "In order to utilize the higher levels of medicine, the Physician must carry with them a doctor's bag and medical tools of the trade. These do not require a tag. Additional Requirements: To gain these benefits, the physician must be in an environment with adequate lighting and have a surface free of debris for the patient to lie on.",
+              "ref": "Core 5.6.5 p.64-66"
+            },
+            {
+              "title": "Other Patients",
+              "text": "If they have Demonic/Angelic Arts, they can use their skills on Demons and Angels. If they have Necromantic Arts, they can use their skills on Risen in their Undead form. If they have Tradesman (Veterinarian), they can use their skills on Animals.",
+              "ref": "Core 5.6.5 p.64"
+            },
+            {
+              "title": "Death Count Limits",
+              "text": "Once the Death count begins, all Battle Magic spell effects, including protections, are removed from your Spirit. Standard healing no longer works, and the only thing that can revive you is a Life spell or other Life effect.",
+              "ref": "Core 5.6.5 p.14"
+            }
+          ]
         },
         {
           "id": "read-write",
@@ -485,7 +828,14 @@
           "prereqPerPurchase": false,
           "_weaponChoice": null,
           "prereqs": [],
-          "desc": "This skill allows the character to read and write. Without this skill, you are illiterate. Without this skill a person can only know the letters to their own name and can count on their fingers. A character with this skill can read the names of Battle Magic spell scrolls, but nothing else."
+          "desc": "This skill allows the character to read and write. Without this skill, you are illiterate. Without this skill a person can only know the letters to their own name and can count on their fingers. A character with this skill can read the names of Battle Magic spell scrolls, but nothing else.",
+          "related": [
+            {
+              "title": "Reading Synergy Documents",
+              "text": "Anyone with the Read and Write skill can read the title and learn its name plus the type of synergy (ritual, Chemistry, or Artifice) it is used with. However, one must be able to use the synergy to read all details below the title such as the sphere, level, effect, etc.",
+              "ref": "Synergy 1.8 p.3"
+            }
+          ]
         },
         {
           "id": "read-magic",
@@ -513,7 +863,24 @@
               "minCount": 1
             }
           ],
-          "desc": "This skill allows the user to cast Battle Magic spells from scrolls. They are limited to casting only Battle Magic from spell level 1 to level 4.\n\nTo activate the scroll, the caster must have enough light to properly read the scroll. They must then read and speak the incantation of the spell. When used, a Battle Magic scroll is consumed and destroyed."
+          "desc": "This skill allows the user to cast Battle Magic spells from scrolls. They are limited to casting only Battle Magic from spell level 1 to level 4.\n\nTo activate the scroll, the caster must have enough light to properly read the scroll. They must then read and speak the incantation of the spell. When used, a Battle Magic scroll is consumed and destroyed.",
+          "related": [
+            {
+              "title": "Activating a Scroll",
+              "text": "To activate a Battle Magic scroll, the caster must read and speak the incant located on the open scroll in one hand with enough light to properly and clearly read the incant. A character is in darkness (for the purposes of Dim, etc.) when words on a page held at arm's length cannot be read.",
+              "ref": "Core 5.6.5 p.103-104"
+            },
+            {
+              "title": "No Spell Focus Needed",
+              "text": "Spell Foci are not required to use scrolls, magic items, etc.",
+              "ref": "Core 5.6.5 p.97"
+            },
+            {
+              "title": "Frag Spheres Have No Scrolls",
+              "text": "Soul Frag book spheres do not have Battle Magic scrolls and therefore do not require a Spellbook to memorize.",
+              "ref": "Core 5.6.5 p.102"
+            }
+          ]
         },
         {
           "id": "read-magic-advanced",
@@ -569,7 +936,79 @@
               "minCount": 1
             }
           ],
-          "desc": "This skill allows the user to read Ritual Magic scrolls."
+          "desc": "This skill allows the user to read Ritual Magic scrolls.",
+          "related": [
+            {
+              "title": "Ritual Scroll Charges",
+              "text": "Each Scroll, Formula, and Blueprint has a certain number of charges stored within it. Every use reduces the charges by one, even if the creation or ritual fails. When all charges are expended, the page turns blank.",
+              "ref": "Synergy 1.8 p.3"
+            },
+            {
+              "title": "Ritual Scrolls Cannot Be Copied",
+              "text": "As these rituals are so complex, they are recorded on powerful scrolls which cannot be copied by any means short of Ritual Magic itself.",
+              "ref": "Core 5.6.5 p.98"
+            },
+            {
+              "title": "Casting Requirements",
+              "text": "To cast a ritual spell, the caster must have at minimum a copy of the scroll on which the spell is inscribed, the required catalysts and ingredients, a means to cast the ritual such as a ritual circle, a Primary Caster able to use a ritual slot and possessing the sphere of magic corresponding to the ritual spell, and a ritual magic marshal.",
+              "ref": "Synergy 1.8 p.7"
+            },
+            {
+              "title": "Ritual slots: When ritual slots can be bought",
+              "text": "Once a mage has achieved at least one 9th level Battle Magic slot, they may begin purchasing ritual magic slots. These are purchased in a column straight up rather than a pyramid like Battle Magic slots. Column slots must be purchased in order (1st rank, then 2nd, and so on) and only a single column may ever be purchased.",
+              "ref": "Synergy 1.8 p.7"
+            },
+            {
+              "title": "Ritual slots: Ritual casting requirements",
+              "text": "A ritual needs a copy of the scroll, the required catalysts and ingredients, a ritual circle of the same sphere, a Primary Caster able to use a ritual slot and possessing the ritual's sphere, and a ritual magic marshal. The Primary Caster needs their foci for that sphere in their possession for the whole ritual.",
+              "ref": "Synergy 1.8 p.7"
+            },
+            {
+              "title": "Ritual slots: Casting time",
+              "text": "Rituals require 10 minutes to cast, plus 1 minute per level of the ritual. Ritual scrolls must be present for every casting and using a scroll reduces its charges by one.",
+              "ref": "Synergy 1.8 p.7"
+            },
+            {
+              "title": "Ritual slots: Slot level versus ritual level",
+              "text": "Casting with a higher slot (overcasting) converts black stones to white, up to 3 levels (best case 1 red, 1 black, 8 white). Casting with a lower slot (undercasting) is worse: 1 below gives 3 red, 4 black, 3 white; 2 below gives 5 red, 4 black, 1 white; 3 or more below is an automatic failure. Success pulls one stone: white succeeds, yellow succeeds with a Flaw, black fails, red fails with a Backlash.",
+              "ref": "Synergy 1.8 p.11"
+            },
+            {
+              "title": "Ritual slots: Secondary Casters",
+              "text": "Secondary Casters are ritual casters who assist with casting another mage's ritual. It is not necessary for a Secondary Caster to know the same sphere the ritual spell is from, but they must expend a ritual slot of any level to be considered a Secondary Caster. There is no limit to the number of Secondary Casters a mage can use in their rituals, but each Secondary Caster may only spend 1 slot per ritual.",
+              "ref": "Synergy 1.8 p.9"
+            },
+            {
+              "title": "Ritual slots: Secondary Caster effects",
+              "text": "A Secondary Caster with a lower slot than the ritual converts 1 black stone to yellow (minimum 1 black left). One who matches or exceeds the Primary Caster's slot converts 1 red stone to yellow (minimum 1 red left). One who knows the ritual's sphere and has their attuned foci reduces the catalyst requirement by 1, to a minimum of 1.",
+              "ref": "Synergy 1.8 p.9"
+            },
+            {
+              "title": "Ritual slots: Investing people in a circle",
+              "text": "The Primary Investee may invest a number of people equal to their highest Ritual slot rank (maximum 10 people at 10th rank ritual slot), in addition to themselves.",
+              "ref": "Synergy 1.8 p.10"
+            },
+            {
+              "title": "Ritual slots: Ritual circle size and limits",
+              "text": "The default Ritual Circle is 10ft across, and each additional stacked casting adds 5ft, up to a maximum of 50ft. A Primary Ritual Caster is limited to one circle for every Sphere of magic they can cast, plus one; circles beyond the limit expire one hour after creation. Every circle needs an OOG Logbook that stays in the circle and serves as its item tag.",
+              "ref": "Synergy 1.8 p.8"
+            },
+            {
+              "title": "Ritual slots: Stacking rituals",
+              "text": "Stacking is the process of casting the same ritual multiple times immediately to multiply its effect. The catalysts and ritual charges consumed are the usual amounts multiplied by the number of stacks; additional ingredients are not required, only the original amount. Each ritual in the stack needs its own spell slots from the primary and secondary casters, and the same Primary Caster must be used for the whole stack.",
+              "ref": "Synergy 1.8 p.9-10"
+            },
+            {
+              "title": "Ritual slots: Enchanting items and spirits",
+              "text": "Weapons and shields that are the target of a ritual must be Master Crafted unless stated otherwise; any armour may be targeted. Only three separate ritual effects may be on an item at once (duration extensions excepted). Spirits may carry at most 50 levels of unique ritual effects, raised by the Soul Frag skill Arcane Spirit.",
+              "ref": "Synergy 1.8 p.5-6"
+            },
+            {
+              "title": "Ritual slots: Ritual duration",
+              "text": "Most rituals have a base duration of 3 months. A ritual's duration may only be increased to a maximum of 5 years; excess is wasted, though it can be topped up with further extension castings.",
+              "ref": "Synergy 1.8 p.6"
+            }
+          ]
         },
         {
           "id": "advanced-ritual-casting",
@@ -598,7 +1037,34 @@
             }
           ],
           "desc": "This skill demonstrates an advanced understanding of ritual magics. The player may now cast rituals from the Advanced Spheres, Covenant and Enchantment, which do not have Battle Magic spells.\n\nA caster is limited to one ritual circle for every Sphere of magic they can cast, plus one. Any character with Advanced Ritual Casting may add two to this limit.\n\nCovenant is a specialised ritual-only sphere focused on assisting like-minded individuals, establishing guild-like groups called \"Covenants\" and creating a Sanctum for them to operate within.\n\nEnchantment is a ritual-only advanced sphere that primarily facilitates the creation of magical items, including rings, cloaks, weapons, wands, and extending the duration of rituals cast from other spheres.",
-          "ref": "Core 5.6.5 p.53; Soul Frag 2.10 p.58"
+          "ref": "Core 5.6.5 p.53; Soul Frag 2.10 p.58",
+          "related": [
+            {
+              "title": "Circle Limit Expiry",
+              "text": "A Primary Ritual Caster is limited to one circle for every Sphere of magic they can cast, plus one. Any character that possesses the skill \"Advanced Ritual Casting\" may add two to this limit. Any circles created beyond this limit will expire one hour after they are first created.",
+              "ref": "Synergy 1.8 p.8"
+            },
+            {
+              "title": "Ritual Slots and Casting Time",
+              "text": "Once a mage has achieved at least one 9th level Battle Magic slot, they may begin purchasing ritual magic slots. These are purchased in a column straight up rather than a pyramid like Battle Magic slots. To cast advanced rituals, a caster must have at least one ritual slot and purchase the Advanced Ritual Casting skill. Rituals require 10 minutes to cast, plus 1 minute per level of the ritual.",
+              "ref": "Synergy 1.8 p.7"
+            },
+            {
+              "title": "Advanced Circle Augments",
+              "text": "Only one advanced circle augment may be applied to a circle unless the circle is augmented to allow more.",
+              "ref": "Synergy 1.8 p.16"
+            },
+            {
+              "title": "Enchanting Items",
+              "text": "Weapons and shields that are to be the target of a Ritual spell are required to be Master Crafted unless otherwise stated. Any type of armour may be the target of a ritual spell. Unless the ritual states otherwise, only three separate ritual effects may be enchanted onto a suitable item at any time.",
+              "ref": "Synergy 1.8 p.5"
+            },
+            {
+              "title": "Enchanting Bows",
+              "text": "Unless a ritual specifies that the ritual works on the bow or crossbow itself, all enchantments done to augment the damage or effect of bows and crossbows must be cast on each individual arrow or bolt, not on the bow itself.",
+              "ref": "Core 5.6.5 p.102"
+            }
+          ]
         }
       ]
     },
@@ -626,7 +1092,24 @@
           "prereqPerPurchase": false,
           "_weaponChoice": null,
           "prereqs": [],
-          "desc": "This skill allows a character to wield two one-handed weapons in combat. The player may wield a Medium or Simple Weapon they have proficiency with in their main hand and a Simple Weapon in their off hand."
+          "desc": "This skill allows a character to wield two one-handed weapons in combat. The player may wield a Medium or Simple Weapon they have proficiency with in their main hand and a Simple Weapon in their off hand.",
+          "related": [
+            {
+              "title": "Fist Weapons",
+              "text": "If the character chooses to use hand to hand combat, they may use a single fist weapon (coreless) phys-rep. If they have purchased ambidexterity they may use a second fist weapon in their off-hand.",
+              "ref": "Core 5.6.5 p.89"
+            },
+            {
+              "title": "No Repeat Locations",
+              "text": "No melee weapon strike can hit the same location of the body twice in a row. Your strikes must hit different armour locations (Ch.7) in order to be considered valid damaging strikes.",
+              "ref": "Core 5.6.5 p.88"
+            },
+            {
+              "title": "Swashbuckler and Bounty Hunter Prerequisites",
+              "text": "The Swashbuckler vocation requires Ambidexterity plus either a Slay (Specific or Master) or a Dodge, and its abilities need a 1-handed melee weapon in the main hand with nothing in the off hand \"other than a dagger, throwing knife, or stiletto.\" The Bounty Hunter vocation requires Sap and Ambidexterity.",
+              "ref": "Soul Frag 2.10 p.75"
+            }
+          ]
         },
         {
           "id": "florentine",
@@ -654,7 +1137,14 @@
               "minCount": 1
             }
           ],
-          "desc": "This skill improves a character's training in the art of two weapon fighting. The player may now wield any one-handed weapon they have proficiency with in their main and off hand."
+          "desc": "This skill improves a character's training in the art of two weapon fighting. The player may now wield any one-handed weapon they have proficiency with in their main and off hand.",
+          "related": [
+            {
+              "title": "No Repeat Locations",
+              "text": "No melee weapon strike can hit the same location of the body twice in a row. Your strikes must hit different armour locations (Ch.7) in order to be considered valid damaging strikes.",
+              "ref": "Core 5.6.5 p.88"
+            }
+          ]
         },
         {
           "id": "flurry-of-blows",
@@ -677,7 +1167,24 @@
           "prereqPerPurchase": false,
           "_weaponChoice": null,
           "prereqs": [],
-          "desc": "Through discipline and training, your character has learned the secret of tapping into raw emotion and harnessing it into strength defying attacks. This skill will allow the player to swing for +5 additional damage of the character's normal swinging type for the next 3 swings, hit or miss.\n\nThe Flurry will stay active for 1 minute. If all 3 swings are not used by the end of the minute, they are lost. To activate this skill, the player must call \"Flurry of Blows\".\n\nThis skill does not stack with other per-day use skills, abilities or spells, or itself. This skill is usable once per day per purchase."
+          "desc": "Through discipline and training, your character has learned the secret of tapping into raw emotion and harnessing it into strength defying attacks. This skill will allow the player to swing for +5 additional damage of the character's normal swinging type for the next 3 swings, hit or miss.\n\nThe Flurry will stay active for 1 minute. If all 3 swings are not used by the end of the minute, they are lost. To activate this skill, the player must call \"Flurry of Blows\".\n\nThis skill does not stack with other per-day use skills, abilities or spells, or itself. This skill is usable once per day per purchase.",
+          "related": [
+            {
+              "title": "No Repeat Locations",
+              "text": "No melee weapon strike can hit the same location of the body twice in a row. Your strikes must hit different armour locations (Ch.7) in order to be considered valid damaging strikes.",
+              "ref": "Core 5.6.5 p.88"
+            },
+            {
+              "title": "Upgrade: Whirlwind of Blows",
+              "text": "The Warrior frag skill Whirlwind of Blows (plant one foot for +5 damage to swings) requires one Flurry of Blows purchase for every Whirlwind purchase.",
+              "ref": "Soul Frag 2.10 p.83"
+            },
+            {
+              "title": "Miscalls",
+              "text": "If you misstate a special attack, that is considered a `miscall' and the skill does not work. If it is a limited use ability, it is not used up for the day, but it cannot be used again for an hour. If you have multiple purchases of the same ability, only one purchase is \"locked\" in this way.",
+              "ref": "Core 5.6.5 p.88"
+            }
+          ]
         },
         {
           "id": "heavy-armour",
@@ -700,7 +1207,34 @@
           "prereqPerPurchase": false,
           "_weaponChoice": null,
           "prereqs": [],
-          "desc": "This skill will allow the character to wear multiple layers of armour and increase their Armour Points far past the normal maximum. With this skill, the player may stack two types of armour on one location and add their AP values.\n\nA player is still limited to the AP that their out-of-game reps allow. Armour of the same type (eg: chain on chain) will not stack."
+          "desc": "This skill will allow the character to wear multiple layers of armour and increase their Armour Points far past the normal maximum. With this skill, the player may stack two types of armour on one location and add their AP values.\n\nA player is still limited to the AP that their out-of-game reps allow. Armour of the same type (eg: chain on chain) will not stack.",
+          "related": [
+            {
+              "title": "Armour Stacking",
+              "text": "If you are wearing more than one piece of armour in any one location, you may only claim the highest value armour for each location, unless you have the Heavy Armour skill. If you have the Heavy Armour skill, then you can claim the two types of armour for the same location. Two layers of the same type (chain, plate, leather, studded leather) will not stack with each other.",
+              "ref": "Core 5.6.5 p.94"
+            },
+            {
+              "title": "Attached Layers",
+              "text": "In order to claim full points for both layers, they must be independent layers that can each be worn without the other. If the two layers are attached to each other, one of the layers must still function as armour even if the second layer is removed. In this case, the layer of lowest value will also receive a 1 point deduction per location to a minimum of one.",
+              "ref": "Core 5.6.5 p.95"
+            },
+            {
+              "title": "How Armour Is Lost",
+              "text": "Almost all damage sources will damage a player's armour before it will damage their Body. As a rule, always lose points first from any magically granted Armour Points, then from normal Armour Points, then from magically granted Body, then finally from Body.",
+              "ref": "Core 5.6.5 p.94"
+            },
+            {
+              "title": "Refitting Armour",
+              "text": "A Blacksmith refits armour at 60 seconds for every 10 points, with the Blacksmith and the wearer both staying stationary (faster with higher Blacksmith levels, and a second Blacksmith can help).",
+              "ref": "Core 5.6.5 p.56"
+            },
+            {
+              "title": "Stalwart Prerequisite",
+              "text": "The Stalwart vocation requires Heavy Armour, Shield, and a Parry (Specific or Master).",
+              "ref": "Soul Frag 2.10 p.74"
+            }
+          ]
         },
         {
           "id": "self-mutilate",
@@ -723,7 +1257,19 @@
           "prereqPerPurchase": false,
           "_weaponChoice": null,
           "prereqs": [],
-          "desc": "This skill represents the character's ability to overcome the instinct of self-preservation. A character may not willingly accept or cause themselves 1 Body or more worth of damage without this skill, and must actively fight any attempt to harm them, even if it is in their best interest.\n\nWithout Self Mutilate, you may still enter a fight even without armour, but you must fight back or defend yourself and not simply allow yourself to be injured. This skill must also be purchased for a character to actively kill themselves or to consent to their own demise."
+          "desc": "This skill represents the character's ability to overcome the instinct of self-preservation. A character may not willingly accept or cause themselves 1 Body or more worth of damage without this skill, and must actively fight any attempt to harm them, even if it is in their best interest.\n\nWithout Self Mutilate, you may still enter a fight even without armour, but you must fight back or defend yourself and not simply allow yourself to be injured. This skill must also be purchased for a character to actively kill themselves or to consent to their own demise.",
+          "related": [
+            {
+              "title": "Breaking Free of Traps",
+              "text": "Also those with exceptional strength may break free on a 5-count. This requires the skill \"Self Mutilate\", a +2 Strength Bonus (or equivalent), and the character takes \"2 Body Damage\". (Pinned leg trap.) Also those with exceptional strength may break free with a 3-count. This requires the skill \"Self Mutilate\", a +4 Strength Bonus, and the character takes 4 Body damage by ripping free. (Net trap.)",
+              "ref": "Core 5.6.5 p.84"
+            },
+            {
+              "title": "Skills That Need It",
+              "text": "Mages can take Combat Wizardry (Self Mutilate is its prerequisite), which stops Body damage from interrupting their casting. A Disembowel victim without Self Mutilate must drop everything to hold their stomach.",
+              "ref": "Soul Frag 2.10 p.83"
+            }
+          ]
         },
         {
           "id": "shield",
@@ -746,7 +1292,24 @@
           "prereqPerPurchase": false,
           "_weaponChoice": null,
           "prereqs": [],
-          "desc": "This skill allows a character to properly use a shield or buckler. A shield will stop strikes from weapons only. Shields will also block Slays, using them up without harming the shield user, even if the shield is broken by the Slay.\n\nA buckler is a small shield strapped to the forearm that acts like a normal shield but can be used while holding something in the same hand. A buckler cannot be larger than 15 inches in diameter and cannot be disarmed while strapped to the forearm.\n\nShields will not stop packet delivered or Spellstrike attacks. Without this skill, a player may use a shield if they hold it in both hands and do not use any other skills or abilities. A character with this skill may wield two shields at the same time, but only if both are held by their handles."
+          "desc": "This skill allows a character to properly use a shield or buckler. A shield will stop strikes from weapons only. Shields will also block Slays, using them up without harming the shield user, even if the shield is broken by the Slay.\n\nA buckler is a small shield strapped to the forearm that acts like a normal shield but can be used while holding something in the same hand. A buckler cannot be larger than 15 inches in diameter and cannot be disarmed while strapped to the forearm.\n\nShields will not stop packet delivered or Spellstrike attacks. Without this skill, a player may use a shield if they hold it in both hands and do not use any other skills or abilities. A character with this skill may wield two shields at the same time, but only if both are held by their handles.",
+          "related": [
+            {
+              "title": "Shield Thresholds",
+              "text": "There is a limit to how much punishment a shield can take. Any single attack, of any type, that does more damage than a shield's threshold, causes the shield to shatter. Wooden shields have a threshold of 10, iron bound shields have a threshold of 20, and solid metal shields have a threshold of 30.",
+              "ref": "Core 5.6.5 p.89"
+            },
+            {
+              "title": "Master Crafted Shields",
+              "text": "Shields which are Master Crafted have 3 \"Render\" resists vs. destroy / shatter effects. Master Crafted weapons and shields expire 5 years after creation.",
+              "ref": "Core 5.6.5 p.79"
+            },
+            {
+              "title": "Repairing a Shattered Shield",
+              "text": "Warriors can buy Battlefield Repair (Warrior Class Frag Skills) to rebuild a shield destroyed within the last hour, taking 1 minute per 10 threshold, or to restore 1 resist on a Master Crafted shield.",
+              "ref": "Soul Frag 2.10 p.81"
+            }
+          ]
         },
         {
           "id": "slay-parry",
@@ -774,7 +1337,49 @@
               "minCount": 1
             }
           ],
-          "desc": "This skill allows a character to use one Slay or Parry, per day, with a single weapon that the character is proficient in, chosen at purchase. Each additional purchase of Slay/Parry requires an additional purchase of the weapon specialisation. The player chooses whether to use this skill as a Slay or as a Parry each time they use it.\n\nA Slay is a powerful attack which does 50 points of damage; nothing besides Slay stacking may change this number. To use a Slay, the attacker must declare \"You are not prepared!\" and strike their opponent, then call \"50 Slay!\"\n\nA Parry enables the player to parry any weapon blow, as well as touch cast spells, by calling \"Parry\". Parry cannot block Massive damage, Spellstrikes, or Surprise Attacks."
+          "desc": "This skill allows a character to use one Slay or Parry, per day, with a single weapon that the character is proficient in, chosen at purchase. Each additional purchase of Slay/Parry requires an additional purchase of the weapon specialisation. The player chooses whether to use this skill as a Slay or as a Parry each time they use it.\n\nA Slay is a powerful attack which does 50 points of damage; nothing besides Slay stacking may change this number. To use a Slay, the attacker must declare \"You are not prepared!\" and strike their opponent, then call \"50 Slay!\"\n\nA Parry enables the player to parry any weapon blow, as well as touch cast spells, by calling \"Parry\". Parry cannot block Massive damage, Spellstrikes, or Surprise Attacks.",
+          "related": [
+            {
+              "title": "Using a Slay",
+              "text": "A Slay is not used up if it does not strike the target, so the defending player must declare \"Slay Hit\" if the strike hit successfully. The attacker must call \"Active Slay\" for every subsequent swing. The Slay remains active for a maximum of 1 minute, or until used. This skill is considered used if it hits a shield being wielded or if the target uses a defense to stop it after being hit, but the target will take no damage.",
+              "ref": "Core 5.6.5 p.67"
+            },
+            {
+              "title": "Slay Limits",
+              "text": "No skills, spells, or abilities may be used in conjunction with Slay, except to change the damage type of the Slay.",
+              "ref": "Core 5.6.5 p.67"
+            },
+            {
+              "title": "Stacking Slays",
+              "text": "If a player has purchased multiple Slays specific to the chosen weapon being used or Master Slays for that weapon's Weapon Group, they may be combined. Each additional Slay will add 50 more points of damage. The attacker must include the number of Slays being used after the \"You are not prepared!\" call. Example: If the player used 3 Slays in a single swing, they would call out \"You are not prepared 3!\" and, upon a successful hit, \"150 Slay\". For all intents and purposes, this combined Slay is considered a normal Slay except for the increased damage.",
+              "ref": "Core 5.6.5 p.67"
+            },
+            {
+              "title": "Surprise Attacks",
+              "text": "Surprise: This attack cannot be defended against with skills or spells that require a conscious decision to use. Ie: Advanced Magic Armour, Dodge, Parry cannot be used against surprise attacks. Surprise attacks must be done from behind the target.",
+              "ref": "Core 5.6.5 p.92"
+            },
+            {
+              "title": "When Defences Fire",
+              "text": "A strike which successfully connects with its target is considered a hit, regardless of what happens afterwards. The moment a strike becomes a hit, defenses against hits may be activated.",
+              "ref": "Core 5.6.5 p.88"
+            },
+            {
+              "title": "Miscalls",
+              "text": "If you misstate a special attack, that is considered a `miscall' and the skill does not work. If it is a limited use ability, it is not used up for the day, but it cannot be used again for an hour. If you have multiple purchases of the same ability, only one purchase is \"locked\" in this way.",
+              "ref": "Core 5.6.5 p.88"
+            },
+            {
+              "title": "Shield Parry (Stalwart)",
+              "text": "This skill allows a Stalwart to call an \"Innate Shield Parry!\" defense to any physical attack that strikes their shield, once a day per purchase.",
+              "ref": "Soul Frag 2.10 p.74"
+            },
+            {
+              "title": "Skills That Build on Slay",
+              "text": "The Warrior frag skill Decapitate requires 1 Slay purchase for every Decapitate purchase, and the Conqueror vocation requires a Slay with a two-handed weapon (other than simple weapons).",
+              "ref": "Soul Frag 2.10 p.82"
+            }
+          ]
         },
         {
           "id": "slay-parry-master",
@@ -802,7 +1407,14 @@
               "minCount": 1
             }
           ],
-          "desc": "This skill is the same as Slay/Parry, except that it is purchased for an entire Weapon Group rather than a specific weapon. The Slay or Parry may be used with any of the weapons within that Weapon Group."
+          "desc": "This skill is the same as Slay/Parry, except that it is purchased for an entire Weapon Group rather than a specific weapon. The Slay or Parry may be used with any of the weapons within that Weapon Group.",
+          "related": [
+            {
+              "title": "Stacking Slays",
+              "text": "Multiple Slays for the same weapon (or Master Slays for its Weapon Group) can be combined in one swing, adding 50 damage each, by calling \"You are not prepared 3!\" and then \"150 Slay\" on a hit.",
+              "ref": "Core 5.6.5 p.67"
+            }
+          ]
         },
         {
           "id": "slay-parry-subsequent",
@@ -835,7 +1447,14 @@
               "minCount": 2
             }
           ],
-          "desc": "Requires Slay/Parry to be purchased first. Each purchase requires an additional Weapon Specialization (Group or Specific). Functions identically to Slay/Parry for a single weapon the character is proficient in, chosen at purchase."
+          "desc": "Requires Slay/Parry to be purchased first. Each purchase requires an additional Weapon Specialization (Group or Specific). Functions identically to Slay/Parry for a single weapon the character is proficient in, chosen at purchase.",
+          "related": [
+            {
+              "title": "Stacking Slays",
+              "text": "Multiple Slays for the same weapon (or Master Slays for its Weapon Group) can be combined in one swing, adding 50 damage each, by calling \"You are not prepared 3!\" and then \"150 Slay\" on a hit.",
+              "ref": "Core 5.6.5 p.67"
+            }
+          ]
         },
         {
           "id": "slay-parry-master-subsequent",
@@ -868,7 +1487,14 @@
               "minCount": 2
             }
           ],
-          "desc": "Requires Slay/Parry: Master to be purchased first. Each purchase requires an additional Weapon Group Specialization. Functions identically to Slay/Parry: Master for an entire Weapon Group."
+          "desc": "Requires Slay/Parry: Master to be purchased first. Each purchase requires an additional Weapon Group Specialization. Functions identically to Slay/Parry: Master for an entire Weapon Group.",
+          "related": [
+            {
+              "title": "Stacking Slays",
+              "text": "Multiple Slays for the same weapon (or Master Slays for its Weapon Group) can be combined in one swing, adding 50 damage each, by calling \"You are not prepared 3!\" and then \"150 Slay\" on a hit.",
+              "ref": "Core 5.6.5 p.67"
+            }
+          ]
         },
         {
           "id": "specialization-1-weapon-group",
@@ -897,7 +1523,19 @@
             }
           ],
           "desc": "This skill grants the player a +1 damage bonus with any weapon from a chosen Weapon Group that the character is proficient in, selected at purchase. This skill cannot be purchased for the Exotic weapon group.",
-          "ref": "Core 5.6.5 p.54-55 (no group proficiency exists for Exotic)"
+          "ref": "Core 5.6.5 p.54-55 (no group proficiency exists for Exotic)",
+          "related": [
+            {
+              "title": "Rocks Count as Thrown Weapons",
+              "text": "Rocks are considered thrown weapons for all intents and purposes when it comes to specialization and proficiencies.",
+              "ref": "Core 5.6.5 p.89"
+            },
+            {
+              "title": "Required for Disembowel",
+              "text": "The Warrior frag skill Disembowel requires a Specialization +1 (Group or Specific), and must be performed with the weapon that holds that Specialization.",
+              "ref": "Soul Frag 2.10 p.82"
+            }
+          ]
         },
         {
           "id": "specialization-1-weapon-specific",
@@ -925,7 +1563,24 @@
               "minCount": 1
             }
           ],
-          "desc": "This skill grants the player a +1 damage bonus with a single weapon that the character is proficient in, chosen at purchase. If purchased for Summoned Weapons it will apply to all Summoned Weapons within an individual sphere."
+          "desc": "This skill grants the player a +1 damage bonus with a single weapon that the character is proficient in, chosen at purchase. If purchased for Summoned Weapons it will apply to all Summoned Weapons within an individual sphere.",
+          "related": [
+            {
+              "title": "Rocks Count as Thrown Weapons",
+              "text": "Rocks are considered thrown weapons for all intents and purposes when it comes to specialization and proficiencies.",
+              "ref": "Core 5.6.5 p.89"
+            },
+            {
+              "title": "Required for Disembowel",
+              "text": "The Warrior frag skill Disembowel requires a Specialization +1 (Group or Specific), and must be performed with the weapon that holds that Specialization.",
+              "ref": "Soul Frag 2.10 p.82"
+            },
+            {
+              "title": "Hand to Hand",
+              "text": "This damage may increase by purchasing weapon specializations as with any other weapon skill.",
+              "ref": "Core 5.6.5 p.89"
+            }
+          ]
         },
         {
           "id": "weapon-group-proficiency-medium",
@@ -948,7 +1603,14 @@
           "prereqPerPurchase": false,
           "_weaponChoice": null,
           "prereqs": [],
-          "desc": "This skill allows the player to properly wield the following one-handed weapons: Bow, Sword, Mace, Spears, Battle Axe, and any other non-Exotic weapon with a base damage of 2. Bows do Body damage."
+          "desc": "This skill allows the player to properly wield the following one-handed weapons: Bow, Sword, Mace, Spears, Battle Axe, and any other non-Exotic weapon with a base damage of 2. Bows do Body damage.",
+          "related": [
+            {
+              "title": "Strength and Missile Weapons",
+              "text": "For every +2 Strength, your weapon will hit with +1 damage. This does not apply to missile weapons like bows.",
+              "ref": "Core 5.6.5 p.16"
+            }
+          ]
         },
         {
           "id": "weapon-group-proficiency-large",
@@ -971,7 +1633,19 @@
           "prereqPerPurchase": false,
           "_weaponChoice": null,
           "prereqs": [],
-          "desc": "This skill allows the player to properly wield the following two-handed weapons: Crossbow, Sword, Axe, Mace, Pole Arm, and any other non-Exotic weapon with a base damage of 4.\n\nBonus damage from Strength will be applied to Large Weapon swings at a rate of +1 damage for every 1 point of Strength, rather than the standard +1 damage for every 2 points. Strength bonuses will not increase Crossbow damage. Crossbows do Body damage."
+          "desc": "This skill allows the player to properly wield the following two-handed weapons: Crossbow, Sword, Axe, Mace, Pole Arm, and any other non-Exotic weapon with a base damage of 4.\n\nBonus damage from Strength will be applied to Large Weapon swings at a rate of +1 damage for every 1 point of Strength, rather than the standard +1 damage for every 2 points. Strength bonuses will not increase Crossbow damage. Crossbows do Body damage.",
+          "related": [
+            {
+              "title": "Two-Handed Weapons",
+              "text": "A two-handed weapon may only be used to attack if the weapon's handle is held in both hands. If this constraint isn't met, no attack is considered to have succeeded. However, the weapon may be used to block while held in one hand if, and only if, it is a Large weapon.",
+              "ref": "Core 5.6.5 p.89"
+            },
+            {
+              "title": "Conqueror Vocation",
+              "text": "The Conqueror vocation requires a Slay with a two-handed weapon (other than simple weapons), and all Conqueror abilities require a two-handed melee weapon.",
+              "ref": "Soul Frag 2.10 p.70"
+            }
+          ]
         },
         {
           "id": "weapon-specific-proficiency-exotic",
@@ -994,7 +1668,14 @@
           "prereqPerPurchase": false,
           "_weaponChoice": "exotic",
           "prereqs": [],
-          "desc": "This skill allows the player to properly wield one of the following weapons: Stiletto (1 Body damage), two-handed Maul (5 damage), Bastard Sword (2 damage if wielded in one hand or 4 damage if wielded in both hands), or any other weapon that does Body damage or is summoned through magical means.\n\nBonus damage from Strength will be applied to Maul swings at a rate of +1 damage for every 1 point of Strength, rather than the standard +1 damage for every 2 points. This skill can be purchased multiple times to allow a character to become proficient in multiple Exotic Weapons."
+          "desc": "This skill allows the player to properly wield one of the following weapons: Stiletto (1 Body damage), two-handed Maul (5 damage), Bastard Sword (2 damage if wielded in one hand or 4 damage if wielded in both hands), or any other weapon that does Body damage or is summoned through magical means.\n\nBonus damage from Strength will be applied to Maul swings at a rate of +1 damage for every 1 point of Strength, rather than the standard +1 damage for every 2 points. This skill can be purchased multiple times to allow a character to become proficient in multiple Exotic Weapons.",
+          "related": [
+            {
+              "title": "Two-Handed Weapons",
+              "text": "A two-handed weapon may only be used to attack if the weapon's handle is held in both hands. If this constraint isn't met, no attack is considered to have succeeded. However, the weapon may be used to block while held in one hand if, and only if, it is a Large weapon.",
+              "ref": "Core 5.6.5 p.89"
+            }
+          ]
         },
         {
           "id": "weapon-refocus",
@@ -1050,7 +1731,19 @@
               "minCount": 1
             }
           ],
-          "desc": "This skill allows the player to swing for +2 damage when striking a target from behind and +½ damage from the front, with a single weapon that the character is proficient in, chosen at purchase.\n\nThe attack must hit the target on the back of their body (Upper Back, Mid Back, or Lower Back locations) to grant the +2 damage. The damage call is \"<damage> Critical\" when striking from behind. This skill is always active."
+          "desc": "This skill allows the player to swing for +2 damage when striking a target from behind and +½ damage from the front, with a single weapon that the character is proficient in, chosen at purchase.\n\nThe attack must hit the target on the back of their body (Upper Back, Mid Back, or Lower Back locations) to grant the +2 damage. The damage call is \"<damage> Critical\" when striking from behind. This skill is always active.",
+          "related": [
+            {
+              "title": "Critical Front Bonus",
+              "text": "This skill will not increase damage against the back side of creatures without a definitive backside (for example: slimes, mushrooms, and elementals), but the front bonus will still be active. A player can never call half damage, and must always round down. This means that a player will receive a +1 to their frontal swings only if they purchase two Critical Specs.",
+              "ref": "Core 5.6.5 p.68"
+            },
+            {
+              "title": "Legal Back Strikes",
+              "text": "In order for a swing on someone's back to be legal, both shoulder blades of the target must be visible for the entirety of the swing. Any strikes against someone's back which involve reaching over or around the target are thus illegal.",
+              "ref": "Core 5.6.5 p.88"
+            }
+          ]
         },
         {
           "id": "critical-2-group",
@@ -1079,7 +1772,19 @@
             }
           ],
           "desc": "This skill is the same as Critical +2: Specific, except that it is purchased for an entire Weapon Group rather than a specific weapon. The Critical may be used with any of the weapons within that Weapon Group.",
-          "ref": "Core 5.6.5 p.54-55 (no group proficiency exists for Exotic)"
+          "ref": "Core 5.6.5 p.54-55 (no group proficiency exists for Exotic)",
+          "related": [
+            {
+              "title": "Critical Front Bonus",
+              "text": "This skill will not increase damage against the back side of creatures without a definitive backside (for example: slimes, mushrooms, and elementals), but the front bonus will still be active. A player can never call half damage, and must always round down. This means that a player will receive a +1 to their frontal swings only if they purchase two Critical Specs.",
+              "ref": "Core 5.6.5 p.68"
+            },
+            {
+              "title": "Legal Back Strikes",
+              "text": "In order for a swing on someone's back to be legal, both shoulder blades of the target must be visible for the entirety of the swing. Any strikes against someone's back which involve reaching over or around the target are thus illegal.",
+              "ref": "Core 5.6.5 p.88"
+            }
+          ]
         },
         {
           "id": "dodge",
@@ -1107,7 +1812,24 @@
               "minCount": 1
             }
           ],
-          "desc": "This skill allows the player to dodge any attack except a Surprise Attack, Gaze Attack, Power Word, Area of Effect, Massive damage attack or other unreasonable damage-causing incident, such as falling off a cliff. Dodge is a Conscious defense. This skill is usable once per day per purchase."
+          "desc": "This skill allows the player to dodge any attack except a Surprise Attack, Gaze Attack, Power Word, Area of Effect, Massive damage attack or other unreasonable damage-causing incident, such as falling off a cliff. Dodge is a Conscious defense. This skill is usable once per day per purchase.",
+          "related": [
+            {
+              "title": "Dodge vs Ritual Attacks",
+              "text": "Ritual: This attack ignores all Battle Magic defenses. It may be stopped by racial defenses. Dodges will function against Ritual attacks unless they are Area of Effect attacks.",
+              "ref": "Core 5.6.5 p.92"
+            },
+            {
+              "title": "When Defences Fire",
+              "text": "A strike which successfully connects with its target is considered a hit, regardless of what happens afterwards. The moment a strike becomes a hit, defenses against hits may be activated.",
+              "ref": "Core 5.6.5 p.88"
+            },
+            {
+              "title": "Answer to Area and Massive: Tumble",
+              "text": "Dodge cannot stop Area of Effect or Massive damage, but the Rogue frag skill Tumble halves (rounded down) the damage from one Area of Effect or Massive effect.",
+              "ref": "Soul Frag 2.10 p.81"
+            }
+          ]
         },
         {
           "id": "dodge-additional",
@@ -1168,7 +1890,34 @@
               "minCount": 1
             }
           ],
-          "desc": "This skill will strike the victim's vital organs, mortally wounding them, with a single weapon that the character is proficient in, chosen at purchase. Each additional purchase of Execute requires an additional purchase of an appropriate Critical skill.\n\nAn Execute must strike the target's torso and directly damage their Body points, rather than armour, to be successful. A successful Execute will instantly reduce a victim's Body points to -1 and drop them into their Bleed Count.\n\nThe call for this skill is \"Execute\". If used from behind and strikes between the target's shoulder blades, the call will be \"Surprise Execute\".\n\nExecute may only be used in combination with the skills Shiv, Silent Strike, and Penetration. This skill is usable once per day per purchase."
+          "desc": "This skill will strike the victim's vital organs, mortally wounding them, with a single weapon that the character is proficient in, chosen at purchase. Each additional purchase of Execute requires an additional purchase of an appropriate Critical skill.\n\nAn Execute must strike the target's torso and directly damage their Body points, rather than armour, to be successful. A successful Execute will instantly reduce a victim's Body points to -1 and drop them into their Bleed Count.\n\nThe call for this skill is \"Execute\". If used from behind and strikes between the target's shoulder blades, the call will be \"Surprise Execute\".\n\nExecute may only be used in combination with the skills Shiv, Silent Strike, and Penetration. This skill is usable once per day per purchase.",
+          "related": [
+            {
+              "title": "Legal Back Strikes",
+              "text": "In order for a swing on someone's back to be legal, both shoulder blades of the target must be visible for the entirety of the swing. Any strikes against someone's back which involve reaching over or around the target are thus illegal.",
+              "ref": "Core 5.6.5 p.88"
+            },
+            {
+              "title": "Execute vs Thresholds",
+              "text": "If the weapon's damage type is not normal, the damage type precedes \"Execute\". There is no numerical value for this attack, so when determining if the attack is stopped by a threshold, only the threshold type is taken into account. For example, a \"Silver Execute\" will breach a +2 Silver threshold, but not a Magic one.",
+              "ref": "Core 5.6.5 p.69"
+            },
+            {
+              "title": "Execute Notes",
+              "text": "This skill will not stay active if the initial hit fails. The victim is permitted to scream before dropping, but may not say any words in or out of game. It will not affect creatures which are non-biological in nature.",
+              "ref": "Core 5.6.5 p.69"
+            },
+            {
+              "title": "Finishing With a Killing Blow",
+              "text": "A proper Killing Blow takes a 10-count with bare hands or a 5-count with a weapon. A successful Killing Blow (one that has not been interrupted) forces the victim to skip their Bleed Count and proceed directly into their Death Count. (An Execute leaves the victim in their Bleed Count.)",
+              "ref": "Core 5.6.5 p.16"
+            },
+            {
+              "title": "Miscalls",
+              "text": "If you misstate a special attack, that is considered a `miscall' and the skill does not work. If it is a limited use ability, it is not used up for the day, but it cannot be used again for an hour. If you have multiple purchases of the same ability, only one purchase is \"locked\" in this way.",
+              "ref": "Core 5.6.5 p.88"
+            }
+          ]
         },
         {
           "id": "execute-master",
@@ -1285,7 +2034,29 @@
           "prereqPerPurchase": false,
           "_weaponChoice": null,
           "prereqs": [],
-          "desc": "This skill allows a player to kill a target by simulating the use of a Garrotte or razor wire around the target's neck. To use a Garrotte attack, the attacker must place both hands on the shoulders of the victim from behind and call \"Surprise Garrotte\". If the attack succeeds, the victim is silenced and drops anything they were holding.\n\nGarroting takes 20 seconds to take effect; the attacker must call \"Garrotte 1, Garrotte 2, etc.\" After 20 seconds, the victim falls into their Death Count.\n\nThe player must have a tagged Garrotte phys-rep held in one hand for the duration. If the victim is wearing a gorget (covering the front of the neck worth at least 2 AP), the Garrotte fails. A defending player may resist a Garrotte if the defender alone has at least +2 more Strength than the attacker. This skill is usable at will."
+          "desc": "This skill allows a player to kill a target by simulating the use of a Garrotte or razor wire around the target's neck. To use a Garrotte attack, the attacker must place both hands on the shoulders of the victim from behind and call \"Surprise Garrotte\". If the attack succeeds, the victim is silenced and drops anything they were holding.\n\nGarroting takes 20 seconds to take effect; the attacker must call \"Garrotte 1, Garrotte 2, etc.\" After 20 seconds, the victim falls into their Death Count.\n\nThe player must have a tagged Garrotte phys-rep held in one hand for the duration. If the victim is wearing a gorget (covering the front of the neck worth at least 2 AP), the Garrotte fails. A defending player may resist a Garrotte if the defender alone has at least +2 more Strength than the attacker. This skill is usable at will.",
+          "related": [
+            {
+              "title": "Interrupting a Garrotte",
+              "text": "A bystander may interrupt the Garrotte by touching the target and stating \"Interrupt\". If the defender uses the skill Head Butt, this will also allow them to break free. A successful resist forces the attacker's arms away from the defender, but does not harm the attacker or their Garrotte. If the Garrotte is defended against, the attacker may not Garrotte the same victim for the next 10 minutes.",
+              "ref": "Core 5.6.5 p.69"
+            },
+            {
+              "title": "Armour and Thresholds",
+              "text": "A gorget will not stop a Garrotte if all the target's armour is breached. A Garrotte will breach any Normal threshold but be stopped by anything higher. No actual damage is done, but any action that is interrupted by taking Body damage is impossible for the duration of the Garrotte. If the victim is wearing Magic Armour, it will immediately go off, but will in no way protect the victim from the attack.",
+              "ref": "Core 5.6.5 p.69"
+            },
+            {
+              "title": "Garrotte Tag",
+              "text": "Once per event, a player with the Garrotte skill can make a Garrotte tag for 35 Blacksmithing RM, even if they do not have the Blacksmith skill. Garrottes are considered tools, not weapons, and cannot be enchanted, augmented, made of silver, etc. Garrottes may only be created at Logistics and will expire after 1 year.",
+              "ref": "Core 5.6.5 p.69"
+            },
+            {
+              "title": "Surprise Attacks",
+              "text": "Surprise: This attack cannot be defended against with skills or spells that require a conscious decision to use. Ie: Advanced Magic Armour, Dodge, Parry cannot be used against surprise attacks. Surprise attacks must be done from behind the target.",
+              "ref": "Core 5.6.5 p.92"
+            }
+          ]
         },
         {
           "id": "sap",
@@ -1308,7 +2079,29 @@
           "prereqPerPurchase": false,
           "_weaponChoice": null,
           "prereqs": [],
-          "desc": "Sap is a Surprise Attack which allows a character to knock out a victim by touching them in the Upper Back armour location with a coreless, red hand to hand weapon.\n\nThe attacker must be holding the tagged weapon they are Sapping with but does not physically strike the target. Upon a successful strike, the victim loses 1 Body point and is knocked unconscious for 10 minutes.\n\nThe base damage for Sap is 1; this damage may only be increased by Strength. The call for Sap is \"<damage> <type> Sap\". A Sapped character will awaken only once the Sap Body point damage is healed or 10 minutes have passed. No skills, spells, or abilities may be used in conjunction with Sap, except to change the damage type. This skill is usable once per day per purchase."
+          "desc": "Sap is a Surprise Attack which allows a character to knock out a victim by touching them in the Upper Back armour location with a coreless, red hand to hand weapon.\n\nThe attacker must be holding the tagged weapon they are Sapping with but does not physically strike the target. Upon a successful strike, the victim loses 1 Body point and is knocked unconscious for 10 minutes.\n\nThe base damage for Sap is 1; this damage may only be increased by Strength. The call for Sap is \"<damage> <type> Sap\". A Sapped character will awaken only once the Sap Body point damage is healed or 10 minutes have passed. No skills, spells, or abilities may be used in conjunction with Sap, except to change the damage type. This skill is usable once per day per purchase.",
+          "related": [
+            {
+              "title": "Legal Back Strikes",
+              "text": "In order for a swing on someone's back to be legal, both shoulder blades of the target must be visible for the entirety of the swing. Any strikes against someone's back which involve reaching over or around the target are thus illegal.",
+              "ref": "Core 5.6.5 p.88"
+            },
+            {
+              "title": "Sap Limits",
+              "text": "Sap must be done from behind the target. A given target can only be Sapped once per minute. A Sap will be stopped by a helmet of any kind, standard spell defenses, or a threshold above the Sap's damage. A helmet will not stop a Sap if all the target's armour is breached. The character does not need to be proficient in the weapon they are Sapping with.",
+              "ref": "Core 5.6.5 p.70"
+            },
+            {
+              "title": "Healing a Sap",
+              "text": "Occasionally you may find yourself stricken with a debilitating effect like Sap or Silent Strike, which only ceases once a specific amount of the Body has been healed, as indicated in the effect description. When you heal this damage, the negative effect will cease immediately. If you have temporary Body points when stricken by this type of effect, a single Body point of healing will remove the effect.",
+              "ref": "Core 5.6.5 p.15"
+            },
+            {
+              "title": "Surprise Attacks",
+              "text": "Surprise: This attack cannot be defended against with skills or spells that require a conscious decision to use. Ie: Advanced Magic Armour, Dodge, Parry cannot be used against surprise attacks. Surprise attacks must be done from behind the target.",
+              "ref": "Core 5.6.5 p.92"
+            }
+          ]
         },
         {
           "id": "vital-blow",
@@ -1331,7 +2124,24 @@
           "prereqPerPurchase": false,
           "_weaponChoice": null,
           "prereqs": [],
-          "desc": "This skill allows the player to deliver a devastating blow to a target's vital organs. A Vital Blow will damage the target for half their total Body, not their current Body, rounded up. This damage cannot be altered in any way.\n\nTwo successful Vital Blows within 1 hour will immediately drop the target to 0 Body.\n\nA Vital Blow must strike the target's torso and directly damage their Body points, rather than armour, to be successful. If used from behind and strikes between the target's shoulder blades, the call will be \"Surprise Vital Blow\". Vital Blow will not affect creatures which are non-biological in nature. This skill is usable once per day per purchase."
+          "desc": "This skill allows the player to deliver a devastating blow to a target's vital organs. A Vital Blow will damage the target for half their total Body, not their current Body, rounded up. This damage cannot be altered in any way.\n\nTwo successful Vital Blows within 1 hour will immediately drop the target to 0 Body.\n\nA Vital Blow must strike the target's torso and directly damage their Body points, rather than armour, to be successful. If used from behind and strikes between the target's shoulder blades, the call will be \"Surprise Vital Blow\". Vital Blow will not affect creatures which are non-biological in nature. This skill is usable once per day per purchase.",
+          "related": [
+            {
+              "title": "Legal Back Strikes",
+              "text": "In order for a swing on someone's back to be legal, both shoulder blades of the target must be visible for the entirety of the swing. Any strikes against someone's back which involve reaching over or around the target are thus illegal.",
+              "ref": "Core 5.6.5 p.88"
+            },
+            {
+              "title": "Miscalls",
+              "text": "If you misstate a special attack, that is considered a `miscall' and the skill does not work. If it is a limited use ability, it is not used up for the day, but it cannot be used again for an hour. If you have multiple purchases of the same ability, only one purchase is \"locked\" in this way.",
+              "ref": "Core 5.6.5 p.88"
+            },
+            {
+              "title": "Vital Blow vs Thresholds",
+              "text": "There is no numerical value for this attack, so when determining if the attack is stopped by a threshold, only the damage threshold type is taken into account. For example, a \"Silver Vital Blow\" will breach a +2 Silver threshold, but not a Magic one. If the weapon's damage type is not normal, the damage type precedes \"Vital Blow\".",
+              "ref": "Core 5.6.5 p.70"
+            }
+          ]
         }
       ]
     },
@@ -1351,7 +2161,14 @@
           "prereqs": [],
           "desc": "With this skill a Warrior can repair any recently destroyed or shattered shield so long as they have access to the wreckage. If given the destroyed remains and the shield was destroyed within the last hour, a Warrior can perform a Battlefield Repair on it.\n\nA repair takes 1 minute for every 10 threshold the shield had. If the repair is interrupted or an hour passes since its destruction and the shield is not fully repaired, the skill will fail and be used for the day.\n\nLastly, this skill may be used to restore 1 \"resist\" on a Master Crafted shield. Master Crafted shields which do not have their resists repaired within the time limit will lose that resist forever. This skill is usable once per day per purchase.",
           "cp": 30,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "Repair Restrictions",
+              "text": "Use of this skill will not pause the time limit in which it can be used nor will it partially repair a destroyed shield (in other words once work begins it must be completed to its conclusion). If a master crafted shield loses its final resist and is then destroyed, that final resist will be lost as both the shield and the resist cannot be repaired simultaneously.",
+              "ref": "Soul Frag 2.10 p.81"
+            }
+          ]
         },
         {
           "id": "cripple",
@@ -1366,7 +2183,14 @@
           "prereqs": [],
           "desc": "This skill allows the warrior to attack a target's limb with a devastating crippling attack. If the attack is successful, Cripple does one Body to the target and cripples the struck limb for 5 seconds. If the limb is an arm, the target will be disarmed and unable to use that arm. A crippled leg denies the target the ability to move for the duration.\n\nCripple must strike a limb to be successful. The damage call for this ability is \"Cripple!\" If the weapon's damage type is not normal, the damage type precedes \"Cripple\".\n\nThere is no numerical value, so when determining if the attack is stopped by a threshold, only the damage threshold type is taken into account. Cripple cannot be stacked with any other ability and is usable once per day per purchase.",
           "cp": 40,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "Crippled Arm",
+              "text": "If the limb is a targets arm, they will be disarmed of any items they are holding and unable to use that arm. Shields or items strapped to the arm or unable to be dropped will be considered useless and any damage taken to those items will instead be taken by the target. A rock cannot be used to Cripple.",
+              "ref": "Soul Frag 2.10 p.82"
+            }
+          ]
         },
         {
           "id": "decapitate",
@@ -1386,7 +2210,14 @@
           ],
           "desc": "This powerful ability attempts to separate the head from the body of a target and kill them in a single shot. Decapitate can only be used with a melee weapon the warrior is capable of Slaying with.\n\nThe warrior must declare \"You are not prepared!\" then strike their opponent on the torso. The damage call is \"10 Body Decapitate\". If the target's Body is damaged they are immediately dropped into their Death Count. Creatures with no discernible heads are immune.\n\nUnlike a Slay, Decapitate does not remain active if the initial strike misses. The numerical damage cannot be changed, but the damage type may be altered. This skill is usable once per day per purchase and requires 1 Slay purchase for every purchase of Decapitate.",
           "cp": 150,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "Killing Blows Do Not Decapitate",
+              "text": "A Killing Blow cannot be used to decapitate the victim.",
+              "ref": "Core 5.6.5 p.17"
+            }
+          ]
         },
         {
           "id": "dirt-in-the-eye",
@@ -1401,7 +2232,19 @@
           "prereqs": [],
           "desc": "This skill allows the warrior to temporarily blind a target by throwing dirt in their eyes. This is a packet-delivered attack and will not be successful if used with a weapon or if touch cast.\n\nThe warrior must first touch a packet to the ground then successfully hit the target. The call for this ability is \"Physical Dirt in the Eye!\" Dirt in the Eye will blind the target for ten seconds. This skill cannot be stacked with any other ability or spell and is usable once per day per purchase.",
           "cp": 45,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "Blind Safety",
+              "text": "Dirt in the Eye will blind the target for ten seconds forcing the target to close their eyes OOG for the duration of the effect. Players in an unsafe or unstable environment (e.g. fighting near a fire pit) may keep their eyes open but must look down at their feet and away from their attacker for the skills duration.",
+              "ref": "Soul Frag 2.10 p.82"
+            },
+            {
+              "title": "Countered by Blindfighter",
+              "text": "The Rogue frag skill Blindfighter lets a character resist a Blind effect once per day per purchase.",
+              "ref": "Soul Frag 2.10 p.80"
+            }
+          ]
         },
         {
           "id": "disembowel",
@@ -1421,7 +2264,14 @@
           ],
           "desc": "This ability allows the warrior to create a grievous gash in the target's torso. The attack must strike the target's torso from the front. The call is \"5 Body Disembowel\" (or whatever damage type the weapon deals).\n\nIf a target struck with this attack does not drop everything and use both hands to hold onto their lower stomach, they suffer a Death effect after 10 seconds. If the target does hold onto their guts, they have 1 minute before the Death effect. Healing the 5 Body damage before the time passes will stop the Death effect entirely. Disembowel does not affect creatures with alien physiology.\n\nThe weapon used must be the same as the weapon with the prerequisite Specialization. This ability is useable once per day per purchase.",
           "cp": 100,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "Holding the Wound",
+              "text": "If the target does not have Self Mutilate, they must drop everything to hold onto their lower stomach.",
+              "ref": "Soul Frag 2.10 p.83"
+            }
+          ]
         },
         {
           "id": "trip",
@@ -1436,7 +2286,14 @@
           "prereqs": [],
           "desc": "A combat skill for warriors. To activate, the player must successfully strike the target's leg with a weapon and call \"1 Body Trip!\" If successful, the target must fall safely to the ground. The target may stand up again as soon as they have touched their torso to the ground. The damage type is based on the weapon used. Usable once per day per purchase.",
           "cp": 30,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "Trip Damage",
+              "text": "Like Hamstring, the damage cannot be increased unless you use multiple Trips at the same time; however the damage type is based on the weapon used.",
+              "ref": "Soul Frag 2.10 p.83"
+            }
+          ]
         },
         {
           "id": "whirlwind-of-blows",
@@ -1456,7 +2313,14 @@
           ],
           "desc": "This skill enables a warrior to plant one foot, call \"Whirlwind of Blows\" and gain +5 damage to their swings.\n\nThis effect continues indefinitely so long as one foot remains planted. The planted foot may swivel, but the skill ends if the planted foot is moved or raised.\n\nThis skill may stack with other skills, abilities or spells unless otherwise stated. This skill is usable once per day per purchase and requires 1 Flurry of Blows purchase for every purchase of Whirlwind of Blows.",
           "cp": 75,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "No Repeat Locations",
+              "text": "No melee weapon strike can hit the same location of the body twice in a row. Your strikes must hit different armour locations (Ch.7) in order to be considered valid damaging strikes.",
+              "ref": "Core 5.6.5 p.88"
+            }
+          ]
         }
       ]
     },
@@ -1476,7 +2340,14 @@
           "prereqs": [],
           "desc": "Once per day per purchase, the character may resist a Blind effect.",
           "cp": 15,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "Blindness Alchemy",
+              "text": "Blindness alchemy will affect any target that uses eyes for vision with blindness for 10 seconds. In terrain that is considered unsafe OOG, the target may keep their eyes open for safety and simply roleplay being blind.",
+              "ref": "Core 5.6.5 p.73"
+            }
+          ]
         },
         {
           "id": "escape",
@@ -1491,7 +2362,14 @@
           "prereqs": [],
           "desc": "Once per day per purchase, the character may break free of any physical binding, as well as Leg Snare and Net traps. Examples of bindings are shackles, rope, manacles, etc. Doing so requires a 10 count which may be done in silence. Escape may not be used to free the rogue from locked areas, such as prison rooms or crow's cages.",
           "cp": 50,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "Net Trap Without Escape",
+              "text": "While trapped, the victim may not move, use weapons, or cast spells until they are freed. The victim may be cut free by someone else (or cut themselves free if they have natural weaponry) with a 1-minute count. If they lack natural weaponry they may wiggle free in 1 hour if they have not been saved by someone else.",
+              "ref": "Core 5.6.5 p.85"
+            }
+          ]
         },
         {
           "id": "riposte",
@@ -1506,7 +2384,14 @@
           "prereqs": [],
           "desc": "The rogue with Riposte can use this ability against any attack that could be parried. After suffering an attack, a character with this ability may call \"Riposte!\" if they are holding a weapon. Doing so not only blocks the attack but also deals back to the original target the same damage and effects that were Riposted, which automatically hits.\n\nRipostes can block missile damage, but the damage is not reflected back. The damage from a Riposte counter can be defended against with skills (Parry, Dodge, etc.) and spells (Magic Armour, etc.) but is considered to have been a successful strike. Riposte may be used once a day per purchase.",
           "cp": 150,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "Riposte Shares Parry Limits",
+              "text": "Riposte works against any attack that could be parried, so it cannot be used against what Parry cannot block: \"Parry cannot block Massive damage, Spellstrikes, or Surprise Attacks.\"",
+              "ref": "Core 5.6.5 p.67"
+            }
+          ]
         },
         {
           "id": "sucker-punch",
@@ -1551,7 +2436,14 @@
           "prereqs": [],
           "desc": "Agility and dexterity are the tools of the rogue. By rolling with the punches, a rogue can tumble to take half damage (rounded down) from one single Area of Effect or Massive damage effect of their choice.\n\nThe source of damage must contain a numerical damage amount. This skill has no effect on other negative effects such as paralyze, death, stun, etc.\n\nTumble cannot stack with any other skill, including additional uses of Tumble, nor can any other method of damage reduction be applied prior to or after use. The defensive call is \"Tumble!\" This skill is usable once per day per purchase.",
           "cp": 65,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "What Massive Damage Is",
+              "text": "Massive: This represents huge unblockable blows, falling damage and siege weapons. It does damage to both Body and Armour Points simultaneously, cannot be protected against with Battle Magic spells and is considered normal damage for the purpose of thresholds. It also may not be blocked with weapons or shields. It may be resisted by ritual magic or racial abilities.",
+              "ref": "Core 5.6.5 p.90"
+            }
+          ]
         }
       ]
     },
@@ -1576,7 +2468,29 @@
           ],
           "desc": "When a mage purchases Combat Wizardry, their spell casting is no longer interrupted by Body damage. They may also speak while maintaining concentration. This skill is considered \"always on\".",
           "cp": 50,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "Miscants",
+              "text": "If not stated properly and / or the caster suffers any damage directly to Body, the spell is considered a miscant and the spell is lost.",
+              "ref": "Core 5.6.5 p.99"
+            },
+            {
+              "title": "Concentration and Prayer",
+              "text": "A concentrating individual may walk but not run, cannot speak or use any other skills, and will lose their concentration if they take damage to Body or become unconscious. Prayer is the same as concentration, except that the individual can speak.",
+              "ref": "Core 5.6.5 p.97"
+            },
+            {
+              "title": "Tenacity (Protection Spell)",
+              "text": "This spell will allow the target to carry on with an incantation through adversity. If the target accidentally miscants or has their concentration interrupted by Body damage or any other interruption, they may call \"Tenacity!\" and re-incant the spell. Only one Tenacity may be worn at any given time.",
+              "ref": "Core 5.6.5 p.126"
+            },
+            {
+              "title": "Squamata Venom",
+              "text": "For 10 minutes, the victim will be in constant pain. They cannot cast spells unless they have the Combat Wizardry skill and are considered to be taking damage for the purposes of skills or abilities that can be stopped by taking Body damage.",
+              "ref": "Soul Frag 2.10 p.10"
+            }
+          ]
         },
         {
           "id": "harvest",
@@ -1591,7 +2505,19 @@
           "prereqs": [],
           "desc": "Once per day per purchase, when a mage casts a spell and it is blocked by a spell defense, they may call \"Harvest!\" and regain that spell in memory to cast again. This ability only functions if the spell is defended against with a magical protection like Shield Magic, or a Resist Magic natural ability or racial.",
           "cp": 50,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "Mana Harvest (Mage Ability)",
+              "text": "To harvest a Circle 1-3 spell, the mage must consume one Catalyst of any type. To harvest a Circle 4-6 spell, the mage must consume two Catalysts of any type. To harvest a Circle 7-9 the mage must consume three Catalysts of any type. A Discord Catalyst will count as if it were two Catalysts. This ability will only recall a Battle Magic spell into memory that has already been used and will not allow the Mage to rememorize a new one in its place. This skill is usable at will but may only be used once per spell slot.",
+              "ref": "Core 5.6.5 p.47"
+            },
+            {
+              "title": "Resist Magic",
+              "text": "Resist Magic is a defense which some monsters and races may have. It will allow the user to resist a single magical effect delivered by packet or Spellstrike.",
+              "ref": "Core 5.6.5 p.105"
+            }
+          ]
         },
         {
           "id": "mortician",
@@ -1611,7 +2537,24 @@
           ],
           "desc": "This macabre ability allows the Mortician to examine a finalled corpse to determine what led to its demise. The skill will never identify a specific killer. It takes 10 seconds of examining the corpse to reveal the answer to each question: \"Were you killed by magic, alchemy, or physical means?\", \"What was the sphere of magic/specific alchemy/weapon group that killed you?\", \"How long have you been a corpse?\", \"Has your body been moved?\", \"Were you taken by Surprise?\"\n\nMorticians can also manipulate bodies to make future Morticians receive false information. Additionally, Morticians can look at a living or dead person's mole, birthmark or third nipple and determine whether it is a natural mark or one created supernaturally via Wytchcraft.",
           "cp": 25,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "What Counts as the Cause",
+              "text": "When questions refer to what killed the corpse, this refers to the last thing that dropped the victim into their Bleed or Death Counts, or whatever delivered the Killing Blow if one was used. Weapon damage is considered physical means, even if it is magical damage.",
+              "ref": "Soul Frag 2.10 p.83"
+            },
+            {
+              "title": "Time Since Death",
+              "text": "\"How long have you been a corpse in days?\" or, if under 24 hours, \"How long have you been a corpse in hours?\"",
+              "ref": "Soul Frag 2.10 p.84"
+            },
+            {
+              "title": "Final Death Leaves a Corpse",
+              "text": "If you take your Final Death, your body will reappear where it died to remain there as a permanent corpse.",
+              "ref": "Core 5.6.5 p.18"
+            }
+          ]
         },
         {
           "id": "refocus",
@@ -1626,7 +2569,24 @@
           "prereqs": [],
           "desc": "Once per day per purchase with Refocus, when a mage casts a spell and misses their target with a spell packet, they may call \"Refocus!\" and regain that spell in memory to cast again.",
           "cp": 30,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "Touch-Casting Never Misses",
+              "text": "In order to touch-cast the caster must touch the target with their hand in order for them to be affected. A packet is not necessary to do this. Obviously, this brings with it the benefit of guaranteeing a hit.",
+              "ref": "Core 5.6.5 p.100"
+            },
+            {
+              "title": "Three-Second Throw Window",
+              "text": "If the incant has been stated properly, you now have 3 seconds to choose one of the following actions: Throw the packet at your target Or Use hand to touch cast. Failure to choose either action within 3 seconds will result in the spell failing. This means that the respective spell is lost and you are no longer able to cast the spell.",
+              "ref": "Core 5.6.5 p.99"
+            },
+            {
+              "title": "Spellstrike Misses",
+              "text": "Regardless if the strike is successful or not, the Spellstrike is still considered used.",
+              "ref": "Core 5.6.5 p.100"
+            }
+          ]
         },
         {
           "id": "spell-parry",
@@ -1641,7 +2601,14 @@
           "prereqs": [],
           "desc": "The Spell Parry skill allows a mage to counter a Battle Magic spell cast at them by using up a spell of the same sphere and level that they have memorized.\n\nIf targeted and affected by a spell, the mage may expend a spell of the same sphere and level in memory and call \"Spell Parry <spell name>!\", nullifying the incoming spell but losing the spell in memory. If the mage whose spell was Spell Parried also possesses this skill, they may also call \"Spell Parry!\" to force their original spell through, expending another memorized spell.\n\nThere is no limit to how often this ability may be used so long as the mage has spells in memory to counter. This ability only functions against magic spells cast from memory or via a magic item. It has no effect against natural abilities or monster racials.",
           "cp": 35,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "Battle Magic Only",
+              "text": "Battle Magic spells are the spells levels 1-9. Magic beyond this range is ritual magic.",
+              "ref": "Core 5.6.5 p.104"
+            }
+          ]
         },
         {
           "id": "spell-switch",
@@ -1672,7 +2639,29 @@
           "desc": "Spell Versatility is a Mage skill tied to an existing spell slot the character already owns. After purchasing Spell Versatility, the mage no longer has to memorize a specific spell for that slot and may cast spells \"on the fly\" from any of their spheres that can fill the slot. The Mage must still have the scrolls for any spells they wish to use with them at reset to study. Once a spell has been cast from the slot it is used until next reset.\n\nCost: The frag cost is half the level of the slot being augmented + 5, and the CP cost is the same. This skill must be purchased per slot.",
           "cp": 0,
           "costNote": "see description",
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "What the Slot Can Hold",
+              "text": "For example, if a mage has two spheres and a 7th level spell slot they may choose any of those four 7th level spells to cast, so long as the slot is unused; essentially meaning that every spell of that level that they can cast fits into the slot at once.",
+              "ref": "Soul Frag 2.10 p.85"
+            },
+            {
+              "title": "Scrolls and Spellbook",
+              "text": "As a spell caster gains levels and purchases further spell slots, they will need to find the appropriate scroll or they'll have nothing to memorize. If a spell caster loses their Spellbook they lose all the scrolls inside and must begin collecting them again.",
+              "ref": "Core 5.6.5 p.102"
+            },
+            {
+              "title": "Resetting Spell Slots",
+              "text": "To reset spell slots and fill them with new spells, a character must spend 10 minutes memorizing new spells from a Spellbook. At the end of this time, all spells still in memory are wiped clean and the spell slots are filled with the new spells.",
+              "ref": "Core 5.6.5 p.51"
+            },
+            {
+              "title": "One Spell Focus per Sphere",
+              "text": "A Caster must have an attuned Spell Focus on their person for each Sphere they wish to cast from.",
+              "ref": "Core 5.6.5 p.97"
+            }
+          ]
         }
       ]
     },
@@ -1692,7 +2681,19 @@
           "prereqs": [],
           "desc": "Each purchase of this skill will allow a character to have 10 additional levels of rituals on their spirit, beyond the usual cap of 50 levels of rituals, total.",
           "cp": 10,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "The Ritual Cap",
+              "text": "Spirits may have a maximum of 50 levels of unique ritual effects upon them at any one time. This may be increased by purchasing the Soul Frag skill \"Arcane Spirit.\" Rituals that augment an existing base ritual (such as the Psionic Weapon Augments), increase a ritual's duration (such as Permanence), or which are permanent (such as Race Change) do not count towards this total. If an item or a spirit acquires a new ritual that would bring it over this cap, one ritual may either be removed randomly, or the ritual to be removed may be chosen by the target of the ritual.",
+              "ref": "Synergy 1.8 p.6"
+            },
+            {
+              "title": "Rituals Persist Through Resurrection",
+              "text": "All Ritual Magic cast on a spirit will persist through resurrection unless the ritual is explicitly exempted from this rule.",
+              "ref": "Core 5.6.5 p.99"
+            }
+          ]
         },
         {
           "id": "battlefield-medic",
@@ -1712,7 +2713,19 @@
           ],
           "desc": "This skill reduces the time it takes to stabilise a patient using First Aid. The Battlefield Medic takes only 40 seconds instead of 60 to bring a target from their Bleed Count to 0 Body.\n\nIf the Battlefield Medic is assisted by someone with First Aid, the time comes down to 30 seconds. If two Battlefield Medics work to stabilise a patient together, it takes 20 seconds. This skill may only be purchased once.",
           "cp": 75,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "Barber Extends the Bleed Count",
+              "text": "The Physician may perform First Aid on a moving target and as soon as First Aid has started, extends the Bleed Count of that target by an extra 1 minute.",
+              "ref": "Core 5.6.5 p.64"
+            },
+            {
+              "title": "Killing Blows Skip the Bleed Count",
+              "text": "A proper Killing Blow takes a 10-count with bare hands or a 5-count with a weapon. A successful Killing Blow (one that has not been interrupted) forces the victim to skip their Bleed Count and proceed directly into their Death Count.",
+              "ref": "Core 5.6.5 p.16"
+            }
+          ]
         },
         {
           "id": "cold-dead-hands",
@@ -1727,7 +2740,19 @@
           "prereqs": [],
           "desc": "Characters with Cold Dead Hands will continue to hold onto whatever they were carrying if they become unconscious, asleep, or fall into their Bleed or Death counts. This does not render the character immune to disarming effects, including Garrotte.\n\nIn order for items to be removed from the character's Cold Dead Hands, a standard loot count must be performed.",
           "cp": 20,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "Normal Dropping Rule",
+              "text": "Normally upon falling unconscious or into their Bleed or Death count, a character will drop anything they are holding.",
+              "ref": "Soul Frag 2.10 p.85"
+            },
+            {
+              "title": "The Standard Loot Count",
+              "text": "In order for a player to begin searching or looting a target, the player's hand must be within reach of the target. A search may be conducted for as long as the player wants, though in most cases 60 seconds is sufficient.",
+              "ref": "Core 5.6.5 p.20"
+            }
+          ]
         },
         {
           "id": "create-alcohol",
@@ -1742,7 +2767,29 @@
           "prereqs": [],
           "desc": "With this skill, a character can create potent brews and drinks. For the first purchase, your character can create up to 3 Alcohol tags from a pool of 3 Stamina, divided up as the character wishes.\n\nAlcohol tags can only be created at Logistics but may have any name the brewer wishes.\n\nFor each subsequent purchase, the character will have +3 Stamina added to their pool and create +1 Alcohol tag. Each Alcohol tag has 5 servings.\n\nA character with Create Alcohol can determine the Stamina damage value of an alcoholic beverage by examining it. Alcohol is considered a poison for the purpose of defending against or removing it.",
           "cp": 25,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "Stamina and Drinks",
+              "text": "Your total Stamina Points are always equal to your unaltered total Body points. All normal alcoholic beverages will be assigned a damage value and a number of servings. A character cannot tell how much Stamina damage a drink has, only that it is alcoholic.",
+              "ref": "Core 5.6.5 p.15"
+            },
+            {
+              "title": "Sobering Up",
+              "text": "If you drink hot coffee or have your head dunked in cold water, for the next hour you will double the rate of Stamina Point regeneration.",
+              "ref": "Core 5.6.5 p.15"
+            },
+            {
+              "title": "Detecting and Purging",
+              "text": "Anatomy can ask whether there is alcohol in a target's system, and a level 3 Physician (Physicker) can purge alcohol from a patient.",
+              "ref": "Core 5.6.5 p.60"
+            },
+            {
+              "title": "No Real Alcohol",
+              "text": "Underworld LARP has a very strict zero tolerance policy on OOG drinking during combat events. This does not mean that you cannot pretend to drink in character. Please drink responsibly in-game and remember that drinking real alcohol is still strictly forbidden.",
+              "ref": "Core 5.6.5 p.15"
+            }
+          ]
         },
         {
           "id": "heavy-drinker",
@@ -1757,7 +2804,19 @@
           "prereqs": [],
           "desc": "This ability is purchasable by any character class and doubles their stamina total. This skill cannot be purchased more than once.",
           "cp": 20,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "Zero Stamina",
+              "text": "When you reach zero Stamina Points you have achieved a level of extreme intoxication and are no longer able to properly function for 10 minutes. During this time, you are unable to use any skills or abilities, speech is slurred to an unrecognized level, and walking straight is impossible. If you drink alcohol while you are at 0 Stamina, you will immediately pass out drunk for the next hour, after which you will wake up at 2 Stamina. Once the 10 minutes of extreme intoxication passes, you will return to 1 Stamina Point and from that point on Stamina Points regenerate at a rate of 2 points per hour.",
+              "ref": "Core 5.6.5 p.15"
+            },
+            {
+              "title": "Stamina Basis",
+              "text": "Your total Stamina Points are always equal to your unaltered total Body points. Outside of extreme intoxication, the loss and gain of Stamina Points has no effect on your Body points or the use of skills and abilities Some rare brews, as well as magical and alchemical intoxicants can have a damage value much higher than normal alcohol.",
+              "ref": "Core 5.6.5 p.15"
+            }
+          ]
         },
         {
           "id": "intuition",
@@ -1772,7 +2831,19 @@
           "prereqs": [],
           "desc": "Whether from a sudden tingling feeling or the sensation of being watched, characters with Intuition are aware when they respond to Sense calls (or when they avoid a Sense call they would otherwise respond to due to Possuming or another effect).\n\nCharacters will know the direction and rough location of what sensed them, but not exactly who or what did it. They will not know what the Sense call was looking for, only that it found them.",
           "cp": 50,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "Sense Calls",
+              "text": "A Sense call allows the user to state \"Sense <target>\". Anyone fitting the description of the target or carrying an object which fits the description must respond with \"Here\" in a normal speaking voice. Both the Sense call and the response are out of game calls which no one other than the Sensing character is aware of. No one is aware, in game, that a Sense call has occurred.",
+              "ref": "Core 5.6.5 p.105"
+            },
+            {
+              "title": "Direction of the Call",
+              "text": "The direction the Sense call came from is the direction the player OOG heard the Sense call come from.",
+              "ref": "Soul Frag 2.10 p.86"
+            }
+          ]
         },
         {
           "id": "looting",
@@ -1796,7 +2867,24 @@
           "prereqPerPurchase": false,
           "prereqs": [],
           "_fragOnly": true,
-          "desc": "This skill trains the player in the art of both hiding and finding. This skill allows the target to subtract ten seconds from the standard 60-second loot count for every level of Looting they have purchased, to a minimum of ten seconds.\n\nThis skill will also add ten seconds per level to any person trying to loot the player with the Looting skill.\n\nIf a player with Looting is being looted, they need not inform the looter how long they will have to loot for OOG. Should the searching player search for the appropriate additional time, the target must give the searching player all items as per standard searching rules. This ability can be purchased a maximum of five times."
+          "desc": "This skill trains the player in the art of both hiding and finding. This skill allows the target to subtract ten seconds from the standard 60-second loot count for every level of Looting they have purchased, to a minimum of ten seconds.\n\nThis skill will also add ten seconds per level to any person trying to loot the player with the Looting skill.\n\nIf a player with Looting is being looted, they need not inform the looter how long they will have to loot for OOG. Should the searching player search for the appropriate additional time, the target must give the searching player all items as per standard searching rules. This ability can be purchased a maximum of five times.",
+          "related": [
+            {
+              "title": "Giving Up Less Loot",
+              "text": "If the looter ends their count before the full amount of time required, the target may opt to give any amount of loot they desire. They are also not required to tell the looter anything, though they may say \"You find nothing\" if they choose not to give any loot.",
+              "ref": "Soul Frag 2.10 p.86"
+            },
+            {
+              "title": "Visible Items Need No Search",
+              "text": "If a tagged item or spell focus is plainly visible on the target and can be easily taken off of their person, it can be removed without going through a search count.",
+              "ref": "Core 5.6.5 p.20"
+            },
+            {
+              "title": "Only Tagged Items",
+              "text": "Any item you are taking MUST have a tag. If it does not have a tag you cannot take it.",
+              "ref": "Core 5.6.5 p.20"
+            }
+          ]
         },
         {
           "id": "paragon",
@@ -1813,7 +2901,24 @@
           "prereqs": [],
           "_fragOnly": true,
           "_paragon": true,
-          "desc": "Paragons are those who have proven to be faithful adherents of their God, without having devoted their lives to their service. Being a Paragon allows a character to add one Light or Dark spell, no higher than 7th circle depending on the God served, to their repertoire. Once the spell is chosen, the choice is permanent.\n\nThe Paragon may then memorize that spell in the place of one of their regular spell slots. The Paragon must have a holy symbol to memorize and cast the spell.\n\nRequires Lead Shaper Approval and a spell slot of the chosen circle. This skill may only be purchased once ever.\n\nCost: 100 frags, plus CP equal to a spell slot of the chosen circle + 10 (e.g. a Mage's 3rd circle slot costs 20 CP, so Paragon at 3rd circle is 30 CP)."
+          "desc": "Paragons are those who have proven to be faithful adherents of their God, without having devoted their lives to their service. Being a Paragon allows a character to add one Light or Dark spell, no higher than 7th circle depending on the God served, to their repertoire. Once the spell is chosen, the choice is permanent.\n\nThe Paragon may then memorize that spell in the place of one of their regular spell slots. The Paragon must have a holy symbol to memorize and cast the spell.\n\nRequires Lead Shaper Approval and a spell slot of the chosen circle. This skill may only be purchased once ever.\n\nCost: 100 frags, plus CP equal to a spell slot of the chosen circle + 10 (e.g. a Mage's 3rd circle slot costs 20 CP, so Paragon at 3rd circle is 30 CP).",
+          "related": [
+            {
+              "title": "Becoming a Paragon",
+              "text": "To become a Paragon the player contacts the Shaper team to declare their intention, and a 6 month period begins. At the end, the Shaper team decides whether the aspirant has exemplified at least 3 Do and 3 Do not tenets of their God; if not, they may not apply again for a year.",
+              "ref": "Soul Frag 2.10 p.87"
+            },
+            {
+              "title": "Losing Your God's Approval",
+              "text": "If the character loses the approval of their God, they will suffer a Greater Curse for six months, as chosen by the Shaper team, and barred from using their Paragon ability for one year. During this time they should be atoning for their sin. If the atonement pleases the God, after the one year they may use their Paragon ability once again. If the atonement does not please the God, the CP is not refunded and the skill becomes useless.",
+              "ref": "Soul Frag 2.10 p.87"
+            },
+            {
+              "title": "Greater Curses",
+              "text": "Greater Curses last until they are removed and persist through resurrection. Curses cannot be removed by any other means, including effects which dispel magic, or even Arcane Counter Magic.",
+              "ref": "Core 5.6.5 p.104"
+            }
+          ]
         },
         {
           "id": "possum",
@@ -1828,7 +2933,14 @@
           "prereqs": [],
           "desc": "After lying still for 10 seconds, a character may activate Possum and become immune to Sense Life calls. This works for up to an hour or until the character moves or is moved. OOG movement to get comfortable, breathe, swat mosquitos, etc., will not end the effect. This ability is usable once per day per purchase.",
           "cp": 30,
-          "_fragOnly": true
+          "_fragOnly": true,
+          "related": [
+            {
+              "title": "Intuition Still Notices",
+              "text": "Possum only blocks Sense Life calls. A character with Intuition still feels the call when they avoid responding to it because of Possuming.",
+              "ref": "Soul Frag 2.10 p.86"
+            }
+          ]
         },
         {
           "id": "teacher",
@@ -1845,7 +2957,24 @@
           "cp": 15,
           "_fragOnly": true,
           "cpFirstOnly": true,
-          "ref": "Soul Frag 2.10 p.88"
+          "ref": "Soul Frag 2.10 p.88",
+          "related": [
+            {
+              "title": "Finding a Teacher",
+              "text": "To learn a vocation or frag sphere, the student must find a teacher in game at an event who possesses that vocation or sphere as well as the Teacher skill and is willing to teach them. If the teacher is another player, simply tell Logistics. If the teacher is an NPC, you will need Shaper approval.",
+              "ref": "Soul Frag 2.10 p.3"
+            },
+            {
+              "title": "Switching Vocations",
+              "text": "A character may switch Vocations as often as they desire, however each time they must pay 150 frags to do so and find a teacher in game. A teacher is still required even if a character returns to a previously learned Vocation. The only exception to this is if a character wishes to return to their original set of Class Abilities, in which case they must pay the frag cost but do not require a teacher.",
+              "ref": "Soul Frag 2.10 p.59"
+            },
+            {
+              "title": "Spheres That Cannot Be Self-Taught",
+              "text": "Some spheres, such as Necromancy and Sigil, cannot be self-taught: they must be taught by an NPC or PC who can cast the sphere and has the Teacher skill.",
+              "ref": "Soul Frag 2.10 p.114"
+            }
+          ]
         }
       ]
     }

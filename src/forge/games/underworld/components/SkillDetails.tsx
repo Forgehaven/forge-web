@@ -8,6 +8,12 @@ export function SkillDetails({ s }: { s: Skill }) {
   return (
     <>
       <Prose text={s.desc} />
+      {s.related?.map(r => (
+        <div key={r.title} className="border-l-2 border-forge-accent/40 pl-2">
+          <p className="font-medium text-forge-text">{r.title} <span className="text-[10px] font-normal text-forge-muted">{r.ref}</span></p>
+          <Prose text={r.text} />
+        </div>
+      ))}
       {s.prereqs.length > 0 && (
         <p><span className="text-forge-accent">Requires:</span> {s.prereqs.map(prereqLabel).join('; ')}{s.prereqPerPurchase ? ' (per purchase)' : ''}</p>
       )}

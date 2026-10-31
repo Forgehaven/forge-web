@@ -66,4 +66,15 @@ describe('RulesCompendium favourites', () => {
     await user.click(screen.getByRole('button', { name: 'Antidote' }))
     expect(screen.getAllByText(/Antidote/).length).toBeGreaterThan(1)
   })
+
+  it('lists monster abilities', async () => {
+    const user = userEvent.setup()
+    render(<RulesCompendium />)
+    await user.click(screen.getByRole('button', { name: 'Monsters' }))
+    expect(screen.getByText('Acidic Blood')).toBeInTheDocument()
+    expect(screen.getByText('Undead State')).toBeInTheDocument()
+    await user.type(screen.getByPlaceholderText('Search monsters…'), 'sinking below')
+    expect(screen.queryByText('Acidic Blood')).toBeNull()
+    expect(screen.getByText('Amphibious')).toBeInTheDocument()
+  })
 })

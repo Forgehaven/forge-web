@@ -202,6 +202,7 @@ describe('CharacterPlanner build bar', () => {
     fireEvent.click(within(screen.getByRole('heading', { name: /^WarriorRules/ })).getByRole('button', { name: 'Rules' }))
     fireEvent.click(within(screen.getByRole('dialog', { name: 'Rules' })).getByRole('button', { name: /^Shield/ }))
     expect(screen.getByText(/A buckler cannot be larger/)).toBeInTheDocument()
+    expect(screen.getByText(/iron bound shields have a threshold of 20/)).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Close rules' }))
     await user.click(screen.getByRole('button', { name: 'Back to planning' }))
     expect(screen.getByRole('button', { name: 'Add Shield' })).toBeEnabled()

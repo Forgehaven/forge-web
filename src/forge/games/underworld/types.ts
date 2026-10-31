@@ -32,6 +32,8 @@ export interface Skill {
   _paragon?: boolean
   // Only the first purchase costs CP; later ones cost frags only.
   cpFirstOnly?: boolean
+  // Rules from elsewhere in the books that bear on this skill.
+  related?: { title: string; text: string; ref: string }[]
 }
 
 // A frag purchase applied to the player (Soul Frag "Out of Game Skills"); not bought with CP.

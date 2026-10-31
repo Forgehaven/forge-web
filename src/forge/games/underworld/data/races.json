@@ -69,7 +69,19 @@
           "strBonus": 0,
           "raceReq": "Gargylen",
           "prereqs": [],
-          "desc": "This skill represents extra constitutional training the Gargylen has gone through, beyond what is standard for their race and grants +5 Body. This skill can only be purchased twice throughout the character's entire existence."
+          "desc": "This skill represents extra constitutional training the Gargylen has gone through, beyond what is standard for their race and grants +5 Body. This skill can only be purchased twice throughout the character's entire existence.",
+          "related": [
+            {
+              "title": "Stamina Follows Body",
+              "text": "Your total Stamina Points are always equal to your unaltered total Body points.",
+              "ref": "Core 5.6.5 p.15"
+            },
+            {
+              "title": "Vital Blow Scales With Total Body",
+              "text": "Vital Blow damages a target for half of their total Body (rounded up), so extra Body from racial purchases raises the damage a Vital Blow does to you.",
+              "ref": "Core 5.6.5 p.70"
+            }
+          ]
         }
       ]
     },
@@ -98,7 +110,19 @@
           "strBonus": 0,
           "raceReq": "Mountain Dwarf",
           "prereqs": [],
-          "desc": "This skill represents extra constitutional training the Mountain Dwarf has gone though, beyond what is standard for their race and grants +5 Body. This skill can only be purchased three times."
+          "desc": "This skill represents extra constitutional training the Mountain Dwarf has gone though, beyond what is standard for their race and grants +5 Body. This skill can only be purchased three times.",
+          "related": [
+            {
+              "title": "Stamina Follows Body",
+              "text": "Your total Stamina Points are always equal to your unaltered total Body points.",
+              "ref": "Core 5.6.5 p.15"
+            },
+            {
+              "title": "Vital Blow Scales With Total Body",
+              "text": "Vital Blow damages a target for half of their total Body (rounded up), so extra Body from racial purchases raises the damage a Vital Blow does to you.",
+              "ref": "Core 5.6.5 p.70"
+            }
+          ]
         }
       ]
     },
@@ -195,7 +219,19 @@
           "strBonus": 0,
           "raceReq": "Wild Elf",
           "prereqs": [],
-          "desc": "This skill represents extra constitutional training the Wild Elf has gone though, beyond what is standard for their race and grants +5 Body. This skill can only be purchased once throughout the character's entire existence."
+          "desc": "This skill represents extra constitutional training the Wild Elf has gone though, beyond what is standard for their race and grants +5 Body. This skill can only be purchased once throughout the character's entire existence.",
+          "related": [
+            {
+              "title": "Stamina Follows Body",
+              "text": "Your total Stamina Points are always equal to your unaltered total Body points.",
+              "ref": "Core 5.6.5 p.15"
+            },
+            {
+              "title": "Vital Blow Scales With Total Body",
+              "text": "Vital Blow damages a target for half of their total Body (rounded up), so extra Body from racial purchases raises the damage a Vital Blow does to you.",
+              "ref": "Core 5.6.5 p.70"
+            }
+          ]
         }
       ]
     },
@@ -253,7 +289,39 @@
           "strBonus": 1,
           "raceReq": "Orc",
           "prereqs": [],
-          "desc": "Purchasing this racial grants an orc the combination of Strength Point Bonus and Body Point Bonus. Furthermore, when an Orc has 50% or less of their total natural Body points (rounded down) they gain +1 damage to all melee weapon swings. This skill may only be purchased once."
+          "desc": "Purchasing this racial grants an orc the combination of Strength Point Bonus and Body Point Bonus. Furthermore, when an Orc has 50% or less of their total natural Body points (rounded down) they gain +1 damage to all melee weapon swings. This skill may only be purchased once.",
+          "related": [
+            {
+              "title": "How Strength Works",
+              "text": "For every +2 Strength, your weapon will hit with +1 damage. This does not apply to missile weapons like bows. Strength may also be used to \"push\" an opponent. To do so, both hands must be empty and placed on the target's torso or shoulders. The attacker must then declare \"+X Strength push\". The target will be \"pushed\" +2 feet for every +1 Strength. Equal or greater strength can be used to resist a push by calling \"No Effect\".",
+              "ref": "Core 5.6.5 p.16"
+            },
+            {
+              "title": "Combined Strength",
+              "text": "When combining Strength, each person adds their numerical Strength to the total Strength pool. Since a character begins with +0 Strength, 6 individuals with 0 Strength still sum up to 0 Strength.",
+              "ref": "Core 5.6.5 p.16"
+            },
+            {
+              "title": "Other Uses of Strength",
+              "text": "A defender with at least +2 more Strength than a Garrotte attacker can resist the Garrotte, and the base damage of Sap can only be increased by Strength. Large weapons and the Maul gain +1 damage per 1 Strength, but Crossbow damage is never increased by Strength.",
+              "ref": "Core 5.6.5 p.69"
+            },
+            {
+              "title": "Ripping Free of Binds",
+              "text": "Strength can tear you out of some holds at a cost of Body damage that ignores thresholds: the Snare spell needs +2 Strength (2 Body), the Bind spell +4 (4 Body), and the Web spell +6 (6 Body). Traps also allow it with the Self Mutilate skill: a pinned leg on a 5-count with +2 Strength (2 Body), and a Net trap on a 3-count with +4 Strength (4 Body).",
+              "ref": "Core 5.6.5 p.84"
+            },
+            {
+              "title": "Stamina Follows Body",
+              "text": "Your total Stamina Points are always equal to your unaltered total Body points.",
+              "ref": "Core 5.6.5 p.15"
+            },
+            {
+              "title": "Vital Blow Scales With Total Body",
+              "text": "Vital Blow damages a target for half of their total Body (rounded up), so extra Body from racial purchases raises the damage a Vital Blow does to you.",
+              "ref": "Core 5.6.5 p.70"
+            }
+          ]
         }
       ]
     },
@@ -322,7 +390,19 @@
           "strBonus": 0,
           "raceReq": "Einher",
           "prereqs": [],
-          "desc": "This skill represents extra constitutional training the Einher has gone though, beyond what is standard for their race and grants +5 Body. This skill can only be purchased once throughout the character's entire existence."
+          "desc": "This skill represents extra constitutional training the Einher has gone though, beyond what is standard for their race and grants +5 Body. This skill can only be purchased once throughout the character's entire existence.",
+          "related": [
+            {
+              "title": "Stamina Follows Body",
+              "text": "Your total Stamina Points are always equal to your unaltered total Body points.",
+              "ref": "Core 5.6.5 p.15"
+            },
+            {
+              "title": "Vital Blow Scales With Total Body",
+              "text": "Vital Blow damages a target for half of their total Body (rounded up), so extra Body from racial purchases raises the damage a Vital Blow does to you.",
+              "ref": "Core 5.6.5 p.70"
+            }
+          ]
         },
         {
           "id": "strength-point-bonus-einher",
@@ -332,7 +412,29 @@
           "strBonus": 1,
           "raceReq": "Einher",
           "prereqs": [],
-          "desc": "This skills represents raw physical power, increasing the character's Strength rating by +1. This skill can only purchased once throughout the character's entire existence."
+          "desc": "This skills represents raw physical power, increasing the character's Strength rating by +1. This skill can only purchased once throughout the character's entire existence.",
+          "related": [
+            {
+              "title": "How Strength Works",
+              "text": "For every +2 Strength, your weapon will hit with +1 damage. This does not apply to missile weapons like bows. Strength may also be used to \"push\" an opponent. To do so, both hands must be empty and placed on the target's torso or shoulders. The attacker must then declare \"+X Strength push\". The target will be \"pushed\" +2 feet for every +1 Strength. Equal or greater strength can be used to resist a push by calling \"No Effect\".",
+              "ref": "Core 5.6.5 p.16"
+            },
+            {
+              "title": "Combined Strength",
+              "text": "When combining Strength, each person adds their numerical Strength to the total Strength pool. Since a character begins with +0 Strength, 6 individuals with 0 Strength still sum up to 0 Strength.",
+              "ref": "Core 5.6.5 p.16"
+            },
+            {
+              "title": "Other Uses of Strength",
+              "text": "A defender with at least +2 more Strength than a Garrotte attacker can resist the Garrotte, and the base damage of Sap can only be increased by Strength. Large weapons and the Maul gain +1 damage per 1 Strength, but Crossbow damage is never increased by Strength.",
+              "ref": "Core 5.6.5 p.69"
+            },
+            {
+              "title": "Ripping Free of Binds",
+              "text": "Strength can tear you out of some holds at a cost of Body damage that ignores thresholds: the Snare spell needs +2 Strength (2 Body), the Bind spell +4 (4 Body), and the Web spell +6 (6 Body). Traps also allow it with the Self Mutilate skill: a pinned leg on a 5-count with +2 Strength (2 Body), and a Net trap on a 3-count with +4 Strength (4 Body).",
+              "ref": "Core 5.6.5 p.84"
+            }
+          ]
         }
       ]
     },
@@ -385,7 +487,19 @@
           "strBonus": 0,
           "raceReq": "Human",
           "prereqs": [],
-          "desc": "This skill represents extra constitutional training the Human has gone though, beyond what is standard for their race and grants +5 Body. This skill can only be purchased once throughout the character's entire existence."
+          "desc": "This skill represents extra constitutional training the Human has gone though, beyond what is standard for their race and grants +5 Body. This skill can only be purchased once throughout the character's entire existence.",
+          "related": [
+            {
+              "title": "Stamina Follows Body",
+              "text": "Your total Stamina Points are always equal to your unaltered total Body points.",
+              "ref": "Core 5.6.5 p.15"
+            },
+            {
+              "title": "Vital Blow Scales With Total Body",
+              "text": "Vital Blow damages a target for half of their total Body (rounded up), so extra Body from racial purchases raises the damage a Vital Blow does to you.",
+              "ref": "Core 5.6.5 p.70"
+            }
+          ]
         }
       ]
     }
@@ -806,7 +920,29 @@
           "strBonus": 1,
           "raceReq": "Wolven",
           "prereqs": [],
-          "desc": "This skill represents raw physical power, increasing the character's Strength rating by +1. This skill can only be purchased once throughout the character's entire existence."
+          "desc": "This skill represents raw physical power, increasing the character's Strength rating by +1. This skill can only be purchased once throughout the character's entire existence.",
+          "related": [
+            {
+              "title": "How Strength Works",
+              "text": "For every +2 Strength, your weapon will hit with +1 damage. This does not apply to missile weapons like bows. Strength may also be used to \"push\" an opponent. To do so, both hands must be empty and placed on the target's torso or shoulders. The attacker must then declare \"+X Strength push\". The target will be \"pushed\" +2 feet for every +1 Strength. Equal or greater strength can be used to resist a push by calling \"No Effect\".",
+              "ref": "Core 5.6.5 p.16"
+            },
+            {
+              "title": "Combined Strength",
+              "text": "When combining Strength, each person adds their numerical Strength to the total Strength pool. Since a character begins with +0 Strength, 6 individuals with 0 Strength still sum up to 0 Strength.",
+              "ref": "Core 5.6.5 p.16"
+            },
+            {
+              "title": "Other Uses of Strength",
+              "text": "A defender with at least +2 more Strength than a Garrotte attacker can resist the Garrotte, and the base damage of Sap can only be increased by Strength. Large weapons and the Maul gain +1 damage per 1 Strength, but Crossbow damage is never increased by Strength.",
+              "ref": "Core 5.6.5 p.69"
+            },
+            {
+              "title": "Ripping Free of Binds",
+              "text": "Strength can tear you out of some holds at a cost of Body damage that ignores thresholds: the Snare spell needs +2 Strength (2 Body), the Bind spell +4 (4 Body), and the Web spell +6 (6 Body). Traps also allow it with the Self Mutilate skill: a pinned leg on a 5-count with +2 Strength (2 Body), and a Net trap on a 3-count with +4 Strength (4 Body).",
+              "ref": "Core 5.6.5 p.84"
+            }
+          ]
         }
       ]
     },
@@ -1064,7 +1200,19 @@
           "bodyBonus": 5,
           "strBonus": 0,
           "prereqs": [],
-          "desc": "The Gargylen gains +5 permanent Body points but suffers double damage from all spells that damage the Body. The amount of permanent Body points gained can be increased with additional purchases. With two purchases, the total permanent Body points gained increases to +10; three purchases increases the total permanent Body points gained to +15 and grants a +5 Normal threshold; four purchases increases the total permanent Body points gained to +20; and finally, five purchases increases the total permanent Body points gained to +25 and grants a +0 Silver threshold."
+          "desc": "The Gargylen gains +5 permanent Body points but suffers double damage from all spells that damage the Body. The amount of permanent Body points gained can be increased with additional purchases. With two purchases, the total permanent Body points gained increases to +10; three purchases increases the total permanent Body points gained to +15 and grants a +5 Normal threshold; four purchases increases the total permanent Body points gained to +20; and finally, five purchases increases the total permanent Body points gained to +25 and grants a +0 Silver threshold.",
+          "related": [
+            {
+              "title": "Stamina Follows Body",
+              "text": "Your total Stamina Points are always equal to your unaltered total Body points.",
+              "ref": "Core 5.6.5 p.15"
+            },
+            {
+              "title": "Vital Blow Scales With Total Body",
+              "text": "Vital Blow damages a target for half of their total Body (rounded up), so extra Body from racial purchases raises the damage a Vital Blow does to you.",
+              "ref": "Core 5.6.5 p.70"
+            }
+          ]
         }
       ]
     },

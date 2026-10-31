@@ -1,7 +1,7 @@
 import { Children, createContext, isValidElement, useContext, useState } from 'react'
 import { Masonry } from '../../../../components/Masonry'
 import {
-  CULTURES, DATA_SOURCES, EQUIPMENT, FAVOURED_VOCATIONS, FRAG_RACES, OCC_ABILITIES, OUT_OF_GAME, RACES, SKILLS, SOURCES, SPELLS, VOCATIONS,
+  CULTURES, DATA_SOURCES, EQUIPMENT, MONSTERS, FAVOURED_VOCATIONS, FRAG_RACES, OCC_ABILITIES, OUT_OF_GAME, RACES, SKILLS, SOURCES, SPELLS, VOCATIONS,
 } from '../data'
 import { OCC_CLASS, OCC_ORDER, TABLE, ordinal } from '../rules'
 import type { Race, Skill, Vocation } from '../types'
@@ -13,7 +13,7 @@ import { ProductionItems } from '../components/ProductionItems'
 import { useCompendiumFavourites } from '../hooks/useCompendiumFavourites'
 
 const STAR = '★'
-const TABS = ['All', STAR, 'Races', 'Cultures', 'Occupations', 'Vocations', 'Skills', 'Spells', 'Armour & Weapons', 'Levels', 'Sources'] as const
+const TABS = ['All', STAR, 'Races', 'Cultures', 'Occupations', 'Vocations', 'Skills', 'Spells', 'Armour & Weapons', 'Levels', 'Monsters', 'Sources'] as const
 type Tab = typeof TABS[number]
 
 const SPHERES = [...new Set(SPELLS.map(s => s.sphere))]
@@ -128,7 +128,7 @@ interface Filters { q: string; sphere: string; circle: string; category: string;
 
 const OOG = 'Out of Game Skills'
 
-const SEARCHABLE = ['Races', 'Cultures', 'Occupations', 'Vocations', 'Skills', 'Spells', 'Armour & Weapons'] as const
+const SEARCHABLE = ['Races', 'Cultures', 'Occupations', 'Vocations', 'Skills', 'Spells', 'Armour & Weapons', 'Monsters'] as const
 type Searchable = typeof SEARCHABLE[number]
 const isSearchable = (t: Tab): t is Searchable => (SEARCHABLE as readonly string[]).includes(t)
 
@@ -269,6 +269,35 @@ function section(tab: Searchable, { q, sphere, circle, category, favs }: Filters
         </Grid>
       )
     }
+    case 'Monsters': {
+      const list = MONSTERS.abilities.filter(m => has(q, all(m)) && kept(`Monsters:${m.name}`))
+      const undead = has(q, all(MONSTERS.undeadState)) && kept('Monsters:Undead State')
+      if (!list.length && !undead) return null
+      return (
+        <>
+          {!q && !favs && <p className="text-xs text-forge-muted mb-2">{MONSTERS.intro.split('\n\n')[0]}</p>}
+          <Grid>
+            {list.map(m => (
+              <Entry key={m.name} title={m.name} tags={[m.ref.replace('Monster Abilities 3.4 ', '')]} fav={`Monsters:${m.name}`}>
+                <p><span className="text-forge-accent">Call:</span> {m.call}</p>
+                <p><span className="text-forge-accent">Delivery:</span> {m.delivery}</p>
+                <Prose text={m.desc} />
+              </Entry>
+            ))}
+            {undead && (
+              <Entry key="Undead State" title="Undead State" tags={[MONSTERS.undeadState.ref.replace('Monster Abilities 3.4 ', '')]} fav="Monsters:Undead State">
+                {MONSTERS.undeadState.sections.map(s => (
+                  <div key={s.title}>
+                    {s.title && <p className="font-medium text-forge-text">{s.title}</p>}
+                    <Prose text={s.text} />
+                  </div>
+                ))}
+              </Entry>
+            )}
+          </Grid>
+        </>
+      )
+    }
   }
 }
 
@@ -319,7 +348,7 @@ export default function RulesCompendium() {
 
       <div className="flex flex-col">
         {tab === 'All' && !q && (
-          <p className="text-xs text-forge-muted">Search races, cultures, occupations, vocations, skills, spells, weapons and armour.</p>
+          <p className="text-xs text-forge-muted">Search races, cultures, occupations, vocations, skills, spells, weapons, armour and monster abilities.</p>
         )}
         {tab === 'All' && q && !hits.length && nothing}
         {tab === STAR && !hits.length && (q ? nothing : <p className="text-xs text-forge-muted">Tap ☆ on any entry to keep it here.</p>)}
@@ -368,7 +397,7 @@ export default function RulesCompendium() {
                       <td className="py-1.5 pr-4"><a href={r.url} target="_blank" rel="noopener noreferrer" className="text-forge-accent hover:underline">{r.title}</a></td>
                       <td className="pr-4 font-mono text-forge-text">v{r.version}</td>
                       <td className="pr-4 text-forge-muted">updated {r.lastModified}</td>
-                      <td className={r.parsed ? 'text-emerald-400' : 'text-forge-muted'}>{r.parsed ? 'verified' : 'not yet verified'}</td>
+                      <td className={r.parsed ? 'text-emerald-400' : 'text-forge-muted'}>{r.parsed ? 'verified' : r.covers.length ? 'not yet verified' : 'not used by the planner'}</td>
                     </tr>
                   ))}
                 </tbody>
