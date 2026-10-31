@@ -127,7 +127,7 @@ describe('CharacterPlanner magic', () => {
     await user.click(screen.getByRole('button', { name: 'Add to plan' }))
     expect(screen.queryByText(/invalid/)).toBeNull()
     expect(screen.queryAllByLabelText(/Add \w+ circle slot/)).toEqual([])
-    expect(screen.getByRole('button', { name: 'Spell towers full' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Spell slots full' })).toBeDisabled()
     await user.click(screen.getByRole('button', { name: 'Remove last spell slot (9th)' }))
     expect(screen.getByRole('button', { name: /Add next spell slot \(9th/ })).toBeEnabled()
     expect(screen.getAllByLabelText(/Add \w+ circle slot/).map(b => b.getAttribute('aria-label'))).toEqual(['Add 9th circle slot'])

@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { AuthProvider } from './AuthProvider'
 import { LoginModal } from './LoginModal'
+import type { AuthUser } from './authContext'
 
 const fetchSpy = vi.fn()
 globalThis.fetch = fetchSpy
@@ -14,7 +15,7 @@ function ok(payload: unknown) {
 
 const AVATAR_URL = 'https://cdn.discordapp.com/avatars/d1/somehash.png'
 
-function tester(member: boolean) {
+function tester(member: boolean): AuthUser {
   return {
     id: 'u1',
     discord_id: 'd1',
@@ -69,13 +70,15 @@ describe('LoginModal', () => {
 
   it('names WoW roles and hides a missing leadership chip', async () => {
     const user = tester(true)
-    user.guilds.running_dawn.roles = { wow_member: true, wow_leadership: false }
+    user.guilds.running_dawn.roles = { wowf_member: true, wowf_leadership: false }
+    user.guilds.running_dawn.labels = { wowf_member: 'WoW:F Guild Member', wowf_leadership: 'WoW:F Guild Leadership' }
+    user.guilds.running_dawn.quiet = ['wowf_leadership']
     fetchSpy.mockResolvedValue(ok(user))
 
     renderModal('/games/wow-forever')
 
-    expect(await screen.findByText('✓ WoW Guild Member')).toBeInTheDocument()
-    expect(screen.queryByText(/WoW Guild Leadership/)).not.toBeInTheDocument()
+    expect(await screen.findByText('✓ WoW:F Guild Member')).toBeInTheDocument()
+    expect(screen.queryByText(/WoW:F Guild Leadership/)).not.toBeInTheDocument()
   })
 
   it('logged in: avatar renders the backend URL verbatim', async () => {

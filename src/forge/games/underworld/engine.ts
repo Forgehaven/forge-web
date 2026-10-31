@@ -1,7 +1,7 @@
 import {
   BASE_CP, CULTURE_FRAG_COST, DEFAULT_MAX, ELEMENTS, EXCLUSIVE_SPHERES, MAX_BLANKETS_PER_MONTH,
   MAX_RITUAL_SLOTS, OCC_CLASS, SPIRITUAL_RESOLVE_MAX_LEVEL, RACIAL_CP, RITUAL_BASE_COSTS, FAVOURED_SPELL_CIRCLE_COSTS, FAVOURED_RITUAL_BASE_COSTS,
-  SPELL_CIRCLE_COSTS, sphereAt, sphereId, sphereIndex, sphereName, SPHERE_SURCHARGE_FRAGS, PYRAMID_ORDER,
+  SPELL_CIRCLE_COSTS, sphereAt, sphereId, sphereIndex, sphereName, SPHERE_SURCHARGE_FRAGS, PYRAMID_ORDER, SLOTS_PER_CIRCLE, MAX_SLOTS_PER_CIRCLE,
   SURCHARGE_SPHERES, TABLE, WEAPON_GROUPS, ordinal,
   type LevelRow,
 } from './rules'
@@ -528,20 +528,38 @@ export function sortedPurchases(b: Build) {
   return out
 }
 
-// Slots are bought one at a time in Chart 8-1 order (Core p.106); once the
-// 5-wide pyramid is full a second tower repeats the same order. circles[c] = slots at circle c.
+// The first 45 slots follow Chart 8-1 order (Core p.106). Once every circle has 5,
+// any circle may widen to 10 as long as it never has more slots than the circle
+// below it. circles[c] = slots at circle c.
 export const SLOT_ORDER = [...PYRAMID_ORDER, ...PYRAMID_ORDER]
+const CIRCLES = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 const slotTotal = (circles: number[]) => circles.reduce((a, n) => a + n, 0)
-// The circle the next slot must be, or undefined when both towers are full.
-export const nextSlotCircle = (circles: number[]) => SLOT_ORDER[slotTotal(circles)]
-// The only slot that may be removed: the last one bought.
-export const lastSlotCircle = (circles: number[]) => SLOT_ORDER[slotTotal(circles) - 1]
+const pyramidFull = (circles: number[]) => CIRCLES.every(c => circles[c] >= SLOTS_PER_CIRCLE)
 
 export function pyramidError(circles: number[], circle: number): string | null {
-  const next = nextSlotCircle(circles)
-  if (next === undefined) return 'Both spell towers are full'
-  return circle === next ? null : `Next slot must be ${ordinal(next)} Circle`
+  if (!pyramidFull(circles)) {
+    const next = PYRAMID_ORDER[slotTotal(circles)]
+    return circle === next ? null : `Next slot must be ${ordinal(next)} Circle`
+  }
+  if (circles[circle] >= MAX_SLOTS_PER_CIRCLE) return `${MAX_SLOTS_PER_CIRCLE} slots is the most per circle`
+  if (circle > 1 && circles[circle] >= circles[circle - 1]) return `Needs another ${ordinal(circle - 1)} Circle slot first`
+  return null
 }
+
+// Whether removing one slot at this circle leaves a legal book.
+export function canRemoveSlot(circles: number[], circle: number) {
+  if (!pyramidFull(circles)) return PYRAMID_ORDER[slotTotal(circles) - 1] === circle
+  if (circles[circle] > SLOTS_PER_CIRCLE) return circle === 9 || circles[circle] > circles[circle + 1]
+  return circle === 9 && slotTotal(circles) === PYRAMID_ORDER.length
+}
+
+// Suggested next slot: the first one the two-tower order still lacks, else any legal one.
+export function nextSlotCircle(circles: number[]) {
+  const have = [...circles]
+  return SLOT_ORDER.find(c => have[c]-- <= 0 && !pyramidError(circles, c)) ?? CIRCLES.find(c => !pyramidError(circles, c))
+}
+// Suggested slot to remove: the highest circle that can go.
+export const lastSlotCircle = (circles: number[]) => [...CIRCLES].reverse().find(c => canRemoveSlot(circles, c))
 
 export interface Evaluation {
   steps: Step[]

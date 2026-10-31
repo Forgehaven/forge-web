@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { OCC_ORDER, PYRAMID_ORDER, RITUAL_BASE_COSTS, SPELL_CIRCLE_COSTS, SPHERES } from './rules'
 import { SKILLS } from './data'
 import {
-  catalog, choiceOptions, copyPicks, cpAt, emptyBuild, evaluate, insertBlanket, lastBlanketAtLevel, levelRow, nextBlanketMonth, pastBlankets, priorityView, simpleView, stateAt, switchRole, unbuy, vocationNeeds,
+  canRemoveSlot, catalog, choiceOptions, copyPicks, cpAt, emptyBuild, evaluate, insertBlanket, lastBlanketAtLevel, lastSlotCircle, nextSlotCircle, levelRow, nextBlanketMonth, pastBlankets, priorityView, simpleView, stateAt, switchRole, unbuy, vocationNeeds,
   type Build, type Purchase,
 } from './engine'
 
@@ -206,6 +206,8 @@ describe('priority mode', () => {
   })
 })
 
+const CIRCLES_OK = (circles: number[]) => [1, 2, 3, 4, 5, 6, 7, 8, 9].filter(c => canRemoveSlot(circles, c))
+
 describe('spell pyramid (Core p.105-106)', () => {
   const magic = () => [buy('read-write'), buy('read-magic'), buy('sphere-1'), buy('read-magic-advanced')]
   const slots = (...circles: number[]) => circles.map(c => buy('spell-slot', 0, String(c)))
@@ -223,10 +225,20 @@ describe('spell pyramid (Core p.105-106)', () => {
     expect(errors([...magic(), ...slots(1, 1, 1)])).toEqual([null, null, 'Next slot must be 2nd Circle'])
   })
 
-  it('starts a second tower in the same order once the first is full', () => {
+  it('widens freely once the pyramid is full, never above the circle below', () => {
     expect(errors([...magic(), ...slots(...PYRAMID_ORDER, ...PYRAMID_ORDER)]).every(e => e === null)).toBe(true)
-    expect(errors([...magic(), ...slots(...PYRAMID_ORDER, 1, 1, 1)]).slice(-1)).toEqual(['Next slot must be 2nd Circle'])
-    expect(errors([...magic(), ...slots(...PYRAMID_ORDER, ...PYRAMID_ORDER, 1)]).slice(-1)).toEqual(['Both spell towers are full'])
+    expect(errors([...magic(), ...slots(...PYRAMID_ORDER, 1, 1, 1)]).every(e => e === null)).toBe(true)
+    expect(errors([...magic(), ...slots(...PYRAMID_ORDER, 2)]).slice(-1)).toEqual(['Needs another 1st Circle slot first'])
+    expect(errors([...magic(), ...slots(...PYRAMID_ORDER, ...PYRAMID_ORDER, 1)]).slice(-1)).toEqual(['10 slots is the most per circle'])
+  })
+
+  it('removes only slots that leave a legal book', () => {
+    const c = (...n: number[]) => [0, ...n]
+    expect(CIRCLES_OK(c(5, 5, 5, 5, 5, 5, 5, 5, 5))).toEqual([9])
+    expect(CIRCLES_OK(c(8, 7, 7, 5, 5, 5, 5, 5, 5))).toEqual([1, 3])
+    expect(CIRCLES_OK(c(2, 1, 0, 0, 0, 0, 0, 0, 0))).toEqual([2])
+    expect(lastSlotCircle(c(8, 7, 7, 5, 5, 5, 5, 5, 5))).toBe(3)
+    expect(nextSlotCircle(c(8, 7, 7, 5, 5, 5, 5, 5, 5))).toBe(1)
   })
 })
 

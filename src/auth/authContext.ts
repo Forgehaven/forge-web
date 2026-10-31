@@ -3,6 +3,9 @@ import { createContext, useContext } from 'react'
 export interface GuildStatus {
   is_member: boolean
   roles: Record<string, boolean>
+  // Display text per role and roles to hide when missing; absent from older APIs.
+  labels?: Record<string, string>
+  quiet?: string[]
 }
 
 export interface AuthUser {

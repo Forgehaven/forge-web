@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { evaluate, lastSlotCircle, nextSlotCircle, READ_MAGIC, READ_MAGIC_ADVANCED, RITUAL_SLOT, SPELL_SLOT, skillName, type Build, type Evaluation } from '../engine'
+import { canRemoveSlot, evaluate, pyramidError, lastSlotCircle, nextSlotCircle, READ_MAGIC, READ_MAGIC_ADVANCED, RITUAL_SLOT, SPELL_SLOT, skillName, type Build, type Evaluation } from '../engine'
 import {
   ELEMENTS, EXCLUSIVE_SPHERES, MAX_RITUAL_SLOTS, MAX_SLOTS_PER_CIRCLE, SCHOOLS_OF_MAGIC, SLOTS_PER_CIRCLE,
   SURCHARGE_SPHERES, ordinal, PYRAMID_ORDER, sphereId, sphereName,
@@ -51,7 +51,7 @@ export function MagicPanel({ build, ev, active, loose, setBuild, onAdd, onRemove
     setBuild(b => ({ ...b, schools: b.schools.map((s, j) => (j === i ? school : s)) }))
   const removeSphere = () => setBuild(b => ({ ...b, schools: b.schools.slice(0, -1) }))
   const hasElemental = build.schools.includes('Elemental')
-  // Slots come off in reverse buying order, so only the last one bought can go.
+  // Pyramid builds in book order; widening allows any circle not above the one below it.
   const lastSlot = lastSlotCircle(ev.final.circles)
   const nextSlot = nextSlotCircle(ev.final.circles)
   const nextProbe = nextSlot ? probe(SPELL_SLOT, String(nextSlot)) : null
@@ -145,7 +145,7 @@ export function MagicPanel({ build, ev, active, loose, setBuild, onAdd, onRemove
               title={nextProbe?.error ?? undefined}
               disabled={!nextSlot || !!nextProbe?.error}
               onClick={() => onAdd(SPELL_SLOT, String(nextSlot))}
-            >{nextSlot ? `Add next spell slot (${ordinal(nextSlot)}, ${nextProbe?.cost} CP)` : 'Spell towers full'}</button>
+            >{nextSlot ? `Add next spell slot (${ordinal(nextSlot)}, ${nextProbe?.cost} CP)` : 'Spell slots full'}</button>
             {lastSlot && (
               <button className="forge-btn w-72 !py-2" onClick={() => onRemove(SPELL_SLOT, String(lastSlot))}>
                 Remove last spell slot ({ordinal(lastSlot)})
@@ -166,8 +166,8 @@ export function MagicPanel({ build, ev, active, loose, setBuild, onAdd, onRemove
                   </div>
                   <span className="text-[10px] font-mono text-[#6b7280]">{p?.cost} CP</span>
                   <div className="flex gap-1 min-h-7">
-                    {circle === lastSlot && <RemoveButton label={`Remove ${ordinal(circle)} circle slot`} onClick={() => onRemove(SPELL_SLOT, String(circle))} />}
-                    {circle === nextSlot && <AddButton label={`Add ${ordinal(circle)} circle slot`} probe={p} onClick={() => onAdd(SPELL_SLOT, String(circle))} />}
+                    {canRemoveSlot(ev.final.circles, circle) && <RemoveButton label={`Remove ${ordinal(circle)} circle slot`} onClick={() => onRemove(SPELL_SLOT, String(circle))} />}
+                    {!pyramidError(ev.final.circles, circle) && <AddButton label={`Add ${ordinal(circle)} circle slot`} probe={p} onClick={() => onAdd(SPELL_SLOT, String(circle))} />}
                   </div>
                 </div>
               )
@@ -194,7 +194,7 @@ export function MagicPanel({ build, ev, active, loose, setBuild, onAdd, onRemove
                 <select aria-label="Fill through circle" className="forge-input !w-auto" value={fillTo} onChange={e => setFillTo(e.target.value)}>
                   <option value="">circle…</option>
                   {[1, 2].map(l => (
-                    <optgroup key={l} label={l === 1 ? 'First pyramid (5 wide)' : 'Second pyramid (10 wide)'}>
+                    <optgroup key={l} label={l === 1 ? 'First pyramid (5 wide)' : 'Widen to 10 (book order)'}>
                       {Array.from({ length: 9 }, (_, i) => i + 1).map(c => <option key={c} value={`${l}-${c}`}>{ordinal(c)} circle{l === 2 ? ', 2nd pyramid' : ''}</option>)}
                       <option value={`${l}-10`}>Whole {l === 1 ? 'first' : 'second'} pyramid</option>
                     </optgroup>

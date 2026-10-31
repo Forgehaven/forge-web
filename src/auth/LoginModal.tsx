@@ -3,17 +3,21 @@ import { useLocation } from 'react-router-dom'
 import { Modal } from '../components/Modal'
 import { Collapsible } from '../components/Collapsible'
 import { ConfirmButton } from '../components/ConfirmButton'
-import { useAuth, type AuthUser } from './authContext'
+import { useAuth, type AuthUser, type GuildStatus } from './authContext'
 import { useFfxiCharacters } from '../forge/games/ffxi/hooks/useFfxiCharacters'
 import { API_URLS } from '../config/apiUrls'
 import ffxiLogo from '../forge/games/ffxi/ffxi-logo.png'
 
-// Named roles from /auth/me: display label, and whether a missing role is worth a red chip.
-const ROLE_LABELS: Record<string, string> = {
-  wow_member: 'WoW Guild Member',
-  wow_leadership: 'WoW Guild Leadership',
+// One row of chips per game: roles share a row when their slug prefix matches (wowf_member, wowf_leadership).
+function byGame({ roles, quiet = [] }: GuildStatus): Record<string, [string, boolean][]> {
+  const out: Record<string, [string, boolean][]> = {}
+  for (const [role, ok] of Object.entries(roles)) {
+    if (!ok && quiet.includes(role)) continue
+    const game = role.split('_')[0]
+    ;(out[game] ??= []).push([role, ok])
+  }
+  return out
 }
-const QUIET_WHEN_MISSING = new Set(['wow_leadership'])
 
 // 'running_dawn' -> 'Running Dawn'
 function titleCase(slug: string): string {
@@ -221,12 +225,14 @@ function GuildAccess({ user }: { user: AuthUser }) {
           <p className="text-xs text-[#6b7280]">{titleCase(slug)}</p>
           <div className="flex flex-wrap gap-2">
             <AccessChip ok={status.is_member} label="Member" />
-            {Object.entries(status.roles)
-              .filter(([role, ok]) => ok || !QUIET_WHEN_MISSING.has(role))
-              .map(([role, ok]) => (
-                <AccessChip key={role} ok={ok} label={ROLE_LABELS[role] ?? `${titleCase(role)} role`} />
-              ))}
           </div>
+          {Object.values(byGame(status)).map(roles => (
+            <div key={roles[0][0]} className="flex flex-wrap gap-2">
+              {roles.map(([role, ok]) => (
+                <AccessChip key={role} ok={ok} label={status.labels?.[role] ?? `${titleCase(role)} role`} />
+              ))}
+            </div>
+          ))}
         </div>
       ))}
     </div>
