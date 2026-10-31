@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { CULTURES, FAVOURED_COSTS, FAVOURED_VOCATIONS, FRAG_RACES, OCC_ABILITIES, PRODUCTION, RACES, SKILLS, VOCATIONS, VOCATION_PREREQS } from '.'
+import { CULTURES, FAVOURED_COSTS, FRAG_RACES, RENOWNED, OCC_ABILITIES, PRODUCTION, RACES, SKILLS, VOCATIONS, VOCATION_PREREQS } from '.'
 import { SPHERES } from '../rules'
 import { RITUAL_SLOT, SPELL_SLOT } from '../engine'
 
 // Skills are referenced by id; a typo would silently never match.
 describe('rules data references', () => {
-  const vocations = [...Object.values(VOCATIONS), ...Object.values(FAVOURED_VOCATIONS)]
+  const vocations = [...Object.values(VOCATIONS), ...Object.values(RENOWNED)]
   const racial = [...Object.values(RACES), ...Object.values(FRAG_RACES), ...Object.values(CULTURES)].flatMap(r => r.purchased ?? [])
   const skills = [...SKILLS.flatMap(c => c.skills), ...racial]
   const abilities = [...Object.values(OCC_ABILITIES).flat(), ...vocations.flatMap(v => v.abilities)]

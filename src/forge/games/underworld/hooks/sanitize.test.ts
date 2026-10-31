@@ -17,4 +17,11 @@ describe('sanitize', () => {
     expect(b).toMatchObject({ mode: 'priority', priority: { perMonth: 1, months: { '2026-03': 0 }, purchases: [{ id: 'a' }] } })
     expect(sanitize({ useTimeline: true }).mode).toBe('timeline')
   })
+
+  it('turns an old Favoured vocation into a Favoured purchase', () => {
+    const b = sanitize({ occupation: 'Mage', vocation: 'Paladin', simple: { blankets: 2, purchases: [{ id: 'a', skill: 'shield', at: 0 }] } })
+    expect(b.vocation).toBe('')
+    expect(b.simple!.purchases.map(p => [p.skill, p.choice])).toEqual([['favoured', 'Paladin'], ['shield', undefined]])
+    expect(evaluate(simpleView(b), undefined, true).renowned).toBe('Paladin')
+  })
 })

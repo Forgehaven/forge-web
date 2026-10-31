@@ -106,8 +106,8 @@ export function MagicPanel({ build, ev, active, loose, setBuild, onAdd, onRemove
                 <select aria-label={`Sphere ${i + 1} school`} className="forge-input !py-1 text-xs" value={build.schools[i]} onChange={e => setSchool(i, e.target.value)}>
                   <option value="">{has ? 'School…' : '1. Choose a school…'}</option>
                   {SCHOOLS_OF_MAGIC.map(s => {
-                    const locked = EXCLUSIVE_SPHERES[s] && !EXCLUSIVE_SPHERES[s].includes(build.vocation)
-                    return <option key={s} value={s} disabled={used.includes(s) || !!locked}>{s}{locked ? ' (Favoured only)' : ''}</option>
+                    const locked = EXCLUSIVE_SPHERES[s] && !EXCLUSIVE_SPHERES[s].includes(ev.renowned ?? '')
+                    return <option key={s} value={s} disabled={used.includes(s) || !!locked}>{s}{locked ? ' (Renowned only)' : ''}</option>
                   })}
                 </select>
                 {!has && (

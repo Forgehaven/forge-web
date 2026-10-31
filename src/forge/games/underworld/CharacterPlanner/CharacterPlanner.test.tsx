@@ -302,4 +302,16 @@ describe('CharacterPlanner build bar', () => {
     await user.click(screen.getByText('Artifice'))
     expect(screen.getAllByText('Requires 10x Blacksmith').some(e => e.tagName === 'P')).toBe(true)
   })
+
+  it('becomes a Renowned Occupation by buying Favoured', async () => {
+    const user = userEvent.setup()
+    renderPlanner()
+    await user.selectOptions(screen.getByLabelText('Occupation'), 'Mage')
+    expect(screen.queryByRole('option', { name: 'Paladin' })).toBeNull()
+    await user.click(screen.getByRole('button', { name: 'Add Favoured' }))
+    await user.selectOptions(screen.getByLabelText('Favoured choice'), 'Paladin')
+    expect(screen.getByText('Renowned:')).toBeInTheDocument()
+    expect(screen.getByLabelText('Former occupation')).toBeDisabled()
+    expect(screen.getByText(/Defender/)).toBeInTheDocument()
+  })
 })

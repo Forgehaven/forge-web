@@ -1,6 +1,6 @@
 // Rules data lives in the JSON files beside this one; `meta` on each records
 // where it came from. Edit the JSON, not this file.
-import type { Ability, Culture, OutOfGameSkill, Production, Race, SkillCategory, Spell, Vocation, VocationPrereqs } from '../types'
+import type { Ability, Culture, OutOfGameSkill, Production, Race, Renowned, SkillCategory, Spell, Vocation, VocationPrereqs } from '../types'
 import racesJson from './races.json'
 import skillsJson from './skills.json'
 import vocationsJson from './vocations.json'
@@ -25,7 +25,7 @@ export const OUT_OF_GAME = skillsJson.outOfGame as { source: string; note: strin
 export const FAVOURED_COSTS = skillsJson.favouredCosts as Record<'Champion' | 'Demagogue', Record<string, number>>
 export const OCC_ABILITIES = vocationsJson.occupationAbilities as Record<string, Ability[]>
 export const VOCATIONS = vocationsJson.vocations as unknown as Record<string, Vocation>
-export const FAVOURED_VOCATIONS = vocationsJson.favouredVocations as unknown as Record<string, Vocation>
+export const RENOWNED = vocationsJson.renownedOccupations as unknown as Record<string, Renowned>
 export const VOCATION_PREREQS = vocationsJson.vocationPrereqs as unknown as Record<string, VocationPrereqs>
 export const SPELLS = spellsJson.spells as Spell[]
 export const EQUIPMENT = equipmentJson

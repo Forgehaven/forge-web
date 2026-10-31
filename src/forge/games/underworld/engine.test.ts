@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { OCC_ORDER, PYRAMID_ORDER, RITUAL_BASE_COSTS, SPELL_CIRCLE_COSTS, SPHERES } from './rules'
-import { SKILLS } from './data'
+import { FAVOURED_COSTS, RENOWNED, SKILLS } from './data'
 import {
-  canRemoveSlot, catalog, choiceOptions, copyPicks, cpAt, emptyBuild, evaluate, insertBlanket, lastBlanketAtLevel, lastSlotCircle, nextSlotCircle, levelRow, nextBlanketMonth, pastBlankets, priorityView, simpleView, stateAt, switchRole, unbuy, vocationNeeds,
+  canRemoveSlot, catalog, choiceOptions, copyPicks, cpAt, emptyBuild, evaluate, insertBlanket, lastBlanketAtLevel, lastSlotCircle, nextSlotCircle, levelRow, nextBlanketMonth, pastBlankets, priorityView, remapAbilities, simpleView, stateAt, switchRole, unbuy, vocationNeeds,
   type Build, type Purchase,
 } from './engine'
 
@@ -284,12 +284,47 @@ describe('spell slot ordering across steps', () => {
     const magic = [buy('read-write'), buy('read-magic'), buy('sphere-1')]
     const slot = buy('spell-slot', 0, '1')
     const ritual = buy('ritual-slot')
-    const cost = (vocation: string) => {
-      const ev = evaluate(build({ occupation: 'Mage', vocation, purchases: [...magic, slot, ritual] }), undefined, true)
+    const cost = (renowned: string) => {
+      const ev = evaluate(build({ occupation: 'Mage', purchases: [buy('favoured', 0, renowned), ...magic, slot, ritual] }), undefined, true)
       return [ev.results.get(slot.id)!.cost, ev.results.get(ritual.id)!.cost]
     }
     expect(cost('Paladin')).toEqual([10, 30])
     expect(cost('Lightweaver')).toEqual([10, 10])
+  })
+
+  it('makes a Renowned Occupation by buying Favoured (Soul Frag p.43, p.86)', () => {
+    const shield = buy('shield')
+    const fav = buy('favoured', 0, 'Dread Knight')
+    const mage = build({ occupation: 'Mage', purchases: [shield] })
+    const dk = build({ occupation: 'Mage', purchases: [shield, fav] })
+    const before = evaluate(mage, undefined, true)
+    const after = evaluate(dk, undefined, true)
+    // Every skill re-prices at Champion cost, Favoured itself is 50 CP and 250 frags.
+    expect(after.results.get(shield.id)!.cost).toBe(FAVOURED_COSTS.Champion.shield)
+    expect(after.results.get(fav.id)!).toMatchObject({ cost: 50, frag: 250, error: null })
+    expect(after.renowned).toBe('Dread Knight')
+    expect(before.renowned).toBeNull()
+    // Champions use Mercenary Body and Warrior class frags (Shaper ruling); abilities become Dread Knight's.
+    const merc = evaluate(build({ occupation: 'Mercenary' }), undefined, true)
+    expect(after.stats.body).toBe(merc.stats.body)
+    expect(after.stats.body).not.toBe(before.stats.body)
+    const abilities = (b: Build) => catalog(b).find(c => c.cat === 'Occupational Abilities')!.skills.map(s => s.name)
+    expect(abilities(dk)[0]).toBe("Harbinger's Blade")
+    expect(catalog(dk).some(c => c.cat === 'Warrior Class Frag Skills')).toBe(true)
+    // A vocation on top replaces the abilities but keeps Champion costs.
+    const archer = build({ occupation: 'Mage', vocation: 'Archer', purchases: [shield, fav] })
+    expect(abilities(archer)[0]).not.toBe("Harbinger's Blade")
+    expect(evaluate(archer, undefined, true).results.get(shield.id)!.cost).toBe(FAVOURED_COSTS.Champion.shield)
+    // Paragon stays closed; Dark sphere opens only for Dark Renowned.
+    expect(choiceOptions(SKILLS.flatMap(c => c.skills).find(s => s.id === 'favoured')!, evaluate(mage).final)).toEqual(Object.keys(RENOWNED))
+  })
+
+  it('swaps owned abilities by tier when Favoured is bought or dropped', () => {
+    const b = build({ occupation: 'Mage', mode: 'timeline', purchases: [buy('identify-magic-item')] })
+    const fav = { ...b, purchases: [...b.purchases, buy('favoured', 0, 'Paladin')] }
+    const swapped = remapAbilities(b, fav)
+    expect(swapped.purchases.map(p => p.skill)).toEqual(['defender', 'favoured'])
+    expect(unbuy(swapped, 'favoured').purchases.map(p => p.skill)).toEqual(['identify-magic-item'])
   })
 
   it('needs one more Specialization per Slay/Parry: Subsequent (Core p.68)', () => {

@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useEffectEvent, useRef, useState } from 'react'
 import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import { useAuth } from '../../../../auth/authContext'
-import { BUILD_STATUSES, emptyBuild, legacyId, type Build, type BuildStatus, type PlanMode, type Purchase } from '../engine'
+import { BUILD_STATUSES, emptyBuild, FAVOURED, legacyId, type Build, type BuildStatus, type PlanMode, type Purchase } from '../engine'
 import { createBuild, deleteBuild, getBuild, listBuilds, putBuild, putOrder, type BuildSummary } from '../api'
 import { uid } from '../CharacterPlanner/util'
 import { MAX_BLANKETS_PER_MONTH, SCHOOLS_OF_MAGIC } from '../rules'
+import { RENOWNED } from '../data'
 
 export type SaveKind = 'local' | 'server'
 
@@ -62,9 +63,21 @@ const purchases = (x: unknown): Purchase[] =>
 
 // Drafts and server blobs are untrusted: coerce every field the engine reads
 // so a bad blob can't crash the page on every reload.
-export function sanitize(raw: unknown): Build {
+export function sanitize(input: unknown): Build {
   const b = blank()
-  if (!isObj(raw)) return b
+  if (!isObj(input)) return b
+  let raw = input
+  // Renowned Occupations used to be picked as a vocation; they are bought as Favoured now.
+  if (typeof raw.vocation === 'string' && RENOWNED[raw.vocation]) {
+    const choice = raw.vocation
+    const fav = (list: unknown) => {
+      const ps = purchases(list)
+      return ps.some(p => p.skill === FAVOURED) ? ps : [{ id: 'favoured-migrated', skill: FAVOURED, at: 0, choice }, ...ps]
+    }
+    const simple = isObj(raw.simple) ? raw.simple : {}
+    const priority = isObj(raw.priority) ? raw.priority : {}
+    raw = { ...raw, vocation: '', purchases: fav(raw.purchases), simple: { ...simple, purchases: fav(simple.purchases) }, priority: { ...priority, purchases: fav(priority.purchases) } }
+  }
   const simple = isObj(raw.simple) ? raw.simple : {}
   const priority = isObj(raw.priority) ? raw.priority : {}
   const blankets = (x: unknown) => (Number.isInteger(x) && (x as number) >= 0 && (x as number) <= MAX_BLANKETS_PER_MONTH ? (x as number) : null)

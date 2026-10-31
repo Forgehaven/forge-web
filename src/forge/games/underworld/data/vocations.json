@@ -677,13 +677,10 @@
       ]
     }
   },
-  "favouredVocations": {
+  "renownedOccupations": {
     "Paladin": {
-      "fragCost": 250,
-      "cpCost": 50,
       "group": "Champion",
       "exclusiveSphere": "Light",
-      "prereqs": "Requires the Favoured frag skill and Lead Shaper approval. Replaces your occupation and its class abilities.",
       "lore": "Where Lightweavers are the voice of the Gods, Paladins are the hand of their God in the mortal realm. To do this, they use their personal brand of holy tools. Each class ability for Paladins involves an item of power.\n\nThese items may be anything the player desires, so long as it is of the type specified. The exact item should suit the God served. Upon purchasing each class ability, the item must be collected in game by the Paladin.\n\nEach item must have a value of 10 gold or more and be Blessed by their God. The Paladin must perform a 10 minute Rite on the item, whereupon it becomes spirit-linked and indestructible. This will activate the item.\n\nAny of these items might instead involve a special plotline to acquire the item, if the Shaper team so desires. This plotline may be as simple or as difficult as the Shaper team desires. The Paladin may choose to forego this process and provide their own item as long as it fulfills the requirements.\n\nThe items can be enchanted. They are considered items created with the Light sphere and radiate Light magic.\n\nItems of power can be replaced if they are destroyed by collecting another item of appropriate type and value which is Blessed by their God and performing the same 10 minute Rite. Only one of each item of power may exist at a time (except Rings, if the Paladin has purchased that skill multiple times). This does not require an additional skill purchase.\n\nAn item which is spirit linked to an individual may not travel more than 5 feet away from the spirit to which it is linked. Any time it is moved more than 5 feet away, it will reappear touching the spirit to which is it linked. This effect continues during the spirits Death Count.\n\nIf the spirit resurrects, the item will dissipate and reappear in the resurrection circle with the spirit. All the items of power return to their original mundane form upon the Final Death of the Paladin.\n\nAn item of power can be given to a Lightweaver of the same God, allowing the Lightweaver to use its powers for a time. This will spirit link the item to the Lightweaver for 1 hour. When the hour ends, the item will reappear at the feet of the Paladin. The Paladin may end this effect early by touching the Lightweaver, if they so desire.",
       "ref": "Soul Frag 2.10 p.47",
       "abilities": [
@@ -719,14 +716,13 @@
           "desc": "To activate this ability, the Paladin must state \"Activate Headpiece\". This ability augments the other class abilities as follows for 10 minutes:\n(1) The Defender may swing for Elemental damage of a type of the Paladin's choosing. The Defender also grants the Paladin one Parry, but if this is used the Elemental damage ends as well.\n(2) The Holy Rings grant +5 damage (total, not per ring) to any weapon held in a hand wearing one.\n(3) The Holy Symbol's Arcane Rebuke now becomes a Destroy effect for Lesser Undead and Demons. It stays the same for Greater Undead and Demons. To use this power, the Paladin must state in a loud voice \"In the name of <God> I destroy you, Undead/Demon! Innate Power Word Directed Arcane Destroy Undead/Demon\".\n\nThe Headpiece must be worn for the 10 minutes this ability is active. This ability is usable once per day per purchase and does not stack.",
           "ref": "Soul Frag 2.10 p.48"
         }
-      ]
+      ],
+      "bodyClass": "warrior",
+      "bodyRuling": "Uses Mercenary Body and Warrior class frag skills (Shaper ruling, not in the rulebooks)"
     },
     "Dread Knight": {
-      "fragCost": 250,
-      "cpCost": 50,
       "group": "Champion",
       "exclusiveSphere": "Dark",
-      "prereqs": "Requires the Favoured frag skill and Lead Shaper approval. Replaces your occupation and its class abilities.",
       "lore": "Where Darkweavers are the voice of the Gods, Dread Knights are the hand of their God in the mortal realm. To do this, they use their personal brand of unholy tools. Each class ability for Dread Knights involves an item of power.\n\nThese items may be anything the player desires, so long as it is of the type specified. The exact item should suit the God served. Upon purchasing each class ability, the item must be collected in game by the Dread Knight.\n\nEach item must have a value of 10 gold or more and be Blessed by their God. The Dread Knight must perform a 10 minute Rite on the item, whereupon it becomes spirit-linked and indestructible. This will activate the item.\n\nAny of these items might instead involve a special plotline to acquire the item, if the Shaper team so desires. This plotline may be as simple or as difficult as the Shaper team desires. The Dread Knight may choose to forego this process and provide their own item as long as it fulfills the requirements.\n\nThe items can be enchanted. They are considered items created with the Dark sphere and radiate Dark magic.\n\nItems of power can be replaced if they are destroyed by collecting another item of appropriate type and value which is Blessed by their God and performing the same 10 minute Rite. Only one of each item of power may exist at a time (except Rings, if the Dread Knight has purchased that skill multiple times). This does not require an additional skill purchase.\n\nAn item which is spirit linked to an individual may not travel more than 5 feet away from the spirit to Which it is linked. Any time it is moved more than 5 feet away, it will reappear touching the spirit to which is it linked. This effect continues during the spirits Death Count.\n\nIf the spirit resurrects, the item will dissipate and reappear in the resurrection circle with the spirit. All the items of power return to their original mundane form upon the Final Death of the Dread Knight.\n\nAn item of power can be given to a Darkweaver of the same God, allowing the Darkweaver to use its powers for a time. This will spirit link the item to the Darkweaver for 1 hour. When the hour ends, the item will reappear at the feet of the Dread Knight. The Dread Knight may end this effect early by touching the Darkweaver, if they so desire.",
       "ref": "Soul Frag 2.10 p.45",
       "abilities": [
@@ -761,14 +757,13 @@
           "tier": 12,
           "desc": "To activate this ability, the Dread Knight must state \"Activate Headpiece\". This ability augments the other class abilities as follows for 10 minutes:\n\n(1) The Harbinger's Blade may swing for Elemental damage of a type of the Dread Knight's choosing. The Harbinger's Blade also grants the Dread Knight one Parry, but if this is used the Elemental damage ends as well.\n(2) The Unholy Rings grant +5 damage (total, not per ring) to any weapon held in a hand wearing one.\n(3) The Unholy Symbol's Spirit Drain can now stack, granting the Dread Knight +1 Strength for each creature killed after the first to a maximum of +6.\n\nThe Headpiece must be worn for the 10 minutes this ability is active. This ability is usable once per day per purchase and does not stack."
         }
-      ]
+      ],
+      "bodyClass": "warrior",
+      "bodyRuling": "Uses Mercenary Body and Warrior class frag skills (Shaper ruling, not in the rulebooks)"
     },
     "Lightweaver": {
-      "fragCost": 250,
-      "cpCost": 50,
       "group": "Demagogue",
       "exclusiveSphere": "Light",
-      "prereqs": "Requires the Favoured frag skill and Lead Shaper approval. Replaces your occupation and its class abilities.",
       "lore": "Lightweavers are the voice of the Gods of Light. They create Holy Altars devoted to their God, serve as spiritual leaders, and access divine power through sacred bonds and vessels. Each Holy Altar requires a physical representation in game decorated to match the God to which it is devoted. The Altar is empowered for 5 days at a time and has 100 Body and a 10 Normal threshold once empowered.",
       "abilities": [
         {
@@ -803,14 +798,13 @@
           "desc": "At the 12th level, the Lightweaver may construct a truly Holy Church devoted to their God, pray for 10 minutes and then state \"Innate Create Church\" to activate it. The Church is a 20 foot square centered around the Holy Altar. It must be properly phys-repped with great care and excellent props. The Church will grant the following powers:\n\nThe Holy Altar is now indestructible but its duration remains the same. The Church may be destroyed by physically removing or destroying the majority of the holy items, trappings, and vestments that make up the church. This will include things like flipping tables, tearing down banners, breaking candles and pews, etc.\n\nNote that these items should only be destroyed in game; you can never destroy anyone's property out of game without their permission. The phys-reps should be removed or moved in such a way that it is clear that the Church has been ransacked. If the Church is destroyed, the Holy Altar will once again become destructible.\n\nIf the Church is destroyed, it may be recreated at the next reset following the same method.\n\nThe Lightweaver may decide whether the area inside Church is considered to be in day time (6 AM to 6 PM) or night time (6 PM to 6 AM) at all times by performing a 10 minute Rite involving lighting or extinguishing candles. This may be done at will. The time of day will apply to Undead, the Lightweaver, and anyone with a Bless of the same God.\n\nTo everyone else, it will be considered day or night based on whether it is really day or night. If the time chosen is day time, the candles must remain lit for the effect to continue - these must be fake candles (eg: LED candles) for fire safety. Once per event, a Lightweaver casting a ritual within their Church may re-pull a stone when determining the success of the ritual.\n\nIf a person within the Church has a Light Bless of any God and they are struck by a Dark or Draconic spell, the Bless will act as a Shield Magic and be expended. If the Lightweaver is struck by a Dark or Draconic spell and they have a Bless, it will function like a Reflect Magic and be expended. Sacred Vessels from other Lightweavers may be created on the Holy Altar, even if the God the other Lightweaver follows is different.\n\nSacred Vessels created in this manner will only function for the owner of the Church. The Sacred Vessel will still be considered to belong to its creator, but only the Church's Lightweaver will be able to access the stored spells. Depending on the quality of the Church's props and the roleplay of the Lightweaver and their followers, Shapers may grant additional powers in special circumstances.\n\nAny powers granted will be tailored to the God and situation in question. These powers will only function within the Church. These miracles will vary in power and effect and should be gauged by the size and power of the Church, as well as the average power level of the Guild the Church exists in.\n\nExamples of miracles include a small healing aura in a Church of Cassandra or a field which makes elves immune to Sense calls in a Church of Llyandra.",
           "ref": "Soul Frag 2.10 pp.53-54"
         }
-      ]
+      ],
+      "bodyClass": "scholar",
+      "bodyRuling": "Uses Mage Body and Scholar class frag skills (Shaper ruling, not in the rulebooks)"
     },
     "Darkweaver": {
-      "fragCost": 250,
-      "cpCost": 50,
       "group": "Demagogue",
       "exclusiveSphere": "Dark",
-      "prereqs": "Requires the Favoured frag skill and Lead Shaper approval. Replaces your occupation and its class abilities.",
       "lore": "Darkweavers are the voice of the Gods of Darkness. They create Unholy Altars devoted to their God, serve as spiritual leaders, and access unholy power through sacred bonds and vessels. Each Unholy Altar requires a physical representation in game decorated to match the God to which it is devoted. The Altar is empowered for 5 days at a time and has 100 Body and a 10 Normal threshold once empowered.",
       "abilities": [
         {
@@ -845,14 +839,13 @@
           "desc": "At the 12th level, the Darkweaver may construct a truly Unholy Church devoted to their God, pray for 10 minutes and then state \"Innate Create Church\" to activate it. The Church is a 20 foot square centered around the Unholy Altar. It must be properly phys-repped with great care and excellent props. The Church will grant the following powers:\n\nThe Unholy Altar is now indestructible but its duration remains the same. The Church may be destroyed by physically removing or destroying the majority of the unholy items, trappings, and vestments that make up the church. This will include things like flipping tables, tearing down banners, breaking candles and pews, etc.\n\nNote that these items should only be destroyed in game; you can never destroy anyone's property out of game without their permission. The phys-reps should be removed or moved in such a way that it is clear that the Church has been ransacked. If the Church is destroyed, the Unholy Altar will once again become destructible.\n\nIf the Church is destroyed, it may be recreated at the next reset following the same method.\n\nThe Darkweaver may decide whether the area inside Church is considered to be in day time (6 AM to 6 PM) or night time (6 PM to 6 AM) at all times by performing a 10 minute Rite involving lighting or extinguishing candles. This may be done at will. The time of day will apply to Undead, the Darkweaver, and anyone with a Bless of the same God.\n\nTo everyone else, it will be considered day or night based on whether it is really day or night. If the time chosen is day time, the candles must remain lit for the effect to continue - these must be fake candles (eg: LED candles) for fire safety. Once per event, a Darkweaver casting a ritual within their Church may re-pull a stone when determining the success of the ritual.\n\nIf a person within the Church has a Dark Bless of any God and they are struck by a Light or Draconic spell, the Bless will act as a Shield Magic and be expended. If the Darkweaver is struck by a Light or Draconic spell and they have a Bless, it will function like a Reflect Magic and be expended. Sacred Vessels from other Darkweavers may be created on the Unholy Altar, even if the God the other Darkweaver follows is different.\n\nSacred Vessels created in this manner will only function for the owner of the Church. The Sacred Vessel will still be considered to belong to its creator, but only the Church's Darkweaver will be able to access the stored spells. Depending on the quality of the Church's props and the roleplay of the Darkweaver and their followers, Shapers may grant additional powers in special circumstances.\n\nAny powers granted will be tailored to the God and situation in question. These powers will only function within the Church. These miracles will vary in power and effect and should be gauged by the size and power of the Church, as well as the average power level of the Guild the Church exists in.\n\nExamples of miracles include a temporary boost to the defensive abilities of a Church of Malagant besieged by the Citadel of Light, or a boost to damage done to Einher within a Church of Pandora.",
           "ref": "Soul Frag 2.10 pp.50-51"
         }
-      ]
+      ],
+      "bodyClass": "scholar",
+      "bodyRuling": "Uses Mage Body and Scholar class frag skills (Shaper ruling, not in the rulebooks)"
     },
     "Dragon Knight": {
-      "fragCost": 250,
-      "cpCost": 50,
       "group": "Demagogue",
       "exclusiveSphere": "Draconic",
-      "prereqs": "Requires the Favoured frag skill and Lead Shaper approval. Replaces your occupation and its class abilities.",
       "lore": "Dragon Knights are devoted servants of the great Dragons of Maud'madir. They create Draconic Shrines devoted to their patron Dragon and access draconic power through covenants and troves. Each Draconic Shrine requires a physical representation in game decorated to match the Dragon to which it is devoted.\n\nThe Shrine is empowered for 5 days at a time and has 100 Body and a 10 Normal threshold once empowered.",
       "abilities": [
         {
@@ -887,7 +880,9 @@
           "desc": "At the 12th level, the Dragon Knight may construct a truly magnificent Temple devoted to their Dragon, meditate for 10 minutes and then state \"Innate Create Temple\" to activate it. The Temple is a 20 foot square centered around the Draconic Shrine. It must be properly phys-repped with great care and excellent props. The Temple will grant the following powers:\n\nThe Draconic Shrine is now indestructible but its duration remains the same. The Temple may be destroyed by physically removing or destroying the majority of the items, trappings, and vestments that make up the temple. This will include things like flipping tables, tearing down banners, breaking candles and pews, etc.\n\nNote that these items should only be destroyed in game; you can never destroy anyone's property out of game without their permission. The phys-reps should be removed or moved in such a way that it is clear that the Temple has been ransacked. If the Temple is destroyed, the Draconic Shrine will once again become destructible.\n\nIf the Temple is destroyed, it may be recreated at the next reset following the same method. The Dragon Knight may decide whether the area inside Temple is considered to be in day time (6 AM to 6 PM) or night time (6 PM to 6 AM) at all times by performing a 10 minute Rite involving lighting or extinguishing candles. This may be done at will.\n\nThe time of day will apply to Undead, the Dragon Knight, and anyone with a Mark of the same Dragon. To everyone else, it will be considered day or night based on whether it is really day or night. If the time chosen is day time, the candles must remain lit for the effect to continue - these must be fake candles (eg: LED candles) for fire safety.\n\nOnce per event, a Dragon Knight casting a ritual within their Temple may re-pull a stone when determining the success of the ritual. If a person within the Temple has a Dragon Mark of any Dragon and they are struck by a Dark or Light spell, the Dragon Mark will act as a Shield Magic and be expended. If the Dragon Knight is struck by a Dark or Light spell and they have a Dragon Mark, it will function like a Reflect Magic and be expended.\n\nDraconic Troves from other Dragon Knights may be created on the Draconic Shrine, even if the Dragon the other Dragon Knight follows is different. Draconic Troves created in this manner will only function for the owner of the Temple. The Draconic Trove will still be considered to belong to its creator, but only the Temple's Dragon Knight will be able to access the stored spells.\n\nDepending on the quality of the Temple's props and the roleplay of the Dragon Knight and their followers, Shapers may grant additional powers in special circumstances. Any powers granted will be tailored to the Dragon and situation in question. These powers will only function within the Temple.\n\nThese marvels will vary in power and effect and should be gauged by the size and power of the Temple, as well as the average power level of the Guild the Temple exists in. Examples of marvels include a creating a portal to the plane of Ice in a Temple of Ahriman or a defensive protection in a Temple of Tezoth.",
           "ref": "Soul Frag 2.10 pp.56-57"
         }
-      ]
+      ],
+      "bodyClass": "scholar",
+      "bodyRuling": "Uses Mage Body and Scholar class frag skills (Shaper ruling, not in the rulebooks)"
     }
   },
   "vocationPrereqs": {
@@ -1065,26 +1060,6 @@
           ]
         }
       ]
-    },
-    "Paladin": {
-      "auto": [],
-      "choice": []
-    },
-    "Dread Knight": {
-      "auto": [],
-      "choice": []
-    },
-    "Lightweaver": {
-      "auto": [],
-      "choice": []
-    },
-    "Darkweaver": {
-      "auto": [],
-      "choice": []
-    },
-    "Dragon Knight": {
-      "auto": [],
-      "choice": []
     }
   }
 }

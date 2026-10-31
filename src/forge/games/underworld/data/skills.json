@@ -2975,6 +2975,34 @@
               "ref": "Soul Frag 2.10 p.114"
             }
           ]
+        },
+        {
+          "id": "favoured",
+          "name": "Favoured",
+          "costs": null,
+          "cp": 50,
+          "frag": 250,
+          "maxPurchases": 1,
+          "bodyBonus": 0,
+          "strBonus": 0,
+          "prereqPerPurchase": false,
+          "_weaponChoice": null,
+          "prereqs": [],
+          "desc": "The Favoured are specially chosen by a God or Dragon from amongst the flock and elevated to the level of the truly revered. Only those characters that have proven themselves exceptionally devout may purchase Favoured. Purchasing this skill signifies to your God or Dragon that you are truly devoted and ready to become their vessel. This skill grants access to unique Spheres of Magic. Like Battle Magic Spheres, each Favoured require a Spell Focus in order to cast. A Divine Spell Focus will be the God's Holy Symbol. A Dragon Knight requires a Spell Focus made from a stone or gem that is the Colour of the Dragon they revere. These Spell Foci are no different than standard Battle Magic Foci and can be replaced in the same manner if lost or destroyed.\n\nThis ability allows Favoured to commune with their God or Dragon through prayer. Such communion allows the Favoured to memorize their Divine or Draconic spell Spheres without the need for a Spellbook or scrolls. Communion can only be done between the hours of 6 PM and 12 AM and require a minimum of 10 minutes of uninterrupted prayer.\n\nAll Renowned Occupations must purchase this skill. A character with the skill Favoured may innately cast Bless or Dragon Mark once a day (depending on whether they are a Divine or Draconic Favoured). The call for this is \"Innate Magic <God> Bless\" or \"Innate Magic <Dragon> Mark of the Firstborn\". This ability cannot be purchased more than once.\n\nRequires Lead Shaper Approval. Buying it here picks the Renowned Occupation the character becomes.",
+          "ref": "Soul Frag 2.10 p.86",
+          "related": [
+            {
+              "title": "Becoming Renowned",
+              "text": "Once the aspirant has proven themselves worthy and has accepted the blessing of their God, they must now change their Occupation to the applicable Advanced Class and purchase the skill \"Favoured\". This requires Head Shaper approval. The Favoured skill grants the candidate access to the Sphere of Magic unique to their new Occupation, be it Light or Dark. Once the character obtains Champion or Demagogue status, their current class is removed and all CP for current skills are refunded. The character is now a Dread Knight, Paladin or Cleric, depending on the circumstance, and may spend, without penalty, their entire banked and refunded CP on skills and abilities of their new class.",
+              "ref": "Soul Frag 2.10 p.43"
+            },
+            {
+              "title": "Losing and Abandoning Favour",
+              "text": "A Renowned character who loses favour has the Favoured skill and Chosen status stripped: access to the unique Sphere of Magic and all Occupational Abilities of the renowned occupation are severed until they atone, with no CP refund. Abandoning favour reverts the character to their original class and lets them re-spend any CP earned after earning Favour, along with a Greater Curse for one year.",
+              "ref": "Soul Frag 2.10 p.43"
+            }
+          ],
+          "_fragOnly": true
         }
       ]
     }

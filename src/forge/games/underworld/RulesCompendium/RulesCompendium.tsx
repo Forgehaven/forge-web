@@ -1,7 +1,7 @@
 import { Children, createContext, isValidElement, useContext, useState } from 'react'
 import { Masonry } from '../../../../components/Masonry'
 import {
-  CULTURES, DATA_SOURCES, EQUIPMENT, MONSTERS, FAVOURED_VOCATIONS, FRAG_RACES, OCC_ABILITIES, OUT_OF_GAME, RACES, SKILLS, SOURCES, SPELLS, VOCATIONS,
+  CULTURES, DATA_SOURCES, EQUIPMENT, MONSTERS, RENOWNED, FRAG_RACES, OCC_ABILITIES, OUT_OF_GAME, RACES, SKILLS, SOURCES, SPELLS, VOCATIONS,
 } from '../data'
 import { OCC_CLASS, OCC_ORDER, TABLE, ordinal } from '../rules'
 import type { Race, Skill, Vocation } from '../types'
@@ -104,7 +104,6 @@ function RaceEntry({ name, race }: { name: string; race: Race }) {
 
 function VocationEntry({ name, voc }: { name: string; voc: Vocation }) {
   const tags = [`${voc.fragCost} frags`]
-  if (voc.group) tags.push(`Favoured ${voc.group}`, `${voc.cpCost} CP`)
   return (
     <Entry title={name} tags={tags} fav={`Vocations:${name}`}>
       <Prose text={voc.lore} />
@@ -169,27 +168,38 @@ function section(tab: Searchable, { q, sphere, circle, category, favs }: Filters
     }
     case 'Occupations': {
       const list = OCC_ORDER.filter(o => has(q, o, all(OCC_ABILITIES[o])) && kept(`Occupations:${o}`))
-      if (!list.length) return null
+      const renowned = Object.entries(RENOWNED).filter(([n, r]) => has(q, n, all(r)) && kept(`Occupations:${n}`))
+      if (!list.length && !renowned.length) return null
       return (
-        <Grid>
-          {list.map(o => (
-            <Entry key={o} title={o} tags={[OCC_CLASS[o]]} fav={`Occupations:${o}`}>
-              {(OCC_ABILITIES[o] ?? []).map(a => <Sub key={a.name} name={a.name} meta={`level ${a.tier}, ${a.cp} CP`} text={a.desc} />)}
-            </Entry>
-          ))}
-        </Grid>
+        <>
+          {list.length > 0 && (
+            <><Heading>Occupations</Heading><Grid>
+              {list.map(o => (
+                <Entry key={o} title={o} tags={[OCC_CLASS[o]]} fav={`Occupations:${o}`}>
+                  {(OCC_ABILITIES[o] ?? []).map(a => <Sub key={a.name} name={a.name} meta={`level ${a.tier}, ${a.cp} CP`} text={a.desc} />)}
+                </Entry>
+              ))}
+            </Grid></>
+          )}
+          {renowned.length > 0 && (
+            <><Heading>Renowned occupations (Soul Frag)</Heading>
+            <p className="text-xs text-forge-muted mb-2">Taken by buying the Favoured skill (250 frags, 50 CP, Lead Shaper approval). The old class is removed and its CP refunded to re-spend at the new costs.</p>
+            <Grid>
+              {renowned.map(([n, r]) => (
+                <Entry key={n} title={n} tags={[r.group, ...(r.exclusiveSphere ? [`${r.exclusiveSphere} sphere`] : [])]} fav={`Occupations:${n}`}>
+                  <Prose text={r.lore} />
+                  {r.abilities.map(a => <Sub key={a.name} name={a.name} meta={`level ${a.tier}, ${a.cp} CP`} text={a.desc} />)}
+                </Entry>
+              ))}
+            </Grid></>
+          )}
+        </>
       )
     }
     case 'Vocations': {
       const plain = vocList(VOCATIONS, q).filter(([n]) => kept(`Vocations:${n}`))
-      const fav = vocList(FAVOURED_VOCATIONS, q).filter(([n]) => kept(`Vocations:${n}`))
-      if (!plain.length && !fav.length) return null
-      return (
-        <>
-          {plain.length > 0 && <><Heading>Vocations</Heading><Grid>{plain.map(([n, v]) => <VocationEntry key={n} name={n} voc={v} />)}</Grid></>}
-          {fav.length > 0 && <><Heading>Favoured vocations</Heading><Grid>{fav.map(([n, v]) => <VocationEntry key={n} name={n} voc={v} />)}</Grid></>}
-        </>
-      )
+      if (!plain.length) return null
+      return <Grid>{plain.map(([n, v]) => <VocationEntry key={n} name={n} voc={v} />)}</Grid>
     }
     case 'Skills': {
       const cats = SKILLS

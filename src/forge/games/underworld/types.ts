@@ -92,13 +92,22 @@ export interface Ability {
 
 export interface Vocation {
   fragCost: number
-  cpCost?: number
-  group?: 'Champion' | 'Demagogue'
-  exclusiveSphere?: string
   occupations?: string[]
   prereqs: string
   lore: string
   abilities: Ability[]
+}
+
+// A Renowned Occupation (Soul Frag ch.4), taken by buying Favoured; it replaces the occupation.
+export interface Renowned {
+  group: 'Champion' | 'Demagogue'
+  exclusiveSphere?: string
+  lore: string
+  ref?: string
+  abilities: Ability[]
+  // Body column and class frag skills; null keeps the former occupation's. Not in the books: a Shaper ruling.
+  bodyClass: 'warrior' | 'rogue' | 'scholar' | null
+  bodyRuling?: string
 }
 
 // One condition: `count` purchases across the skills in "A|B", or a spell

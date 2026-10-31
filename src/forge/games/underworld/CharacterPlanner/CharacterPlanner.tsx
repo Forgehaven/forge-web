@@ -1,5 +1,5 @@
 import { useEffect, useEffectEvent, useMemo, useState } from 'react'
-import { activePurchases, copyPicks, evaluate, priorityMonths, priorityView, simpleView, unbuy, vocationNeeds, withPurchases, type BuildStatus, type PlanMode } from '../engine'
+import { activePurchases, copyPicks, evaluate, FAVOURED, remapAbilities, priorityMonths, priorityView, simpleView, unbuy, vocationNeeds, withPurchases, type BuildStatus, type PlanMode } from '../engine'
 import { useBuildStore } from '../hooks/useBuildStore'
 import { BuildBar } from './BuildBar'
 import { IdentityPanel } from './IdentityPanel'
@@ -68,7 +68,11 @@ export default function CharacterPlanner() {
   const active = timeline ? Math.min(activeRaw, build.blankets.length) : pick.blankets.length
 
   const add = (skill: string, choice?: string) =>
-    setBuild(b => withPurchases(b, [...activePurchases(b), { id: uid(), skill, at: timeline ? active : 0, choice }]))
+    setBuild(b => {
+      const next = withPurchases(b, [...activePurchases(b), { id: uid(), skill, at: timeline ? active : 0, choice }])
+      // Becoming Renowned swaps the occupational abilities for the new class's.
+      return skill === FAVOURED ? remapAbilities(b, next) : next
+    })
   const remove = (skill: string, choice?: string) => setBuild(b => unbuy(b, skill, choice))
   const invalid = activePurchases(build).filter(p => ev.results.get(p.id)?.error).length
   const needsHighlighted = vocationNeeds(view, ev.final).size > 0

@@ -35,7 +35,7 @@ export const OCC_CLASS = Object.fromEntries(
 )
 export const OCC_ORDER = Object.keys(OCC_CLASS)
 export const SCHOOLS_OF_MAGIC: string[] = RULES.schools
-// Only these Favoured Vocations may pick the sphere.
+// Only these Renowned Occupations may pick the sphere.
 export const EXCLUSIVE_SPHERES: Record<string, string[]> = RULES.exclusiveSpheres
 // +SPHERE_SURCHARGE_FRAGS per purchased sphere of these schools.
 export const SURCHARGE_SPHERES: string[] = RULES.surchargeSpheres

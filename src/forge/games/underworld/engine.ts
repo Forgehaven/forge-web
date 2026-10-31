@@ -5,7 +5,7 @@ import {
   SURCHARGE_SPHERES, TABLE, WEAPON_GROUPS, ordinal,
   type LevelRow,
 } from './rules'
-import { CULTURES, FAVOURED_COSTS, FAVOURED_VOCATIONS, FRAG_RACES, OCC_ABILITIES, RACES, SKILLS, VOCATIONS, VOCATION_PREREQS } from './data'
+import { CULTURES, FAVOURED_COSTS, RENOWNED, FRAG_RACES, OCC_ABILITIES, RACES, SKILLS, VOCATIONS, VOCATION_PREREQS } from './data'
 import type { Prereq, PrereqCondition, Race, Skill, Vocation } from './types'
 
 // Skill ids the engine special-cases.
@@ -15,6 +15,7 @@ export const ELEMENTAL_ATTUNEMENT = 'elemental-attunement'
 export const PARAGON = 'paragon'
 export const SPELL_VERSATILITY = 'spell-versatility'
 export const TRADESMAN = 'tradesman'
+export const FAVOURED = 'favoured'
 export const READ_MAGIC = 'read-magic'
 export const READ_MAGIC_ADVANCED = 'read-magic-advanced'
 const READ_MAGIC_RITUAL = 'read-magic-ritual'
@@ -91,7 +92,19 @@ export function raceData(race: string): Race | null {
 }
 
 export function vocationData(voc: string): Vocation | null {
-  return VOCATIONS[voc] ?? FAVOURED_VOCATIONS[voc] ?? null
+  return VOCATIONS[voc] ?? null
+}
+
+// The Renowned Occupation picked when Favoured was bought, if any (Soul Frag p.43).
+export function renownedOf(b: Build): string | null {
+  const p = activePurchases(b).find(x => x.skill === FAVOURED) ?? b.purchases.find(x => x.skill === FAVOURED)
+  return p?.choice && RENOWNED[p.choice] ? p.choice : null
+}
+
+// Body column and class frag skills: the Renowned Occupation's if set, else the occupation's.
+export function classOf(b: Build) {
+  const r = renownedOf(b)
+  return (r && RENOWNED[r].bodyClass) || OCC_CLASS[b.occupation]
 }
 
 // Display names by id.
@@ -102,7 +115,7 @@ const NAMES = new Map<string, string>([
     ...Object.values({ ...RACES, ...FRAG_RACES }).flatMap(r => r.purchased),
     ...Object.values(CULTURES).flatMap(c => c.purchased ?? []),
     ...Object.values(OCC_ABILITIES).flat(),
-    ...Object.values({ ...VOCATIONS, ...FAVOURED_VOCATIONS }).flatMap(v => v.abilities),
+    ...[...Object.values(VOCATIONS), ...Object.values(RENOWNED)].flatMap(v => v.abilities),
   ].map(s => [s.id, s.name] as const),
 ])
 
@@ -121,12 +134,18 @@ export function legacyId(skill: string) {
   return m ? sphereId(Number(m[1]) - 1) : LEGACY.get(skill) ?? skill
 }
 
-const abilitiesOf = (b: Build) => vocationData(b.vocation)?.abilities ?? OCC_ABILITIES[b.occupation] ?? []
+// A vocation's abilities replace the class's; a Renowned Occupation's replace the occupation's.
+const abilitiesOf = (b: Build) =>
+  vocationData(b.vocation)?.abilities ?? RENOWNED[renownedOf(b) ?? '']?.abilities ?? OCC_ABILITIES[b.occupation] ?? []
 
 // Changing occupation or vocation swaps each owned ability for the new set's
 // ability of the same tier (3/6/9/12), in every plan mode.
 export function switchRole(b: Build, patch: Partial<Pick<Build, 'occupation' | 'vocation'>>): Build {
-  const next = { ...b, ...patch }
+  return remapAbilities(b, { ...b, ...patch })
+}
+
+// Buying or dropping Favoured changes the ability set the same way.
+export function remapAbilities(b: Build, next: Build): Build {
   const to = new Map(abilitiesOf(next).map(a => [a.tier, a.id]))
   const rename = new Map(abilitiesOf(b).flatMap(a => (to.has(a.tier) ? [[a.id, to.get(a.tier)!] as const] : [])))
   const fix = (ps: Purchase[]) => ps.map(p => (rename.has(p.skill) ? { ...p, skill: rename.get(p.skill)! } : p))
@@ -138,10 +157,10 @@ export function switchRole(b: Build, patch: Partial<Pick<Build, 'occupation' | '
   }
 }
 
-// 'Champion' or 'Demagogue' for a Favoured vocation.
+// 'Champion' or 'Demagogue' once the character is a Renowned Occupation.
 function favouredGroup(b: Build) {
-  const fv = FAVOURED_VOCATIONS[b.vocation]
-  return fv ? fv.group ?? 'Champion' : null
+  const r = renownedOf(b)
+  return r ? RENOWNED[r].group : null
 }
 
 function favouredTable(b: Build) {
@@ -221,8 +240,7 @@ export function catalog(b: Build): { cat: string; skills: CatalogSkill[] }[] {
   const frag = SKILLS.find(c => c.cat === 'Soul Frag Skills')
   if (frag) out.push(tag(frag.cat, frag.skills))
 
-  const voc = vocationData(b.vocation)
-  const abilities = voc?.abilities ?? OCC_ABILITIES[b.occupation] ?? []
+  const abilities = abilitiesOf(b)
   if (abilities.length) {
     out.push({
       cat: 'Occupational Abilities',
@@ -238,7 +256,7 @@ export function catalog(b: Build): { cat: string; skills: CatalogSkill[] }[] {
     })
   }
 
-  const cls = OCC_CLASS[b.occupation]
+  const cls = classOf(b)
   for (const c of SKILLS) {
     if (['General', 'Soul Frag Skills'].includes(c.cat) || c.cat.endsWith('Class Frag Skills')) continue
     out.push(tag(c.cat, c.skills))
@@ -297,6 +315,7 @@ export function weaponGroups(st: ReplayState) {
 export function choiceOptions(sk: Skill, st: ReplayState): string[] {
   if (sk.id === ELEMENTAL_ATTUNEMENT) return ELEMENTS.filter(e => !st.attunements.includes(e))
   if (sk.id === TRADESMAN) return TRADE_MATERIALS
+  if (sk.id === FAVOURED) return Object.keys(RENOWNED)
   if (sk.id === SPELL_SLOT) return ['1', '2', '3', '4', '5', '6', '7', '8', '9']
   if (sk.id === SPELL_VERSATILITY) return ['1', '2', '3', '4', '5', '6', '7', '8', '9'].filter(c => st.circles[+c] > st.versatile[+c])
   if (sk._paragon) {
@@ -313,7 +332,7 @@ export function choiceOptions(sk: Skill, st: ReplayState): string[] {
 }
 
 export function needsChoice(sk: Skill) {
-  return !!sk._weaponChoice || !!sk._paragon || sk.id === ELEMENTAL_ATTUNEMENT || sk.id === SPELL_SLOT || sk.id === SPELL_VERSATILITY || sk.id === TRADESMAN
+  return !!sk._weaponChoice || !!sk._paragon || sk.id === ELEMENTAL_ATTUNEMENT || sk.id === SPELL_SLOT || sk.id === SPELL_VERSATILITY || sk.id === TRADESMAN || sk.id === FAVOURED
 }
 
 export function choiceLabel(skill: string, choice?: string) {
@@ -375,12 +394,12 @@ interface Ctx {
 // the not-yet-made choice.
 function check(p: Purchase, st: ReplayState, ctx: Ctx, strictChoice: boolean): [number, number, string | null] {
   const { b, level } = ctx
-  const fav = FAVOURED_VOCATIONS[b.vocation]
+  const fav = RENOWNED[renownedOf(b) ?? '']
 
   const sphereIdx = sphereIndex(p.skill)
   if (sphereIdx >= 0) {
     const sphere = sphereAt(sphereIdx)
-    const cost = fav ? sphere.favouredCosts[fav.group ?? 'Champion'] : occCost(sphere.costs, b)
+    const cost = fav ? sphere.favouredCosts[fav.group] : occCost(sphere.costs, b)
     const school = b.schools[sphereIdx]
     const frag = SURCHARGE_SPHERES.includes(school) ? SPHERE_SURCHARGE_FRAGS : 0
     if (!b.occupation) return [cost, frag, 'Pick an occupation first']
@@ -426,7 +445,7 @@ function check(p: Purchase, st: ReplayState, ctx: Ctx, strictChoice: boolean): [
     if (!b.attunement) return err('Pick a primary attunement')
   }
   if (sk._paragon) {
-    if (fav) return err('Not available to Favoured Vocations')
+    if (fav) return err('Not available to Renowned Occupations')
     if (!st.circles.some(n => n > 0)) return err('Requires a spell slot')
   }
   if (have >= (sk.maxPurchases || DEFAULT_MAX)) return err('Maxed')
@@ -578,6 +597,7 @@ export interface Evaluation {
   }
   warnings: string[]
   skillWarnings: string[]
+  renowned: string | null
   // Level 16 ends Spiritual Resolve; null when not reached or dismissed.
   lifeWarning: string | null
   probe: { cost: number; frag: number; error: string | null } | null
@@ -607,9 +627,6 @@ export function evaluate(b: Build, probe?: Purchase, loose = false): Evaluation 
   const st = newState()
   // Elemental Attunement buys additional elements, never the primary (Core p.61).
   if (b.attunement) st.attunements.push(b.attunement)
-  const fv = FAVOURED_VOCATIONS[b.vocation]
-  if (fv?.cpCost) st.spent += fv.cpCost
-
   const results = new Map<string, PurchaseResult>()
   let probeResult: Evaluation['probe'] = null
   const order = sortedPurchases(b)
@@ -655,13 +672,13 @@ export function evaluate(b: Build, probe?: Purchase, loose = false): Evaluation 
   strength += (race?.strBonusPerFiveLevels ?? 0) * Math.ceil(level / 5)
   const bs = count(st, 'blacksmith')
   strength += bs >= 10 ? 2 : bs >= 6 ? 1 : 0
-  const cls = OCC_CLASS[b.occupation]
+  const cls = classOf(b)
 
   const voc = vocationData(b.vocation)
   const frags = st.frags + (race?.fragCost ?? 0) + (b.culture ? CULTURE_FRAG_COST : 0) + (voc?.fragCost ?? 0)
 
   return {
-    steps, results, final: st, probe: probeResult,
+    steps, results, final: st, probe: probeResult, renowned: renownedOf(b),
     ...(({ character, skills }) => ({ warnings: character, skillWarnings: skills }))(buildWarnings(b, st)),
     lifeWarning: b.ignoreLifeWarning ? null : lifeWarning(steps, bonus),
     stats: {
@@ -725,7 +742,7 @@ function buildWarnings(b: Build, st: ReplayState): { character: string[]; skills
   b.schools.forEach((school, i) => {
     if (!school || count(st, sphereId(i)) === 0) return
     const allowed = EXCLUSIVE_SPHERES[school]
-    if (allowed && !allowed.includes(b.vocation)) sk.push(`${school} sphere is limited to ${allowed.join(', ')}`)
+    if (allowed && !allowed.includes(renownedOf(b) ?? '')) sk.push(`${school} sphere is limited to ${allowed.join(', ')}`)
   })
   const dupes = b.schools.filter((s, i) => s && b.schools.indexOf(s) !== i)
   if (dupes.length) sk.push(`Duplicate sphere school: ${dupes.join(', ')}`)
@@ -818,5 +835,7 @@ export function unbuy(b: Build, skill: string, choice?: string): Build {
   const list = activePurchases(b)
   const ordered = sortedPurchases({ ...b, purchases: list })
   const last = [...ordered].reverse().find(p => p.skill === skill && (choice === undefined || p.choice === choice))
-  return last ? withPurchases(b, list.filter(p => p !== last)) : b
+  if (!last) return b
+  const next = withPurchases(b, list.filter(p => p !== last))
+  return skill === FAVOURED ? remapAbilities(b, next) : next
 }

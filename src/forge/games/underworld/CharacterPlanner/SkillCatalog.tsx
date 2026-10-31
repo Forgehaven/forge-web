@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react'
 import {
-  catalog, choiceLabel, choiceOptions, evaluate, needsChoice, raceData, slotCost, stateAt, vocationNeeds, SPELL_VERSATILITY, TRADESMAN, versatilityCost,
+  catalog, choiceLabel, choiceOptions, evaluate, FAVOURED, needsChoice, raceData, slotCost, stateAt, vocationNeeds, SPELL_VERSATILITY, TRADESMAN, versatilityCost,
   type Build, type CatalogSkill, type Evaluation,
 } from '../engine'
 import { stepLabel } from './util'
 import { ordinal } from '../rules'
 import { RulesDrawer, type RulesPage } from '../components/RulesDrawer'
-import { CULTURES } from '../data'
+import { CULTURES, RENOWNED } from '../data'
 import type { Trait } from '../types'
 import { Masonry, type MasonryItem } from '../../../../components/Masonry'
 import { toggleProps } from '../../../../lib/toggleProps'
@@ -39,6 +39,7 @@ interface Row {
 
 function optionLabel(sk: CatalogSkill, o: string, build: Build) {
   if (sk.id === SPELL_VERSATILITY) return `${ordinal(+o)} Circle (${versatilityCost(build, o)} CP, ${versatilityCost(build, o)}f)`
+  if (sk.id === FAVOURED) return `${o} (${RENOWNED[o].group})`
   if (sk._paragon) {
     const [sp, c] = o.split('|')
     return `${sp}, ${ordinal(+c)} Circle (${slotCost(build, +c) + 10} CP)`
@@ -185,7 +186,7 @@ function SkillRow({ row, owned, needFor, hasOccupation, numeric, onAdd, onRemove
               setTrade('')
             }}
           >
-            <option value="" disabled>Choose {sk._weaponChoice === 'group' ? 'a weapon group' : sk._weaponChoice ? 'a weapon' : sk._paragon ? 'a sphere and circle' : sk.id === SPELL_VERSATILITY ? 'a slot' : sk.id === TRADESMAN ? (row.trades?.length ? 'a trade' : 'its material') : 'an element'}…</option>
+            <option value="" disabled>Choose {sk._weaponChoice === 'group' ? 'a weapon group' : sk._weaponChoice ? 'a weapon' : sk._paragon ? 'a sphere and circle' : sk.id === SPELL_VERSATILITY ? 'a slot' : sk.id === TRADESMAN ? (row.trades?.length ? 'a trade' : 'its material') : sk.id === FAVOURED ? 'a Renowned Occupation' : 'an element'}…</option>
             {row.trades?.length ? (
               <>
                 <optgroup label="Level up">

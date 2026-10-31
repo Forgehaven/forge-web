@@ -1,4 +1,4 @@
-import { CULTURES, FAVOURED_VOCATIONS, FRAG_RACES, RACES, VOCATIONS } from '../data'
+import { CULTURES, FRAG_RACES, RACES, RENOWNED, VOCATIONS } from '../data'
 import { OCC_CLASS, OCC_ORDER } from '../rules'
 import { raceData, switchRole, vocationData, type Build, type Evaluation } from '../engine'
 import { Collapsible } from '../../../../components/Collapsible'
@@ -40,6 +40,7 @@ export function IdentityPanel({ build, ev, setBuild, locked, blankets }: Props) 
   const voc = vocationData(build.vocation)
   const cultures = Object.entries(CULTURES).filter(([, c]) => c.races.includes(build.race))
   const { stats } = ev
+  const renowned = ev.renowned ? RENOWNED[ev.renowned] : null
 
   return (
     <div className="forge-card !p-3 flex flex-col gap-3">
@@ -76,8 +77,8 @@ export function IdentityPanel({ build, ev, setBuild, locked, blankets }: Props) 
             {cultures.map(([name]) => <option key={name} value={name}>{name} (100 frags)</option>)}
           </select>
         </Field>
-        <Field label="Occupation">
-          <select className="forge-input !py-1.5" value={build.occupation} onChange={e => { const occupation = e.target.value; setBuild(b => switchRole(b, { occupation })) }}>
+        <Field label={renowned ? 'Former occupation' : 'Occupation'}>
+          <select className={`forge-input !py-1.5 ${renowned ? 'line-through opacity-50' : ''}`} disabled={!!renowned} title={renowned ? 'Replaced by the Renowned Occupation' : undefined} value={build.occupation} onChange={e => { const occupation = e.target.value; setBuild(b => switchRole(b, { occupation })) }}>
             <option value="">Choose…</option>
             {(['warrior', 'rogue', 'scholar'] as const).map(cls => (
               <optgroup key={cls} label={cls[0].toUpperCase() + cls.slice(1)}>
@@ -92,16 +93,22 @@ export function IdentityPanel({ build, ev, setBuild, locked, blankets }: Props) 
             <optgroup label="Vocations (150 frags)">
               {Object.keys(VOCATIONS).map(v => <option key={v} value={v}>{v}</option>)}
             </optgroup>
-            {(['Champion', 'Demagogue'] as const).map(g => (
-              <optgroup key={g} label={`Favoured ${g} (250 frags + 50 CP)`}>
-                {Object.entries(FAVOURED_VOCATIONS).filter(([, v]) => v.group === g).map(([name]) => (
-                  <option key={name} value={name}>{name}</option>
-                ))}
-              </optgroup>
-            ))}
           </select>
         </Field>
       </fieldset>
+
+      {renowned && (
+        <div className="rounded-md border border-forge-accent/40 bg-forge-accent/5 px-3 py-2 text-xs">
+          <p className="text-forge-text">
+            <span className="text-forge-muted">Renowned:</span> <span className="font-semibold text-forge-accent">{ev.renowned}</span> <span className="text-forge-muted">({renowned.group})</span>
+          </p>
+          <p className="text-[11px] text-forge-muted mt-0.5">
+            {renowned.bodyClass
+              ? renowned.bodyRuling ?? `Uses ${renowned.bodyClass} Body and class skills.`
+              : "Body and class frag skills follow your former occupation: the rulebooks don't say, so check with your Shaper."}
+          </p>
+        </div>
+      )}
 
       {blankets && <div className="border-t border-forge-border pt-2">{blankets}</div>}
 
