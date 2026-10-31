@@ -75,7 +75,9 @@ export default function CharacterPlanner() {
   const alerts = ev.warnings.length + (ev.lifeWarning ? 1 : 0) + (invalid > 0 ? 1 : 0) + (needsHighlighted ? 1 : 0)
 
   return (
-    <div className={`grid gap-3 pb-6 lg:pb-0 lg:h-full lg:grid-rows-[minmax(0,1fr)] ${pane ? 'lg:grid-cols-[22rem_24rem_minmax(0,1fr)]' : 'lg:grid-cols-[24rem_minmax(0,1fr)]'}`}>
+    <div className={`relative grid gap-3 pb-6 lg:pb-0 lg:h-full lg:grid-rows-[minmax(0,1fr)] ${pane ? 'lg:grid-cols-[22rem_24rem_minmax(0,1fr)]' : 'lg:grid-cols-[24rem_minmax(0,1fr)]'}`}>
+      {/* The rules drawer portals here so it covers the left panes, not the skills. */}
+      <div id="uw-rules-slot" className="contents" />
       <aside className="flex flex-col gap-3 lg:min-h-0 lg:overflow-y-auto lg:pr-1 lg:[scrollbar-gutter:stable]">
         <header>
           <h1 className="text-xl font-semibold text-forge-text flex flex-wrap items-center gap-x-2">

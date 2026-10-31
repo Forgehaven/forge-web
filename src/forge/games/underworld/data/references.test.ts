@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { CULTURES, FAVOURED_COSTS, FAVOURED_VOCATIONS, FRAG_RACES, OCC_ABILITIES, RACES, SKILLS, VOCATIONS, VOCATION_PREREQS } from '.'
+import { CULTURES, FAVOURED_COSTS, FAVOURED_VOCATIONS, FRAG_RACES, OCC_ABILITIES, PRODUCTION, RACES, SKILLS, VOCATIONS, VOCATION_PREREQS } from '.'
 import { SPHERES } from '../rules'
 import { RITUAL_SLOT, SPELL_SLOT } from '../engine'
 
@@ -31,5 +31,17 @@ describe('rules data references', () => {
     ].flatMap(r => r.split('|'))
     expect(refs.length).toBeGreaterThan(50)
     expect([...new Set(refs.filter(r => !known.has(r)))]).toEqual([])
+  })
+
+  it('keys production lists by real skill ids and matches the book', () => {
+    expect(Object.keys(PRODUCTION).filter(id => !known.has(id))).toEqual([])
+    const rows = (id: string, table: string) => PRODUCTION[id].tables!.find(t => t.title === table)!.rows
+    const elixirs = rows('alchemy', 'Elixirs')
+    expect(elixirs.every(e => e.cells.some(c => c !== null))).toBe(true)
+    // Core 5.6.5 Chart 5-1, 5-2.
+    expect(elixirs.find(e => e.name === 'Antidote')!.cells).toEqual([8, 12, 20])
+    expect(elixirs.find(e => e.name === 'Death')!.special).toEqual([true, false, true])
+    const items = Object.fromEntries(rows('blacksmith', 'Items').map(i => [i.name, i.cells[0]]))
+    expect([items['Medium Weapon'], items['Metal Shield']]).toEqual([24, 30])
   })
 })

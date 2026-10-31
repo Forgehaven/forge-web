@@ -1,11 +1,13 @@
 import { useMemo, useState } from 'react'
 import {
-  catalog, choiceLabel, choiceOptions, evaluate, needsChoice, prereqLabel, slotCost, stateAt, vocationNeeds, SPELL_VERSATILITY, TRADESMAN, versatilityCost,
+  catalog, choiceLabel, choiceOptions, evaluate, needsChoice, raceData, slotCost, stateAt, vocationNeeds, SPELL_VERSATILITY, TRADESMAN, versatilityCost,
   type Build, type CatalogSkill, type Evaluation,
 } from '../engine'
 import { stepLabel } from './util'
 import { ordinal } from '../rules'
-import { Prose } from '../components/Prose'
+import { RulesDrawer, type RulesPage } from '../components/RulesDrawer'
+import { CULTURES } from '../data'
+import type { Trait } from '../types'
 import { Masonry, type MasonryItem } from '../../../../components/Masonry'
 import { toggleProps } from '../../../../lib/toggleProps'
 import type { Place } from '../../../../lib/assignColumns'
@@ -106,14 +108,13 @@ function SkillRow({ row, owned, needFor, hasOccupation, numeric, onAdd, onRemove
   const maxed = owned > 0 && owned >= sk.maxPurchases
   const reason = row.reason === NO_OCCUPATION || maxed ? null : row.reason
   const blocked = !!row.reason || (options !== null && options.length === 0)
-  const prereqs = sk.prereqs.map(prereqLabel)
   const showCost = hasOccupation || !sk.costs
   const short = shortName(sk.name)
 
   return (
     <li className={`border-b border-forge-border last:border-b-0 ${owned ? 'border-l-2 border-l-forge-accent/60 -ml-3 pl-2.5' : needFor ? 'border-l-2 border-l-amber-400/70 bg-amber-400/5 -ml-3 pl-2.5' : ''}`}>
       <div className="flex items-center gap-2 py-1 group">
-        <div className="@container flex-1 min-w-0 flex items-center text-left cursor-pointer" title={sk.name} {...toggleProps(open, () => setOpen(o => !o))}>
+        <div className={`@container flex-1 min-w-0 flex items-center text-left ${reason ? 'cursor-pointer' : ''}`} title={sk.name} {...(reason ? toggleProps(open, () => setOpen(o => !o)) : {})}>
           <span className={`truncate text-sm ${blocked && !maxed ? 'text-forge-muted' : 'text-forge-text group-hover:text-forge-bright'}`}>
             {short === sk.name ? sk.name : <><span className="hidden @[17rem]:inline">{sk.name}</span><span className="@[17rem]:hidden">{short}</span></>}
           </span>
@@ -200,16 +201,7 @@ function SkillRow({ row, owned, needFor, hasOccupation, numeric, onAdd, onRemove
         </div>
       )}
 
-      {open && (
-        <div className="pb-3 text-xs text-forge-dim leading-relaxed">
-          {reason && <p className="mb-1 text-amber-300/80">{reason}</p>}
-          <Prose text={sk.desc} />
-          <p className="mt-1 text-forge-muted">
-            Max {sk.maxPurchases}{prereqs.length ? ` · Requires ${prereqs.join('; ')}` : ''}
-            {sk.prereqPerPurchase ? ' (per purchase)' : ''}
-          </p>
-        </div>
-      )}
+      {open && reason && <p className="pb-1.5 text-[11px] text-amber-300/80">{reason}</p>}
     </li>
   )
 }
@@ -241,9 +233,24 @@ export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove, query,
   const needs = useMemo(() => vocationNeeds(build, ev.final), [build, ev.final])
   const hasOccupation = !!build.occupation
   const [skillInput] = useSkillInput()
+  const [rules, setRules] = useState<RulesPage[] | null>(null)
+  const toggleRules = (cat: string) =>
+    setRules(r => (r?.[0].kind === 'category' && r[0].cat === cat ? null : [{ kind: 'category', cat }]))
+  // Built-in race traits plus the culture, for the Racial rules page.
+  const culture = CULTURES[build.culture]
+  const traits: Trait[] = [
+    ...(raceData(build.race)?.auto ?? []),
+    ...(culture ? [{ name: `${build.culture} culture`, kind: 'advantage' as const, desc: [culture.lore, culture.indoctrination].join('\n\n') }] : []),
+  ]
+  const costOf = (id: string) => {
+    const r = rows.flatMap(c => c.skills).find(x => x.sk.id === id)
+    if (!r) return ''
+    const cp = r.sk.costNote ?? (hasOccupation || !r.sk.costs ? `${r.cost} CP` : 'cost by occupation')
+    return r.frag ? `${cp} · ${r.frag}f` : cp
+  }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3">
       {!loose && <span className="text-xs text-forge-muted">Buying at <span className="text-forge-accent">{stepLabel(active)}</span></span>}
 
       {!hasOccupation && (
@@ -261,10 +268,22 @@ export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove, query,
           const ownedHere = skills.filter(r => owned(r.sk.id) > 0).length
           const buyable = skills.filter(r => !r.reason).length
           return [{ key: cat, place: place(cat), weight: skills.length + 2, node: (
-            <section>
-              <h3 className="flex items-baseline gap-2 border-b border-forge-accent/30 pb-0.5 text-[11px] font-semibold uppercase tracking-widest text-forge-accent">
-                {cat}
-                <span className="ml-auto text-[10px] font-normal normal-case tracking-normal text-forge-muted">
+            <section className="pt-0.5">
+              <h3 className="grid grid-cols-[3fr_auto_2fr] items-center gap-2 border-b border-forge-accent/30 pb-1 text-[11px] font-semibold uppercase tracking-widest text-forge-accent">
+                <span className="truncate">{cat}</span>
+                <span
+                  role="button"
+                  tabIndex={0}
+                  data-rules-link
+                  aria-pressed={rules?.[0].kind === 'category' && rules[0].cat === cat}
+                  className="flex items-center gap-1 rounded bg-red-800 px-2 py-0.5 text-[10px] font-semibold tracking-wider text-white shadow-sm hover:bg-red-700 aria-pressed:bg-red-600 cursor-pointer"
+                  onClick={() => toggleRules(cat)}
+                  onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleRules(cat) } }}
+                >
+                  <svg viewBox="0 0 16 16" className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true"><path d="M2.5 3.5c2-1 4-1 5.5.5 1.5-1.5 3.5-1.5 5.5-.5v9c-2-1-4-1-5.5.5-1.5-1.5-3.5-1.5-5.5-.5zM8 4v9" strokeLinejoin="round" /></svg>
+                  Rules
+                </span>
+                <span className="justify-self-end text-[10px] font-normal normal-case tracking-normal text-forge-muted whitespace-nowrap">
                   {ownedHere > 0 && <span className="text-forge-accent">{ownedHere} owned · </span>}
                   {buyable} buyable
                 </span>
@@ -286,6 +305,10 @@ export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove, query,
             </section>
           ) }]
         })} />
+
+      {rules && (
+        <RulesDrawer categories={rows.map(c => ({ cat: c.cat, skills: c.skills.map(r => r.sk) }))} costOf={costOf} stack={rules} setStack={setRules} traits={traits} />
+      )}
     </div>
   )
 }

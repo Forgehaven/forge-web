@@ -1,12 +1,13 @@
 // Rules data lives in the JSON files beside this one; `meta` on each records
 // where it came from. Edit the JSON, not this file.
-import type { Ability, Culture, OutOfGameSkill, Race, SkillCategory, Spell, Vocation, VocationPrereqs } from '../types'
+import type { Ability, Culture, OutOfGameSkill, Production, Race, SkillCategory, Spell, Vocation, VocationPrereqs } from '../types'
 import racesJson from './races.json'
 import skillsJson from './skills.json'
 import vocationsJson from './vocations.json'
 import spellsJson from './spells.json'
 import rulesJson from './rules.json'
 import equipmentJson from './equipment.json'
+import productionJson from './production.json'
 
 export interface DataMeta {
   source: string
@@ -27,10 +28,12 @@ export const FAVOURED_VOCATIONS = vocationsJson.favouredVocations as unknown as 
 export const VOCATION_PREREQS = vocationsJson.vocationPrereqs as unknown as Record<string, VocationPrereqs>
 export const SPELLS = spellsJson.spells as Spell[]
 export const EQUIPMENT = equipmentJson
+export const PRODUCTION = productionJson.skills as Record<string, Production>
 
 export const DATA_SOURCES: Record<string, DataMeta> = {
   rules: rulesJson.meta, races: racesJson.meta, skills: skillsJson.meta,
   vocations: vocationsJson.meta, spells: spellsJson.meta, equipment: equipmentJson.meta,
+  production: productionJson.meta,
 }
 
 export { default as SOURCES } from './sources.json'

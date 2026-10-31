@@ -1,0 +1,867 @@
+{
+  "meta": {
+    "source": "Underworld LARP Core Rulebook 5.6.5, Production chapter",
+    "rulebook": "Core Rulebook 5.6.5",
+    "updated": "2026-10-31"
+  },
+  "skills": {
+    "alchemy": {
+      "ref": "Core 5.6.5 p.72-78",
+      "intro": "Chart 5-1 shows the Raw Material costs for the various types of Alchemy available in the game to starting characters. Alchemical creations are divided into three categories: Contact, Ingested, and Gas Globe. Contact Alchemy is simply represented by a tag signed by a Shaper. Ingested is considered the same volume as a potion and you will see most people using vials or film canisters as Physical Representations. Finally, Gas Globes are represented by orange spell packets. These orange packets are considered to be the Gas Globe.\nAddictive Alchemy: Some alchemies are addictive. After consuming an addictive alchemy, the consumer becomes addicted to that specific alchemy. A character will always know what substance they are addicted to. The character will lose 10% of their total original Body, rounded up, for every 24 hours that pass without consuming the alchemy that they are addicted to. Once they receive another elixir, the individual will begin the cycle again. This cycle will continue with every passing day until either the victim receives their next dose, they are given a dose of the antidote, or they perish. During this time, the damage sustained by this elixir cannot be cured by any means. The damage only occurs on event days (eg: when the player is at a game) and will reduce the victim to a minimum of 1 Body. Throughout all of this, the victim will crave another elixir until they receive it. A victim of addiction has two choices; to continue taking the alchemy perpetually or to die and be resurrected in a new and uncontaminated body. Addiction can only be cured using an Addiction Antidote.\nNumbers shown are Raw Materials. * indicates that a recipe that requires components which must be found in-game.",
+      "tables": [
+        {
+          "title": "Elixirs",
+          "columns": [
+            "Contact",
+            "Ingested",
+            "Gas Globe"
+          ],
+          "rows": [
+            {
+              "name": "Acid (Heavy)",
+              "desc": "This acidic poison bypasses armour and dissolves the target's Body. It will damage any creature, be it living or Undead, so long as the creature in question is composed of, or derived from, biological matter. It comes in three increasingly damaging varieties: \"Light\" +2, \"Moderate\" +5, and \"Heavy\" +10. All Acid damage is Body Damage.",
+              "cells": [
+                null,
+                8,
+                16
+              ]
+            },
+            {
+              "name": "Acid (Light)",
+              "desc": "This acidic poison bypasses armour and dissolves the target's Body. It will damage any creature, be it living or Undead, so long as the creature in question is composed of, or derived from, biological matter. It comes in three increasingly damaging varieties: \"Light\" +2, \"Moderate\" +5, and \"Heavy\" +10. All Acid damage is Body Damage.",
+              "cells": [
+                null,
+                2,
+                8
+              ]
+            },
+            {
+              "name": "Acid (Moderate)",
+              "desc": "This acidic poison bypasses armour and dissolves the target's Body. It will damage any creature, be it living or Undead, so long as the creature in question is composed of, or derived from, biological matter. It comes in three increasingly damaging varieties: \"Light\" +2, \"Moderate\" +5, and \"Heavy\" +10. All Acid damage is Body Damage.",
+              "cells": [
+                null,
+                4,
+                12
+              ]
+            },
+            {
+              "name": "Addiction Antidote",
+              "desc": "This will break a character of their addiction and allow any damage sustained from the addiction to be healed. It will have no effect on addictions requiring unique antidotes, such as Ambrosia. One dose of Addiction Antidote will only break an addiction to one type of alchemy at a time.",
+              "cells": [
+                48,
+                24,
+                48
+              ]
+            },
+            {
+              "name": "Alchemical Light",
+              "desc": "The Alchemical Light alchemy allows any green Cyalume light (\"Glowstick\") to be used In-Game. Alchemical Lights can be combined to produce a greater effect. Combining three Alchemical Light alchemies will allow the use of a flashlight. Flashlights used in this manner must always be pointed own towards the ground. The use of five Alchemical Light alchemies will allow the use of a non-flame lantern. Glowsticks, flashlights and lanterns may be turned on and off as the user desires for the duration of the alchemy. They should not be so bright as to be blinding. No levels of Alchemy are required to use an Alchemical Light. Once activated, Alchemical Lights last 5 days.",
+              "cells": [
+                1,
+                null,
+                null
+              ]
+            },
+            {
+              "name": "Ambrosia",
+              "desc": "The rush from this elixir begins immediately upon consumption and will last for 1 hour. Upon taking this drug, the victim will experience a feeling of bliss, and all will be well and good within that person's world. They are incredibly high and cannot hide it. Their RP must make their intoxication very obvious. This alchemy is very addictive (see the rules on addictive alchemy above). They will not willingly take an antidote. Throughout all of this, the victim will crave another elixir until they receive it and will be obsessed with procuring it. If six doses of Ambrosia are taken within one hour, the victim suffers an Alchemical Death effect, dropping their Body points to -1 and bypassing their Bleed Count completely. If a victim of Ambrosia dies during the 1 hour it is affecting them, they will add +1 to their chance of remembering their death; that is, a 2 in 10 chance of remembering their death rather than 1 in 10. If they do not remember their death, their death dream will be much more vivid and intense. During the 1 hour of Ambrosia, the victim is immune to Forget effects. Ambrosia can only be cured by an Ambrosia Antidote or resurrection.",
+              "cells": [
+                60,
+                12,
+                32
+              ],
+              "special": [
+                true,
+                true,
+                true
+              ]
+            },
+            {
+              "name": "Ambrosia Antidote",
+              "desc": "This will remove the effects of an Ambrosia elixir addiction, breaking a character of their addiction and allowing the damage sustained from the Ambrosia to be healed.",
+              "cells": [
+                148,
+                52,
+                100
+              ],
+              "special": [
+                true,
+                false,
+                true
+              ]
+            },
+            {
+              "name": "Antidote",
+              "desc": "An Antidote will cure any alchemical effect which does not require a specific antidote. It will have no effect on elixirs requiring unique antidotes, such as Ambrosia.",
+              "cells": [
+                8,
+                12,
+                20
+              ]
+            },
+            {
+              "name": "Befuddle",
+              "desc": "This alchemy is the scourge of mages everywhere. When suffering under its effects, magic casters must perform their incants twice or suffer a miscant. The alchemy does not impact the activation of magic items. This lasts for 10 minutes or until the victim has cast 3 spells, whichever happens first.",
+              "cells": [
+                16,
+                8,
+                12
+              ]
+            },
+            {
+              "name": "Blindness",
+              "desc": "Blindness alchemy will affect any target that uses eyes for vision with blindness for 10 seconds. In terrain that is considered unsafe OOG, the target may keep their eyes open for safety and simply roleplay being blind.",
+              "cells": [
+                16,
+                8,
+                12
+              ]
+            },
+            {
+              "name": "Charm",
+              "desc": "This victim of this elixir will treat the first person they see as their best friend for one hour. Although it does not turn the target into a mindless automaton that follows every order the \"friend\" gives, the target will be required to stay with their \"friend\" and listen to any \"suggestions\" they may give. If the \"friend\" attacks the Charmed individual, the alchemical effect will be broken. However, friends of the \"friend\" may attack the victim and the alchemy may remain intact if the \"friend\" can give adequate reason as to why they are not defending the target. A Charmed creature will not attack their old friends unless given enough reason. However, if the target is told to \"defend me\" and their old friends attack the \"friend\"; this would be considered adequate reason. This alchemy will not force the target to act in a way that is contrary to their nature (a pacifist killing someone, etc.). The alchemy will not force the target to tell the truth or reveal secrets, unless it is already in their nature to do so to their best friend. This alchemy will not force the target to do anything obviously suicidal unless it would be in the target's nature to do so. A target may be Charmed to multiple people at the same time. If this would cause a conflict, the most recent Charm will override any previous Charms. This does not cure the previous Charms; it only makes them inactive as long as they are in conflict with the most recent Charm. It may be countered with an effect which removes alchemical toxins or a standard Antidote.",
+              "cells": [
+                52,
+                16,
+                28
+              ],
+              "special": [
+                true,
+                false,
+                true
+              ]
+            },
+            {
+              "name": "Cindamite",
+              "desc": "Cindamite will destroy locks. For each level of the lock, a Cindamite dose is required. The alchemy must be applied on a 10 count, at which point it will catch fire. Then the alchemist must call \"Cindamite!\" If the lock moves during this count, the fire will go out and the Cindamite will fail. If Cindamite goes off while touching a limb (including those inside manacles), the target suffers 5 Elemental Fire Body (regardless of the number of doses) and the limb(s) are dismembered. If placed on the torso of a target, the target takes 50 Elemental Fire Body per dose unless they move before the 10 seconds have elapsed or interrupt the count. This damage ignores all defenses, even racial defenses, and all thresholds.",
+              "cells": [
+                28,
+                null,
+                null
+              ]
+            },
+            {
+              "name": "Complex Resist Toxin",
+              "desc": "This alchemy acts the same as Simple Resist Toxin but consumer of this elixir may choose which toxin to resist, rather than resisting the first effect that strikes them. Only one Resist Toxin may be active at a time. Complex Resist Toxin will last up to 5 days or until it is used.",
+              "cells": [
+                48,
+                36,
+                60
+              ]
+            },
+            {
+              "name": "Confusion",
+              "desc": "This elixir causes disorientation and confusion deep within the target's mind. While under the effect of the elixir, the target may not use any skills or abilities, and may not call out damage on swings. The target will wander in circles aimlessly and while they cannot attack, they may defend themselves with any weapon currently in hand. The effects of Confusion last for 1 minute. It may be countered with an effect which removes alchemical toxins or a standard Antidote.",
+              "cells": [
+                32,
+                12,
+                16
+              ],
+              "special": [
+                true,
+                false,
+                false
+              ]
+            },
+            {
+              "name": "Corrosion",
+              "desc": "Highly corrosive to armour, this alchemy will do 20 damage to a target's armour only, regardless of type.",
+              "cells": [
+                32,
+                null,
+                16
+              ],
+              "special": [
+                true,
+                false,
+                false
+              ]
+            },
+            {
+              "name": "Death",
+              "desc": "A stronger version of the Slow Death elixir, this Alchemical concoction causes death immediately, putting the target into their Death Count, dropping their Body points to -1 and bypassing their Bleed Count completely. It leaves no trace whatsoever in or on its victim.",
+              "cells": [
+                68,
+                20,
+                48
+              ],
+              "special": [
+                true,
+                false,
+                true
+              ]
+            },
+            {
+              "name": "Detect Alchemy",
+              "desc": "Although considered ingested, Detect Alchemy is mixed with food or drink or onto a surface to determine if another alchemical substance is present. Detect Alchemy requires a 3 count to mix the elixir into food, drink, or onto a surface. If alchemy is present, it will turn the substance or surface red. If Detect Alchemy Elixir detects alchemy, an Alchemist can spend 1 minute determining the type of alchemy present by examining the food/drink or surface. This is possible because the Detect Alchemy Elixir separates trace amounts of the alchemy from the food/drink/surface, which causes it to float to the top like oil in water.",
+              "cells": [
+                null,
+                4,
+                null
+              ]
+            },
+            {
+              "name": "Dissolvent",
+              "desc": "Each dose of this solvent will affect one square foot. It can be used to remove Sticky Paste, or the like. After an hour of becoming active, the entire dose will become inert, and useless. It cannot be divided into smaller portions.",
+              "cells": [
+                8,
+                null,
+                28
+              ],
+              "special": [
+                false,
+                false,
+                true
+              ]
+            },
+            {
+              "name": "Embalming Fluid",
+              "desc": "This will prevent organic matter from decaying for 1 month. It works on fruit, blood, meat, and any other living material including a body that has died its final death. Use of this alchemy will prolong the length of time that it takes for body parts to dissipate after resurrection. After expiry the matter will continue to decay unless another embalming fluid is applied. Only an alchemist may apply this fluid.",
+              "cells": [
+                20,
+                null,
+                null
+              ]
+            },
+            {
+              "name": "Enrage",
+              "desc": "Lasting 60 seconds; this elixir will cause its victim to blindly attack the first person they see, friends and foes alike, without hesitation. They may use any abilities they possess and can perform Killing Blows. It may be countered with an effect which removes alchemical toxins or a standard Antidote.",
+              "cells": [
+                76,
+                28,
+                52
+              ],
+              "special": [
+                true,
+                false,
+                true
+              ]
+            },
+            {
+              "name": "Feeblemind",
+              "desc": "This elixir will turn its victim into a mindless husk for 10 minutes. One cannot speak coherently, perform any skills, use advanced defenses or pursue any rational or even normal train of thought. It may be countered with an effect which removes alchemical toxins or a standard Antidote. If a victim of Feeblemind is Charmed, the Charm's duration will double. If a victim of Feeblemind receives a Forget effect, they will only have 10 minutes to have the Forget countered before its effects are permanent.",
+              "cells": [
+                44,
+                16,
+                24
+              ],
+              "special": [
+                true,
+                false,
+                true
+              ]
+            },
+            {
+              "name": "Festering Pox",
+              "desc": "This plague effect counts as a non-magical disease. The target cannot run, is sickened with disease, and should role-play accordingly. The target can only heal up to 1 Body, no matter the source of healing, until the disease is cured. If the target is over 1 Body when plagued, any additional healing attempted will have no effect. The duration of this effect is 5 days. It can only be cured by means which cures diseases, not toxins.",
+              "cells": [
+                16,
+                8,
+                12
+              ]
+            },
+            {
+              "name": "Forget",
+              "desc": "Forget causes its victim's memory to be erased of all that occurred within the last 10 minutes. This alchemy can be freely resisted by any conscious target. It may be countered with an effect which removes alchemical toxins or with a Charm Break within the hour after the victim's memory is erased. If not, the effect becomes permanent. If the victim dies (not just enters their Death Count) before the hour has ended, the Forget is cured. Multiple Forget alchemies can be administered at once to increase the duration. Each elixir will add 10 minutes to the period the victim forgets.",
+              "cells": [
+                68,
+                24,
+                44
+              ],
+              "special": [
+                true,
+                false,
+                true
+              ]
+            },
+            {
+              "name": "Hallucinoid",
+              "desc": "This elixir causes wild and unrealistic hallucinations to flood the mind of its victim. It is up to the victim to roleplay these hallucinations. For example, victims might miscant, swing at enemies that are not there, or fail to recognise their friends. The effect can only be removed by an effect which removes alchemical toxins, a standard Antidote, or by waiting ten minutes. The victim does not realise they are under the effect of alchemy until the effect ends. This effect stacks. For each additional Hallucinoid the victim is hit with, the hallucinations will become more vivid, more disturbing, encompass more senses, etc. Each time the victim is hit with another stack of Hallucinoid, the duration will be reset to 10 minutes and the victim will experience the full number of stacks for the remainder of the duration. Hallucinoid will stack with other forms of Hallucinoid, such as the Hallucinate spell, up to a maximum of 5 stacks.\n1 stack: The victim experiences visual hallucinations, seeing things that are not there.\n2 stacks: The victim experiences auditory and physical hallucinations, such as hearing voices or feeling like something is touching them.\n3 stacks: The victim has difficulty speaking or understanding complex speech and may begin to speak in gibberish at times.\n4 stacks: The victim cannot distinguish friend from foe, seeing everyone around them as entirely different people.\n5 stacks: The victim's reality is entirely replaced by a hallucination, putting them in a completely different world with different people and objects, and so on.",
+              "cells": [
+                20,
+                8,
+                16
+              ],
+              "special": [
+                true,
+                false,
+                false
+              ]
+            },
+            {
+              "name": "Heavy Intoxicant",
+              "desc": "This elixir is the same as Intoxicant but more potent. It does 5 Stamina damage. Heavy Intoxicant is addictive (see the rules on addictive alchemy above).",
+              "cells": [
+                20,
+                4,
+                12
+              ],
+              "special": [
+                true,
+                false,
+                true
+              ]
+            },
+            {
+              "name": "Inoculation",
+              "desc": "This alchemical defense will grant resistance to the next disease effect that strikes the person who is inoculated. It will fade once it activates, or after 5 days pass without activation. It may be stacked with other defenses but does not stack with itself.",
+              "cells": [
+                20,
+                12,
+                16
+              ]
+            },
+            {
+              "name": "Intoxicant",
+              "desc": "This elixir has the same effect as if its victim drank an alcoholic beverage. The elixir itself has no taste or smell, rendering it undetectable to anything other than an effect which would identify alchemy. Intoxicant has a Stamina damage rating of 2. It may be countered with an effect which removes alchemical toxins, or a standard Antidote.",
+              "cells": [
+                12,
+                2,
+                8
+              ],
+              "special": [
+                true,
+                false,
+                false
+              ]
+            },
+            {
+              "name": "Liquid Courage",
+              "desc": "For 10 minutes after it is used, Liquid Courage will grant complete immunity to any and all fear effects. It will also grant the user the skill Self Mutilate for the duration. Liquid Courage is addictive (see the rules on addictive alchemy above).",
+              "cells": [
+                16,
+                4,
+                12
+              ]
+            },
+            {
+              "name": "Liquid Lungs",
+              "desc": "Liquid Lung will allow the user to breathe water, as well as air, for one hour. This alchemy does not grant any other ability, such as the ability to swim, or see under water.",
+              "cells": [
+                8,
+                4,
+                8
+              ]
+            },
+            {
+              "name": "Metasis",
+              "desc": "This alchemy can be applied to raw materials to change their properties. One dose can be applied to a single tag, up to 10 RM, to change the type of production skill the RM can be used for. When this is done, the Metasis tag should be attached to the RM tag and state the new RM type.",
+              "cells": [
+                4,
+                null,
+                null
+              ]
+            },
+            {
+              "name": "Might",
+              "desc": "For 10 minutes after it is used, Might will grant the recipient +1 Strength. This alchemy can be stacked up to 3 times, for a maximum of +3 Strength. Might is addictive (see the rules on addictive alchemy above).",
+              "cells": [
+                20,
+                16,
+                20
+              ]
+            },
+            {
+              "name": "Paralysis",
+              "desc": "The duration of this elixir is 10 minutes. During that time, its victim is paralyzed, cannot walk, speak, use any skills, or move. An effect which removes alchemical toxins or a standard Antidote may counter it.",
+              "cells": [
+                46,
+                12,
+                20
+              ],
+              "special": [
+                true,
+                false,
+                false
+              ]
+            },
+            {
+              "name": "Rehabilitation",
+              "desc": "This elixir will cause the target's Body to regenerate lost health and can restore a lost or fractured limb. Once taken, the target will begin to heal at the rate of 1 Body point per minute. Should the target receive the full effects of this elixir and not have taken any damage during its duration, Rehabilitation will also restore one of the target's lost or fractured limbs. The target chooses which of their limbs is to be restored. This elixir will last for 10 minutes, or until the first time the target takes any damage or falls into their Bleed count. While under its effects the target must state \"Visibly Regenerating\" every minute that they heal a Body point from the elixir and whenever a new person approaches them. Healing begins at the 60 second mark and continues every 60 seconds for the 10 minutes.",
+              "cells": [
+                68,
+                28,
+                48
+              ],
+              "special": [
+                true,
+                false,
+                true
+              ]
+            },
+            {
+              "name": "Remedy",
+              "desc": "Remedy will heal the recipient of 5 points of Body damage. It will not add Body points beyond the target's maximum Body. It will bring an unconscious creature out of unconsciousness, but it will not bring a dead one back to life.",
+              "cells": [
+                16,
+                12,
+                8
+              ],
+              "special": [
+                true,
+                false,
+                true
+              ]
+            },
+            {
+              "name": "Resist Chemistry",
+              "desc": "This alchemy will protect the recipient from the next single Chemistry effect to strike them. It cannot be saved and will go off on the first Chemistry to strike the recipient, even if the recipient does not wish it to. Resist Chemistry will last up to 5 days or until it is used to resist a Chemistry. Resist Chemistry is addictive (see the rules on addictive alchemy above).",
+              "cells": [
+                200,
+                156,
+                null
+              ],
+              "special": [
+                true,
+                true,
+                false
+              ]
+            },
+            {
+              "name": "Rusting Dust",
+              "desc": "This elixir will shatter any metal weapon. An alchemist may throw this alchemy at a target to break a weapon held in their hand. If the target is holding multiple weapons, the alchemist may specify which weapon the alchemy will shatter. Otherwise the victim chooses. This alchemy will not affect shields or armour.",
+              "cells": [
+                null,
+                null,
+                16
+              ]
+            },
+            {
+              "name": "Silence",
+              "desc": "This elixir will silence the target. While under the effects of Silence, the target cannot make any sound that comes out of their head, including speech, grunting, coughing or the use of wind instruments. Casting spells becomes impossible; although the player must still call out any damage they may do using weapons. This may be cured by a standard Antidote or an effect which removes alchemical toxins.",
+              "cells": [
+                24,
+                8,
+                12
+              ],
+              "special": [
+                true,
+                false,
+                false
+              ]
+            },
+            {
+              "name": "Simple Resist Toxin",
+              "desc": "This alchemy will protect the recipient from the next single alchemy, poison, or disease to hit them, be it Alchemical or otherwise in nature. It will not protect against Chemistry. It cannot be saved and will go off on the first successful hit, even if the recipient does not wish it to, unless it is an ingested toxin that the recipient does not wish to be protected from. Only one Resist Toxin may be active at a time. Resist Toxin will last up to 5 days or until it is used.",
+              "cells": [
+                16,
+                12,
+                20
+              ]
+            },
+            {
+              "name": "Sleep",
+              "desc": "The victim of this elixir will fall instantly into a deep sleep. The victim will sleep for 10 minutes, unless someone shakes them continuously for one minute, or if they take damage into Body. The target will awaken enough only to interrupt Killing Blows then fall back into deep sleep. It may be countered with an effect which removes alchemical toxins or a standard Antidote. Victims of a Sleep elixir do not snore.",
+              "cells": [
+                28,
+                8,
+                16
+              ],
+              "special": [
+                true,
+                false,
+                false
+              ]
+            },
+            {
+              "name": "Slow Death",
+              "desc": "After one minute of having been ingested, this elixir will cause the victim to keel over and enter their Death Count, dropping their Body points to -1 and bypassing their Bleed Count completely. It may be countered (before death) by an effect which removes alchemical toxins or a standard Antidote. The victim is aware that they are suffering from this poison as soon as they are dealt it. The victim may not run while under the effects of this poison.",
+              "cells": [
+                58,
+                12,
+                38
+              ],
+              "special": [
+                true,
+                false,
+                true
+              ]
+            },
+            {
+              "name": "Sticky Paste",
+              "desc": "This elixir is effectively a powerful version of \"super glue\" which lasts for 1 hour. Each dose covers a total of 1 square inch of surface area. It can be counteracted by a Dissolvent. It can be placed on floors, walls, weapons, door knobs, belt buckles, fingertips, etc. If someone ingests Sticky Paste, it is addictive (see the rules on addictive alchemy above). Ingesting Sticky Paste will have no other effect.",
+              "cells": [
+                20,
+                16,
+                null
+              ]
+            },
+            {
+              "name": "Vorpal Coating (Heavy)",
+              "desc": "This will allow a weapon to do more damage than normal on its next hit. This extra damage is not Magical; it simply increases the potency of a weapon's damage. There are three types of standard Vorpals: \"Light\" +2 damage, \"Moderate\" +5 damage, and a highly effective \"Heavy\" +10 damage version. This extra damage cannot be resisted by effects which resist alchemy.",
+              "cells": [
+                12,
+                null,
+                null
+              ]
+            },
+            {
+              "name": "Vorpal Coating (Light)",
+              "desc": "This will allow a weapon to do more damage than normal on its next hit. This extra damage is not Magical; it simply increases the potency of a weapon's damage. There are three types of standard Vorpals: \"Light\" +2 damage, \"Moderate\" +5 damage, and a highly effective \"Heavy\" +10 damage version. This extra damage cannot be resisted by effects which resist alchemy.",
+              "cells": [
+                2,
+                null,
+                null
+              ]
+            },
+            {
+              "name": "Vorpal Coating (Moderate)",
+              "desc": "This will allow a weapon to do more damage than normal on its next hit. This extra damage is not Magical; it simply increases the potency of a weapon's damage. There are three types of standard Vorpals: \"Light\" +2 damage, \"Moderate\" +5 damage, and a highly effective \"Heavy\" +10 damage version. This extra damage cannot be resisted by effects which resist alchemy.",
+              "cells": [
+                4,
+                null,
+                null
+              ]
+            },
+            {
+              "name": "Weakness",
+              "desc": "The Weakness Elixir will sap the target's strength, causing a strength loss of -8, which lowers the target's weapon swings by -4 (to a minimum of 1). This effect will last 1 hour and cannot be stacked. It can be cured with a standard antidote or an effect which removes alchemical toxins.",
+              "cells": [
+                28,
+                12,
+                20
+              ],
+              "special": [
+                false,
+                false,
+                true
+              ]
+            },
+            {
+              "name": "Weapon Colour",
+              "desc": "This Alchemical compound will turn any metal, iron, or silver weapon, a different colour for the duration of 1 year. After the duration has expired, the Alchemy will have worn off and the weapon will return to this original colour. This allows for the use of coloured taping on any metal weapon it is applied to. A weapon may be turned any colour other than white, red, blue or purple. Weapon Colour may add maximum of two new colours to any single weapon and any designs must be period appropriate.",
+              "cells": [
+                8,
+                null,
+                null
+              ]
+            },
+            {
+              "name": "Withering Poison",
+              "desc": "This elixir will reduce its victim's Maximum Body points by half immediately. This becomes the victim's new Maximum Body, rounded down to the nearest whole number. Any Body above the new maximum is removed. 1 hour later, the same effect will occur, and so on, until the victim dies or the poison is nullified. Once the victim reaches a Maximum Body of 1, they will immediately fall into their Death count. The Maximum Body lost from a Withering Poison cannot be healed until the poison has been removed using an effect which removes alchemical toxins or a standard Antidote. The victim is aware within moments that they have become poisoned. While suffering from Withering Poison, the victim has no Bleed count. Anything that would put them into their Bleed count will instead put them in their Death count.",
+              "cells": [
+                46,
+                12,
+                20
+              ],
+              "special": [
+                true,
+                false,
+                false
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "blacksmith": {
+      "ref": "Core 5.6.5 p.79-80",
+      "intro": "Armour is created at a cost of 1 Raw Material per point of armour before taking any physrep point reductions into account.\nNormal arrows do not need tags, and therefore normal arrows do not need to be crafted. Silver and iron arrows do need tags. The production cost for arrows in Chart 5-2 is the base cost without silvering or ironing.\nNormal weapons and shields expire 2 years after creation. Armour does not expire. Normal weapons may be made of either steel, wood or bone.",
+      "tables": [
+        {
+          "title": "Items",
+          "columns": [
+            "RM"
+          ],
+          "rows": [
+            {
+              "name": "Simple Weapon",
+              "cells": [
+                4
+              ]
+            },
+            {
+              "name": "Medium Weapon",
+              "cells": [
+                24
+              ]
+            },
+            {
+              "name": "Large Weapon",
+              "cells": [
+                40
+              ]
+            },
+            {
+              "name": "Exotic Weapon",
+              "cells": [
+                48
+              ]
+            },
+            {
+              "name": "Arrow x6 / Bolt x6",
+              "cells": [
+                1
+              ]
+            },
+            {
+              "name": "Wooden Shield",
+              "cells": [
+                10
+              ]
+            },
+            {
+              "name": "Iron Bound Shield",
+              "cells": [
+                20
+              ]
+            },
+            {
+              "name": "Metal Shield",
+              "cells": [
+                30
+              ]
+            },
+            {
+              "name": "Armour (per point)",
+              "cells": [
+                1
+              ]
+            }
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "title": "Iron or Silvering a Weapon",
+          "text": "The most basic smithing techniques will teach a young Blacksmith the art of crafting weapons from iron and silver. Iron weapons cost 150% of the original Raw Material (RM) values to make and require the entire striking surface to be made entirely of iron to be able to call for iron damage. Crafting silver weapons requires 400% of the original RM cost. A weapon may be either iron or silver, not both and must be done at the time of the weapon's creation. Iron and silver weapons expire 3 years after creation."
+        },
+        {
+          "title": "Master Crafting",
+          "text": "At this point the Blacksmith has become a master of their craft and a full professional by most standards. As such they can, a great expense, focus all they have learned to produce a piece of master quality. Creating a Master Crafted item will cost the Blacksmith 500% of the normal cost in Raw Material. Master Crafting a weapon will allow that weapon to be enchanted; normal weapons will not withstand the process. Master Crafting a weapon allows the weapon to resist a total of three attempts to shatter or destroy it by any means. Once these resists are used, the weapon is considered Normal. Iron and Silvered Weapons may be Master Crafted but the additional costs still are cumulative. Shields which are Master Crafted have 3 \"Render\" resists vs. destroy / shatter effects. Master Crafted weapons and shields expire 5 years after creation."
+        },
+        {
+          "title": "Legendary Crafting",
+          "text": "The Blacksmith has obtained a legendary knowledge of their craft. They are the foremost specialist their field and are considered an absolute authority in all matters of Blacksmithing. A Legendary Blacksmith can create items of Legendary forging, giving the item properties of an almost magical nature. Legendary weapons and armour are immune to effects which will permanently destroy them. The creation of legendary armour and weapons will cost the smith 1000% of the original Raw Material value. Legendary weapons can be made of any material that regular weapons can be made of. Please note that Legendary Shields are exempt to the above cost. All Legendary shields cost 200 RM to produce. Legendary crafted armour possesses superior strength and protection. Each piece of Legendary armour will also provide the wearer with an additional Armour Point for that location. Finally, Legendary crafted weapons and armour are the base material for any Blueprints a Blacksmith may create. Legendary items, once crafted, are so durable and resilient that they can resist the effects of ritual magic. Even the most powerful enchantments will quickly fade if cast on a Legendary item. An enchantment may last a few days or may only last 10 minutes. The duration is random and chosen by a Ritual Marshal. Legendary items will expire after 5 years and turn into a normal version of that item. When a Legendary shield expires, the owner can choose whether it becomes a Wooden, Iron Bound or Metal shield. A Legendary item will not expire as long as it has a Blueprint on it. The 5 year expiry time will reset when the Blueprint expires. When the first Blueprint is placed on a Legendary item, the Blacksmith will decide a way to destroy the item. This can be as dramatic or complex as the Blacksmith wants but must be approved by the Shaper team. There may be other rare and extraordinary ways to destroy Legendary items."
+        }
+      ]
+    },
+    "create-scroll": {
+      "ref": "Core 5.6.5 p.81",
+      "intro": "This skill allows a character with some basics in Magic to create Magical Scrolls based on the spells they possess. To make a Magical Scroll, a character needs to be able to cast that specific spell from memory. Because of the lengthy process required to create scrolls, scrolls cannot be made using magic items or other scrolls.",
+      "tables": [
+        {
+          "title": "Scrolls",
+          "columns": [
+            "RM"
+          ],
+          "rows": [
+            {
+              "name": "Spell level 1",
+              "cells": [
+                4
+              ]
+            },
+            {
+              "name": "Spell level 2",
+              "cells": [
+                4
+              ]
+            },
+            {
+              "name": "Spell level 3",
+              "cells": [
+                8
+              ]
+            },
+            {
+              "name": "Spell level 4",
+              "cells": [
+                8
+              ]
+            },
+            {
+              "name": "Spell level 5",
+              "cells": [
+                16
+              ]
+            },
+            {
+              "name": "Spell level 6",
+              "cells": [
+                16
+              ]
+            },
+            {
+              "name": "Spell level 7",
+              "cells": [
+                32
+              ]
+            },
+            {
+              "name": "Spell level 8",
+              "cells": [
+                32
+              ]
+            },
+            {
+              "name": "Spell level 9",
+              "cells": [
+                64
+              ]
+            },
+            {
+              "name": "Tome",
+              "cells": [
+                100
+              ]
+            }
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "title": "Glowing Ink and Scroll Mastery",
+          "text": "Scrolls created with Glowing Ink cost an additional 50% of the base Raw Material cost. Scrolls created with Scroll Mastery cost an additional 100% of the base Raw Material cost. Creating a Tome costs 100 RM."
+        }
+      ]
+    },
+    "trapper": {
+      "ref": "Core 5.6.5 p.82-85",
+      "intro": "To arm a trap, you must have two things: the trigger, and the trap. Both are detailed below. A trigger and trap can be no more than 5 feet from each other and should be connected by at the very least a string. If they are further, the trap will fail.",
+      "tables": [
+        {
+          "title": "Triggers",
+          "columns": [],
+          "rows": [
+            {
+              "name": "Mouse Trap Trigger",
+              "desc": "A mouse trap trigger is exactly what it implies. A mouse trap trigger is considered `set' when armed, and triggered when it snaps shut. Due to the nature of mouse traps, it may also be considered disarmed if it is brought to a triggered/disarmed state in a controlled fashion by someone with enough Traps skill to do so. The noise from a mousetrap snapping shut is the indicator that the trap has been sprung. Only small mousetraps may be used. Larger traps, such as rat traps, are not permitted in the game.",
+              "cells": []
+            },
+            {
+              "name": "Buzzer / Switch",
+              "desc": "A buzzer or switch trigger can be of a variety of types. Their key element is that they are electronic. The electronic trigger can be a pull-pin, a switch or any other electronic configuration that can be triggered, so long as it is not considered a pressure plate. A buzzer/switch trigger must have an indicator that the trap has been triggered built within it, be it an indicator noise or light.",
+              "cells": []
+            },
+            {
+              "name": "Pressure Plate Trigger",
+              "desc": "Pressure plate triggers are sections of wall, floor, or other areas of space that set off the trap when moved or depressed. The trigger must physically move and activate an indication that the trap has gone off, be it a noise or light.",
+              "cells": []
+            },
+            {
+              "name": "Threshold Trigger",
+              "desc": "Threshold triggers must be set up in a doorway or other portal. In-game, the trigger for the threshold Trigger can be a cascade of light, or a gentle but steady breeze. Their in-game phys rep must be a small-sized puzzle to be disarmed. They also require an out-of-game note to be left for a Marshal or P.C. to find. The note is to inform the next person who walks through the area what effect happens. Any object of large size, or person, breaching the threshold causes the trap to go off. Pitching a rock or weapon through a threshold trigger will not trigger the trap. All style of traps may be used with this trigger type except Massive Mechanical. The appropriate-sized container or phys-rep for the effect to be triggered must be present (a box to represent the noisemaking device, chemicals for the fire, explosion or gas, or a weapon mounted on a device for the weapon or dismember traps) as detailed in each trap-type below.",
+              "cells": []
+            },
+            {
+              "name": "Timer Trigger",
+              "desc": "A timer trigger will count down a certain amount of time, then trigger the trap (eg: an egg timer).",
+              "cells": []
+            }
+          ]
+        },
+        {
+          "title": "Traps",
+          "columns": [
+            "RM"
+          ],
+          "rows": [
+            {
+              "name": "Alarm Trap",
+              "desc": "When alarm traps are triggered they create a noise. This noise can be of any volume, but cannot be so loud as to be damaging to the ears when standing beside the trap when it goes off. Alarm trap containers must be at least 125 cubic inches. The noise-making portion of the trap can be incorporated in that volume, or may be additional. In either case, it must be attached to the container. An alarm trap is neither a Single-Target Surprise-based Attack, nor Area of Effect, as no damage or effect is caused to the person triggering it. An alarm trap costs 2 Trap Raw Materials to create and can be reused. Please note that not all alarms are traps. A simple bell behind a closed door doesn't constitute an alarm trap and production and skills are not needed to create, set or disarm it.",
+              "cells": [
+                2
+              ]
+            },
+            {
+              "name": "Weapon Trap",
+              "desc": "When triggered, the victim who set off the Weapon trap is struck for 4 times the base damage of the Weapon in physical damage. Any contact alchemy applied to the weapon will also affect the victim. The container for a Weapon trap is a 125 cubic inch box. Any weapon may be used in the trap so an appropriate weapon tag is attached to or contained in the trap. The cost of the weapon is not included in the cost of the trap. A Weapon trap is Single-Target, surprise attack and will affect the closest target to the container within the 5-foot radius. Weapon traps and triggers can be reset with a 60 second count and are not destroyed upon detonation. The weapon tag must be provided when the trap is set.",
+              "cells": [
+                6
+              ]
+            },
+            {
+              "name": "Leg Snare Trap",
+              "desc": "This trap represents a leg snare or bear trap. When it is triggered, one of the victim's legs will become pinned to the ground. This is a Single-Target trap and will affect the closest target to the container within its 5-foot radius. The container for this trap is a 27 cubic inch box and a length of rope or similar trapping device. Once the target has been determined, their closest leg to the container will be the one affected. A pinned character cannot move that limb until they are freed. The victim may be cut free (or cut themselves free) with a 1 minute count. If they have no weapon to cut themselves free, they may escape after 1 hour. Also those with exceptional strength may break free on a 5-count. This requires the skill \"Self Mutilate\", a +2 Strength Bonus (or equivalent), and the character takes \"2 Body Damage\". Please note, the act of setting off the trigger indicates the person was caught in the trap. They do not actually have to have their foot in the phys-rep when the trap goes off.\nIf the trap detonates, the leg trap is destroyed (as the act of freeing the victim ruins the trap) but the trigger remains. If the trap is disarmed, both the leg trap and the trigger remain.",
+              "cells": [
+                6
+              ]
+            },
+            {
+              "name": "Explosive Trap",
+              "desc": "Explosive traps are the standard, bread-and-butter of traps. They cause large amounts of physical damage to any creature in their radius. Explosive traps can do from 4 to 60 points of damage. Explosive traps cannot be resisted by anything short of Ritual Magic or Racial Abilities. Each Trap Raw Material used in the creation of an explosive trap grants the trap 4 points of damage. Explosive trap containers must be at least 10 cubic inches for each point of damage the trap does. So a 4 point explosive trap must be at least 40 cubic inches (or 8\"x5\"x1\") but a 60 point explosive trap would be 600 cubic inches (12\"x10\"x5\"). Explosive traps are Area of Effect and damage everyone within 5 feet from the center of the container. Explosive traps and triggers are destroyed upon detonation.",
+              "cells": [
+                "1 per 4 damage points"
+              ]
+            },
+            {
+              "name": "Dismember Trap",
+              "desc": "A dismember trap is a specialized weapon-trap. When triggered, this trap will release a weapon, severing the limb of a target as per the Dismember skill. The container for a dismember trap is a 125 cubic inch box or other container, and the Trapper's weapon of choice. The weapon must be represented, both with an appropriate weapon phys-rep and an appropriate weapon tag. The cost of the weapon is not included in the cost of the trap. A dismember trap is a Single-Target Surprise Attack, and will affect the limb closest to the container if they are within its 5-foot radius. Dismember traps are destroyed upon use, although the weapon and trigger are not. The weapon tag must be provided when the trap is set.",
+              "cells": [
+                12
+              ]
+            },
+            {
+              "name": "Net Trap",
+              "desc": "This trap represents a net that either falls from above or pulls up from below the victim. When it is triggered, the victim is caught in a physical web of netting. This is a Single-Target trap and will affect the closest target to the container within its 5-foot radius. While trapped, the victim may not move, use weapons, or cast spells until they are freed. They may speak, or activate Magical items that are touching their body. The victim may be cut free by someone else (or cut themselves free if they have natural weaponry) with a 1-minute count. If they lack natural weaponry they may wiggle free in 1 hour if they have not been saved by someone else. Also those with exceptional strength may break free with a 3-count. This requires the skill \"Self Mutilate\", a +4 Strength Bonus, and the character takes 4 Body damage by ripping free. The container for this trap is a 27\" cubic inch box and netting, woven rope, or similar object. Setting off the trap indicates they are caught. They do not actually have to be in the phys-rep when the trap goes off. If the trap goes off, the Net trap is destroyed (as the act of freeing the victim ruins the trap) but the trigger remains. If the trap is disarmed, both the Net trap and the trigger remain.",
+              "cells": [
+                12
+              ]
+            },
+            {
+              "name": "Acid Trap",
+              "desc": "Acid Traps can do from 4 to 40 points of damage. Each Trapper Raw Material spent in the creation of an Acid Trap grants the Trap 2 points of damage. Acid Trap damage goes straight to Body. Acid Trap containers must be at least 10 cubic inches for each point of damage the trap does. So a 4 point acid trap must be at least 40 cubic inches (or 8\"x5\"x1\") but a 40 point acid trap would be 400 cubic inches (10\"x8\"x5\"). Acid traps are Area of Effect and damage everyone within 5 feet of the centre of the container. The Acid trap, as well as the trigger, is destroyed upon detonation.",
+              "cells": [
+                "1 per 2 damage points"
+              ]
+            },
+            {
+              "name": "Fire Trap",
+              "desc": "Fire traps can do from 3 to 42 points of Elemental Fire damage. Each Traps Raw Material used in the creation of a fire trap grants the trap 3 points of damage. A Fire Trap cannot be resisted by anything short of Ritual Magic or Racial Abilities. Like all pure Elemental damage, should a target drop below zero Body from a Fire Trap, they will forego their Bleed Count and directly enter their Death Count. Fire trap containers must be at least 10 cubic inches for each point of damage the trap does. So a 3 point Fire trap must be at least 30 cubic inches (or 6'x5'x1') but a 42 point explosive trap would be 420 cubic inches (12\"x7\"x5\"). Fire traps are Area of Effect and damage everyone within 5 feet from the centre of the container. Fire traps and triggers are destroyed upon detonation.",
+              "cells": [
+                "1 per 3 damage points"
+              ]
+            },
+            {
+              "name": "Gas Trap",
+              "desc": "When a Gas trap is detonated everyone within a 5 foot radius from the centre of the trap's container takes the effect of the Alchemical Gas Globe that the trap is armed with. A Gas Trap cannot be resisted by anything short of Ritual Magic or Racial Abilities. This Area of Effect trap is measured from the centre of the container. The container for this trap must be at least 100 cubic inches. With the tag for the trap you must also have 3 Alchemical gas globe tags to represent the gas in the trap. If a Gas trap is disarmed, the container still contains the gas and may be reused but the gas inside cannot be salvaged for other Alchemy use. Gas traps and triggers are not destroyed upon detonation but the alchemy tags are used up and must be replaced.\nExample: Schmendrick disarms a paralyze gas trap. He can reuse the container for his own paralyze gas trap but he cannot salvage the original 3 Gas Globes that were in it. If the trap had gone off, then he could salvage the container and the trigger for the trap, but the 3 Paralyze Gas Alchemy that were with the trap are used and should be given to a marshal or destroyed.",
+              "cells": [
+                5
+              ]
+            },
+            {
+              "name": "Needle Trap",
+              "desc": "Needle traps use a dart to inject an Alchemical substance into the victim. When triggered, the victim takes 1 Body point of damage and the Alchemical effect of the elixir used with the trap. The Trap is not considered area of effect so a Magic Armour will protect the target. However, if the target is affected by the one Body only racial or ritual defenses will resist the alchemy. The trap will affect the first target that is closest to the container, within its 5-foot radius. The container is a 125 cubic inch object with a Thrown Weapon attached to it and 3 Ingested Alchemies. The alchemy is destroyed when the trap is detonated. Needle traps may be reset if disarmed. As with Gas traps, the Alchemical trap can be reused, but not salvaged for any other Alchemical purpose. Needle traps and triggers are not destroyed upon detonation but the Alchemy that is on them is used up.",
+              "cells": [
+                5
+              ]
+            },
+            {
+              "name": "Massive Mechanical Trap",
+              "desc": "Massive mechanical traps are generally large pieces of stone, huge weaponry, or other colossal objects striking the victim. Unlike other Area of Effect traps, this trap has no set radius for its destruction. The trap must be set up in such a way as to actually cause a landslide, or large (safe, foam) object to begin motion. If this phys-rep strikes a person in any way, on any object they are holding or body part, they take the full effect of the trap. The Trap Raw Material costs for a Massive Mechanical trap are given on a case-by-case basis, based on the size and physical representation of the actual trap. When struck, the victim takes the trap damage to both their armour and Body points. Massive mechanical traps are Area of Effect and are destroyed upon detonation although the trigger is not.",
+              "cells": [
+                "Determined by marshal"
+              ]
+            },
+            {
+              "name": "Massive Net Trap",
+              "desc": "This trap functions as a Net Trap in all respects except it will affect ALL targets that are within its 5' radius. If any part of the target is within the 5', even a cloak or spear, then the target is affected.",
+              "cells": [
+                30
+              ]
+            }
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "title": "Locks",
+          "text": "Locks can be internal (permanently built into an object) or external (attached to an object, but can be removed if unlocked). This is indicated on the lock tag. Each external lock costs 10 times its level in Raw Materials. Each internal lock costs 15 times its level in Raw Materials. All locks come with one free key upon creation. Additional keys cost 5 RM and can only be made when the lock is first created."
+        },
+        {
+          "title": "Tips for Trappers",
+          "text": "- Never use heavy wire for a trip lines; use fishing line\n- When setting trip wires, make sure they can't actually trip someone.\n- Throwing or running with armed traps immediately sets them off\n- Clean up after yourself. Do not leave trap line, old triggers, etc., in the woods. You are the smith; it is your responsibility\n- Make sure your effect tags are clearly legible and waterproofed in case of rain\n- Battle Magic defenses do not protect against the Area of Effect traps"
+        }
+      ]
+    },
+    "artifice": {
+      "ref": "Core 5.6.5 p.56",
+      "note": "Blueprints are found in-game; the rulebook has no item list."
+    },
+    "chemistry": {
+      "ref": "Core 5.6.5 p.57",
+      "note": "Formulas are found in-game; the rulebook has no item list."
+    }
+  }
+}

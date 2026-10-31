@@ -4,11 +4,12 @@ import {
   CULTURES, DATA_SOURCES, EQUIPMENT, FAVOURED_VOCATIONS, FRAG_RACES, OCC_ABILITIES, OUT_OF_GAME, RACES, SKILLS, SOURCES, SPELLS, VOCATIONS,
 } from '../data'
 import { OCC_CLASS, OCC_ORDER, TABLE, ordinal } from '../rules'
-import { prereqLabel } from '../engine'
 import type { Race, Skill, Vocation } from '../types'
 import { MournfallCard } from '../components/MournfallCard'
 import { Prose } from '../components/Prose'
 import { Equipment } from './Equipment'
+import { SkillDetails } from '../components/SkillDetails'
+import { ProductionItems } from '../components/ProductionItems'
 import { useCompendiumFavourites } from '../hooks/useCompendiumFavourites'
 
 const STAR = '★'
@@ -117,20 +118,8 @@ function SkillEntry({ s }: { s: Skill }) {
   const tags = [s.costNote ?? (s.costs ? 'cost by occupation' : `${s.cp} CP`), ...(s.frag ? [`${s.frag} frags`] : []), `max ${s.maxPurchases}`]
   return (
     <Entry title={s.name} tags={tags} fav={`Skills:${s.id}`}>
-      <Prose text={s.desc} />
-      {s.prereqs.length > 0 && (
-        <p><span className="text-forge-accent">Requires:</span> {s.prereqs.map(prereqLabel).join('; ')}</p>
-      )}
-      {s.costs && (
-        <dl className="grid grid-cols-3 gap-x-4 gap-y-0.5 font-mono text-[11px]">
-          {OCC_ORDER.map(o => (
-            <div key={o} className="flex justify-between gap-2">
-              <dt className="text-forge-muted font-sans">{o}</dt>
-              <dd className="text-forge-text">{s.costs![o]}</dd>
-            </div>
-          ))}
-        </dl>
-      )}
+      <SkillDetails s={s} />
+      <ProductionItems id={s.id} />
     </Entry>
   )
 }

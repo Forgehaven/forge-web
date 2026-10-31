@@ -57,4 +57,13 @@ describe('RulesCompendium favourites', () => {
     await user.click(screen.getByRole('button', { name: 'Unfavourite' }))
     expect(screen.getByText(/Tap ☆ on any entry/)).toBeInTheDocument()
   })
+
+  it('lists what a production skill can make', async () => {
+    const user = userEvent.setup()
+    render(<RulesCompendium />)
+    await user.type(screen.getByPlaceholderText('Search everything…'), 'opens up the world of alchemy')
+    await user.click(screen.getByText('Alchemy'))
+    await user.click(screen.getByRole('button', { name: 'Antidote' }))
+    expect(screen.getAllByText(/Antidote/).length).toBeGreaterThan(1)
+  })
 })

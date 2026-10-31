@@ -123,3 +123,27 @@ export interface Spell {
   incant: string
   desc: string
 }
+
+// Production item lists (Core ch.5), keyed by skill id in data/production.json.
+export interface ProductionRow {
+  name: string
+  desc?: string
+  // RM per column; null where the book says N/A, text where the cost is a rule.
+  cells: (number | string | null)[]
+  // True where the book stars the value: needs components found in-game.
+  special?: boolean[]
+}
+
+export interface ProductionTable {
+  title: string
+  columns: string[]
+  rows: ProductionRow[]
+}
+
+export interface Production {
+  ref: string
+  intro?: string
+  note?: string
+  tables?: ProductionTable[]
+  sections?: { title: string; text: string }[]
+}
