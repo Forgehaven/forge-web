@@ -60,6 +60,36 @@ function Chip({ id, ev, onRemove }: { id: string; ev: Evaluation; onRemove: () =
   )
 }
 
+// Blanket count, span and the CP bar: spent through today, on planned blankets, and left over.
+function BlanketSummary({ build, ev }: { build: Build; ev: Evaluation }) {
+  const now = thisMonth()
+  const lastStep = ev.steps[ev.steps.length - 1]
+  const todayAt = ev.steps.findLast(s => s.month <= now)?.at
+  const total = lastStep.cp
+  const used = todayAt === undefined ? 0 : ev.steps[todayAt].spent
+  const planned = lastStep.spent - used
+  const free = total - lastStep.spent
+  const pct = (n: number) => (total > 0 ? Math.max(0, Math.min(100, (n / total) * 100)) : 0)
+  return (
+    <div className="flex flex-col gap-1" title="CP spent up to today, CP spent on planned blankets, and CP not yet spent">
+      <p className="text-xs text-forge-dim">
+        Created {monthLabel(build.startMonth)} · {build.blankets.length} blanket{build.blankets.length === 1 ? '' : 's'} over{' '}
+        {span(Math.max(0, monthsBetween(build.startMonth, lastStep.month)))} · reaches Level {lastStep.row.level}
+      </p>
+      <div className="flex h-2.5 rounded-full overflow-hidden bg-forge-border">
+        <div className="bg-forge-accent" style={{ width: `${pct(used)}%` }} />
+        <div className="bg-sky-400/70" style={{ width: `${pct(planned)}%` }} />
+      </div>
+      <div className="flex flex-wrap gap-x-3 text-xs font-mono text-forge-soft">
+        <span><span className="text-forge-accent">■</span> {used} used</span>
+        <span><span className="text-sky-400/70">■</span> {planned} planned</span>
+        <span className={free < 0 ? 'text-red-400' : ''}><span className="text-forge-line">■</span> {free} unspent</span>
+        <span className="ml-auto text-forge-dim">{total} CP</span>
+      </div>
+    </div>
+  )
+}
+
 // The character's history and plan as a vertical timeline.
 export function Timeline({ build, ev, active, setActive, setBuild }: Props) {
   const [dragOver, setDragOver] = useState<number | null>(null)
@@ -90,39 +120,13 @@ export function Timeline({ build, ev, active, setActive, setBuild }: Props) {
   }
 
   const now = thisMonth()
-  const lastStep = ev.steps[ev.steps.length - 1]
-  const final = lastStep.row.level
   // Newest first. The "Today" line sits above the latest step not after this month.
   const todayAt = ev.steps.findLast(s => s.month <= now)?.at
-  // CP bar: spent through today, spent on planned blankets, and left over.
-  const total = lastStep.cp
-  const used = todayAt === undefined ? 0 : ev.steps[todayAt].spent
-  const planned = lastStep.spent - used
-  const free = total - lastStep.spent
-  const pct = (n: number) => (total > 0 ? Math.max(0, Math.min(100, (n / total) * 100)) : 0)
 
   return (
     <section className="flex flex-col gap-3">
-      <header className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-        <h2 className="text-lg font-semibold text-forge-text">Timeline</h2>
-        <p className="text-xs text-forge-dim">
-          Created {monthLabel(build.startMonth)} · {build.blankets.length} blanket{build.blankets.length === 1 ? '' : 's'} over{' '}
-          {span(Math.max(0, monthsBetween(build.startMonth, lastStep.month)))} · reaches Level {final}
-        </p>
-      </header>
-
-      <div className="flex flex-col gap-1" title="CP spent up to today, CP spent on planned blankets, and CP not yet spent">
-        <div className="flex h-2.5 rounded-full overflow-hidden bg-forge-border">
-          <div className="bg-forge-accent" style={{ width: `${pct(used)}%` }} />
-          <div className="bg-sky-400/70" style={{ width: `${pct(planned)}%` }} />
-        </div>
-        <div className="flex flex-wrap gap-x-3 text-xs font-mono text-forge-soft">
-          <span><span className="text-forge-accent">■</span> {used} used</span>
-          <span><span className="text-sky-400/70">■</span> {planned} planned</span>
-          <span className={free < 0 ? 'text-red-400' : ''}><span className="text-forge-line">■</span> {free} unspent</span>
-          <span className="ml-auto text-forge-dim">{total} CP</span>
-        </div>
-      </div>
+      <h2 className="text-lg font-semibold text-forge-text">Timeline</h2>
+      <BlanketSummary build={build} ev={ev} />
 
       <details className="group text-xs">
         <summary className="cursor-pointer list-none text-forge-muted hover:text-forge-dim select-none">
@@ -153,7 +157,7 @@ export function Timeline({ build, ev, active, setActive, setBuild }: Props) {
             <span className="absolute top-4 bottom-0 w-px border-l border-dashed border-forge-line" />
             <span className="relative mt-3.5 w-2.5 h-2.5 rounded-full border border-dashed border-forge-accent" />
           </span>
-          <div className="my-1 flex flex-wrap items-center gap-2 rounded-md border border-dashed border-forge-border px-3 py-2">
+          <div className="my-0.5 flex flex-wrap items-center gap-2 rounded-md border border-dashed border-forge-border px-3 py-1.5">
             <span className="text-sm text-forge-dim">Next blanket</span>
             <MonthSelect compact label="Next blanket" value={month} onChange={setAddMonth} />
             <button className="forge-btn-accent !py-1 ml-auto" onClick={addBlanket}>+ Add blanket</button>
@@ -195,7 +199,7 @@ export function Timeline({ build, ev, active, setActive, setBuild }: Props) {
                     const id = e.dataTransfer.getData('text/plain')
                     if (id) move(id, step.at)
                   }}
-                  className={`my-1 rounded-md border px-3 py-2 cursor-pointer transition-colors ${planned ? 'border-dashed' : ''} ${
+                  className={`my-0.5 rounded-md border px-3 py-1.5 cursor-pointer transition-colors ${planned ? 'border-dashed' : ''} ${
                     isActive ? 'border-forge-accent bg-forge-accent/5' : 'border-forge-border hover:border-forge-line'
                   } ${dragOver === step.at ? 'ring-1 ring-forge-accent' : ''}`}
                 >

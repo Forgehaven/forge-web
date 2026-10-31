@@ -81,6 +81,7 @@ export function sanitize(raw: unknown): Build {
     spells: isObj(raw.spells) ? Object.fromEntries(Object.entries(raw.spells).filter(([, v]) => typeof v === 'string')) as Record<string, string> : {},
     // useTimeline: builds saved before plan modes existed.
     status: BUILD_STATUSES.includes(raw.status as BuildStatus) ? raw.status as BuildStatus : 'planning',
+    ignoreLifeWarning: raw.ignoreLifeWarning === true,
     mode: modes.includes(raw.mode as PlanMode) ? raw.mode as PlanMode : raw.useTimeline === true ? 'timeline' : 'sandbox',
     priority: {
       perMonth: blankets(priority.perMonth) || MAX_BLANKETS_PER_MONTH,

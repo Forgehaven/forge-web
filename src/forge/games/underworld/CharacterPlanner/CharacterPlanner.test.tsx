@@ -9,15 +9,23 @@ const loggedOut = {
   login: vi.fn(), logout: vi.fn(), clearAuth: vi.fn(),
 }
 
+// The saves bar and sandbox list start collapsed; open them.
+function openCards() {
+  for (const b of screen.queryAllByRole('button', { name: /^▸(Saves|Skills\/Magic List)/, expanded: false })) fireEvent.click(b)
+}
+
 function renderPlanner() {
-  return render(
+  const view = render(
     <AuthContext.Provider value={loggedOut}>
       <CharacterPlanner />
     </AuthContext.Provider>,
   )
+  openCards()
+  return view
 }
 
-beforeEach(() => localStorage.clear())
+// Most tests drive the +/- buttons; the count picker test opts back in.
+beforeEach(() => { localStorage.clear(); localStorage.setItem('forgegames_uw_skillinput_v1', 'buttons') })
 
 describe('CharacterPlanner', () => {
   it('buys skills on the selected timeline step and keeps the draft locally', async () => {
@@ -189,11 +197,7 @@ describe('CharacterPlanner build bar', () => {
     await user.selectOptions(screen.getByLabelText('Status'), 'complete')
     expect(screen.getByRole('button', { name: 'Add Shield' })).toBeDisabled()
     expect(screen.getByLabelText('Occupation')).toBeDisabled()
-    // Read-only still lets you open cards and skill details.
-    const warrior = screen.getByRole('button', { name: /^▸Warrior\d/ })
-    fireEvent.click(warrior)
-    expect(warrior).toHaveAttribute('aria-expanded', 'false')
-    fireEvent.click(warrior)
+    // Read-only still lets you open skill details.
     fireEvent.click(screen.getByRole('button', { name: /^Shield/ }))
     expect(screen.getByText(/A buckler cannot be larger/)).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: 'Back to planning' }))
@@ -225,10 +229,40 @@ describe('CharacterPlanner build bar', () => {
 
     const stored = () => JSON.parse(localStorage.getItem('forgegames_uw_planner_v1')!)
     await vi.waitFor(() => expect(stored().local[0].build.occupation).toBe('Mage'))
-    expect(screen.getByRole('button', { name: /Saved/ })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Saved' })).toBeDisabled()
 
     await user.click(screen.getByRole('button', { name: 'Undo' }))
     expect(screen.getByLabelText('Occupation')).toHaveValue('')
     await vi.waitFor(() => expect(stored().local[0].build.occupation).toBe(''))
+  })
+
+  it('buys skills with a count picker, or +/- when set', async () => {
+    localStorage.setItem('forgegames_uw_skillinput_v1', 'number')
+    const user = userEvent.setup()
+    renderPlanner()
+    await user.selectOptions(screen.getByLabelText('Occupation'), 'Mage')
+    const count = screen.getByLabelText('Alchemy count')
+    await user.selectOptions(count, '3')
+    expect(screen.getByText('3/10')).toBeInTheDocument()
+    await user.selectOptions(count, '1')
+    expect(screen.getByText('1/10')).toBeInTheDocument()
+    expect(screen.getByLabelText('Heavy Armour count')).toHaveValue('0')
+
+    localStorage.setItem('forgegames_uw_skillinput_v1', 'buttons')
+    fireEvent(window, new Event('storage'))
+    expect(await screen.findByRole('button', { name: 'Add Alchemy' })).toBeEnabled()
+    expect(screen.queryByLabelText('Alchemy count')).toBeNull()
+  })
+
+  it('ignores the level 16 warning per character and can bring it back', async () => {
+    const user = userEvent.setup()
+    renderPlanner()
+    fireEvent.change(screen.getByLabelText('Blankets'), { target: { value: '90' } })
+    expect(screen.getByText(/reaches level 16/)).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Ignore' }))
+    await user.click(screen.getByRole('button', { name: 'Yes' }))
+    expect(screen.queryByText(/reaches level 16/)).toBeNull()
+    await user.click(screen.getByRole('button', { name: 'Show ignored warnings' }))
+    expect(screen.getByText(/reaches level 16/)).toBeInTheDocument()
   })
 })

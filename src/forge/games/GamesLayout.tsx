@@ -21,7 +21,7 @@ import { AlarmProvider } from '../../components/alarms/AlarmProvider'
 import { ffxiAlarmTargets } from './ffxi/alarms'
 import { UnderworldSplash } from './underworld/UnderworldSplash'
 import { lazyWithReload } from '../../lib/lazyWithReload'
-import { ThemeSetting } from '../../components/ThemeSetting'
+import { GamesSettings } from './GamesSettings'
 
 // Lazy: the Underworld rules data is large and only these pages need it.
 const CharacterPlanner = lazyWithReload(() => import('./underworld/CharacterPlanner/CharacterPlanner'))
@@ -39,7 +39,7 @@ export default function GamesLayout() {
             homePath="/games"
             sidebar={GamesSidebar}
             bottomBar={GamesBottomBar}
-            settings={ThemeSetting}
+            settings={GamesSettings}
           />
         }>
           <Route index element={<GamesHome />} />

@@ -19,6 +19,8 @@ const SPHERES = [...new Set(SPELLS.map(s => s.sphere))]
 const CIRCLES = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 const has = (q: string, ...text: (string | undefined)[]) => !q || text.some(t => t?.toLowerCase().includes(q))
+// Every string inside an entry (lore, traits, abilities, descriptions...), so search sees all of it.
+const all = (v: unknown): string => (typeof v === 'string' ? v : v && typeof v === 'object' ? Object.values(v).map(all).join(' ') : '')
 
 const Favs = createContext<{ favs: string[]; toggle: (key: string) => void }>({ favs: [], toggle: () => {} })
 
@@ -141,8 +143,8 @@ const SEARCHABLE = ['Races', 'Cultures', 'Occupations', 'Vocations', 'Skills', '
 type Searchable = typeof SEARCHABLE[number]
 const isSearchable = (t: Tab): t is Searchable => (SEARCHABLE as readonly string[]).includes(t)
 
-const raceList = (all: Record<string, Race>, q: string) => Object.entries(all).filter(([n, r]) => has(q, n, r.lore))
-const vocList = (all: Record<string, Vocation>, q: string) => Object.entries(all).filter(([n, v]) => has(q, n, v.lore))
+const raceList = (src: Record<string, Race>, q: string) => Object.entries(src).filter(([n, r]) => has(q, n, all(r)))
+const vocList = (src: Record<string, Vocation>, q: string) => Object.entries(src).filter(([n, v]) => has(q, n, all(v)))
 
 // A tab's filtered content, or null when nothing matches.
 function section(tab: Searchable, { q, sphere, circle, category, favs }: Filters): React.ReactNode {
@@ -161,7 +163,7 @@ function section(tab: Searchable, { q, sphere, circle, category, favs }: Filters
       )
     }
     case 'Cultures': {
-      const list = Object.entries(CULTURES).filter(([n, c]) => has(q, n, c.lore, c.races.join(' ')) && kept(`Cultures:${n}`))
+      const list = Object.entries(CULTURES).filter(([n, c]) => has(q, n, all(c)) && kept(`Cultures:${n}`))
       if (!list.length) return null
       return (
         <Grid>
@@ -177,7 +179,7 @@ function section(tab: Searchable, { q, sphere, circle, category, favs }: Filters
       )
     }
     case 'Occupations': {
-      const list = OCC_ORDER.filter(o => has(q, o, ...(OCC_ABILITIES[o] ?? []).map(a => a.name)) && kept(`Occupations:${o}`))
+      const list = OCC_ORDER.filter(o => has(q, o, all(OCC_ABILITIES[o])) && kept(`Occupations:${o}`))
       if (!list.length) return null
       return (
         <Grid>
@@ -203,9 +205,9 @@ function section(tab: Searchable, { q, sphere, circle, category, favs }: Filters
     case 'Skills': {
       const cats = SKILLS
         .filter(c => !category || c.cat === category)
-        .map(c => ({ cat: c.cat, skills: c.skills.filter(s => has(q, s.name, s.desc) && kept(`Skills:${s.id}`)) }))
+        .map(c => ({ cat: c.cat, skills: c.skills.filter(s => has(q, all(s)) && kept(`Skills:${s.id}`)) }))
         .filter(c => c.skills.length)
-      const oog = !category || category === OOG ? OUT_OF_GAME.skills.filter(s => has(q, s.name, s.desc) && kept(`Skills:${s.id}`)) : []
+      const oog = !category || category === OOG ? OUT_OF_GAME.skills.filter(s => has(q, all(s)) && kept(`Skills:${s.id}`)) : []
       if (!cats.length && !oog.length) return null
       return (
         <>
@@ -235,7 +237,7 @@ function section(tab: Searchable, { q, sphere, circle, category, favs }: Filters
       const spheres = SPHERES.filter(s => !sphere || s === sphere).map(sp => ({
         sp,
         spells: SPELLS
-          .filter(s => s.sphere === sp && (!circle || s.level === Number(circle)) && has(q, s.name, s.desc) && kept(`Spells:${s.name}|${s.level}`))
+          .filter(s => s.sphere === sp && (!circle || s.level === Number(circle)) && has(q, all(s)) && kept(`Spells:${s.name}|${s.level}`))
           .sort((a, b) => a.level - b.level || a.name.localeCompare(b.name)),
       })).filter(s => s.spells.length)
       if (!spheres.length) return null
@@ -255,9 +257,9 @@ function section(tab: Searchable, { q, sphere, circle, category, favs }: Filters
     }
     case 'Armour & Weapons': {
       if (!q && !favs) return <Equipment />
-      const weapons = EQUIPMENT.weapons.rows.filter(w => has(q, w.name, w.group) && kept(`Weapons:${w.name}`))
-      const grades = EQUIPMENT.grades.rows.filter(g => has(q, `grade ${g.grade}`, g.materials, g.text) && kept(`Armour:${g.grade}`))
-      const rules = EQUIPMENT.sections.filter(s => has(q, s.title, s.text) && kept(`Rules:${s.title}`))
+      const weapons = EQUIPMENT.weapons.rows.filter(w => has(q, all(w)) && kept(`Weapons:${w.name}`))
+      const grades = EQUIPMENT.grades.rows.filter(g => has(q, `grade ${g.grade}`, all(g)) && kept(`Armour:${g.grade}`))
+      const rules = EQUIPMENT.sections.filter(s => has(q, all(s)) && kept(`Rules:${s.title}`))
       if (!weapons.length && !grades.length && !rules.length) return null
       return (
         <Grid>

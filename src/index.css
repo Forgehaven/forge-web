@@ -146,7 +146,7 @@ textarea {
 
   /* Surface card - wraps grouped tool inputs/outputs */
   .forge-card {
-    @apply bg-forge-surface border border-forge-border rounded-lg p-6;
+    @apply bg-forge-surface border border-forge-border rounded-lg p-4;
   }
 
   /* Muted field label above an input or select */

@@ -10,6 +10,8 @@ interface Props {
   setBuild: (fn: (b: Build) => Build) => void
   locked: boolean
   setStatus: (status: BuildStatus) => void
+  // Sandbox blanket count and CP bar, shown under occupation and vocation.
+  blankets?: React.ReactNode
 }
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
@@ -32,7 +34,7 @@ function Stat({ label, value, warn }: { label: string; value: string | number; w
 
 const fragTiers = ['Uncommon', 'Rare', 'Obscure']
 
-export function IdentityPanel({ build, ev, setBuild, locked, setStatus }: Props) {
+export function IdentityPanel({ build, ev, setBuild, locked, setStatus, blankets }: Props) {
   const set = (patch: Partial<Build>) => setBuild(b => ({ ...b, ...patch }))
   const race = raceData(build.race)
   const culture = CULTURES[build.culture]
@@ -108,6 +110,8 @@ export function IdentityPanel({ build, ev, setBuild, locked, setStatus }: Props)
           </select>
         </Field>
       </fieldset>
+
+      {blankets && <div className="border-t border-forge-border pt-2">{blankets}</div>}
 
       <div className="flex flex-col gap-2 border-t border-forge-border pt-2">
         <div className="grid grid-cols-3 w-3/4 mx-auto">

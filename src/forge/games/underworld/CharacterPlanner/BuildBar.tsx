@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { ConfirmButton } from '../../../../components/ConfirmButton'
 import { useAuth } from '../../../../auth/authContext'
 import { emptyBuild } from '../engine'
+import { toggleProps } from '../../../../lib/toggleProps'
 import type { BuildStore, SaveEntry, SaveKind } from '../hooks/useBuildStore'
 
 function DeviceIcon() {
@@ -36,6 +37,7 @@ export function BuildBar({ store }: { store: BuildStore }) {
   const [pending, setPending] = useState<(() => void) | null>(null)
   const guard = (action: () => void) => (dirty ? setPending(() => action) : action())
   const [drag, setDrag] = useState<{ from: number; over: number } | null>(null)
+  const [open, setOpen] = useState(false)
   // A build dropped among the favourites (or the rest) joins that group.
   const move = (from: number, to: number) => {
     setDrag(null)
@@ -56,6 +58,16 @@ export function BuildBar({ store }: { store: BuildStore }) {
 
   return (
     <div className="forge-card !p-3 flex flex-col gap-2">
+      <div className="flex items-center gap-2 text-sm cursor-pointer" {...toggleProps(open, () => setOpen(o => !o))}>
+        <span className={`text-xs text-forge-muted transition-transform ${open ? 'rotate-90' : ''}`}>▸</span>
+        <span className="font-semibold text-forge-text">Saves</span>
+        <span className={`ml-auto flex items-center gap-1.5 text-xs ${current ? KIND[current.kind].color : 'text-amber-300'}`} title={current ? KIND[current.kind].title : undefined}>
+          {current ? <>{KIND[current.kind].icon}{current.kind === 'server' ? 'Account' : 'This device'}</> : 'Not saved'}
+          {current && <span className={conflict || error ? 'text-red-400' : 'text-forge-muted'}>· {status}</span>}
+        </span>
+      </div>
+
+      {open && <>
       <div className="flex items-center gap-2">
         <button
           className={`forge-btn-accent flex items-center gap-1.5 ${!current && dirty ? 'animate-pulse' : ''}`}
@@ -153,6 +165,7 @@ export function BuildBar({ store }: { store: BuildStore }) {
           onConfirm={() => setBuild(b => emptyBuild(b.startMonth))}
         />
       </div>}
+      </>}
 
       {conflict && (
         <div className="flex flex-wrap items-center gap-3 text-xs text-amber-300">

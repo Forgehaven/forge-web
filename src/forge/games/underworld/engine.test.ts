@@ -317,9 +317,10 @@ describe('spell slot ordering across steps', () => {
     expect(safe).toBe(82)
     expect(levelRow(cpAt(safe)).level).toBe(15)
     expect(levelRow(cpAt(safe + 1)).level).toBe(16)
-    const at = (n: number) => evaluate(build({ blankets: Array(n).fill('2026-01') }), undefined, true).warnings.filter(w => w.includes('Spiritual Resolve'))
-    expect(at(safe)).toEqual([])
-    expect(at(safe + 1)[0]).toMatch(new RegExp(`^Blanket ${safe + 1} reaches level 16.*Stop at ${safe} blankets`))
+    const at = (n: number, ignoreLifeWarning = false) => evaluate(build({ blankets: Array(n).fill('2026-01'), ignoreLifeWarning }), undefined, true).lifeWarning
+    expect(at(safe)).toBeNull()
+    expect(at(safe + 1, true)).toBeNull()
+    expect(at(safe + 1)).toMatch(new RegExp(`^Blanket ${safe + 1} reaches level 16.*Stop at ${safe} blankets`))
   })
 
   it('checks vocation prerequisites, including either/or ones', () => {

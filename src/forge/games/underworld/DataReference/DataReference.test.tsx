@@ -25,6 +25,13 @@ describe('DataReference', () => {
     expect(screen.getByText('Nothing matches "zzqx".')).toBeInTheDocument()
   })
 
+  it('searches traits and abilities, not just names and lore', async () => {
+    const user = userEvent.setup()
+    render(<DataReference />)
+    await user.type(screen.getByPlaceholderText('Search everything…'), 'parasites')
+    expect(screen.getByText('Goblin')).toBeInTheDocument()
+  })
+
   it('lists out of game frag purchases like Spiritual Resolve', async () => {
     const user = userEvent.setup()
     render(<DataReference />)

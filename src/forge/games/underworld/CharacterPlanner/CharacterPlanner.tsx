@@ -1,17 +1,17 @@
 import { useEffect, useEffectEvent, useMemo, useState } from 'react'
 import { activePurchases, copyPicks, evaluate, priorityMonths, priorityView, simpleView, unbuy, vocationNeeds, withPurchases, type BuildStatus, type PlanMode } from '../engine'
 import { useBuildStore } from '../hooks/useBuildStore'
-import { MournfallCard } from '../components/MournfallCard'
 import { BuildBar } from './BuildBar'
 import { IdentityPanel } from './IdentityPanel'
 import { Timeline } from './Timeline'
-import { SimplePlan } from './SimplePlan'
+import { SimpleBlankets, SimplePlan } from './SimplePlan'
 import { PriorityPlan } from './PriorityPlan'
 import { SkillCatalog } from './SkillCatalog'
 import { MagicPanel } from './MagicPanel'
 import { Spellbook } from './Spellbook'
 import { Sheet } from './Sheet'
 import { uid } from './util'
+import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import { ConfirmButton } from '../../../../components/ConfirmButton'
 import { MobileSection } from '../../../../components/MobileSection'
 
@@ -33,6 +33,14 @@ export default function CharacterPlanner() {
   const setBuild: typeof store.setBuild = locked ? () => {} : store.setBuild
   const setStatus = (next: BuildStatus) => store.setBuild(b => ({ ...b, status: next }))
   const [tab, setTab] = useState<Tab>('Skills')
+  const [query, setQuery] = useState('')
+  const [hideBlocked, setHideBlocked] = useState(() => {
+    try { return localStorage.getItem(STORAGE_KEYS.uwOnlyBuyable) === '1' } catch { return false }
+  })
+  const toggleBlocked = (on: boolean) => {
+    setHideBlocked(on)
+    try { localStorage.setItem(STORAGE_KEYS.uwOnlyBuyable, on ? '1' : '0') } catch { /* private mode */ }
+  }
   // Ctrl+Z undoes planner edits; text fields keep their own undo.
   const onKey = useEffectEvent((e: KeyboardEvent) => {
     const el = e.target as HTMLElement
@@ -64,10 +72,10 @@ export default function CharacterPlanner() {
   const remove = (skill: string, choice?: string) => setBuild(b => unbuy(b, skill, choice))
   const invalid = activePurchases(build).filter(p => ev.results.get(p.id)?.error).length
   const needsHighlighted = vocationNeeds(view, ev.final).size > 0
-  const alerts = ev.warnings.length + (invalid > 0 ? 1 : 0) + (needsHighlighted ? 1 : 0)
+  const alerts = ev.warnings.length + (ev.lifeWarning ? 1 : 0) + (invalid > 0 ? 1 : 0) + (needsHighlighted ? 1 : 0)
 
   return (
-    <div className={`grid gap-4 pb-6 lg:pb-0 lg:h-full lg:grid-rows-[minmax(0,1fr)] ${pane ? 'lg:grid-cols-[22rem_24rem_minmax(0,1fr)]' : 'lg:grid-cols-[24rem_minmax(0,1fr)]'}`}>
+    <div className={`grid gap-3 pb-6 lg:pb-0 lg:h-full lg:grid-rows-[minmax(0,1fr)] ${pane ? 'lg:grid-cols-[22rem_24rem_minmax(0,1fr)]' : 'lg:grid-cols-[24rem_minmax(0,1fr)]'}`}>
       <aside className="flex flex-col gap-3 lg:min-h-0 lg:overflow-y-auto lg:pr-2">
         <header>
           <h1 className="text-xl font-semibold text-forge-text">Character Planner</h1>
@@ -91,12 +99,23 @@ export default function CharacterPlanner() {
           title="Character"
           summary={<>{build.name || 'Unnamed'} · Level {ev.stats.level}{alerts > 0 && <span className="text-amber-300"> · {alerts} warning{alerts > 1 ? 's' : ''}</span>}</>}
         >
-        <IdentityPanel build={build} ev={ev} setBuild={setBuild} locked={locked} setStatus={setStatus} />
+        <IdentityPanel build={build} ev={ev} setBuild={setBuild} locked={locked} setStatus={setStatus} blankets={mode === 'sandbox' ? <SimpleBlankets build={build} ev={ev} setBuild={setBuild} /> : undefined} />
 
         <fieldset disabled={locked} className="contents">
         {alerts > 0 && (
           <div className="rounded-md border border-amber-500/30 bg-amber-500/5 px-4 py-2 text-xs text-amber-200 flex flex-col gap-1">
             {ev.warnings.map(w => <p key={w}>{w}</p>)}
+            {ev.lifeWarning && (
+              <p>
+                {ev.lifeWarning}{' '}
+                <ConfirmButton
+                  label="Ignore"
+                  confirmPrompt="Hide this for this character?"
+                  className="underline cursor-pointer"
+                  onConfirm={() => setBuild(b => ({ ...b, ignoreLifeWarning: true }))}
+                />
+              </p>
+            )}
             {invalid > 0 && (
               <p>
                 {invalid} purchase{invalid > 1 ? 's are' : ' is'} invalid{timeline ? ' (red on the timeline)' : ''}.{' '}
@@ -108,6 +127,11 @@ export default function CharacterPlanner() {
             )}
             {needsHighlighted && <p>Skills that help qualify for {build.vocation} are highlighted in the Skills tab.</p>}
           </div>
+        )}
+        {build.ignoreLifeWarning && (
+          <button className="self-start text-[11px] text-forge-muted hover:text-forge-text underline cursor-pointer" onClick={() => setBuild(b => ({ ...b, ignoreLifeWarning: false }))}>
+            Show ignored warnings
+          </button>
         )}
         </fieldset>
         </MobileSection>
@@ -153,7 +177,6 @@ export default function CharacterPlanner() {
         {mode === 'sandbox' && <SimplePlan build={build} ev={ev} setBuild={setBuild} />}
         </fieldset>
         </MobileSection>
-        <div className="hidden lg:block"><MournfallCard compact /></div>
       </aside>
 
       {pane && (
@@ -168,17 +191,28 @@ export default function CharacterPlanner() {
         </div>
       )}
 
-      <div className="flex flex-col gap-3 min-w-0 lg:min-h-0">
-        <nav className="flex gap-2" role="tablist">
-          {TABS.map(t => (
-            <button key={t} role="tab" aria-selected={tab === t} className={tab === t ? 'forge-btn-active' : 'forge-btn'} onClick={() => setTab(t)}>
-              {t}
-            </button>
-          ))}
-        </nav>
+      <div className="flex flex-col gap-2 min-w-0 lg:min-h-0">
+        <div className="flex flex-wrap items-center gap-2">
+          <nav className="flex gap-2" role="tablist">
+            {TABS.map(t => (
+              <button key={t} role="tab" aria-selected={tab === t} className={tab === t ? 'forge-btn-active' : 'forge-btn'} onClick={() => setTab(t)}>
+                {t}
+              </button>
+            ))}
+          </nav>
+          {tab === 'Skills' && (
+            <>
+              <input className="forge-input !py-1.5 flex-1 min-w-40" placeholder="Search skills…" value={query} onChange={e => setQuery(e.target.value)} />
+              <label className="flex items-center gap-1.5 text-xs text-forge-dim cursor-pointer">
+                <input type="checkbox" checked={hideBlocked} onChange={e => toggleBlocked(e.target.checked)} />
+                Only buyable
+              </label>
+            </>
+          )}
+        </div>
         <div className="lg:min-h-0 lg:overflow-y-auto lg:pr-2">
           <fieldset disabled={locked} className="contents">
-            {tab === 'Skills' && <SkillCatalog build={pick} ev={ev} active={active} loose={loose} onAdd={add} onRemove={remove} />}
+            {tab === 'Skills' && <SkillCatalog build={pick} ev={ev} active={active} loose={loose} onAdd={add} onRemove={remove} query={query} hideBlocked={hideBlocked} />}
             {tab === 'Magic' && <MagicPanel build={pick} ev={ev} active={active} loose={loose} setBuild={setBuild} onAdd={add} onRemove={remove} />}
             {tab === 'Spellbook' && <Spellbook build={view} ev={ev} setBuild={setBuild} />}
           </fieldset>
@@ -186,7 +220,6 @@ export default function CharacterPlanner() {
         </div>
       </div>
       {/* Phones get the guild card after the catalog. */}
-      <div className="lg:hidden"><MournfallCard compact /></div>
     </div>
   )
 }

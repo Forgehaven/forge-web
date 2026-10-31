@@ -26,4 +26,5 @@ export const STORAGE_KEYS = {
   uwPlanner:               'forgegames_uw_planner_v1',
   uwOnlyBuyable:           'forgegames_uw_onlybuyable_v1',
   uwFavourites:            'forgegames_uw_favourites_v1',
+  uwSkillInput:            'forgegames_uw_skillinput_v1',
 } as const

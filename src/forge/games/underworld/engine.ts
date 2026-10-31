@@ -58,6 +58,8 @@ export interface Build {
   mode?: PlanMode
   // complete: the plan is done; retired: no longer played. Both are read-only.
   status?: BuildStatus
+  // The player dismissed the level 16 life buyback warning.
+  ignoreLifeWarning?: boolean
   simple?: { blankets: number; purchases: Purchase[] }
   priority?: Priority
 }
@@ -575,6 +577,8 @@ export interface Evaluation {
     strength: number
   }
   warnings: string[]
+  // Level 16 ends Spiritual Resolve; null when not reached or dismissed.
+  lifeWarning: string | null
   probe: { cost: number; frag: number; error: string | null } | null
 }
 
@@ -657,7 +661,8 @@ export function evaluate(b: Build, probe?: Purchase, loose = false): Evaluation 
 
   return {
     steps, results, final: st, probe: probeResult,
-    warnings: [...buildWarnings(b, st), ...levelWarnings(steps, bonus)],
+    warnings: buildWarnings(b, st),
+    lifeWarning: b.ignoreLifeWarning ? null : lifeWarning(steps, bonus),
     stats: {
       level, cpTotal: last.cp, cpSpent: st.spent, cpRemaining: last.cp - st.spent, frags,
       body: cls ? last.row[cls] + body : null, strength,
@@ -692,10 +697,10 @@ export function lastBlanketAtLevel(level: number, cpBonus = 0) {
   return n
 }
 
-function levelWarnings(steps: Step[], cpBonus: number): string[] {
-  if (!steps.some(s => s.row.level > SPIRITUAL_RESOLVE_MAX_LEVEL)) return []
+function lifeWarning(steps: Step[], cpBonus: number): string | null {
+  if (!steps.some(s => s.row.level > SPIRITUAL_RESOLVE_MAX_LEVEL)) return null
   const safe = lastBlanketAtLevel(SPIRITUAL_RESOLVE_MAX_LEVEL, cpBonus)
-  return [`Blanket ${safe + 1} reaches level ${SPIRITUAL_RESOLVE_MAX_LEVEL + 1}: lives can no longer be bought back with frags (Spiritual Resolve). Stop at ${safe} blankets to keep that option.`]
+  return `Blanket ${safe + 1} reaches level ${SPIRITUAL_RESOLVE_MAX_LEVEL + 1}: lives can no longer be bought back with frags (Spiritual Resolve). Stop at ${safe} blankets to keep that option.`
 }
 
 function buildWarnings(b: Build, st: ReplayState): string[] {

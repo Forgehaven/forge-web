@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { activePurchases, withPurchases, type Build, type Evaluation } from '../engine'
+import { toggleProps } from '../../../../lib/toggleProps'
 
 interface Props {
   build: Build
@@ -8,17 +10,16 @@ interface Props {
 
 // Free-pick mode: a blanket count sets the CP pool; overspending is allowed and
 // shows as negative CP left.
-export function SimplePlan({ build, ev, setBuild }: Props) {
+export function SimpleBlankets({ build, ev, setBuild }: Props) {
   const n = build.simple?.blankets ?? 0
   const setN = (v: number) => setBuild(b => ({
     ...b, simple: { purchases: b.simple?.purchases ?? [], blankets: Math.max(0, Math.min(500, v)) },
   }))
   const { cpTotal, cpSpent, cpRemaining, level } = ev.stats
   const over = cpRemaining < 0
-  const picks = activePurchases(build)
 
   return (
-    <section className="forge-card !p-4 flex flex-col gap-3">
+    <div className="flex flex-col gap-2">
       <div className="flex items-center gap-3">
         <span className="text-sm font-semibold text-forge-text">Blankets</span>
         <div className="flex items-center ml-auto">
@@ -47,8 +48,23 @@ export function SimplePlan({ build, ev, setBuild }: Props) {
         </div>
         {over && <p className="text-[11px] text-red-400 mt-1">{-cpRemaining} CP over. Add blankets or drop a skill.</p>}
       </div>
+    </div>
+  )
+}
 
-      {picks.length > 0 ? (
+// The sandbox picks, collapsed to a count until opened.
+export function SimplePlan({ build, ev, setBuild }: Props) {
+  const [open, setOpen] = useState(false)
+  const picks = activePurchases(build)
+
+  return (
+    <section className="forge-card !p-3 flex flex-col gap-2">
+      <div className="flex items-center gap-2 text-sm cursor-pointer" {...toggleProps(open, () => setOpen(o => !o))}>
+        <span className={`text-xs text-forge-muted transition-transform ${open ? 'rotate-90' : ''}`}>▸</span>
+        <span className="font-semibold text-forge-text">Skills/Magic List</span>
+        <span className="ml-auto text-xs text-forge-muted">{picks.length} pick{picks.length === 1 ? '' : 's'}</span>
+      </div>
+      {open && (picks.length > 0 ? (
         <ul className="flex flex-wrap gap-1">
           {picks.map(p => {
             const r = ev.results.get(p.id)
@@ -74,7 +90,7 @@ export function SimplePlan({ build, ev, setBuild }: Props) {
         </ul>
       ) : (
         <p className="text-[11px] text-forge-muted">Pick skills on the right.</p>
-      )}
+      ))}
     </section>
   )
 }

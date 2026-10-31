@@ -83,10 +83,10 @@ export function MagicPanel({ build, ev, active, loose, setBuild, onAdd, onRemove
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3">
       {!loose && <p className="text-xs text-forge-muted">Purchases land on <span className="text-forge-accent">{stepLabel(active)}</span>.</p>}
 
-      <div className="grid lg:grid-cols-[16rem_minmax(0,1fr)] gap-4 items-start">
+      <div className="grid lg:grid-cols-[16rem_minmax(0,1fr)] gap-3 items-start">
         <div className="flex flex-col gap-2">
           <MobileSection title="Spheres" summary={build.schools.filter((s, i) => s && owned(sphereId(i)) > 0).join(', ') || 'none owned'}>
           {build.schools.map((_, i) => {
@@ -96,21 +96,28 @@ export function MagicPanel({ build, ev, active, loose, setBuild, onAdd, onRemove
             const p = probe(id)
             const used = build.schools.filter((s, j) => s && j !== i)
             return (
-              <div key={id} className={`forge-card !p-3 flex flex-col gap-2 ${has ? 'border-forge-accent/40' : ''}`}>
+              <div key={id} className={`forge-card !p-2.5 flex flex-col gap-1.5 ${has ? 'border-forge-accent/40' : ''}`}>
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-forge-text">Sphere {i + 1}</span>
                   {has
                     ? <span className="flex items-center gap-2"><span className="text-[10px] text-emerald-300">owned</span><RemoveButton label={`Remove ${name}`} onClick={() => onRemove(id)} /></span>
-                    : <AddButton label={`Buy ${name}`} probe={p} onClick={() => onAdd(id)} />}
+                    : <span className="text-[11px] font-mono text-forge-muted">{p?.cost} CP</span>}
                 </div>
-                {!has && <span className="text-[11px] text-forge-muted">{p?.error ?? `${p?.cost} CP`}</span>}
-                <select className="forge-input !py-1 text-xs" value={build.schools[i]} onChange={e => setSchool(i, e.target.value)}>
-                  <option value="">School…</option>
+                <select aria-label={`Sphere ${i + 1} school`} className="forge-input !py-1 text-xs" value={build.schools[i]} onChange={e => setSchool(i, e.target.value)}>
+                  <option value="">{has ? 'School…' : '1. Choose a school…'}</option>
                   {SCHOOLS_OF_MAGIC.map(s => {
                     const locked = EXCLUSIVE_SPHERES[s] && !EXCLUSIVE_SPHERES[s].includes(build.vocation)
                     return <option key={s} value={s} disabled={used.includes(s) || !!locked}>{s}{locked ? ' (Favoured only)' : ''}</option>
                   })}
                 </select>
+                {!has && (
+                  <button
+                    aria-label={`Buy ${name}`}
+                    className="forge-btn-accent !py-1 text-xs"
+                    disabled={!build.schools[i] || !!p?.error}
+                    onClick={() => onAdd(id)}
+                  >{p?.error ?? (build.schools[i] ? `2. Buy ${build.schools[i]} (${p?.cost} CP)` : '2. Then buy it here')}</button>
+                )}
                 {SURCHARGE_SPHERES.includes(build.schools[i]) && <span className="text-[11px] text-violet-300">+100 frags</span>}
                 {i >= 3 && i === build.schools.length - 1 && !has && (
                   <button className="self-start text-[11px] text-forge-muted hover:text-red-400 cursor-pointer" onClick={removeSphere}>Remove sphere</button>
@@ -138,7 +145,7 @@ export function MagicPanel({ build, ev, active, loose, setBuild, onAdd, onRemove
           </MobileSection>
         </div>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-3">
           <div className="flex flex-wrap gap-2">
             <button
               className="forge-btn-accent w-72"
@@ -157,7 +164,7 @@ export function MagicPanel({ build, ev, active, loose, setBuild, onAdd, onRemove
               const n = ev.final.circles[circle]
               const p = probe(SPELL_SLOT, String(circle))
               return (
-                <div key={circle} className="rounded-md border border-forge-border p-2 flex flex-col items-center gap-1.5">
+                <div key={circle} className="rounded-md border border-forge-border p-1.5 flex flex-col items-center gap-1">
                   <span className="text-xs text-forge-text">{ordinal(circle)}</span>
                   <div className="grid grid-cols-5 gap-0.5">
                     {Array.from({ length: wide ? MAX_SLOTS_PER_CIRCLE : SLOTS_PER_CIRCLE }, (_, k) => (
@@ -172,7 +179,7 @@ export function MagicPanel({ build, ev, active, loose, setBuild, onAdd, onRemove
                 </div>
               )
             })}
-            <div className="rounded-md border border-forge-border p-2 flex flex-col items-center gap-1.5">
+            <div className="rounded-md border border-forge-border p-1.5 flex flex-col items-center gap-1">
               <span className="text-xs text-forge-text">Ritual</span>
               <span className="text-[10px] font-mono text-forge-dim">{ev.final.rituals}/{MAX_RITUAL_SLOTS}</span>
               <span className="text-[10px] font-mono text-forge-muted">{probe(RITUAL_SLOT)?.cost} CP</span>

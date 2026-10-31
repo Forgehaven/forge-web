@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react'
-import { STORAGE_KEYS } from '../../../../config/storageKeys'
 import {
   catalog, choiceLabel, choiceOptions, evaluate, needsChoice, prereqLabel, slotCost, stateAt, vocationNeeds, SPELL_VERSATILITY, TRADESMAN, versatilityCost,
   type Build, type CatalogSkill, type Evaluation,
@@ -8,9 +7,9 @@ import { stepLabel } from './util'
 import { ordinal } from '../rules'
 import { Prose } from '../components/Prose'
 import { Masonry, type MasonryItem } from '../../../../components/Masonry'
-import { isNarrow } from '../../../../lib/isNarrow'
 import { toggleProps } from '../../../../lib/toggleProps'
 import type { Place } from '../../../../lib/assignColumns'
+import { useSkillInput } from '../hooks/useSkillInput'
 
 interface Props {
   build: Build
@@ -19,6 +18,8 @@ interface Props {
   loose: boolean
   onAdd: (skill: string, choice?: string) => void
   onRemove: (skill: string) => void
+  query: string
+  hideBlocked: boolean
 }
 
 const NO_OCCUPATION = 'Pick an occupation first'
@@ -59,9 +60,39 @@ function place(cat: string): Place {
 }
 const stackIndex = (cat: string) => LAYOUTS[2].flat().indexOf(group(cat))
 
-function SkillRow({ row, owned, needFor, hasOccupation, onAdd, onRemove }: {
+// Short forms for long names, used when the row is too narrow for the full one.
+const SHORT: [RegExp, string][] = [[/^Specialization/, 'Spec'], [/^Weapon Group Proficiency/, 'Weap Grp Prof'], [/^Weapon Specific Proficiency/, 'Weap Spec Prof'], [/Subsequent$/, 'Subseq']]
+const shortName = (name: string) => SHORT.reduce((n, [re, to]) => n.replace(re, to), name)
+
+// Count picker for repeatable skills; higher counts are off while the next one can't be bought.
+function CountInput({ name, owned, max, canAdd, onAdd, onRemove }: {
+  name: string
+  owned: number
+  max: number
+  canAdd: boolean
+  onAdd: () => void
+  onRemove: () => void
+}) {
+  return (
+    <select
+      aria-label={`${name} count`}
+      className="forge-input !w-9 !px-1 !py-0.5 appearance-none text-center text-xs font-mono cursor-pointer"
+      value={owned}
+      onChange={e => {
+        const n = Number(e.target.value)
+        for (let i = owned; i < n; i++) onAdd()
+        for (let i = n; i < owned; i++) onRemove()
+      }}
+    >
+      {Array.from({ length: max + 1 }, (_, n) => <option key={n} value={n} disabled={n > owned && !canAdd}>{n}</option>)}
+    </select>
+  )
+}
+
+function SkillRow({ row, owned, needFor, hasOccupation, numeric, onAdd, onRemove }: {
   row: Row
   owned: number
+  numeric: boolean
   // Vocation this skill would help qualify for.
   needFor?: string
   hasOccupation: boolean
@@ -77,27 +108,37 @@ function SkillRow({ row, owned, needFor, hasOccupation, onAdd, onRemove }: {
   const blocked = !!row.reason || (options !== null && options.length === 0)
   const prereqs = sk.prereqs.map(prereqLabel)
   const showCost = hasOccupation || !sk.costs
+  const short = shortName(sk.name)
 
   return (
     <li className={`border-b border-forge-border last:border-b-0 ${owned ? 'border-l-2 border-l-forge-accent/60 -ml-3 pl-2.5' : needFor ? 'border-l-2 border-l-amber-400/70 bg-amber-400/5 -ml-3 pl-2.5' : ''}`}>
       <div className="flex items-center gap-2 py-1 group">
-        <div className="flex-1 min-w-0 text-left cursor-pointer" {...toggleProps(open, () => setOpen(o => !o))}>
-          <span className={`text-sm ${blocked && !maxed ? 'text-forge-muted' : 'text-forge-text group-hover:text-forge-bright'}`}>
-            {sk.name}
+        <div className="@container flex-1 min-w-0 flex items-center text-left cursor-pointer" title={sk.name} {...toggleProps(open, () => setOpen(o => !o))}>
+          <span className={`truncate text-sm ${blocked && !maxed ? 'text-forge-muted' : 'text-forge-text group-hover:text-forge-bright'}`}>
+            {short === sk.name ? sk.name : <><span className="hidden @[17rem]:inline">{sk.name}</span><span className="@[17rem]:hidden">{short}</span></>}
           </span>
-          {needFor && <span className="ml-1.5 text-[10px] text-amber-300 whitespace-nowrap">needed for {needFor}</span>}
-          {sk.tier && <span className="ml-1.5 text-[10px] text-forge-muted">L{sk.tier}</span>}
+          {needFor && <span className="ml-1.5 shrink-0 text-[10px] text-amber-300 whitespace-nowrap">needed for {needFor}</span>}
+          {sk.tier && <span className="ml-1.5 shrink-0 text-[10px] text-forge-muted">L{sk.tier}</span>}
           {owned > 0 && (
-            <span className="ml-1.5 text-[10px] font-mono text-forge-accent">
+            <span className="ml-1.5 shrink-0 whitespace-nowrap text-[10px] font-mono text-forge-accent">
               {maxed ? '✓' : ''}{sk.maxPurchases > 1 ? ` ${owned}/${sk.maxPurchases}` : maxed ? ' owned' : ''}
             </span>
           )}
-          {reason && <span className="block text-[11px] text-amber-200/45 truncate" title={reason}>{reason}</span>}
+          {reason && (
+            <svg viewBox="0 0 16 16" className="ml-1.5 shrink-0 w-3 h-3 text-amber-300/60" fill="none" stroke="currentColor" strokeWidth="1.5" role="img" aria-label={reason}>
+              <title>{reason}</title>
+              <rect x="3" y="7" width="10" height="7" rx="1" /><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" />
+            </svg>
+          )}
         </div>
         <span className="text-xs font-mono text-forge-dim whitespace-nowrap text-right">
           {sk.costNote ?? (showCost ? `${cost} CP` : '–')}
           {frag ? <span className="text-violet-300/80"> · {frag}f</span> : null}
         </span>
+        <div className="w-[3.25rem] shrink-0 flex justify-end gap-1">
+        {numeric && options === null ? (
+          <CountInput name={sk.name} owned={owned} max={sk.maxPurchases} canAdd={!blocked} onAdd={() => onAdd()} onRemove={onRemove} />
+        ) : <>
         {owned > 0 && (
           <button
             aria-label={`Remove one ${sk.name}`}
@@ -112,6 +153,8 @@ function SkillRow({ row, owned, needFor, hasOccupation, onAdd, onRemove }: {
           disabled={blocked}
           onClick={() => (options !== null ? setChoosing(c => !c) : onAdd())}
         >+</button>
+        </>}
+        </div>
       </div>
 
       {choosing && options !== null && !blocked && (
@@ -159,6 +202,7 @@ function SkillRow({ row, owned, needFor, hasOccupation, onAdd, onRemove }: {
 
       {open && (
         <div className="pb-3 text-xs text-forge-dim leading-relaxed">
+          {reason && <p className="mb-1 text-amber-300/80">{reason}</p>}
           <Prose text={sk.desc} />
           <p className="mt-1 text-forge-muted">
             Max {sk.maxPurchases}{prereqs.length ? ` · Requires ${prereqs.join('; ')}` : ''}
@@ -170,19 +214,7 @@ function SkillRow({ row, owned, needFor, hasOccupation, onAdd, onRemove }: {
   )
 }
 
-export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove }: Props) {
-  const [query, setQuery] = useState('')
-  const [hideBlocked, setHideBlocked] = useState(() => {
-    try { return localStorage.getItem(STORAGE_KEYS.uwOnlyBuyable) === '1' } catch { return false }
-  })
-  const toggleBlocked = (on: boolean) => {
-    setHideBlocked(on)
-    try { localStorage.setItem(STORAGE_KEYS.uwOnlyBuyable, on ? '1' : '0') } catch { /* private mode */ }
-  }
-  const [closed, setClosed] = useState<Record<string, boolean>>({})
-  // Cards start collapsed on phones.
-  const [narrow] = useState(isNarrow)
-  const isCardClosed = (cat: string) => closed[cat] ?? narrow
+export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove, query, hideBlocked }: Props) {
 
   const rows = useMemo(() => {
     const st = stateAt(build, active, loose)
@@ -208,22 +240,11 @@ export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove }: Prop
   const owned = (name: string) => ev.final.counts.get(name) ?? 0
   const needs = useMemo(() => vocationNeeds(build, ev.final), [build, ev.final])
   const hasOccupation = !!build.occupation
+  const [skillInput] = useSkillInput()
 
   return (
-    <div className="flex flex-col gap-3">
-      <div className="sticky top-0 z-10 bg-forge-bg py-1 flex flex-wrap items-center gap-3">
-        <input
-          className="forge-input flex-1 min-w-48"
-          placeholder="Search skills…"
-          value={query}
-          onChange={e => setQuery(e.target.value)}
-        />
-        <label className="flex items-center gap-1.5 text-xs text-forge-dim cursor-pointer">
-          <input type="checkbox" checked={hideBlocked} onChange={e => toggleBlocked(e.target.checked)} />
-          Only buyable
-        </label>
-        {!loose && <span className="text-xs text-forge-muted">Buying at <span className="text-forge-accent">{stepLabel(active)}</span></span>}
-      </div>
+    <div className="flex flex-col gap-2">
+      {!loose && <span className="text-xs text-forge-muted">Buying at <span className="text-forge-accent">{stepLabel(active)}</span></span>}
 
       {!hasOccupation && (
         <p className="rounded-md border border-forge-accent/30 bg-forge-accent/5 px-3 py-2 text-xs text-forge-accent">
@@ -237,24 +258,18 @@ export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove }: Prop
           // Columns come from full category sizes, so filtering or buying never moves
           // a card; a category with nothing to show hides in its slot.
           if (!shown.length) return [{ key: cat, place: place(cat), weight: skills.length + 2, node: null }]
-          const isClosed = isCardClosed(cat) && !q
           const ownedHere = skills.filter(r => owned(r.sk.id) > 0).length
           const buyable = skills.filter(r => !r.reason).length
           return [{ key: cat, place: place(cat), weight: skills.length + 2, node: (
-            <section className="forge-card !p-0 overflow-hidden">
-              <div
-                className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-forge-text bg-forge-border/30 hover:bg-forge-border/60 cursor-pointer"
-                {...toggleProps(!isClosed, () => setClosed(c => ({ ...c, [cat]: !isCardClosed(cat) })))}
-              >
-                <span className={`text-[10px] text-forge-muted transition-transform ${isClosed ? '' : 'rotate-90'}`}>▸</span>
+            <section>
+              <h3 className="flex items-baseline gap-2 border-b border-forge-accent/30 pb-0.5 text-[11px] font-semibold uppercase tracking-widest text-forge-accent">
                 {cat}
-                <span className="ml-auto text-[10px] font-normal text-forge-muted">
+                <span className="ml-auto text-[10px] font-normal normal-case tracking-normal text-forge-muted">
                   {ownedHere > 0 && <span className="text-forge-accent">{ownedHere} owned · </span>}
                   {buyable} buyable
                 </span>
-              </div>
-              {!isClosed && (
-                <ul className="px-3">
+              </h3>
+              <ul className="pl-3">
                   {shown.map(r => (
                     <SkillRow
                       key={r.sk.id}
@@ -262,12 +277,12 @@ export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove }: Prop
                       owned={owned(r.sk.id)}
                       needFor={needs.has(r.sk.id) ? build.vocation : undefined}
                       hasOccupation={hasOccupation}
+                      numeric={skillInput === 'number'}
                       onAdd={choice => onAdd(r.sk.id, choice)}
                       onRemove={() => onRemove(r.sk.id)}
                     />
                   ))}
-                </ul>
-              )}
+              </ul>
             </section>
           ) }]
         })} />
