@@ -34,7 +34,7 @@ export function PriorityPlan({ view, build, ev, setBuild }: Props) {
   return (
     <section className="forge-card !p-4 flex flex-col gap-3">
       <div className="flex items-center gap-2 text-sm">
-        <span className="font-semibold text-[#e2e4ed]">Blankets a month</span>
+        <span className="font-semibold text-forge-text">Blankets a month</span>
         <select
           aria-label="Blankets a month"
           className="forge-input !w-auto !py-1 ml-auto cursor-pointer"
@@ -46,7 +46,7 @@ export function PriorityPlan({ view, build, ev, setBuild }: Props) {
       </div>
 
       <details className="text-xs">
-        <summary className="cursor-pointer text-[#9ca3af] hover:text-[#e2e4ed]">
+        <summary className="cursor-pointer text-forge-dim hover:text-forge-text">
           Months with fewer blankets{overrides.length ? ` (${overrides.length})` : ''}
         </summary>
         <div className="flex flex-col gap-2 pt-2">
@@ -63,11 +63,11 @@ export function PriorityPlan({ view, build, ev, setBuild }: Props) {
           {overrides.length > 0 && (
             <ul className="flex flex-wrap gap-1">
               {overrides.map(([m, n]) => (
-                <li key={m} className="flex items-center gap-1 rounded bg-[#2a2d3a] px-1.5 py-0.5 text-[11px] text-[#c4c7d0]">
+                <li key={m} className="flex items-center gap-1 rounded bg-forge-border px-1.5 py-0.5 text-[11px] text-forge-soft">
                   {monthLabel(m)}: {n}
                   <button
                     aria-label={`Clear ${monthLabel(m)}`}
-                    className="text-[#6b7280] hover:text-red-400 cursor-pointer"
+                    className="text-forge-muted hover:text-red-400 cursor-pointer"
                     onClick={() => setPriority(x => ({ ...x, months: Object.fromEntries(Object.entries(x.months).filter(([k]) => k !== m)) }))}
                   >×</button>
                 </li>
@@ -92,27 +92,27 @@ export function PriorityPlan({ view, build, ev, setBuild }: Props) {
                 onDragOver={e => { e.preventDefault(); if (drag && drag.over !== i) setDrag({ ...drag, over: i }) }}
                 onDrop={e => { e.preventDefault(); if (drag) move(drag.from, i) }}
                 onDragEnd={() => setDrag(null)}
-                className={`cursor-grab active:cursor-grabbing ${drag?.over === i && drag.from !== i ? (drag.from < i ? 'border-b' : 'border-t') + ' border-[#c4af64]' : ''} ${drag?.from === i ? 'opacity-40' : ''}`}
+                className={`cursor-grab active:cursor-grabbing ${drag?.over === i && drag.from !== i ? (drag.from < i ? 'border-b' : 'border-t') + ' border-forge-accent' : ''} ${drag?.from === i ? 'opacity-40' : ''}`}
               >
                 {step !== prev && (
-                  <div className={`flex justify-between text-[11px] text-[#c4af64] mb-0.5 ${i ? 'mt-2' : ''}`}>
+                  <div className={`flex justify-between text-[11px] text-forge-accent mb-0.5 ${i ? 'mt-2' : ''}`}>
                     <span>{step.at === 0 ? 'Creation' : monthLabel(step.month)}</span>
-                    <span className="text-[#6b7280]">Level {step.row.level} · {step.cp - step.spent} CP left</span>
+                    <span className="text-forge-muted">Level {step.row.level} · {step.cp - step.spent} CP left</span>
                   </div>
                 )}
                 <div
                   title={r.error ?? `${r.cost} CP${r.frag ? `, ${r.frag} frags` : ''}`}
-                  className={`group flex items-center gap-1.5 text-xs py-0.5 ${r.error ? 'text-red-300' : 'text-[#c4c7d0]'}`}
+                  className={`group flex items-center gap-1.5 text-xs py-0.5 ${r.error ? 'text-red-300' : 'text-forge-soft'}`}
                 >
                   <span className="flex-1 min-w-0 truncate">{r.label}</span>
                   {r.error && <span className="text-[10px] text-red-400/80 truncate max-w-[45%]">{r.error}</span>}
-                  <span className="text-[#6b7280] font-mono">{r.cost}</span>
+                  <span className="text-forge-muted font-mono">{r.cost}</span>
                   <span className="flex opacity-40 group-hover:opacity-100 focus-within:opacity-100">
-                    <button aria-label={`Move ${r.label} up`} className="w-5 text-[#9ca3af] hover:text-[#e2e4ed] cursor-pointer disabled:opacity-30" disabled={i === 0} onClick={() => move(i, i - 1)}>↑</button>
-                    <button aria-label={`Move ${r.label} down`} className="w-5 text-[#9ca3af] hover:text-[#e2e4ed] cursor-pointer disabled:opacity-30" disabled={i === picks.length - 1} onClick={() => move(i, i + 1)}>↓</button>
+                    <button aria-label={`Move ${r.label} up`} className="w-5 text-forge-dim hover:text-forge-text cursor-pointer disabled:opacity-30" disabled={i === 0} onClick={() => move(i, i - 1)}>↑</button>
+                    <button aria-label={`Move ${r.label} down`} className="w-5 text-forge-dim hover:text-forge-text cursor-pointer disabled:opacity-30" disabled={i === picks.length - 1} onClick={() => move(i, i + 1)}>↓</button>
                     <button
                       aria-label={`Remove ${r.label}`}
-                      className="w-5 text-[#6b7280] hover:text-red-400 cursor-pointer"
+                      className="w-5 text-forge-muted hover:text-red-400 cursor-pointer"
                       onClick={() => setBuild(b => withPurchases(b, activePurchases(b).filter(y => y.id !== x.id)))}
                     >×</button>
                   </span>
@@ -122,7 +122,7 @@ export function PriorityPlan({ view, build, ev, setBuild }: Props) {
           })}
         </ol>
       ) : (
-        <p className="text-[11px] text-[#6b7280]">Pick skills on the right in the order you want them; drag to reorder. Each one is dated at the first blanket that can afford it.</p>
+        <p className="text-[11px] text-forge-muted">Pick skills on the right in the order you want them; drag to reorder. Each one is dated at the first blanket that can afford it.</p>
       )}
     </section>
   )

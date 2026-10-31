@@ -326,34 +326,34 @@ export function AudioCutter() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Audio Cutter</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">Audio Cutter</h1>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-5">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-5">
 
         {/* Drop zone */}
         <FileDropZone accept="audio/*" onFiles={files => acceptFile(files[0])}>
           {file ? (
             <div>
-              <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name}</p>
-              <p className="text-xs text-[#6b7280] mt-1">
+              <p className="text-sm text-forge-text font-mono truncate">{file.name}</p>
+              <p className="text-xs text-forge-muted mt-1">
                 {(file.size / 1024 / 1024).toFixed(2)} MB
                 {duration > 0 && ` · ${formatTime(duration)}`}
               </p>
             </div>
           ) : (
             <div>
-              <p className="text-sm text-[#6b7280]">Drop an audio file here or click to upload</p>
-              <p className="text-xs text-[#3a3d4a] mt-1">MP3, WAV, OGG, FLAC, M4A, AAC · all processing is local</p>
-              <p className="text-xs text-[#3a3d4a] mt-2">
+              <p className="text-sm text-forge-muted">Drop an audio file here or click to upload</p>
+              <p className="text-xs text-forge-line mt-1">MP3, WAV, OGG, FLAC, M4A, AAC · all processing is local</p>
+              <p className="text-xs text-forge-line mt-2">
                 Need to download from YouTube first?{' '}
-                <a href="https://github.com/alexta69/metube" target="_blank" rel="noopener noreferrer" className="text-[#6b7280] hover:text-[#9ca3af] underline transition-colors">MeTube</a>
+                <a href="https://github.com/alexta69/metube" target="_blank" rel="noopener noreferrer" className="text-forge-muted hover:text-forge-dim underline transition-colors">MeTube</a>
                 {' '}is a self-hostable downloader.
               </p>
             </div>
           )}
         </FileDropZone>
 
-        {isDecoding && <p className="text-xs text-[#6b7280]">Decoding audio…</p>}
+        {isDecoding && <p className="text-xs text-forge-muted">Decoding audio…</p>}
         {error && <p className="text-xs text-red-400">{error}</p>}
 
         {audioBuf && (
@@ -361,23 +361,23 @@ export function AudioCutter() {
             {/* Waveform with draggable trim handles */}
             <div
               ref={waveRef}
-              className="relative rounded overflow-hidden cursor-crosshair select-none bg-[#0f1117]"
+              className="relative rounded overflow-hidden cursor-crosshair select-none bg-forge-bg"
               style={{ height: 80 }}
               onMouseDown={onWaveMouseDown}
             >
               <canvas ref={canvasRef} width={1200} height={80} className="w-full h-full block" />
 
-              <div className="absolute top-0 bottom-0 w-px bg-[#c4af64] pointer-events-none" style={{ left: `${startPct}%` }} />
-              <div className="absolute top-0 w-3 h-4 bg-[#c4af64] rounded-b cursor-ew-resize" style={{ left: `${startPct}%`, transform: 'translateX(-50%)' }} />
+              <div className="absolute top-0 bottom-0 w-px bg-forge-accent pointer-events-none" style={{ left: `${startPct}%` }} />
+              <div className="absolute top-0 w-3 h-4 bg-forge-accent rounded-b cursor-ew-resize" style={{ left: `${startPct}%`, transform: 'translateX(-50%)' }} />
 
-              <div className="absolute top-0 bottom-0 w-px bg-[#c4af64] pointer-events-none" style={{ left: `${endPct}%` }} />
-              <div className="absolute top-0 w-3 h-4 bg-[#c4af64] rounded-b cursor-ew-resize" style={{ left: `${endPct}%`, transform: 'translateX(-50%)' }} />
+              <div className="absolute top-0 bottom-0 w-px bg-forge-accent pointer-events-none" style={{ left: `${endPct}%` }} />
+              <div className="absolute top-0 w-3 h-4 bg-forge-accent rounded-b cursor-ew-resize" style={{ left: `${endPct}%`, transform: 'translateX(-50%)' }} />
             </div>
 
             {/* Timestamp inputs */}
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs text-[#6b7280] mb-1">Start (s)</label>
+                <label className="block text-xs text-forge-muted mb-1">Start (s)</label>
                 <input
                   type="number" inputMode="decimal" min={0} max={trimEnd - 0.05} step={0.01}
                   value={trimStart.toFixed(2)}
@@ -391,7 +391,7 @@ export function AudioCutter() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-[#6b7280] mb-1">End (s)</label>
+                <label className="block text-xs text-forge-muted mb-1">End (s)</label>
                 <input
                   type="number" inputMode="decimal" min={trimStart + 0.05} max={duration} step={0.01}
                   value={trimEnd.toFixed(2)}
@@ -405,8 +405,8 @@ export function AudioCutter() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-[#6b7280] mb-1">Selection</label>
-                <div className="bg-[#0f1117] border border-[#2a2d3a] text-[#6b7280] rounded px-3 py-2 text-sm">
+                <label className="block text-xs text-forge-muted mb-1">Selection</label>
+                <div className="bg-forge-bg border border-forge-border text-forge-muted rounded px-3 py-2 text-sm">
                   {formatTime(trimEnd - trimStart)}
                 </div>
               </div>
@@ -417,7 +417,7 @@ export function AudioCutter() {
               <button onClick={togglePlay} className="forge-btn-accent">
                 {isPlaying ? '⏸ Pause' : '▶ Play selection'}
               </button>
-              <span className="text-xs text-[#6b7280] font-mono">
+              <span className="text-xs text-forge-muted font-mono">
                 {formatTime(currentTime)} / {formatTime(duration)}
               </span>
               <button onClick={exportCut} disabled={isExporting} className="forge-btn-accent ml-auto">
@@ -427,14 +427,14 @@ export function AudioCutter() {
 
             {/* Download */}
             {outputUrl && (
-              <div className="flex gap-3 items-center border-t border-[#2a2d3a] pt-4">
+              <div className="flex gap-3 items-center border-t border-forge-border pt-4">
                 <a href={outputUrl} download={outputName} className="forge-btn-accent">
                   Download {outputName}
                 </a>
               </div>
             )}
             {outputUrl && (
-              <p className="text-xs text-[#6b7280]">
+              <p className="text-xs text-forge-muted">
                 {formatTime(trimEnd - trimStart)} exported as MP3 128kbps · all processing is local
               </p>
             )}

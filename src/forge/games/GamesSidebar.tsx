@@ -10,15 +10,15 @@ import { SidebarFooter } from '../../components/Sidebar/SidebarFooter'
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `block pl-4 pr-8 py-2 md:py-0 text-sm leading-5 transition-colors ${
     isActive
-      ? 'bg-[#c4af64]/10 text-[#c4af64] border-r-2 border-[#c4af64]'
-      : 'text-[#9ca3af] hover:text-[#e2e4ed] hover:bg-[#2a2d3a]'
+      ? 'bg-forge-accent/10 text-forge-accent border-r-2 border-forge-accent'
+      : 'text-forge-dim hover:text-forge-text hover:bg-forge-border'
   }`
 
 const subLinkClass = ({ isActive }: { isActive: boolean }) =>
   `block pl-8 pr-8 py-1.5 text-xs leading-5 transition-colors ${
     isActive
-      ? 'bg-[#c4af64]/10 text-[#c4af64] border-r-2 border-[#c4af64]'
-      : 'text-[#6b7280] hover:text-[#9ca3af] hover:bg-[#2a2d3a]'
+      ? 'bg-forge-accent/10 text-forge-accent border-r-2 border-forge-accent'
+      : 'text-forge-muted hover:text-forge-dim hover:bg-forge-border'
   }`
 
 type GameEntry = {
@@ -62,7 +62,7 @@ export interface GamesSidebarProps {
   onOpenLogin: () => void
 }
 
-export function GamesSidebar({ isOpen, onClose, onOpenLogin }: GamesSidebarProps) {
+export function GamesSidebar({ isOpen, onClose, onOpenSettings, onOpenLogin }: GamesSidebarProps) {
   const { collapsed, toggle } = useSidebarCollapse(STORAGE_KEYS.gamesCollapsedSections)
 
   return (
@@ -96,7 +96,7 @@ export function GamesSidebar({ isOpen, onClose, onOpenLogin }: GamesSidebarProps
           ))}
         </nav>
 
-        <SidebarFooter onOpenLogin={onOpenLogin} />
+        <SidebarFooter onOpenSettings={onOpenSettings} onOpenLogin={onOpenLogin} />
       </SidebarShell>
     </>
   )

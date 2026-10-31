@@ -6,14 +6,14 @@ import armourLocations from '../images/armour-locations.webp'
 const GROUPS = ['Simple', 'Medium', 'Large', 'Exotic']
 
 function Ref({ text }: { text: string }) {
-  return <span className="text-[10px] text-[#6b7280] font-normal normal-case tracking-normal">{text}</span>
+  return <span className="text-[10px] text-forge-muted font-normal normal-case tracking-normal">{text}</span>
 }
 
 function Card({ title, refText, children }: { title: string; refText: string; children: React.ReactNode }) {
   return (
     <section className="forge-card !p-4 flex flex-col gap-2">
-      <h2 className="text-sm font-semibold text-[#e2e4ed] flex items-baseline justify-between gap-3">{title}<Ref text={refText} /></h2>
-      <div className="text-xs text-[#9ca3af] leading-relaxed">{children}</div>
+      <h2 className="text-sm font-semibold text-forge-text flex items-baseline justify-between gap-3">{title}<Ref text={refText} /></h2>
+      <div className="text-xs text-forge-dim leading-relaxed">{children}</div>
     </section>
   )
 }
@@ -28,7 +28,7 @@ export function Equipment() {
         <div className="overflow-x-auto -mx-1">
           <table className="w-full text-xs">
             <thead>
-              <tr className="text-left text-[#6b7280]">
+              <tr className="text-left text-forge-muted">
                 <th className="font-normal px-1 py-1">Weapon</th>
                 <th className="font-normal px-1">Damage</th>
                 <th className="font-normal px-1">Length in (cm)</th>
@@ -41,12 +41,12 @@ export function Equipment() {
               if (!list.length) return null
               return (
                 <tbody key={g}>
-                  <tr><td colSpan={5} className="px-1 pt-3 pb-1 text-[10px] uppercase tracking-widest text-[#c4af64]">{g} weapons</td></tr>
+                  <tr><td colSpan={5} className="px-1 pt-3 pb-1 text-[10px] uppercase tracking-widest text-forge-accent">{g} weapons</td></tr>
                   {list.map(w => (
-                    <tr key={w.name} className="border-t border-[#2a2d3a] align-top">
-                      <td className="px-1 py-1.5 text-[#e2e4ed]">{w.name}</td>
-                      <td className="px-1 py-1.5 font-mono text-[#c4af64] whitespace-nowrap">{w.damage}</td>
-                      <td className="px-1 py-1.5 font-mono whitespace-nowrap">{w.lengthIn} <span className="text-[#6b7280]">({w.lengthCm})</span></td>
+                    <tr key={w.name} className="border-t border-forge-border align-top">
+                      <td className="px-1 py-1.5 text-forge-text">{w.name}</td>
+                      <td className="px-1 py-1.5 font-mono text-forge-accent whitespace-nowrap">{w.damage}</td>
+                      <td className="px-1 py-1.5 font-mono whitespace-nowrap">{w.lengthIn} <span className="text-forge-muted">({w.lengthCm})</span></td>
                       <td className="px-1 py-1.5 whitespace-nowrap">{w.core}</td>
                       <td className="px-1 py-1.5">{w.striking}</td>
                     </tr>
@@ -56,7 +56,7 @@ export function Equipment() {
             })}
           </table>
         </div>
-        <ul className="mt-2 text-[11px] text-[#6b7280] flex flex-col gap-0.5">
+        <ul className="mt-2 text-[11px] text-forge-muted flex flex-col gap-0.5">
           {weapons.notes.map(n => <li key={n}>{n}</li>)}
         </ul>
       </Card>
@@ -74,8 +74,8 @@ export function Equipment() {
             <ol className="grid grid-cols-[auto_auto] w-fit gap-x-10 gap-y-0.5">
               {locations.list.map(l => (
                 <li key={l.n} className="flex gap-2">
-                  <span className="font-mono text-[#6b7280] w-5 text-right">{l.n}</span>
-                  <span className={'blue' in l && l.blue ? 'text-sky-300' : 'text-[#c4c7d0]'}>{l.name}</span>
+                  <span className="font-mono text-forge-muted w-5 text-right">{l.n}</span>
+                  <span className={'blue' in l && l.blue ? 'text-sky-300' : 'text-forge-soft'}>{l.name}</span>
                 </li>
               ))}
             </ol>
@@ -90,8 +90,8 @@ export function Equipment() {
             <ul className="flex flex-col gap-1.5">
               {colours.list.map(c => (
                 <li key={c.colour} className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-sm border border-[#3a3d4a] shrink-0" style={{ background: c.swatch }} />
-                  <span className="text-[#e2e4ed]">{c.colour}</span>
+                  <span className="w-3 h-3 rounded-sm border border-forge-line shrink-0" style={{ background: c.swatch }} />
+                  <span className="text-forge-text">{c.colour}</span>
                   <span className="ml-auto text-right">{c.meaning}</span>
                 </li>
               ))}
@@ -104,10 +104,10 @@ export function Equipment() {
               {grades.rows.map(g => (
                 <li key={g.grade}>
                   <p className="flex items-baseline gap-2">
-                    <span className="font-semibold text-[#e2e4ed]">Grade {g.grade}</span>
-                    <span className="font-mono text-[#c4af64]">{g.points} AP/location</span>
+                    <span className="font-semibold text-forge-text">Grade {g.grade}</span>
+                    <span className="font-mono text-forge-accent">{g.points} AP/location</span>
                   </p>
-                  <p className="text-[#c4c7d0]">{g.materials}</p>
+                  <p className="text-forge-soft">{g.materials}</p>
                   <Prose text={g.text} className="mt-1" />
                 </li>
               ))}

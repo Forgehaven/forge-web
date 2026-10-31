@@ -113,17 +113,17 @@ function SpellRow({ spell, job, jobLevel, learned, isAnimating, onToggle }: Spel
   return (
     <tr className={`border-b last:border-0 transition-all duration-300 ${
       isAnimating ? 'opacity-0 scale-95' : 'opacity-100'
-    } ${learned ? 'bg-[#166534]/10 border-[#166534]/25' : 'border-[#1a1d27]'}`}>
+    } ${learned ? 'bg-[#166534]/10 border-[#166534]/25' : 'border-forge-surface'}`}>
       <td className={`pl-4 pr-2 py-1.5 border-l-2 ${learned ? 'border-l-[#22c55e]/70' : 'border-l-transparent'}`}>
         <input
           type="checkbox"
           checked={learned}
           onChange={onToggle}
-          className="w-3.5 h-3.5 cursor-pointer accent-[#c4af64]"
+          className="w-3.5 h-3.5 cursor-pointer accent-forge-accent"
         />
       </td>
       <td className={`py-1.5 pr-3 text-sm ${
-        learned ? 'text-[#c4af64]' : canLearn ? 'text-[#e2e4ed]' : 'text-[#374151]'
+        learned ? 'text-forge-accent' : canLearn ? 'text-forge-text' : 'text-forge-edge'
       }`}>
         {spell.name}
       </td>
@@ -169,7 +169,7 @@ function SpellRow({ spell, job, jobLevel, learned, isAnimating, onToggle }: Spel
           </span>
         )}
       </td>
-      <td className="py-1.5 pr-3 text-center text-[10px] text-[#9ca3af] tabular-nums">
+      <td className="py-1.5 pr-3 text-center text-[10px] text-forge-dim tabular-nums">
         {spellLevel}
       </td>
       <td className="py-1.5 pr-4 text-center">
@@ -177,7 +177,7 @@ function SpellRow({ spell, job, jobLevel, learned, isAnimating, onToggle }: Spel
           href={`https://horizonffxi.wiki/${encodeURIComponent(spell.name.replace(/ /g, '_'))}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[#6b7280] hover:text-[#e2e4ed] transition-colors text-xs"
+          className="text-forge-muted hover:text-forge-text transition-colors text-xs"
           title={`${spell.name} on HorizonXI wiki`}
         >
           ↗
@@ -470,17 +470,17 @@ export function SpellTracker() {
       {/* First-sync migration: browser has data, the selected char has none.
           Declining is remembered per character. */}
       {showMigration && selectedChar && (
-        <div className="flex items-center gap-3 px-3 py-2 rounded border border-[#c4af64]/40 bg-[#c4af64]/10 text-sm text-[#e2e4ed]">
+        <div className="flex items-center gap-3 px-3 py-2 rounded border border-forge-accent/40 bg-forge-accent/10 text-sm text-forge-text">
           <span className="flex-1">This browser has unsynced Spell Tracker data.</span>
           <button
             onClick={importLocalToCharacter}
-            className="text-xs px-3 py-1 rounded bg-[#c4af64] text-[#0f1117] font-semibold hover:bg-[#d4bf74] transition-colors cursor-pointer shrink-0"
+            className="text-xs px-3 py-1 rounded bg-forge-accent text-forge-bg font-semibold hover:bg-[#d4bf74] transition-colors cursor-pointer shrink-0"
           >
             Save it to {selectedChar.name}
           </button>
           <button
             onClick={declineMigration}
-            className="text-xs px-3 py-1 rounded border border-[#2a2d3a] text-[#9ca3af] hover:text-[#e2e4ed] hover:border-[#3a4060] transition-colors cursor-pointer shrink-0"
+            className="text-xs px-3 py-1 rounded border border-forge-border text-forge-dim hover:text-forge-text hover:border-[#3a4060] transition-colors cursor-pointer shrink-0"
           >
             No thanks
           </button>
@@ -490,18 +490,18 @@ export function SpellTracker() {
       {/* Title + export/import + reset */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
-            Spell <span className="text-[#c4af64]">Tracker</span>
+          <h1 className="text-xl font-semibold text-forge-text tracking-wide">
+            Spell <span className="text-forge-accent">Tracker</span>
           </h1>
-          <p className="text-sm text-[#6b7280] mt-0.5">FFXI · Horizon</p>
+          <p className="text-sm text-forge-muted mt-0.5">FFXI · Horizon</p>
         </div>
         <div className="flex items-center gap-3 shrink-0 mt-1.5">
-          <button onClick={exportJSON} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">Export</button>
-          <button onClick={() => fileInputRef.current?.click()} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">Import</button>
+          <button onClick={exportJSON} className="text-xs text-forge-muted hover:text-forge-text transition-colors cursor-pointer">Export</button>
+          <button onClick={() => fileInputRef.current?.click()} className="text-xs text-forge-muted hover:text-forge-text transition-colors cursor-pointer">Import</button>
           <input ref={fileInputRef} type="file" accept=".json" onChange={handleImportFile} className="hidden" />
         </div>
         <div className="flex items-center gap-2 mt-1">
-          <span className="text-[10px] text-[#c4af64] uppercase tracking-wider">Reset</span>
+          <span className="text-[10px] text-forge-accent uppercase tracking-wider">Reset</span>
           <div className="flex flex-col gap-0.5">
             <ResetButton label="Levels" target="levels" confirm={confirmReset} onRequest={setConfirmReset} onConfirm={() => handleReset('levels')} onCancel={() => setConfirmReset(null)} />
             <ResetButton label="Spells" target="spells" confirm={confirmReset} onRequest={setConfirmReset} onConfirm={() => handleReset('spells')} onCancel={() => setConfirmReset(null)} />
@@ -510,16 +510,16 @@ export function SpellTracker() {
       </div>
 
       {/* Tab panel */}
-      <div className="rounded-lg border border-[#2a2d3a] overflow-hidden">
+      <div className="rounded-lg border border-forge-border overflow-hidden">
 
         {/* Job tabs */}
-        <div className="flex border-b border-[#2a2d3a] overflow-x-auto">
+        <div className="flex border-b border-forge-border overflow-x-auto">
           {JOBS.map(job => {
             const { lvl, missing } = tabStates[job]
             const isActive = activeJob === job
             const lvlColor = lvl === 0
-              ? 'text-[#4b5563]'
-              : missing > 0 ? 'text-[#c4af64]' : 'text-[#4ade80]'
+              ? 'text-forge-faint'
+              : missing > 0 ? 'text-forge-accent' : 'text-[#4ade80]'
             const title = lvl === 0
               ? 'Job not unlocked'
               : missing > 0
@@ -532,8 +532,8 @@ export function SpellTracker() {
                 onClick={() => { setActiveJob(job); setSearch('') }}
                 className={`flex flex-col items-center px-4 py-2.5 text-sm font-bold shrink-0 transition-colors border-b-2 cursor-pointer ${
                   isActive
-                    ? 'text-[#c4af64] border-[#c4af64] bg-[#c4af64]/5'
-                    : 'text-[#9ca3af] border-transparent hover:text-[#e2e4ed] hover:bg-[#1a1d27]/50'
+                    ? 'text-forge-accent border-forge-accent bg-forge-accent/5'
+                    : 'text-forge-dim border-transparent hover:text-forge-text hover:bg-forge-surface/50'
                 }`}
               >
                 <span>{job}</span>
@@ -544,14 +544,14 @@ export function SpellTracker() {
         </div>
 
         {/* Controls bar */}
-        <div className="flex items-center gap-4 px-4 py-2 border-b border-[#1e2130] bg-[#1a1d27]/40 flex-wrap">
+        <div className="flex items-center gap-4 px-4 py-2 border-b border-forge-raise bg-forge-surface/40 flex-wrap">
           <div className="flex items-center gap-2">
-            <span className="text-[10px] text-[#4b5563] uppercase tracking-wider">Level</span>
+            <span className="text-[10px] text-forge-faint uppercase tracking-wider">Level</span>
             <div className="flex items-center">
               <button
                 onClick={() => setJobLevel(activeJob, jobLevel - 1)}
                 disabled={jobLevel <= 0}
-                className="px-1.5 py-0.5 text-xs text-[#6b7280] hover:text-[#e2e4ed] disabled:opacity-20 disabled:cursor-not-allowed cursor-pointer transition-colors border border-r-0 border-[#2a2d3a] rounded-l bg-[#0f1117] leading-none"
+                className="px-1.5 py-0.5 text-xs text-forge-muted hover:text-forge-text disabled:opacity-20 disabled:cursor-not-allowed cursor-pointer transition-colors border border-r-0 border-forge-border rounded-l bg-forge-bg leading-none"
               >▼</button>
               <input
                 type="text"
@@ -561,12 +561,12 @@ export function SpellTracker() {
                   const digits = e.target.value.replace(/\D/g, '')
                   setJobLevel(activeJob, digits ? parseInt(digits, 10) : 1)
                 }}
-                className="w-10 py-0.5 text-xs text-center border border-[#2a2d3a] bg-[#0f1117] text-[#9ca3af] focus:outline-none focus:border-[#4a5070]"
+                className="w-10 py-0.5 text-xs text-center border border-forge-border bg-forge-bg text-forge-dim focus:outline-none focus:border-[#4a5070]"
               />
               <button
                 onClick={() => setJobLevel(activeJob, jobLevel + 1)}
                 disabled={jobLevel >= 99}
-                className="px-1.5 py-0.5 text-xs text-[#6b7280] hover:text-[#e2e4ed] disabled:opacity-20 disabled:cursor-not-allowed cursor-pointer transition-colors border border-l-0 border-[#2a2d3a] rounded-r bg-[#0f1117] leading-none"
+                className="px-1.5 py-0.5 text-xs text-forge-muted hover:text-forge-text disabled:opacity-20 disabled:cursor-not-allowed cursor-pointer transition-colors border border-l-0 border-forge-border rounded-r bg-forge-bg leading-none"
               >▲</button>
             </div>
           </div>
@@ -575,35 +575,35 @@ export function SpellTracker() {
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Search spells…"
-            className="px-2 py-0.5 text-xs rounded border bg-[#0f1117] text-[#9ca3af] border-[#2a2d3a] hover:border-[#3a4060] focus:border-[#4a5070] focus:outline-none w-40"
+            className="px-2 py-0.5 text-xs rounded border bg-forge-bg text-forge-dim border-forge-border hover:border-[#3a4060] focus:border-[#4a5070] focus:outline-none w-40"
           />
           <label className="flex items-center gap-1.5 cursor-pointer">
             <input
               type="checkbox"
               checked={hideMode}
               onChange={e => setHideMode(e.target.checked)}
-              className="w-3 h-3 cursor-pointer accent-[#c4af64]"
+              className="w-3 h-3 cursor-pointer accent-forge-accent"
             />
-            <span className="text-[10px] text-[#6b7280]">Hide learned</span>
+            <span className="text-[10px] text-forge-muted">Hide learned</span>
           </label>
-          <span className="ml-auto text-xs text-[#6b7280] tabular-nums">{learnedCount} / {jobSpells.length}</span>
+          <span className="ml-auto text-xs text-forge-muted tabular-nums">{learnedCount} / {jobSpells.length}</span>
         </div>
 
         <div ref={tableRef} className="overflow-y-auto" style={{ maxHeight: tableMaxH ?? undefined, minHeight: 200 }}>
           {visibleSpells.length === 0 ? (
-            <p className="py-6 px-4 text-sm text-[#374151]">
+            <p className="py-6 px-4 text-sm text-forge-edge">
               {search ? 'No spells match your search.' : 'All spells learned!'}
             </p>
           ) : (
             <table className="w-full">
-              <thead className="sticky top-0 bg-[#0f1117] z-10">
-                <tr className="border-b border-[#1e2130]">
+              <thead className="sticky top-0 bg-forge-bg z-10">
+                <tr className="border-b border-forge-raise">
                   <th className="w-10 pl-4 pr-2 py-1.5" />
-                  <th className="py-1.5 pr-3 text-left text-[10px] text-[#9ca3af] uppercase tracking-wider font-semibold">Spell</th>
-                  <th className="py-1.5 pr-3 text-center text-[10px] text-[#9ca3af] uppercase tracking-wider font-semibold">Type</th>
-                  <th className="py-1.5 pr-3 text-center text-[10px] text-[#9ca3af] uppercase tracking-wider font-semibold">Skill</th>
-                  <th className="py-1.5 pr-3 text-center text-[10px] text-[#9ca3af] uppercase tracking-wider font-semibold">Element</th>
-                  <th className="py-1.5 pr-3 text-center text-[10px] text-[#9ca3af] uppercase tracking-wider font-semibold">LVL</th>
+                  <th className="py-1.5 pr-3 text-left text-[10px] text-forge-dim uppercase tracking-wider font-semibold">Spell</th>
+                  <th className="py-1.5 pr-3 text-center text-[10px] text-forge-dim uppercase tracking-wider font-semibold">Type</th>
+                  <th className="py-1.5 pr-3 text-center text-[10px] text-forge-dim uppercase tracking-wider font-semibold">Skill</th>
+                  <th className="py-1.5 pr-3 text-center text-[10px] text-forge-dim uppercase tracking-wider font-semibold">Element</th>
+                  <th className="py-1.5 pr-3 text-center text-[10px] text-forge-dim uppercase tracking-wider font-semibold">LVL</th>
                   <th className="py-1.5 pr-4 w-8" />
                 </tr>
               </thead>

@@ -152,19 +152,19 @@ export function TextTranslate() {
     await navigator.clipboard.writeText(result)
   }
 
-  const inputClass = 'bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] font-mono'
+  const inputClass = 'bg-forge-bg border border-forge-border text-forge-text rounded px-3 py-2 text-sm focus:outline-none focus:border-forge-accent font-mono'
   const canSwap = from !== 'autodetect'
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Text Translate</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">Text Translate</h1>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-4">
 
         {/* Language selectors */}
         <div className="flex items-center gap-2">
           <div className="flex-1 min-w-0">
-            <p className="text-xs text-[#6b7280] mb-1">From</p>
+            <p className="text-xs text-forge-muted mb-1">From</p>
             <Select
               options={fromOptions}
               value={fromOptions.find(o => o.value === from) ?? null}
@@ -177,12 +177,12 @@ export function TextTranslate() {
             onClick={swap}
             disabled={!canSwap}
             title={!canSwap ? 'Select a source language to swap' : 'Swap languages'}
-            className="mt-5 px-2.5 py-2 text-sm rounded border border-[#2a2d3a] text-[#6b7280] hover:text-[#e2e4ed] hover:border-[#3a3d4a] transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed shrink-0"
+            className="mt-5 px-2.5 py-2 text-sm rounded border border-forge-border text-forge-muted hover:text-forge-text hover:border-forge-line transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed shrink-0"
           >
             ⇄
           </button>
           <div className="flex-1 min-w-0">
-            <p className="text-xs text-[#6b7280] mb-1">To</p>
+            <p className="text-xs text-forge-muted mb-1">To</p>
             <Select
               options={languages}
               value={languages.find(o => o.value === to) ?? null}
@@ -196,8 +196,8 @@ export function TextTranslate() {
         {/* Input */}
         <div>
           <div className="flex items-center justify-between mb-1">
-            <label className="text-xs text-[#6b7280]">Text</label>
-            <span className="text-xs text-[#3a3d4a]">{text.length} chars</span>
+            <label className="text-xs text-forge-muted">Text</label>
+            <span className="text-xs text-forge-line">{text.length} chars</span>
           </div>
           <textarea
             className={`${inputClass} w-full resize-y min-h-[120px]`}
@@ -206,13 +206,13 @@ export function TextTranslate() {
             onKeyDown={e => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) translate() }}
             placeholder="Enter text to translate…"
           />
-          <p className="text-xs text-[#3a3d4a] mt-1">Ctrl+Enter to translate</p>
+          <p className="text-xs text-forge-line mt-1">Ctrl+Enter to translate</p>
         </div>
 
         <button
           onClick={translate}
           disabled={loading || !text.trim()}
-          className="px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed self-start"
+          className="px-4 py-2 text-sm rounded bg-forge-accent/10 text-forge-accent border border-forge-accent/30 hover:bg-forge-accent/20 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed self-start"
         >
           {loading ? 'Translating…' : 'Translate'}
         </button>
@@ -222,7 +222,7 @@ export function TextTranslate() {
         {quotaFinished && (
           <div className="bg-yellow-400/5 border border-yellow-400/20 rounded-lg p-4">
             <p className="text-sm text-yellow-400 font-medium mb-1">Daily limit reached</p>
-            <p className="text-xs text-[#9ca3af]">
+            <p className="text-xs text-forge-dim">
               MyMemory allows 1,000 words/day without an email address. Enter your email below to increase this to 10,000 words/day - it's free and just used for quota tracking.
             </p>
           </div>
@@ -232,24 +232,24 @@ export function TextTranslate() {
         {result && (
           <div>
             <div className="flex items-center justify-between mb-1">
-              <p className="text-xs text-[#6b7280]">Translation</p>
+              <p className="text-xs text-forge-muted">Translation</p>
               <button
                 onClick={copyResult}
-                className="text-xs text-[#6b7280] hover:text-[#c4af64] transition-colors cursor-pointer"
+                className="text-xs text-forge-muted hover:text-forge-accent transition-colors cursor-pointer"
               >
                 Copy
               </button>
             </div>
-            <div className="bg-[#0f1117] rounded-lg p-4 text-sm text-[#e2e4ed] leading-relaxed whitespace-pre-wrap">
+            <div className="bg-forge-bg rounded-lg p-4 text-sm text-forge-text leading-relaxed whitespace-pre-wrap">
               {result}
             </div>
           </div>
         )}
 
         {/* Email for higher quota */}
-        <div className="border-t border-[#2a2d3a] pt-4">
-          <label className="block text-xs text-[#6b7280] mb-1">
-            Email <span className="text-[#3a3d4a]">- optional, increases limit to 10,000 words/day</span>
+        <div className="border-t border-forge-border pt-4">
+          <label className="block text-xs text-forge-muted mb-1">
+            Email <span className="text-forge-line">- optional, increases limit to 10,000 words/day</span>
           </label>
           <input
             type="email"
@@ -260,8 +260,8 @@ export function TextTranslate() {
           />
         </div>
 
-        <p className="text-xs text-[#6b7280]">
-          Powered by <span className="text-[#9ca3af]">MyMemory</span> · free tier is 1,000 words/day without email, 10,000/day with · no API key required
+        <p className="text-xs text-forge-muted">
+          Powered by <span className="text-forge-dim">MyMemory</span> · free tier is 1,000 words/day without email, 10,000/day with · no API key required
         </p>
 
       </div>

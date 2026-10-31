@@ -5,7 +5,7 @@ const LABEL = /^([A-Z][^.:!?"\n]{0,60}):\s/
 function Line({ text }: { text: string }) {
   const m = text.match(LABEL)
   if (!m) return <>{text}</>
-  return <><span className="font-medium text-[#e2e4ed]">{m[1]}:</span> {text.slice(m[0].length)}</>
+  return <><span className="font-medium text-forge-text">{m[1]}:</span> {text.slice(m[0].length)}</>
 }
 
 export function Prose({ text, className = '' }: { text: string; className?: string }) {

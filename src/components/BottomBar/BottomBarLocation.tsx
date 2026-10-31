@@ -5,8 +5,8 @@ import { flagUrl } from '../../lib/geo'
 import { Popup, StatRow, PopupDivider, PopupTimestamp } from '../Popup'
 import type { PopupPos } from '../Popup'
 
-const bb    = 'text-[#e2e4ed] font-mono'
-const bbDim = 'text-[#3a3d4a] font-mono'
+const bb    = 'text-forge-text font-mono'
+const bbDim = 'text-forge-line font-mono'
 
 function formatUtcOffset(offset: string): string {
   if (!offset || offset.length < 5) return offset
@@ -54,7 +54,7 @@ export function BottomBarLocation() {
         ref={btnRef}
         onClick={toggle}
         disabled={!ip}
-        className={!ip ? bbDim : open ? `${bb} text-[#c4af64]` : `${bb} hover:text-[#c4af64] transition-colors cursor-pointer`}
+        className={!ip ? bbDim : open ? `${bb} text-forge-accent` : `${bb} hover:text-forge-accent transition-colors cursor-pointer`}
       >
         {loading ? '···' : ip
           ? <>{ip.city}, {ip.country_code} <img src={flagUrl(ip.country_code)} alt={ip.country_code} className="w-4 inline-block align-middle ml-0.5" /></>

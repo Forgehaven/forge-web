@@ -78,20 +78,20 @@ function ImageTab() {
   const savings = file && outputSize ? Math.round((1 - outputSize / file.size) * 100) : null
   const outputName = file ? file.name.replace(/\.[^.]+$/, '') + `-compressed.${ext}` : ''
 
-  const btnClass = "px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer"
+  const btnClass = "px-4 py-2 text-sm rounded bg-forge-accent/10 text-forge-accent border border-forge-accent/30 hover:bg-forge-accent/20 transition-colors cursor-pointer"
 
   return (
     <div className="flex flex-col gap-5">
       <FileDropZone accept="image/*" onFiles={files => acceptFile(files[0])}>
         {file ? (
           <div>
-            <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name}</p>
-            <p className="text-xs text-[#6b7280] mt-1">{(file.size / 1024).toFixed(0)} KB · {img ? `${img.naturalWidth}×${img.naturalHeight}` : '…'}</p>
+            <p className="text-sm text-forge-text font-mono truncate">{file.name}</p>
+            <p className="text-xs text-forge-muted mt-1">{(file.size / 1024).toFixed(0)} KB · {img ? `${img.naturalWidth}×${img.naturalHeight}` : '…'}</p>
           </div>
         ) : (
           <div>
-            <p className="text-sm text-[#6b7280]">Drop an image here or click to upload</p>
-            <p className="text-xs text-[#3a3d4a] mt-1">PNG, JPEG, WebP · all processing is local</p>
+            <p className="text-sm text-forge-muted">Drop an image here or click to upload</p>
+            <p className="text-xs text-forge-line mt-1">PNG, JPEG, WebP · all processing is local</p>
           </div>
         )}
       </FileDropZone>
@@ -102,7 +102,7 @@ function ImageTab() {
         <>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs text-[#6b7280] mb-1">Output format</label>
+              <label className="block text-xs text-forge-muted mb-1">Output format</label>
               <Select
                 options={imgFormatOptions}
                 value={imgFormatOptions.find(o => o.value === formatId) ?? null}
@@ -113,24 +113,24 @@ function ImageTab() {
             {!isLossless && (
               <div>
                 <div className="flex justify-between mb-1">
-                  <label className="text-xs text-[#6b7280]">Quality</label>
-                  <span className="text-xs text-[#6b7280] font-mono">{Math.round(quality * 100)}%</span>
+                  <label className="text-xs text-forge-muted">Quality</label>
+                  <span className="text-xs text-forge-muted font-mono">{Math.round(quality * 100)}%</span>
                 </div>
                 <input type="range" min={0.1} max={1} step={0.05} value={quality}
                   onChange={e => setQuality(Number(e.target.value))}
-                  className="w-full mt-2 accent-[#c4af64]" />
+                  className="w-full mt-2 accent-forge-accent" />
               </div>
             )}
           </div>
 
-          {converting && <p className="text-xs text-[#6b7280]">Processing…</p>}
+          {converting && <p className="text-xs text-forge-muted">Processing…</p>}
 
           {outputUrl && !converting && file && (
-            <div className="flex flex-col gap-3 border-t border-[#2a2d3a] pt-4">
+            <div className="flex flex-col gap-3 border-t border-forge-border pt-4">
               <div className="flex items-center gap-4 text-xs">
-                <span className="text-[#6b7280]">Original: <span className="text-[#e2e4ed]">{(file.size / 1024).toFixed(0)} KB</span></span>
-                <span className="text-[#3a3d4a]">→</span>
-                <span className="text-[#6b7280]">Output: <span className="text-[#e2e4ed]">{(outputSize / 1024).toFixed(0)} KB</span></span>
+                <span className="text-forge-muted">Original: <span className="text-forge-text">{(file.size / 1024).toFixed(0)} KB</span></span>
+                <span className="text-forge-line">→</span>
+                <span className="text-forge-muted">Output: <span className="text-forge-text">{(outputSize / 1024).toFixed(0)} KB</span></span>
                 {savings !== null && (
                   <span className={savings > 0 ? 'text-green-400' : 'text-yellow-400'}>
                     {savings > 0 ? `${savings}% smaller` : `${Math.abs(savings)}% larger`}
@@ -203,8 +203,8 @@ function AudioTab() {
     <div className="flex flex-col gap-5">
       <FileDropZone accept="audio/*" onFiles={files => { setError(''); setOutputUrl(null); setFile(files[0]) }}>
         {file
-          ? <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name} <span className="text-[#6b7280]">({(file.size / 1024).toFixed(0)} KB)</span></p>
-          : <div><p className="text-sm text-[#6b7280]">Drop an audio file here or click to upload</p><p className="text-xs text-[#3a3d4a] mt-1">MP3, WAV, FLAC, OGG · all processing is local</p></div>
+          ? <p className="text-sm text-forge-text font-mono truncate">{file.name} <span className="text-forge-muted">({(file.size / 1024).toFixed(0)} KB)</span></p>
+          : <div><p className="text-sm text-forge-muted">Drop an audio file here or click to upload</p><p className="text-xs text-forge-line mt-1">MP3, WAV, FLAC, OGG · all processing is local</p></div>
         }
       </FileDropZone>
 
@@ -214,7 +214,7 @@ function AudioTab() {
         <>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs text-[#6b7280] mb-1">Mode</label>
+              <label className="block text-xs text-forge-muted mb-1">Mode</label>
               <Select
                 options={audioModeOptions}
                 value={audioModeOptions.find(o => o.value === mode) ?? null}
@@ -224,7 +224,7 @@ function AudioTab() {
             </div>
             {mode === 'mp3' && (
               <div>
-                <label className="block text-xs text-[#6b7280] mb-1">Target bitrate</label>
+                <label className="block text-xs text-forge-muted mb-1">Target bitrate</label>
                 <Select
                   options={audioBitrateOptions}
                   value={audioBitrateOptions.find(o => o.value === String(bitrate)) ?? null}
@@ -234,22 +234,22 @@ function AudioTab() {
               </div>
             )}
           </div>
-          {mode === 'mp3' && <p className="text-xs text-[#3a3d4a]">Re-encoding an already-compressed file (e.g. MP3→MP3) introduces generation loss. Use FLAC for uncompressed sources.</p>}
+          {mode === 'mp3' && <p className="text-xs text-forge-line">Re-encoding an already-compressed file (e.g. MP3→MP3) introduces generation loss. Use FLAC for uncompressed sources.</p>}
 
           <div className="flex items-center gap-3">
             <button onClick={compress} disabled={isBusy} className="forge-btn-accent">
               {processing ? 'Compressing…' : ffmpegLoading ? 'Loading FFmpeg…' : 'Compress'}
             </button>
-            {isBusy && <button onClick={cancel} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">Cancel</button>}
+            {isBusy && <button onClick={cancel} className="text-xs text-forge-muted hover:text-forge-text transition-colors cursor-pointer">Cancel</button>}
           </div>
           {ffmpegLoading && <ProgressBar label="Loading FFmpeg (~24 MB, cached after first use)…" pct={ffmpegProgress} />}
           {processing && <ProgressBar label="Compressing…" pct={procProgress} />}
           {outputUrl && file && (
-            <div className="flex flex-col gap-2 border-t border-[#2a2d3a] pt-4">
+            <div className="flex flex-col gap-2 border-t border-forge-border pt-4">
               <div className="flex gap-4 text-xs">
-                <span className="text-[#6b7280]">Original: <span className="text-[#e2e4ed]">{(file.size / 1024).toFixed(0)} KB</span></span>
-                <span className="text-[#3a3d4a]">→</span>
-                <span className="text-[#6b7280]">Output: <span className="text-[#e2e4ed]">{(outputSize / 1024).toFixed(0)} KB</span></span>
+                <span className="text-forge-muted">Original: <span className="text-forge-text">{(file.size / 1024).toFixed(0)} KB</span></span>
+                <span className="text-forge-line">→</span>
+                <span className="text-forge-muted">Output: <span className="text-forge-text">{(outputSize / 1024).toFixed(0)} KB</span></span>
                 {(() => { const s = Math.round((1 - outputSize / file.size) * 100); return <span className={s > 0 ? 'text-green-400' : 'text-yellow-400'}>{s > 0 ? `${s}% smaller` : `${Math.abs(s)}% larger`}</span> })()}
               </div>
               <a href={outputUrl} download={outputName} className="forge-btn-accent self-start">{outputName}</a>
@@ -312,11 +312,11 @@ function VideoTab() {
 
   return (
     <div className="flex flex-col gap-5">
-      <p className="text-xs text-[#3a3d4a]">Video compression re-encodes using H.264 (lossy). Lower CRF = better quality, larger file.</p>
+      <p className="text-xs text-forge-line">Video compression re-encodes using H.264 (lossy). Lower CRF = better quality, larger file.</p>
       <FileDropZone accept="video/*" onFiles={files => { setError(''); setOutputUrl(null); setFile(files[0]) }}>
         {file
-          ? <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name} <span className="text-[#6b7280]">({(file.size / 1024 / 1024).toFixed(1)} MB)</span></p>
-          : <div><p className="text-sm text-[#6b7280]">Drop a video file here or click to upload</p><p className="text-xs text-[#3a3d4a] mt-1">MP4, WebM, MOV · all processing is local · may be slow for large files</p></div>
+          ? <p className="text-sm text-forge-text font-mono truncate">{file.name} <span className="text-forge-muted">({(file.size / 1024 / 1024).toFixed(1)} MB)</span></p>
+          : <div><p className="text-sm text-forge-muted">Drop a video file here or click to upload</p><p className="text-xs text-forge-line mt-1">MP4, WebM, MOV · all processing is local · may be slow for large files</p></div>
         }
       </FileDropZone>
 
@@ -327,16 +327,16 @@ function VideoTab() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <div className="flex justify-between mb-1">
-                <label className="text-xs text-[#6b7280]">CRF (quality)</label>
-                <span className="text-xs text-[#6b7280] font-mono">{crf}</span>
+                <label className="text-xs text-forge-muted">CRF (quality)</label>
+                <span className="text-xs text-forge-muted font-mono">{crf}</span>
               </div>
               <input type="range" min={16} max={34} step={1} value={crf}
                 onChange={e => setCrf(Number(e.target.value))}
-                className="w-full accent-[#c4af64]" />
-              <p className="text-xs text-[#3a3d4a] mt-1">{quality}</p>
+                className="w-full accent-forge-accent" />
+              <p className="text-xs text-forge-line mt-1">{quality}</p>
             </div>
             <div>
-              <label className="block text-xs text-[#6b7280] mb-1">Resolution</label>
+              <label className="block text-xs text-forge-muted mb-1">Resolution</label>
               <Select
                 options={videoScaleOptions}
                 value={videoScaleOptions.find(o => o.value === scale) ?? null}
@@ -350,17 +350,17 @@ function VideoTab() {
             <button onClick={compress} disabled={isBusy} className="forge-btn-accent">
               {processing ? 'Compressing…' : ffmpegLoading ? 'Loading FFmpeg…' : 'Compress'}
             </button>
-            {isBusy && <button onClick={cancel} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">Cancel</button>}
-            {processing && !isBusy && <span className="text-xs text-[#6b7280]">This may take a while for large files…</span>}
+            {isBusy && <button onClick={cancel} className="text-xs text-forge-muted hover:text-forge-text transition-colors cursor-pointer">Cancel</button>}
+            {processing && !isBusy && <span className="text-xs text-forge-muted">This may take a while for large files…</span>}
           </div>
           {ffmpegLoading && <ProgressBar label="Loading FFmpeg (~24 MB, cached after first use)…" pct={ffmpegProgress} />}
           {processing && <ProgressBar label="Compressing video…" pct={procProgress} />}
           {outputUrl && file && (
-            <div className="flex flex-col gap-2 border-t border-[#2a2d3a] pt-4">
+            <div className="flex flex-col gap-2 border-t border-forge-border pt-4">
               <div className="flex gap-4 text-xs">
-                <span className="text-[#6b7280]">Original: <span className="text-[#e2e4ed]">{(file.size / 1024 / 1024).toFixed(1)} MB</span></span>
-                <span className="text-[#3a3d4a]">→</span>
-                <span className="text-[#6b7280]">Output: <span className="text-[#e2e4ed]">{(outputSize / 1024 / 1024).toFixed(1)} MB</span></span>
+                <span className="text-forge-muted">Original: <span className="text-forge-text">{(file.size / 1024 / 1024).toFixed(1)} MB</span></span>
+                <span className="text-forge-line">→</span>
+                <span className="text-forge-muted">Output: <span className="text-forge-text">{(outputSize / 1024 / 1024).toFixed(1)} MB</span></span>
                 {(() => { const s = Math.round((1 - outputSize / file.size) * 100); return <span className={s > 0 ? 'text-green-400' : 'text-yellow-400'}>{s > 0 ? `${s}% smaller` : `${Math.abs(s)}% larger`}</span> })()}
               </div>
               <a href={outputUrl} download={outputName} className="forge-btn-accent self-start">{outputName}</a>
@@ -381,13 +381,13 @@ export function MediaCompressor() {
 
   function tabClass(t: Tab) {
     return `px-4 py-1.5 rounded text-sm transition-colors ${
-      tab === t ? 'bg-[#c4af64] text-[#0f1117] font-medium' : 'bg-[#0f1117] text-[#9ca3af] hover:text-[#e2e4ed] border border-[#2a2d3a]'
+      tab === t ? 'bg-forge-accent text-forge-bg font-medium' : 'bg-forge-bg text-forge-dim hover:text-forge-text border border-forge-border'
     }`
   }
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Media Compressor</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">Media Compressor</h1>
 
       <div className="flex gap-2 mb-6">
         <button onClick={() => setTab('image')} className={tabClass('image')}>Image</button>
@@ -395,7 +395,7 @@ export function MediaCompressor() {
         <button onClick={() => setTab('video')} className={tabClass('video')}>Video</button>
       </div>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6">
         {tab === 'image' && <ImageTab />}
         {tab === 'audio' && <AudioTab />}
         {tab === 'video' && <VideoTab />}

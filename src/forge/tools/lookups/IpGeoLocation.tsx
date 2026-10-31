@@ -83,7 +83,7 @@ export function IpGeoLocation() {
     }
   }
 
-  const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] flex-1 font-mono"
+  const inputClass = "bg-forge-bg border border-forge-border text-forge-text rounded px-3 py-2 text-sm focus:outline-none focus:border-forge-accent flex-1 font-mono"
 
   const rows: [string, string][] = data ? [
     ['IP Address',  data.ip],
@@ -99,9 +99,9 @@ export function IpGeoLocation() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">IP Geolocation</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">IP Geolocation</h1>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-5">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-5">
 
         <div className="flex gap-2">
           <input
@@ -123,30 +123,30 @@ export function IpGeoLocation() {
         {error && <p className="text-xs text-red-400">{error}</p>}
 
         {data && (
-          <div className="bg-[#0f1117] rounded-lg px-4 pt-2 pb-1">
+          <div className="bg-forge-bg rounded-lg px-4 pt-2 pb-1">
             {rows.map(([label, value]) => (
-              <div key={label} className="flex items-center gap-4 py-2 border-b border-[#2a2d3a] last:border-0">
-                <span className="text-xs text-[#6b7280] w-28 shrink-0">{label}</span>
+              <div key={label} className="flex items-center gap-4 py-2 border-b border-forge-border last:border-0">
+                <span className="text-xs text-forge-muted w-28 shrink-0">{label}</span>
                 {label === 'Coordinates' ? (
                   <div className="flex items-center gap-3 flex-wrap">
-                    <span className="text-sm text-[#e2e4ed] font-mono">{value}</span>
+                    <span className="text-sm text-forge-text font-mono">{value}</span>
                     <a
                       href={`https://www.openstreetmap.org/?mlat=${data.latitude}&mlon=${data.longitude}&zoom=12`}
                       target="_blank" rel="noopener noreferrer"
-                      className="text-xs text-[#6b7280] hover:text-[#c4af64] underline transition-colors"
+                      className="text-xs text-forge-muted hover:text-forge-accent underline transition-colors"
                     >
                       OpenStreetMap
                     </a>
                     <a
                       href={`https://www.google.com/maps?q=${data.latitude},${data.longitude}`}
                       target="_blank" rel="noopener noreferrer"
-                      className="text-xs text-[#6b7280] hover:text-[#c4af64] underline transition-colors"
+                      className="text-xs text-forge-muted hover:text-forge-accent underline transition-colors"
                     >
                       Google Maps
                     </a>
                   </div>
                 ) : (
-                  <span className="text-sm text-[#e2e4ed] font-mono">{value}</span>
+                  <span className="text-sm text-forge-text font-mono">{value}</span>
                 )}
               </div>
             ))}

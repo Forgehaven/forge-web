@@ -12,7 +12,7 @@ const toolsHeaderExtra = (
     href="https://github.com/forgehaven"
     target="_blank"
     rel="noopener noreferrer"
-    className="hidden md:block absolute top-3 right-4 text-xs tracking-widest uppercase text-[#3a3d4a] hover:text-[#6b7280] transition-colors z-10"
+    className="hidden md:block absolute top-3 right-4 text-xs tracking-widest uppercase text-forge-line hover:text-forge-muted transition-colors z-10"
   >
     FORGEHAVEN Inc.
   </a>

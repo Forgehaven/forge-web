@@ -10,17 +10,17 @@ export function GamesHome() {
         alt="Forgehaven"
         className="w-16 h-16 mb-5 opacity-40"
       />
-      <h1 className="text-2xl font-semibold text-[#e2e4ed] mb-2 tracking-wide">
-        Forge<span className="text-[#c4af64]">Games</span>
+      <h1 className="text-2xl font-semibold text-forge-text mb-2 tracking-wide">
+        Forge<span className="text-forge-accent">Games</span>
       </h1>
-      <p className="text-sm text-[#6b7280]">Games coming soon.</p>
+      <p className="text-sm text-forge-muted">Games coming soon.</p>
 
-      <div className="w-full max-w-xs border-t border-[#2a2d3a] mt-6 pt-5">
-        <p className="text-sm text-[#9ca3af] mb-4">Check out tools for games:</p>
+      <div className="w-full max-w-xs border-t border-forge-border mt-6 pt-5">
+        <p className="text-sm text-forge-dim mb-4">Check out tools for games:</p>
         <div className="flex items-start justify-center gap-8">
           <Link
             to="/games/ffxi"
-            className="group flex flex-col items-center gap-2 text-sm text-[#9ca3af] hover:text-[#e2e4ed] transition-colors"
+            className="group flex flex-col items-center gap-2 text-sm text-forge-dim hover:text-forge-text transition-colors"
           >
             <img
               src={ffxiLogo}
@@ -31,7 +31,7 @@ export function GamesHome() {
           </Link>
           <Link
             to="/games/underworld"
-            className="group flex flex-col items-center gap-2 text-sm text-[#9ca3af] hover:text-[#e2e4ed] transition-colors"
+            className="group flex flex-col items-center gap-2 text-sm text-forge-dim hover:text-forge-text transition-colors"
           >
             <img
               src={underworldLogo}

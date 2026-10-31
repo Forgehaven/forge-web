@@ -95,7 +95,7 @@ export function AlertBell({ target, armed, onToggle, size = 12 }: {
       aria-label={`Toggle alert for ${target}`}
       title={armed ? 'Alert armed - click to disarm' : 'Chime before this event'}
       className={`cursor-pointer transition-colors align-middle ${
-        armed ? 'text-[#c4af64]' : 'text-[#4b5563] hover:text-[#9ca3af]'
+        armed ? 'text-forge-accent' : 'text-forge-faint hover:text-forge-dim'
       }`}
     >
       <BellIcon size={size} />
@@ -248,19 +248,19 @@ export function AlarmProvider({ sources, children }: {
           <div
             role="dialog"
             aria-label={`Set alert lead for ${displayName(leadPicker.target)}`}
-            className="fixed z-50 bg-[#1a1d27] border border-[#2a2d3a] rounded-lg shadow-xl px-2 py-1.5 flex items-center gap-1"
+            className="fixed z-50 bg-forge-surface border border-forge-border rounded-lg shadow-xl px-2 py-1.5 flex items-center gap-1"
             style={{
               top: Math.max(8, leadPicker.y - 44),
               left: Math.max(8, Math.min(leadPicker.x - 100, window.innerWidth - 230)),
             }}
           >
-            <span className="text-[10px] uppercase tracking-wider text-[#6b7280] pr-1">chime</span>
+            <span className="text-[10px] uppercase tracking-wider text-forge-muted pr-1">chime</span>
             {LEAD_CHOICES.map(c => (
               <button
                 key={c.ms}
                 onClick={() => armAlert(leadPicker.target, c.ms)}
                 aria-label={`Chime ${c.label} before`}
-                className="text-xs px-1.5 py-0.5 rounded border border-[#2a2d3a] text-[#9ca3af] hover:text-[#c4af64] hover:border-[#c4af64] transition-colors cursor-pointer"
+                className="text-xs px-1.5 py-0.5 rounded border border-forge-border text-forge-dim hover:text-forge-accent hover:border-forge-accent transition-colors cursor-pointer"
               >
                 {c.label}
               </button>
@@ -270,15 +270,15 @@ export function AlarmProvider({ sources, children }: {
       )}
 
       {armed.size > 0 && (
-        <div className={`fixed top-4 right-4 z-40 bg-[#1a1d27] border border-[#2a2d3a] rounded-lg shadow-xl px-3 py-2 flex flex-col gap-1 ${
+        <div className={`fixed top-4 right-4 z-40 bg-forge-surface border border-forge-border rounded-lg shadow-xl px-3 py-2 flex flex-col gap-1 ${
           alarmsOpen ? 'w-[260px]' : ''
         }`}>
           <button
             onClick={() => setAlarmsOpen(o => !o)}
-            className="flex items-center justify-between gap-2 text-[10px] uppercase tracking-wider font-semibold text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer"
+            className="flex items-center justify-between gap-2 text-[10px] uppercase tracking-wider font-semibold text-forge-muted hover:text-forge-text transition-colors cursor-pointer"
           >
             <span className="flex items-center gap-1.5">
-              <span className="text-[#c4af64]"><BellIcon size={11} /></span>
+              <span className="text-forge-accent"><BellIcon size={11} /></span>
               Alarms ({armed.size})
             </span>
             <span className={`transition-transform duration-200 leading-none ${alarmsOpen ? 'rotate-0' : '-rotate-90'}`}>▾</span>
@@ -289,16 +289,16 @@ export function AlarmProvider({ sources, children }: {
             .sort((a, b) => (b.inMs ?? Infinity) - (a.inMs ?? Infinity))
             .map(({ key, lead, inMs }) => (
               <div key={key} className="flex items-center gap-1.5 text-xs min-w-0">
-                <span className="text-[#c4af64] shrink-0"><BellIcon size={11} /></span>
-                <span className="text-[#e2e4ed] truncate">{displayName(key)}</span>
-                <span className="text-[#4b5563] shrink-0">{leadLabel(lead)}</span>
-                <span className="ml-auto text-[#9ca3af] tabular-nums shrink-0">
+                <span className="text-forge-accent shrink-0"><BellIcon size={11} /></span>
+                <span className="text-forge-text truncate">{displayName(key)}</span>
+                <span className="text-forge-faint shrink-0">{leadLabel(lead)}</span>
+                <span className="ml-auto text-forge-dim tabular-nums shrink-0">
                   {inMs === null ? '—' : fmtWait(inMs)}
                 </span>
                 <button
                   onClick={() => disarmAlert(key)}
                   aria-label={`Disarm alarm for ${displayName(key)}`}
-                  className="text-[#6b7280] hover:text-[#e2e4ed] cursor-pointer leading-none shrink-0"
+                  className="text-forge-muted hover:text-forge-text cursor-pointer leading-none shrink-0"
                 >
                   ×
                 </button>
@@ -310,11 +310,11 @@ export function AlarmProvider({ sources, children }: {
       <Modal open={alarm.length > 0} onClose={() => setAlarm([])} title="Alarm">
         <div className="px-5 py-4 flex flex-col gap-3">
           {alarm.map(key => (
-            <div key={key} className="text-sm text-[#e2e4ed]">{displayName(key)}</div>
+            <div key={key} className="text-sm text-forge-text">{displayName(key)}</div>
           ))}
           <button
             onClick={() => setAlarm([])}
-            className="self-end text-sm px-4 py-1.5 rounded border border-[#c4af64] text-[#c4af64] hover:bg-[#c4af64]/10 transition-colors cursor-pointer"
+            className="self-end text-sm px-4 py-1.5 rounded border border-forge-accent text-forge-accent hover:bg-forge-accent/10 transition-colors cursor-pointer"
           >
             Dismiss
           </button>

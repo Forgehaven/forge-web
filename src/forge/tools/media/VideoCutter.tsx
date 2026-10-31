@@ -211,9 +211,9 @@ export function VideoCutter() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Video Cutter</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">Video Cutter</h1>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-5">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-5">
 
         {/* Hidden video element */}
         <video
@@ -228,19 +228,19 @@ export function VideoCutter() {
         <FileDropZone accept="video/*" onFiles={files => acceptFile(files[0])}>
           {file ? (
             <div>
-              <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name}</p>
-              <p className="text-xs text-[#6b7280] mt-1">
+              <p className="text-sm text-forge-text font-mono truncate">{file.name}</p>
+              <p className="text-xs text-forge-muted mt-1">
                 {(file.size / 1024 / 1024).toFixed(1)} MB
                 {duration > 0 && ` · ${formatTime(duration)}`}
               </p>
             </div>
           ) : (
             <div>
-              <p className="text-sm text-[#6b7280]">Drop a video file here or click to upload</p>
-              <p className="text-xs text-[#3a3d4a] mt-1">MP4, WebM, MOV, MKV, AVI · all processing is local</p>
-              <p className="text-xs text-[#3a3d4a] mt-2">
+              <p className="text-sm text-forge-muted">Drop a video file here or click to upload</p>
+              <p className="text-xs text-forge-line mt-1">MP4, WebM, MOV, MKV, AVI · all processing is local</p>
+              <p className="text-xs text-forge-line mt-2">
                 Need to download from YouTube first?{' '}
-                <a href="https://github.com/alexta69/metube" target="_blank" rel="noopener noreferrer" className="text-[#6b7280] hover:text-[#9ca3af] underline transition-colors">MeTube</a>
+                <a href="https://github.com/alexta69/metube" target="_blank" rel="noopener noreferrer" className="text-forge-muted hover:text-forge-dim underline transition-colors">MeTube</a>
                 {' '}is a self-hostable downloader.
               </p>
             </div>
@@ -264,40 +264,40 @@ export function VideoCutter() {
             {/* Timeline */}
             <div
               ref={timelineRef}
-              className="relative h-10 rounded overflow-hidden cursor-crosshair select-none bg-[#0f1117]"
+              className="relative h-10 rounded overflow-hidden cursor-crosshair select-none bg-forge-bg"
               onMouseDown={onTimelineMouseDown}
             >
               {/* Unselected dimmed regions */}
-              <div className="absolute inset-y-0 left-0 bg-[#0f1117]/80" style={{ width: `${startPct}%` }} />
-              <div className="absolute inset-y-0 right-0 bg-[#0f1117]/80" style={{ width: `${100 - endPct}%` }} />
+              <div className="absolute inset-y-0 left-0 bg-forge-bg/80" style={{ width: `${startPct}%` }} />
+              <div className="absolute inset-y-0 right-0 bg-forge-bg/80" style={{ width: `${100 - endPct}%` }} />
 
               {/* Selected region */}
               <div
-                className="absolute inset-y-0 bg-[#c4af64]/20 border-y border-[#c4af64]/30"
+                className="absolute inset-y-0 bg-forge-accent/20 border-y border-forge-accent/30"
                 style={{ left: `${startPct}%`, width: `${endPct - startPct}%` }}
               />
 
               {/* Tick marks every 10% */}
               {Array.from({ length: 9 }, (_, i) => (
-                <div key={i} className="absolute top-0 bottom-0 w-px bg-[#2a2d3a]" style={{ left: `${(i + 1) * 10}%` }} />
+                <div key={i} className="absolute top-0 bottom-0 w-px bg-forge-border" style={{ left: `${(i + 1) * 10}%` }} />
               ))}
 
               {/* Playhead */}
               <div className="absolute inset-y-0 w-px bg-white/50 pointer-events-none" style={{ left: `${currentPct}%` }} />
 
               {/* Start handle */}
-              <div className="absolute top-0 bottom-0 w-px bg-[#c4af64] pointer-events-none" style={{ left: `${startPct}%` }} />
-              <div className="absolute top-0 w-3 h-5 bg-[#c4af64] rounded-b cursor-ew-resize" style={{ left: `${startPct}%`, transform: 'translateX(-50%)' }} />
+              <div className="absolute top-0 bottom-0 w-px bg-forge-accent pointer-events-none" style={{ left: `${startPct}%` }} />
+              <div className="absolute top-0 w-3 h-5 bg-forge-accent rounded-b cursor-ew-resize" style={{ left: `${startPct}%`, transform: 'translateX(-50%)' }} />
 
               {/* End handle */}
-              <div className="absolute top-0 bottom-0 w-px bg-[#c4af64] pointer-events-none" style={{ left: `${endPct}%` }} />
-              <div className="absolute top-0 w-3 h-5 bg-[#c4af64] rounded-b cursor-ew-resize" style={{ left: `${endPct}%`, transform: 'translateX(-50%)' }} />
+              <div className="absolute top-0 bottom-0 w-px bg-forge-accent pointer-events-none" style={{ left: `${endPct}%` }} />
+              <div className="absolute top-0 w-3 h-5 bg-forge-accent rounded-b cursor-ew-resize" style={{ left: `${endPct}%`, transform: 'translateX(-50%)' }} />
             </div>
 
             {/* Time inputs */}
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs text-[#6b7280] mb-1">Start (s)</label>
+                <label className="block text-xs text-forge-muted mb-1">Start (s)</label>
                 <input
                   type="number" inputMode="decimal" min={0} max={trimEnd - 0.1} step={0.1}
                   value={trimStart.toFixed(2)}
@@ -310,7 +310,7 @@ export function VideoCutter() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-[#6b7280] mb-1">End (s)</label>
+                <label className="block text-xs text-forge-muted mb-1">End (s)</label>
                 <input
                   type="number" inputMode="decimal" min={trimStart + 0.1} max={duration} step={0.1}
                   value={trimEnd.toFixed(2)}
@@ -323,8 +323,8 @@ export function VideoCutter() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-[#6b7280] mb-1">Selection</label>
-                <div className="bg-[#0f1117] border border-[#2a2d3a] text-[#6b7280] rounded px-3 py-2 text-sm">
+                <label className="block text-xs text-forge-muted mb-1">Selection</label>
+                <div className="bg-forge-bg border border-forge-border text-forge-muted rounded px-3 py-2 text-sm">
                   {formatTime(trimEnd - trimStart)}
                 </div>
               </div>
@@ -335,24 +335,24 @@ export function VideoCutter() {
               <button onClick={togglePlay} className="forge-btn-accent">
                 {isPlaying ? '⏸ Pause' : '▶ Play selection'}
               </button>
-              <span className="text-xs text-[#6b7280] font-mono">
+              <span className="text-xs text-forge-muted font-mono">
                 {formatTime(currentTime)} / {formatTime(duration)}
               </span>
               <button onClick={exportCut} disabled={isBusy} className="forge-btn-accent ml-auto">
                 {cutting ? 'Cutting…' : ffmpegLoading ? 'Loading FFmpeg…' : 'Cut & Export MP4'}
               </button>
-              {isBusy && <button onClick={cancel} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">Cancel</button>}
+              {isBusy && <button onClick={cancel} className="text-xs text-forge-muted hover:text-forge-text transition-colors cursor-pointer">Cancel</button>}
             </div>
 
             {/* FFmpeg load progress */}
             {ffmpegLoading && (
               <div>
-                <div className="flex justify-between text-xs text-[#6b7280] mb-1">
+                <div className="flex justify-between text-xs text-forge-muted mb-1">
                   <span>Loading FFmpeg (~24 MB, cached after first use)…</span>
                   <span>{Math.round(ffmpegProgress * 100)}%</span>
                 </div>
-                <div className="w-full h-1 bg-[#2a2d3a] rounded-full overflow-hidden">
-                  <div className="h-full bg-[#c4af64] transition-all duration-150" style={{ width: `${ffmpegProgress * 100}%` }} />
+                <div className="w-full h-1 bg-forge-border rounded-full overflow-hidden">
+                  <div className="h-full bg-forge-accent transition-all duration-150" style={{ width: `${ffmpegProgress * 100}%` }} />
                 </div>
               </div>
             )}
@@ -360,23 +360,23 @@ export function VideoCutter() {
             {/* Cut progress */}
             {cutting && (
               <div>
-                <div className="flex justify-between text-xs text-[#6b7280] mb-1">
+                <div className="flex justify-between text-xs text-forge-muted mb-1">
                   <span>Cutting…</span>
                   <span>{Math.round(cutProgress * 100)}%</span>
                 </div>
-                <div className="w-full h-1 bg-[#2a2d3a] rounded-full overflow-hidden">
-                  <div className="h-full bg-[#c4af64] transition-all duration-150" style={{ width: `${cutProgress * 100}%` }} />
+                <div className="w-full h-1 bg-forge-border rounded-full overflow-hidden">
+                  <div className="h-full bg-forge-accent transition-all duration-150" style={{ width: `${cutProgress * 100}%` }} />
                 </div>
               </div>
             )}
 
             {/* Download */}
             {outputUrl && (
-              <div className="flex gap-3 items-center border-t border-[#2a2d3a] pt-4">
+              <div className="flex gap-3 items-center border-t border-forge-border pt-4">
                 <a href={outputUrl} download={outputName} className="forge-btn-accent">
                   Download {outputName}
                 </a>
-                <span className="text-xs text-[#6b7280]">
+                <span className="text-xs text-forge-muted">
                   {formatTime(trimEnd - trimStart)} · all processing is local
                 </span>
               </div>

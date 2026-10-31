@@ -4,8 +4,8 @@ import { useWeather } from '../../hooks/useWeather'
 import { Popup, StatRow, PopupTimestamp } from '../Popup'
 import type { PopupPos } from '../Popup'
 
-const bb    = 'text-[#e2e4ed] font-mono'
-const bbDim = 'text-[#3a3d4a] font-mono'
+const bb    = 'text-forge-text font-mono'
+const bbDim = 'text-forge-line font-mono'
 
 export function BottomBarWeather() {
   const { data: ip } = useIPInfo()
@@ -27,7 +27,7 @@ export function BottomBarWeather() {
         ref={btnRef}
         onClick={toggle}
         disabled={!weather}
-        className={!weather ? bbDim : open ? `${bb} text-[#c4af64]` : `${bb} hover:text-[#c4af64] transition-colors cursor-pointer`}
+        className={!weather ? bbDim : open ? `${bb} text-forge-accent` : `${bb} hover:text-forge-accent transition-colors cursor-pointer`}
       >
         {loading ? '···' : (weather?.summary ?? '-')}
       </button>

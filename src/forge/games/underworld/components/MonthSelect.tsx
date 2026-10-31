@@ -13,7 +13,7 @@ export function MonthSelect({ value, onChange, label, compact = false }: {
   const lastYear = Math.max(new Date().getFullYear() + 15, y)
   const years = Array.from({ length: lastYear - FIRST_YEAR + 1 }, (_, i) => lastYear - i)
   const cls = compact
-    ? 'bg-[#0f1117] text-xs text-[#c4c7d0] border border-[#2a2d3a] rounded px-1 py-0.5 focus:outline-none focus:border-[#c4af64] cursor-pointer'
+    ? 'bg-forge-bg text-xs text-forge-soft border border-forge-border rounded px-1 py-0.5 focus:outline-none focus:border-forge-accent cursor-pointer'
     : 'forge-input !w-auto !py-1.5 cursor-pointer'
   const set = (year: number, month: number) => onChange(`${year}-${String(month).padStart(2, '0')}`)
 

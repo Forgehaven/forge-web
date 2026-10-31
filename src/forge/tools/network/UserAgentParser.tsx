@@ -82,9 +82,9 @@ const DEVICE_ICON: Record<string, string> = {
 function Row({ label, value, mono = false }: { label: string; value: string; mono?: boolean }) {
   if (!value) return null
   return (
-    <div className="flex items-baseline gap-3 py-2 border-b border-[#2a2d3a] last:border-0">
-      <span className="text-xs text-[#6b7280] w-24 shrink-0">{label}</span>
-      <span className={`text-sm text-[#e2e4ed] break-all ${mono ? 'font-mono text-[#c4af64]' : ''}`}>{value}</span>
+    <div className="flex items-baseline gap-3 py-2 border-b border-forge-border last:border-0">
+      <span className="text-xs text-forge-muted w-24 shrink-0">{label}</span>
+      <span className={`text-sm text-forge-text break-all ${mono ? 'font-mono text-forge-accent' : ''}`}>{value}</span>
     </div>
   )
 }
@@ -96,13 +96,13 @@ export function UserAgentParser() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">User Agent Parser</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">User Agent Parser</h1>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-4">
         <div>
-          <label className="block text-xs text-[#6b7280] mb-1">User Agent string</label>
+          <label className="block text-xs text-forge-muted mb-1">User Agent string</label>
           <textarea
-            className="bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full font-mono resize-none"
+            className="bg-forge-bg border border-forge-border text-forge-text rounded px-3 py-2 text-sm focus:outline-none focus:border-forge-accent w-full font-mono resize-none"
             rows={3}
             value={ua}
             onChange={e => setUa(e.target.value)}
@@ -112,20 +112,20 @@ export function UserAgentParser() {
 
         <button
           onClick={() => setUa(navigator.userAgent)}
-          className="self-start text-xs text-[#6b7280] hover:text-[#c4af64] transition-colors cursor-pointer border border-[#2a2d3a] rounded px-2.5 py-1 hover:border-[#c4af64]"
+          className="self-start text-xs text-forge-muted hover:text-forge-accent transition-colors cursor-pointer border border-forge-border rounded px-2.5 py-1 hover:border-forge-accent"
         >
           Use my browser's UA
         </button>
 
         {ua.trim() && (
-          <div className="pt-2 border-t border-[#2a2d3a]">
+          <div className="pt-2 border-t border-forge-border">
             <Row label="Device"   value={`${DEVICE_ICON[result.device]} ${result.device}`} />
             <Row label="Browser"  value={[result.browser?.name, result.browser?.version].filter(Boolean).join(' ')} />
             <Row label="Engine"   value={[result.engine?.name, result.engine?.version].filter(Boolean).join(' ')} />
             <Row label="OS"       value={[result.os?.name, result.os?.version].filter(Boolean).join(' ')} />
 
             {!result.browser && !result.os && (
-              <p className="text-xs text-[#6b7280] pt-2">Could not identify this user agent.</p>
+              <p className="text-xs text-forge-muted pt-2">Could not identify this user agent.</p>
             )}
           </div>
         )}

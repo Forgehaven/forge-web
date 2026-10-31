@@ -10,7 +10,7 @@ export function BottomBarRefresh() {
     <button
       onClick={() => { dispatch(clearIP()); resetFetchInFlight() }}
       title="Refresh IP info"
-      className="text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer"
+      className="text-forge-muted hover:text-forge-text transition-colors cursor-pointer"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={ipStatus === 'loading' ? 'animate-spin' : ''}>
         <path d="M21 2v6h-6" />

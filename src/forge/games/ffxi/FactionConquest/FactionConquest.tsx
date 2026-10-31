@@ -66,7 +66,7 @@ function MapLink({ zone }: { zone: string }) {
       to={`/games/ffxi/map/${id}`}
       title={`Open ${zone} on the Interactive Map`}
       aria-label={`Open ${zone} on the Interactive Map`}
-      className="ml-1.5 text-[#6b7280] hover:text-[#c4af64] transition-colors"
+      className="ml-1.5 text-forge-muted hover:text-forge-accent transition-colors"
     >
       ⌖
     </Link>
@@ -115,24 +115,24 @@ function OutpostRow({ outpost, mode, userNation, owner, onOwnerChange }: Outpost
   const isNotOwned = userNation !== null && !isOwned
 
   return (
-    <tr className="border-b border-[#1a1d27] last:border-0 hover:bg-[#1a1d27]/30">
+    <tr className="border-b border-forge-surface last:border-0 hover:bg-forge-surface/30">
       <td className="pl-4 py-2 pr-3 text-sm whitespace-nowrap">
         <a
           href={wikiZoneUrl(outpost.zone)}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[#e2e4ed] hover:text-[#c4af64] transition-colors"
+          className="text-forge-text hover:text-forge-accent transition-colors"
         >
           {outpost.zone}
         </a>
         <MapLink zone={outpost.zone} />
       </td>
-      <td className="py-2 pr-3 text-xs text-[#c4af64]/70 whitespace-nowrap hidden md:table-cell">{outpost.region}</td>
-      <td className="py-2 pr-3 text-xs text-[#6b7280] text-center tabular-nums">{access.lv}</td>
+      <td className="py-2 pr-3 text-xs text-forge-accent/70 whitespace-nowrap hidden md:table-cell">{outpost.region}</td>
+      <td className="py-2 pr-3 text-xs text-forge-muted text-center tabular-nums">{access.lv}</td>
       <td
         style={{ width: '64px' }}
         className={`py-2 pr-2 text-xs text-right tabular-nums whitespace-nowrap ${
-          isOwned ? 'text-[#4ade80] font-semibold' : 'text-[#374151]'
+          isOwned ? 'text-[#4ade80] font-semibold' : 'text-forge-edge'
         }`}
       >
         {access.owned.toLocaleString()}
@@ -140,7 +140,7 @@ function OutpostRow({ outpost, mode, userNation, owner, onOwnerChange }: Outpost
       <td
         style={{ width: '64px' }}
         className={`py-2 pl-2 pr-3 text-xs text-left tabular-nums whitespace-nowrap ${
-          isNotOwned ? 'text-[#fb923c] font-semibold' : 'text-[#374151]'
+          isNotOwned ? 'text-[#fb923c] font-semibold' : 'text-forge-edge'
         }`}
       >
         {access.notOwned.toLocaleString()}
@@ -195,32 +195,32 @@ function NoOutpostRow({ region, owner, onOwnerChange }: {
   onOwnerChange: (n: NationId | null) => void
 }) {
   return (
-    <tr className="border-b border-[#1a1d27] last:border-0 hover:bg-[#1a1d27]/30">
+    <tr className="border-b border-forge-surface last:border-0 hover:bg-forge-surface/30">
       <td className="pl-4 py-2 pr-3 whitespace-nowrap">
         {/* Region link stands in on mobile, where the Region column is hidden. */}
         <a
           href={wikiZoneUrl(region)}
           target="_blank"
           rel="noopener noreferrer"
-          className="md:hidden text-sm text-[#c4af64]/70 hover:text-[#c4af64] transition-colors"
+          className="md:hidden text-sm text-forge-accent/70 hover:text-forge-accent transition-colors"
         >
           {region}
         </a>
-        <span className="hidden md:inline text-xs text-[#4b5563] italic">no outpost</span>
+        <span className="hidden md:inline text-xs text-forge-faint italic">no outpost</span>
       </td>
       <td className="py-2 pr-3 text-xs whitespace-nowrap hidden md:table-cell">
         <a
           href={wikiZoneUrl(region)}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[#c4af64]/70 hover:text-[#c4af64] transition-colors"
+          className="text-forge-accent/70 hover:text-forge-accent transition-colors"
         >
           {region}
         </a>
       </td>
-      <td className="py-2 pr-3 text-xs text-[#374151] text-center">—</td>
-      <td style={{ width: '64px' }} className="py-2 pr-2 text-xs text-right text-[#374151]">—</td>
-      <td style={{ width: '64px' }} className="py-2 pl-2 pr-3 text-xs text-left text-[#374151]">—</td>
+      <td className="py-2 pr-3 text-xs text-forge-edge text-center">—</td>
+      <td style={{ width: '64px' }} className="py-2 pr-2 text-xs text-right text-forge-edge">—</td>
+      <td style={{ width: '64px' }} className="py-2 pl-2 pr-3 text-xs text-left text-forge-edge">—</td>
       <OwnerCells owner={owner} onOwnerChange={onOwnerChange} />
     </tr>
   )
@@ -424,7 +424,7 @@ export function FactionConquest() {
         />
       ) : (
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs text-[#6b7280]">Home Nation:</span>
+          <span className="text-xs text-forge-muted">Home Nation:</span>
           {HOME_NATION_IDS.map(nid => {
             const meta = NATIONS[nid]
             const active = saved.nation === nid
@@ -454,12 +454,12 @@ export function FactionConquest() {
       {/* Title + controls */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
-            Faction <span className="text-[#c4af64]">Conquest</span>
+          <h1 className="text-xl font-semibold text-forge-text tracking-wide">
+            Faction <span className="text-forge-accent">Conquest</span>
           </h1>
-          <p className="text-sm text-[#6b7280] mt-0.5">FFXI · Horizon</p>
+          <p className="text-sm text-forge-muted mt-0.5">FFXI · Horizon</p>
           {communityUpdatedAt && (
-            <p className="text-xs text-[#4b5563] mt-0.5">
+            <p className="text-xs text-forge-faint mt-0.5">
               Community conquest map · updated {new Date(communityUpdatedAt).toLocaleString(undefined, {
                 month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
               })}
@@ -468,19 +468,19 @@ export function FactionConquest() {
         </div>
         <div className="flex items-center gap-3 mt-1 shrink-0">
           <div className="text-right">
-            <p className="text-[10px] text-[#6b7280] uppercase tracking-wider">Next reset</p>
-            <p className="text-xs text-[#c4af64] tabular-nums">{formatNextReset()}</p>
+            <p className="text-[10px] text-forge-muted uppercase tracking-wider">Next reset</p>
+            <p className="text-xs text-forge-accent tabular-nums">{formatNextReset()}</p>
           </div>
-          <span className="text-[#2a2d3a]">|</span>
+          <span className="text-forge-border">|</span>
           <button
             onClick={exportState}
-            className="text-xs text-[#9ca3af] hover:text-[#e2e4ed] transition-colors cursor-pointer"
+            className="text-xs text-forge-dim hover:text-forge-text transition-colors cursor-pointer"
           >
             {copied ? 'Copied!' : 'Export'}
           </button>
           <button
             onClick={() => setImportOpen(v => !v)}
-            className="text-xs text-[#9ca3af] hover:text-[#e2e4ed] transition-colors cursor-pointer"
+            className="text-xs text-forge-dim hover:text-forge-text transition-colors cursor-pointer"
           >
             Import
           </button>
@@ -488,25 +488,25 @@ export function FactionConquest() {
               would blank this week's data for everyone. */}
           {!isAuthenticated && (
             <>
-              <span className="text-[#2a2d3a]">|</span>
-              <ConfirmButton label="Reset Conquest" onConfirm={handleReset} className="text-xs text-[#9ca3af] hover:text-[#e2e4ed] transition-colors cursor-pointer" />
+              <span className="text-forge-border">|</span>
+              <ConfirmButton label="Reset Conquest" onConfirm={handleReset} className="text-xs text-forge-dim hover:text-forge-text transition-colors cursor-pointer" />
             </>
           )}
         </div>
       </div>
 
       {/* Faction standings + signet */}
-      <div className="flex items-center gap-4 flex-wrap rounded-lg border border-[#2a2d3a] bg-[#1a1d27] px-4 py-2.5 text-sm">
+      <div className="flex items-center gap-4 flex-wrap rounded-lg border border-forge-border bg-forge-surface px-4 py-2.5 text-sm">
         {anyOwned ? (
           <>
             {standings.placed.map(e => {
               const meta = NATIONS[e.nid]
               return (
                 <span key={e.nid} className="flex items-center gap-1.5">
-                  <span className="text-[#6b7280] text-xs">{ORDINALS[e.place]}</span>
+                  <span className="text-forge-muted text-xs">{ORDINALS[e.place]}</span>
                   {meta.icon && <img src={meta.icon} alt="" className="w-4 h-4 object-contain" />}
                   <span style={{ color: meta.color }}>{meta.name}</span>
-                  <span className="text-[#9ca3af] tabular-nums">{e.count}</span>
+                  <span className="text-forge-dim tabular-nums">{e.count}</span>
                 </span>
               )
             })}
@@ -514,17 +514,17 @@ export function FactionConquest() {
               <span className="flex items-center gap-1.5 opacity-60">
                 <img src={NATIONS[4].icon} alt="" className="w-4 h-4 object-contain" />
                 <span style={{ color: NATIONS[4].color }}>Beastmen</span>
-                <span className="text-[#9ca3af] tabular-nums">{standings.beastmen}</span>
+                <span className="text-forge-dim tabular-nums">{standings.beastmen}</span>
               </span>
             )}
             {signetHours !== null && (
-              <span className="ml-auto text-xs text-[#9ca3af]">
-                Signet max <span className="text-[#c4af64] font-semibold">{signetHours}h</span>
+              <span className="ml-auto text-xs text-forge-dim">
+                Signet max <span className="text-forge-accent font-semibold">{signetHours}h</span>
               </span>
             )}
           </>
         ) : (
-          <span className="text-[#6b7280] text-xs">No conquest data yet this week - set region owners below.</span>
+          <span className="text-forge-muted text-xs">No conquest data yet this week - set region owners below.</span>
         )}
       </div>
 
@@ -538,18 +538,18 @@ export function FactionConquest() {
       )}
 
       {/* Table panel */}
-      <div className="rounded-lg border border-[#2a2d3a] overflow-hidden">
+      <div className="rounded-lg border border-forge-border overflow-hidden">
 
         {/* Tabs + nation legend */}
-        <div className="flex items-center border-b border-[#2a2d3a]">
+        <div className="flex items-center border-b border-forge-border">
           {(['jeuno', 'home'] as const).map(m => (
             <button
               key={m}
               onClick={() => setMode(m)}
               className={`px-5 py-2.5 text-sm font-semibold transition-colors border-b-2 cursor-pointer shrink-0 ${
                 mode === m
-                  ? 'text-[#c4af64] border-[#c4af64] bg-[#c4af64]/5'
-                  : 'text-[#9ca3af] border-transparent hover:text-[#e2e4ed] hover:bg-[#1a1d27]/50'
+                  ? 'text-forge-accent border-forge-accent bg-forge-accent/5'
+                  : 'text-forge-dim border-transparent hover:text-forge-text hover:bg-forge-surface/50'
               }`}
             >
               {m === 'home' ? 'Home Nation' : 'Jeuno'}
@@ -564,11 +564,11 @@ export function FactionConquest() {
           style={{ maxHeight: tableMaxH ?? undefined, minHeight: 200 }}
         >
           <table className="w-full min-w-[520px]">
-            <thead className="sticky top-0 bg-[#0f1117] z-10">
-              <tr className="border-b border-[#1e2130]">
+            <thead className="sticky top-0 bg-forge-bg z-10">
+              <tr className="border-b border-forge-raise">
                 <th
                   onClick={() => handleSort('zone')}
-                  className={`pl-4 pr-3 py-1.5 text-left text-[10px] uppercase tracking-wider font-semibold cursor-pointer select-none transition-colors ${sortCol === 'zone' ? 'text-[#c4af64]' : 'text-[#9ca3af] hover:text-[#e2e4ed]'}`}
+                  className={`pl-4 pr-3 py-1.5 text-left text-[10px] uppercase tracking-wider font-semibold cursor-pointer select-none transition-colors ${sortCol === 'zone' ? 'text-forge-accent' : 'text-forge-dim hover:text-forge-text'}`}
                 >
                   <span className="inline-flex items-center gap-0.5">
                     Zone
@@ -577,15 +577,15 @@ export function FactionConquest() {
                 </th>
                 <th
                   onClick={() => handleSort('region')}
-                  className={`pr-3 py-1.5 text-left text-[10px] uppercase tracking-wider font-semibold cursor-pointer select-none transition-colors hidden md:table-cell ${sortCol === 'region' ? 'text-[#c4af64]' : 'text-[#9ca3af] hover:text-[#e2e4ed]'}`}
+                  className={`pr-3 py-1.5 text-left text-[10px] uppercase tracking-wider font-semibold cursor-pointer select-none transition-colors hidden md:table-cell ${sortCol === 'region' ? 'text-forge-accent' : 'text-forge-dim hover:text-forge-text'}`}
                 >
                   <span className="inline-flex items-center gap-0.5">
                     Region
                     <span className={sortCol === 'region' ? '' : 'opacity-0'}>{sortDir === 'asc' ? '↑' : '↓'}</span>
                   </span>
                 </th>
-                <th className="pr-3 py-1.5 text-center text-[10px] text-[#9ca3af] uppercase tracking-wider font-semibold">Lv.</th>
-                <th colSpan={2} className="py-1.5 text-center text-[10px] text-[#9ca3af] uppercase tracking-wider font-semibold">Cost</th>
+                <th className="pr-3 py-1.5 text-center text-[10px] text-forge-dim uppercase tracking-wider font-semibold">Lv.</th>
+                <th colSpan={2} className="py-1.5 text-center text-[10px] text-forge-dim uppercase tracking-wider font-semibold">Cost</th>
                 {NATION_IDS.map(nid => (
                   <th key={nid} className="px-1.5 py-1.5 text-center w-9 font-semibold"
                     style={{ color: NATIONS[nid].color }}>

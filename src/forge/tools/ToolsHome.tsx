@@ -105,7 +105,7 @@ export function ToolsHome() {
 
       {cities.length > 0 && (
         <div className="w-full max-w-md mb-10">
-          <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg divide-y divide-[#2a2d3a] overflow-hidden">
+          <div className="bg-forge-surface border border-forge-border rounded-lg divide-y divide-forge-border overflow-hidden">
             {cities.map((c, index) => {
               const w = weather[c.id]
               const isExpanded = expandedId === c.id
@@ -120,7 +120,7 @@ export function ToolsHome() {
                   onDragOver={rearranging ? e => handleDragOver(e, index) : undefined}
                   onDrop={rearranging ? () => handleDrop(index) : undefined}
                   onDragEnd={rearranging ? handleDragEnd : undefined}
-                  className={`transition-opacity ${isDragging ? 'opacity-30' : 'opacity-100'} ${isDragOver ? 'border-t-2 border-t-[#c4af64]/50' : ''}`}
+                  className={`transition-opacity ${isDragging ? 'opacity-30' : 'opacity-100'} ${isDragOver ? 'border-t-2 border-t-forge-accent/50' : ''}`}
                 >
                   <div className="flex items-center gap-3 px-4 py-2.5">
                     {rearranging ? (
@@ -130,14 +130,14 @@ export function ToolsHome() {
                     )}
 
                     <div className="flex-1 min-w-0 text-left">
-                      <p className="text-sm text-[#e2e4ed]">{c.name}</p>
+                      <p className="text-sm text-forge-text">{c.name}</p>
                       {!rearranging && (
-                        <p className="text-xs text-[#6b7280]">
+                        <p className="text-xs text-forge-muted">
                           {[c.admin1, c.country].filter(Boolean).join(', ')} · {getOffset(c.timezone, now)}
                         </p>
                       )}
                       {rearranging && (
-                        <p className="text-xs text-[#3a3d4a]">
+                        <p className="text-xs text-forge-line">
                           {[c.admin1, c.country].filter(Boolean).join(', ')}
                         </p>
                       )}
@@ -148,7 +148,7 @@ export function ToolsHome() {
                         <button
                           onClick={() => index > 0 && move(index, index - 1)}
                           disabled={index === 0}
-                          className="text-[#3a3d4a] hover:text-[#c4af64] disabled:opacity-20 disabled:cursor-not-allowed transition-colors cursor-pointer text-base leading-none px-1"
+                          className="text-forge-line hover:text-forge-accent disabled:opacity-20 disabled:cursor-not-allowed transition-colors cursor-pointer text-base leading-none px-1"
                           aria-label="Move up"
                         >
                           ↑
@@ -156,7 +156,7 @@ export function ToolsHome() {
                         <button
                           onClick={() => index < cities.length - 1 && move(index, index + 1)}
                           disabled={index === cities.length - 1}
-                          className="text-[#3a3d4a] hover:text-[#c4af64] disabled:opacity-20 disabled:cursor-not-allowed transition-colors cursor-pointer text-base leading-none px-1"
+                          className="text-forge-line hover:text-forge-accent disabled:opacity-20 disabled:cursor-not-allowed transition-colors cursor-pointer text-base leading-none px-1"
                           aria-label="Move down"
                         >
                           ↓
@@ -171,10 +171,10 @@ export function ToolsHome() {
                             aria-label={isExpanded ? 'Collapse weather' : 'Expand weather'}
                           >
                             {w != null && (
-                              <span className="text-xs text-[#6b7280] tabular-nums group-hover:text-[#9ca3af] transition-colors">
+                              <span className="text-xs text-forge-muted tabular-nums group-hover:text-forge-dim transition-colors">
                                 {weatherIcon(w.weather_code)} {formatTemp(w.temperature_2m, unit)}
                                 <span
-                                  className="ml-1 inline-block transition-transform duration-200 text-[#3a3d4a]"
+                                  className="ml-1 inline-block transition-transform duration-200 text-forge-line"
                                   style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
                                 >
                                   ▾
@@ -184,11 +184,11 @@ export function ToolsHome() {
                             {ipData && c.latitude != null && c.longitude != null && (() => {
                               const dist = haversineKm(ipData.latitude, ipData.longitude, c.latitude!, c.longitude!)
                               if (dist < 50) return (
-                                <span className="text-xs text-[#c4af64]/50 italic">you're here</span>
+                                <span className="text-xs text-forge-accent/50 italic">you're here</span>
                               )
                               const deg = bearingDeg(ipData.latitude, ipData.longitude, c.latitude!, c.longitude!)
                               return (
-                                <span className="text-xs text-[#c4af64]/50 tabular-nums group-hover:text-[#c4af64]/80 transition-colors">
+                                <span className="text-xs text-forge-accent/50 tabular-nums group-hover:text-forge-accent/80 transition-colors">
                                   <span className="inline-block" style={{ transform: `rotate(${deg}deg)` }}>↑</span>
                                   {' '}{formatDist(dist, unit)}
                                 </span>
@@ -197,7 +197,7 @@ export function ToolsHome() {
                           </button>
                         )}
 
-                        <p className="font-mono text-sm text-[#c4af64] tabular-nums shrink-0">
+                        <p className="font-mono text-sm text-forge-accent tabular-nums shrink-0">
                           {formatTime(c.timezone, now)}
                         </p>
                         <ConfirmButton
@@ -206,16 +206,16 @@ export function ToolsHome() {
                           confirmLabel="✓"
                           cancelLabel="✗"
                           onConfirm={() => toggle(c)}
-                          className="text-[#3a3d4a] hover:text-[#6b7280] transition-colors cursor-pointer text-sm shrink-0"
+                          className="text-forge-line hover:text-forge-muted transition-colors cursor-pointer text-sm shrink-0"
                         />
                       </>
                     )}
                   </div>
 
                   {isExpanded && w != null && !rearranging && (
-                    <div className="px-4 pb-3 pt-1 border-t border-[#2a2d3a] bg-[#0f1117] text-left">
+                    <div className="px-4 pb-3 pt-1 border-t border-forge-border bg-forge-bg text-left">
                       <div className="flex items-start justify-between mb-2">
-                        <p className="text-xs text-[#9ca3af]">
+                        <p className="text-xs text-forge-dim">
                           {weatherIcon(w.weather_code)} {WMO[w.weather_code] ?? 'Unknown'} · feels like {formatTemp(w.apparent_temperature, unit)}
                         </p>
                         {weatherFetchedAt[c.id] && c.latitude != null && c.longitude != null && (
@@ -247,8 +247,8 @@ export function ToolsHome() {
                 onClick={() => rearranging ? setRearranging(false) : enterRearrange()}
                 className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded transition-colors cursor-pointer ${
                   rearranging
-                    ? 'text-[#c4af64] hover:text-[#c4af64]/80'
-                    : 'text-[#3a3d4a] hover:text-[#6b7280]'
+                    ? 'text-forge-accent hover:text-forge-accent/80'
+                    : 'text-forge-line hover:text-forge-muted'
                 }`}
               >
                 {rearranging ? (
@@ -267,21 +267,21 @@ export function ToolsHome() {
         alt="Forgehaven"
         className="w-16 h-16 mb-5 opacity-40"
       />
-      <h1 className="text-2xl font-semibold text-[#e2e4ed] mb-2 tracking-wide">
-        Forge<span className="text-[#c4af64]">Tools</span>
+      <h1 className="text-2xl font-semibold text-forge-text mb-2 tracking-wide">
+        Forge<span className="text-forge-accent">Tools</span>
       </h1>
-      <p className="text-sm text-[#6b7280]">Pick a tool from the sidebar to get started.</p>
-      <p className="text-xs text-[#3a3d4a] mt-4 leading-relaxed">
+      <p className="text-sm text-forge-muted">Pick a tool from the sidebar to get started.</p>
+      <p className="text-xs text-forge-line mt-4 leading-relaxed">
         Everything runs locally in your browser - no data is sent to any server.
       </p>
       {cities.length === 0 && (
-        <p className="text-xs text-[#3a3d4a] mt-2">
+        <p className="text-xs text-forge-line mt-2">
           Pin a city from{' '}
-          <Link to="/tools/timezone-lookup" className="hover:text-[#6b7280] transition-colors underline underline-offset-2">
+          <Link to="/tools/timezone-lookup" className="hover:text-forge-muted transition-colors underline underline-offset-2">
             City Time Zones
           </Link>
           {' '}or{' '}
-          <Link to="/tools/weather" className="hover:text-[#6b7280] transition-colors underline underline-offset-2">
+          <Link to="/tools/weather" className="hover:text-forge-muted transition-colors underline underline-offset-2">
             Weather Lookup
           </Link>
           {' '}to show a clock and weather here.

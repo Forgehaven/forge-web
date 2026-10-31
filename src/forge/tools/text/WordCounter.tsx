@@ -46,14 +46,14 @@ export function WordCounter() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Word Counter</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">Word Counter</h1>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-4">
         <div>
-          <label className="block text-xs text-[#6b7280] mb-1">Text</label>
+          <label className="block text-xs text-forge-muted mb-1">Text</label>
           <textarea
             autoFocus
-            className="bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full resize-none"
+            className="bg-forge-bg border border-forge-border text-forge-text rounded px-3 py-2 text-sm focus:outline-none focus:border-forge-accent w-full resize-none"
             rows={10}
             value={text}
             onChange={e => setText(e.target.value)}
@@ -62,15 +62,15 @@ export function WordCounter() {
         </div>
 
         {!text.trim() && (
-          <p className="text-xs text-[#6b7280]">Start typing or paste text to see statistics.</p>
+          <p className="text-xs text-forge-muted">Start typing or paste text to see statistics.</p>
         )}
 
         {stats && (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 border-t border-[#2a2d3a]">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 border-t border-forge-border">
             {statItems.map(item => (
-              <div key={item.label} className="bg-[#0f1117] border border-[#2a2d3a] rounded p-3">
-                <p className="text-xs text-[#6b7280] mb-1">{item.label}</p>
-                <p className="font-mono text-lg text-[#c4af64]">{item.value}</p>
+              <div key={item.label} className="bg-forge-bg border border-forge-border rounded p-3">
+                <p className="text-xs text-forge-muted mb-1">{item.label}</p>
+                <p className="font-mono text-lg text-forge-accent">{item.value}</p>
               </div>
             ))}
           </div>

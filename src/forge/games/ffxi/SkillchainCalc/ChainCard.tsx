@@ -6,12 +6,12 @@ import type { SkillchainLink, BurstInfo, PartyMember } from './engine'
 function MemberLabel({ party, idx }: { party: PartyMember[]; idx: number }) {
   const m = party[idx]
   if (!m || (!m.name && !m.job)) {
-    return <span className="text-xs text-[#6b7280]">Slot {idx + 1}</span>
+    return <span className="text-xs text-forge-muted">Slot {idx + 1}</span>
   }
   return (
     <>
-      {m.name && <span className="text-xs text-[#c4af64]">{m.name}</span>}
-      {m.job && <span className="text-xs text-[#6b7280]">{m.job}</span>}
+      {m.name && <span className="text-xs text-forge-accent">{m.name}</span>}
+      {m.job && <span className="text-xs text-forge-muted">{m.job}</span>}
     </>
   )
 }
@@ -33,12 +33,12 @@ export function ChainCard({ link, party, compact, panelWidth, isFavourite, onTog
   if (compact) {
     return (
       <div
-        className="bg-[#1a1d27] border rounded-lg overflow-hidden flex flex-col sm:flex-row sm:items-stretch"
+        className="bg-forge-surface border rounded-lg overflow-hidden flex flex-col sm:flex-row sm:items-stretch"
         style={{ borderColor: isFavourite ? '#c4af64' : `${color}30` }}
       >
         {/* Mobile: top bar */}
         <div
-          className="sm:hidden relative flex items-center px-3 py-1.5 border-b border-[#2a2d3a]"
+          className="sm:hidden relative flex items-center px-3 py-1.5 border-b border-forge-border"
           style={{ background: `${color}0d` }}
         >
           <span className="text-[10px] font-semibold tabular-nums shrink-0" style={{ color }}>L{finalResult.level}</span>
@@ -48,11 +48,11 @@ export function ChainCard({ link, party, compact, panelWidth, isFavourite, onTog
         </div>
         {/* Desktop: left panel */}
         <div
-          className="hidden sm:flex items-center gap-1 px-2 py-2 border-r border-[#2a2d3a] shrink-0"
+          className="hidden sm:flex items-center gap-1 px-2 py-2 border-r border-forge-border shrink-0"
           style={{ width: panelWidth ?? 112, background: `${color}0d` }}
         >
           <span className="text-[10px] font-semibold tabular-nums shrink-0" style={{ color }}>L{finalResult.level}</span>
-          <span className="text-[#4b5563] text-[10px]">·</span>
+          <span className="text-forge-faint text-[10px]">·</span>
           <span className="text-xs font-bold leading-tight" style={{ color }}>
             {finalResult.name.toUpperCase()}
           </span>
@@ -62,8 +62,8 @@ export function ChainCard({ link, party, compact, panelWidth, isFavourite, onTog
             <Fragment key={si}>
               {si > 0 && (
                 <>
-                  <span className="hidden sm:inline text-[#4b5563] text-xs mx-1">→</span>
-                  <span className="sm:hidden text-[#4b5563] text-xs">↓</span>
+                  <span className="hidden sm:inline text-forge-faint text-xs mx-1">→</span>
+                  <span className="sm:hidden text-forge-faint text-xs">↓</span>
                 </>
               )}
               <span
@@ -71,7 +71,7 @@ export function ChainCard({ link, party, compact, panelWidth, isFavourite, onTog
                 style={step.memberIdx === meIdx ? { background: '#c4af6418', outline: '1px solid #c4af6430' } : undefined}
               >
                 <MemberLabel party={party} idx={step.memberIdx} />
-                <span className="font-medium text-[#e2e4ed]">{step.ws.name}</span>
+                <span className="font-medium text-forge-text">{step.ws.name}</span>
               </span>
             </Fragment>
           ))}
@@ -119,15 +119,15 @@ export function ChainCard({ link, party, compact, panelWidth, isFavourite, onTog
             : { borderColor: '#2a2d3a', background: '#0f1117' }
           }
         >
-          <span className="text-sm font-medium text-[#e2e4ed] whitespace-nowrap">
+          <span className="text-sm font-medium text-forge-text whitespace-nowrap">
             {step.ws.name}
             {(step.ws.avatar ?? step.ws.skillReq) != null && (
-              <span className="text-[#6b7280] font-normal"> ({step.ws.avatar ?? step.ws.skillReq})</span>
+              <span className="text-forge-muted font-normal"> ({step.ws.avatar ?? step.ws.skillReq})</span>
             )}
           </span>
           <div className="flex items-center justify-center gap-1.5 flex-wrap">
-            {m?.name && <span className="text-xs text-[#c4af64]">{m.name}</span>}
-            <span className="text-xs font-bold text-[#9ca3af]">{m?.job ?? `Slot ${step.memberIdx + 1}`}</span>
+            {m?.name && <span className="text-xs text-forge-accent">{m.name}</span>}
+            <span className="text-xs font-bold text-forge-dim">{m?.job ?? `Slot ${step.memberIdx + 1}`}</span>
           </div>
         </div>
         {intermediateBursts.length > 0 && (
@@ -150,12 +150,12 @@ export function ChainCard({ link, party, compact, panelWidth, isFavourite, onTog
 
   return (
     <div
-      className="bg-[#1a1d27] border rounded-lg overflow-hidden flex relative"
+      className="bg-forge-surface border rounded-lg overflow-hidden flex relative"
       style={{ borderColor: isFavourite ? '#c4af64' : `${color}40` }}
     >
       {/* Mobile left panel: narrow with rotated text */}
       <div
-        className="sm:hidden flex flex-col items-center border-r border-[#2a2d3a] shrink-0 w-10 overflow-hidden"
+        className="sm:hidden flex flex-col items-center border-r border-forge-border shrink-0 w-10 overflow-hidden"
         style={{ background: `${color}0d`, minHeight: finalResult.name.length * 8 + 48 }}
       >
         <span className="pt-2 pb-1 text-xs uppercase font-semibold shrink-0" style={{ color }}>
@@ -166,7 +166,7 @@ export function ChainCard({ link, party, compact, panelWidth, isFavourite, onTog
             <div className="flex flex-col items-center gap-0.5"
                  style={{ transform: 'rotate(-90deg)' }}>
               <span className="text-sm font-bold uppercase whitespace-nowrap" style={{ color }}>{finalResult.name}</span>
-              <span className="text-xs text-[#6b7280] whitespace-nowrap">{finalResult.elements.join(' · ')}</span>
+              <span className="text-xs text-forge-muted whitespace-nowrap">{finalResult.elements.join(' · ')}</span>
             </div>
           </div>
         </div>
@@ -174,7 +174,7 @@ export function ChainCard({ link, party, compact, panelWidth, isFavourite, onTog
 
       {/* Desktop left panel: level label, then name + element on same row */}
       <div
-        className="hidden sm:flex flex-col items-center justify-center px-3 py-4 border-r border-[#2a2d3a] shrink-0 gap-1"
+        className="hidden sm:flex flex-col items-center justify-center px-3 py-4 border-r border-forge-border shrink-0 gap-1"
         style={{ width: panelWidth ?? 112, background: `${color}0d` }}
       >
         <span className="text-[10px] uppercase tracking-widest" style={{ color }}>
@@ -183,7 +183,7 @@ export function ChainCard({ link, party, compact, panelWidth, isFavourite, onTog
         <span className="text-sm font-bold leading-tight text-center" style={{ color }}>
           {finalResult.name.toUpperCase()}
         </span>
-        <span className="text-[10px] text-[#6b7280] text-center leading-tight">{finalResult.elements.join(' · ')}</span>
+        <span className="text-[10px] text-forge-muted text-center leading-tight">{finalResult.elements.join(' · ')}</span>
       </div>
 
       {/* Steps + bursts */}
@@ -193,7 +193,7 @@ export function ChainCard({ link, party, compact, panelWidth, isFavourite, onTog
             <div key={si} className="flex flex-col sm:flex-row sm:items-center">
               {si > 0 && (
                 <div className="flex items-center justify-center w-full sm:w-auto sm:mx-2 my-1 sm:my-0 shrink-0">
-                  <span className="text-[#4b5563] text-sm leading-none">
+                  <span className="text-forge-faint text-sm leading-none">
                     <span className="sm:hidden">↓</span>
                     <span className="hidden sm:inline">→</span>
                   </span>
@@ -204,7 +204,7 @@ export function ChainCard({ link, party, compact, panelWidth, isFavourite, onTog
           ))}
         </div>
         {finalBurstEntries.length > 0 && (
-          <div className="flex flex-wrap gap-1 pt-1 border-t border-[#2a2d3a]">
+          <div className="flex flex-wrap gap-1 pt-1 border-t border-forge-border">
             {finalBurstEntries.map(([el, infos]) => {
               const jobs = [...new Set(infos.map(i => i.job))]
               const isMeBurst = meIdx != null && infos.some(i => i.memberIdx === meIdx)

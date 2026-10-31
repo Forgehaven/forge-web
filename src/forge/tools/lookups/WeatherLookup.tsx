@@ -8,9 +8,9 @@ import { useTempUnit, formatTemp, formatWind, formatPressure, formatPrecip } fro
 
 function StatBox({ label, value }: { label: string; value: string }) {
   return (
-    <div className="bg-[#0f1117] border border-[#2a2d3a] rounded p-3">
-      <p className="text-xs text-[#6b7280] mb-1">{label}</p>
-      <p className="font-mono text-sm text-[#e2e4ed]">{value}</p>
+    <div className="bg-forge-bg border border-forge-border rounded p-3">
+      <p className="text-xs text-forge-muted mb-1">{label}</p>
+      <p className="font-mono text-sm text-forge-text">{value}</p>
     </div>
   )
 }
@@ -69,15 +69,15 @@ export function WeatherLookup() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Weather Lookup</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">Weather Lookup</h1>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-4">
 
         <div>
-          <label className="block text-xs text-[#6b7280] mb-1">Search any city</label>
+          <label className="block text-xs text-forge-muted mb-1">Search any city</label>
           <input
             autoFocus
-            className="bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full"
+            className="bg-forge-bg border border-forge-border text-forge-text rounded px-3 py-2 text-sm focus:outline-none focus:border-forge-accent w-full"
             placeholder="e.g. Halifax, Tokyo, São Paulo…"
             value={query}
             onChange={e => handleQueryChange(e.target.value)}
@@ -85,39 +85,39 @@ export function WeatherLookup() {
         </div>
 
         {!query && !selected && (
-          <p className="text-xs text-[#6b7280]">
+          <p className="text-xs text-forge-muted">
             Search for a city to see current weather conditions.{' '}
-            <span className="text-[#c4af64]">★</span> Star a result to pin it to the home page.
+            <span className="text-forge-accent">★</span> Star a result to pin it to the home page.
           </p>
         )}
 
-        {searchLoading && <p className="text-xs text-[#6b7280]">Searching…</p>}
+        {searchLoading && <p className="text-xs text-forge-muted">Searching…</p>}
 
         {!searchLoading && query && !selected && results.length === 0 && (
-          <p className="text-xs text-[#6b7280]">No cities found for "{query}"</p>
+          <p className="text-xs text-forge-muted">No cities found for "{query}"</p>
         )}
 
         {!selected && results.length > 0 && (
-          <div className="flex flex-col divide-y divide-[#2a2d3a]">
+          <div className="flex flex-col divide-y divide-forge-border">
             {results.map(r => (
               <div
                 key={r.id}
-                className="py-3 flex items-center gap-3 cursor-pointer hover:bg-[#0f1117] -mx-6 px-6 transition-colors"
+                className="py-3 flex items-center gap-3 cursor-pointer hover:bg-forge-bg -mx-6 px-6 transition-colors"
                 onClick={() => selectCity(r)}
               >
                 <img src={flagUrl(r.country_code)} alt={r.country_code} className="w-5 shrink-0 mt-0.5" />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-[#e2e4ed]">
+                  <p className="text-sm font-medium text-forge-text">
                     {r.name}
-                    <span className="text-[#6b7280] font-normal ml-1.5">
+                    <span className="text-forge-muted font-normal ml-1.5">
                       {[r.admin1, r.country].filter(Boolean).join(', ')}
                     </span>
                   </p>
-                  <p className="text-xs text-[#6b7280] mt-0.5">{r.timezone}</p>
+                  <p className="text-xs text-forge-muted mt-0.5">{r.timezone}</p>
                 </div>
                 <button
                   onClick={e => { e.stopPropagation(); toggle(r) }}
-                  className={`text-base cursor-pointer transition-colors shrink-0 ${isFavourite(r.id) ? 'text-[#c4af64]' : 'text-[#3a3d4a] hover:text-[#6b7280]'}`}
+                  className={`text-base cursor-pointer transition-colors shrink-0 ${isFavourite(r.id) ? 'text-forge-accent' : 'text-forge-line hover:text-forge-muted'}`}
                   aria-label={isFavourite(r.id) ? 'Remove from home' : 'Pin to home'}
                 >
                   ★
@@ -133,38 +133,38 @@ export function WeatherLookup() {
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => { setSelected(null); setWeather(null) }}
-                  className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer"
+                  className="text-xs text-forge-muted hover:text-forge-text transition-colors cursor-pointer"
                 >
                   ← Back
                 </button>
                 <div>
-                  <span className="text-sm font-medium text-[#e2e4ed]"><img src={flagUrl(selected.country_code)} alt={selected.country_code} className="w-4 inline-block mr-1 align-middle" />{selected.name}</span>
-                  <span className="text-xs text-[#6b7280] ml-1.5">
+                  <span className="text-sm font-medium text-forge-text"><img src={flagUrl(selected.country_code)} alt={selected.country_code} className="w-4 inline-block mr-1 align-middle" />{selected.name}</span>
+                  <span className="text-xs text-forge-muted ml-1.5">
                     {[selected.admin1, selected.country].filter(Boolean).join(', ')}
                   </span>
                 </div>
               </div>
               <button
                 onClick={() => toggle(selected)}
-                className={`text-base cursor-pointer transition-colors ${isFav ? 'text-[#c4af64]' : 'text-[#3a3d4a] hover:text-[#6b7280]'}`}
+                className={`text-base cursor-pointer transition-colors ${isFav ? 'text-forge-accent' : 'text-forge-line hover:text-forge-muted'}`}
                 aria-label={isFav ? 'Remove from home' : 'Pin to home'}
               >
                 ★
               </button>
             </div>
 
-            {weatherLoading && <p className="text-xs text-[#6b7280]">Loading weather…</p>}
+            {weatherLoading && <p className="text-xs text-forge-muted">Loading weather…</p>}
 
             {weather && (
               <>
-                <div className="flex items-center justify-between pt-1 border-t border-[#2a2d3a]">
+                <div className="flex items-center justify-between pt-1 border-t border-forge-border">
                   <div className="flex items-center gap-4">
-                    <p className="text-5xl font-mono text-[#c4af64]">{formatTemp(weather.temperature_2m, unit)}</p>
+                    <p className="text-5xl font-mono text-forge-accent">{formatTemp(weather.temperature_2m, unit)}</p>
                     <div>
-                      <p className="text-sm text-[#e2e4ed]">
+                      <p className="text-sm text-forge-text">
                         {weatherIcon(weather.weather_code)} {WMO[weather.weather_code] ?? 'Unknown'}
                       </p>
-                      <p className="text-xs text-[#6b7280] mt-0.5">
+                      <p className="text-xs text-forge-muted mt-0.5">
                         Feels like {formatTemp(weather.apparent_temperature, unit)}
                       </p>
                     </div>

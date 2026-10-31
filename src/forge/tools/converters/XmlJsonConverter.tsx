@@ -83,19 +83,19 @@ function HighlightedEditor({
   return (
     <div className="flex-1 min-h-0 flex flex-col min-w-0">
       <div className="flex items-center justify-between mb-1 h-5 shrink-0">
-        <label className="text-xs text-[#6b7280] uppercase tracking-wide">{language}</label>
+        <label className="text-xs text-forge-muted uppercase tracking-wide">{language}</label>
         {!isEmpty && (
           isValid
             ? <span className="text-xs text-green-500">✓ valid</span>
             : <span className="text-xs text-red-400 truncate max-w-[60%]" title={error}>✗ {error}</span>
         )}
       </div>
-      <div className="relative min-h-0 flex-1 bg-[#0f1117] border border-[#2a2d3a] rounded overflow-hidden focus-within:border-[#c4af64] transition-colors">
+      <div className="relative min-h-0 flex-1 bg-forge-bg border border-forge-border rounded overflow-hidden focus-within:border-forge-accent transition-colors">
         {/* line numbers */}
         <pre
           ref={lineNumRef}
           aria-hidden
-          className="absolute top-0 left-0 bottom-0 overflow-hidden m-0 py-3 pl-3 pr-2 text-xs font-mono leading-5 pointer-events-none select-none text-right border-r border-[#2a2d3a]"
+          className="absolute top-0 left-0 bottom-0 overflow-hidden m-0 py-3 pl-3 pr-2 text-xs font-mono leading-5 pointer-events-none select-none text-right border-r border-forge-border"
           style={{ whiteSpace: 'pre', minWidth: '2.5rem', color: '#3a3d4a' }}
         >
           {lineNums}
@@ -175,7 +175,7 @@ export function XmlJsonConverter() {
 
   return (
     <div className="h-full flex flex-col">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-4">XML ↔ JSON</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-4">XML ↔ JSON</h1>
 
       <div className="flex flex-col md:flex-row gap-4 md:h-[70vh]">
         <div className="min-w-0 min-h-0 flex flex-col gap-2 h-[40vh] md:flex-1 md:h-auto">
@@ -184,7 +184,7 @@ export function XmlJsonConverter() {
             <button
               onClick={convertToJson}
               disabled={!!xmlErr}
-              className="text-xs px-3 py-1.5 rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+              className="text-xs px-3 py-1.5 rounded bg-forge-accent/10 text-forge-accent border border-forge-accent/30 hover:bg-forge-accent/20 transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
             >
               Convert to JSON →
             </button>
@@ -198,7 +198,7 @@ export function XmlJsonConverter() {
             <button
               onClick={convertToXml}
               disabled={!!jsonErr}
-              className="text-xs px-3 py-1.5 rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+              className="text-xs px-3 py-1.5 rounded bg-forge-accent/10 text-forge-accent border border-forge-accent/30 hover:bg-forge-accent/20 transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
             >
               ← Convert to XML
             </button>
@@ -207,8 +207,8 @@ export function XmlJsonConverter() {
         </div>
       </div>
 
-      <p className="text-xs text-[#3a3d4a] mt-3">
-        XML attributes are represented as <code className="text-[#6b7280]">@_attributeName</code> in JSON. Repeated sibling elements become arrays.
+      <p className="text-xs text-forge-line mt-3">
+        XML attributes are represented as <code className="text-forge-muted">@_attributeName</code> in JSON. Repeated sibling elements become arrays.
       </p>
     </div>
   )

@@ -10,19 +10,19 @@ const POPUP_BOTTOM = 48
 export function StatRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between gap-6">
-      <span className="text-[#c4af64]/50 shrink-0">{label}</span>
-      <span className="text-[#e2e4ed] font-mono text-right">{value}</span>
+      <span className="text-forge-accent/50 shrink-0">{label}</span>
+      <span className="text-forge-text font-mono text-right">{value}</span>
     </div>
   )
 }
 
 export function PopupDivider() {
-  return <div className="border-t border-[#2a2d3a] my-0.5" />
+  return <div className="border-t border-forge-border my-0.5" />
 }
 
 export function PopupTimestamp({ date, url }: { date: Date; url: string }) {
   return (
-    <div className="flex justify-end pt-1.5 mt-0.5 border-t border-[#2a2d3a]">
+    <div className="flex justify-end pt-1.5 mt-0.5 border-t border-forge-border">
       <FetchedAtLink date={date} url={url} />
     </div>
   )
@@ -68,7 +68,7 @@ export function Popup({ pos, triggerRef, onClose, children }: PopupProps) {
     <div
       ref={popRef}
       style={style}
-      className="fixed bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-3 shadow-xl z-[200] text-xs flex flex-col gap-1.5"
+      className="fixed bg-forge-surface border border-forge-border rounded-lg p-3 shadow-xl z-[200] text-xs flex flex-col gap-1.5"
     >
       {children}
     </div>,

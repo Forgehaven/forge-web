@@ -38,3 +38,11 @@ export function putOrder(order: string[], favourites: string[]) {
 export function deleteBuild(id: string) {
   return forgeFetch<null>(`${BASE}/${id}`, { method: 'DELETE' })
 }
+
+export function getFavourites() {
+  return forgeFetch<string[]>('/game/uwlarp/favourites')
+}
+
+export function putFavourites(items: string[]) {
+  return forgeFetch<string[]>('/game/uwlarp/favourites', { method: 'PUT', body: JSON.stringify({ items }) })
+}

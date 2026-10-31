@@ -394,10 +394,10 @@ const SPEED_OPTS = [
 // ─── SHARED STYLES ───────────────────────────────────────────────────────────
 
 const btnBase   = 'px-4 py-2 text-sm rounded border transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed'
-const btnGold   = `${btnBase} border-[#c4af64]/40 text-[#c4af64] hover:bg-[#c4af64]/10`
+const btnGold   = `${btnBase} border-forge-accent/40 text-forge-accent hover:bg-forge-accent/10`
 const btnDanger = `${btnBase} border-red-500/40 text-red-400 hover:bg-red-500/10`
-const btnGhost  = `${btnBase} border-[#2a2d3a] text-[#9ca3af] hover:text-[#e2e4ed] hover:bg-[#2a2d3a]`
-const selectCls = 'bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] text-sm rounded px-2 py-1.5 focus:outline-none focus:border-[#c4af64]/50 cursor-pointer'
+const btnGhost  = `${btnBase} border-forge-border text-forge-dim hover:text-forge-text hover:bg-forge-border`
+const selectCls = 'bg-forge-bg border border-forge-border text-forge-text text-sm rounded px-2 py-1.5 focus:outline-none focus:border-forge-accent/50 cursor-pointer'
 
 // ─── ENCODER STATE ───────────────────────────────────────────────────────────
 
@@ -508,12 +508,12 @@ function OutputPanel({ mode }: { mode: Mode }) {
         <select className={selectCls} value={chunkSize} onChange={e => setChunkSize(+e.target.value)}>
           {chunkOpts.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
-        {rawFile && <span className="text-sm text-[#6b7280] truncate max-w-[180px]">{rawFile.name}</span>}
+        {rawFile && <span className="text-sm text-forge-muted truncate max-w-[180px]">{rawFile.name}</span>}
       </div>
 
       {enc && (
         <>
-          <div className="text-sm text-[#6b7280] tabular-nums">
+          <div className="text-sm text-forge-muted tabular-nums">
             {formatBytes(enc.byteSize)} · {enc.K} source chunk{enc.K !== 1 ? 's' : ''} · ~{Math.ceil(enc.K * 1.15)} packets needed
           </div>
 
@@ -545,8 +545,8 @@ function OutputPanel({ mode }: { mode: Mode }) {
             <div className="flex flex-col gap-1">
               <canvas ref={cbCanvasRef} className="block w-full rounded" style={{ imageRendering: 'pixelated' }} />
               <div className="flex items-center justify-between px-1">
-                <span className="text-xs text-[#6b7280] font-mono tabular-nums">{label}</span>
-                <span className="text-xs text-[#4b5563] truncate max-w-[200px]">{enc.name}</span>
+                <span className="text-xs text-forge-muted font-mono tabular-nums">{label}</span>
+                <span className="text-xs text-forge-faint truncate max-w-[200px]">{enc.name}</span>
               </div>
               {NavBar}
             </div>
@@ -569,7 +569,7 @@ function OutputPanel({ mode }: { mode: Mode }) {
       )}
 
       {!enc && (
-        <p className="text-sm text-[#6b7280]">
+        <p className="text-sm text-forge-muted">
           {isCB
             ? 'Choose a file. The receiver needs to fill the guide rectangle with their camera. Anchors enable perspective correction automatically.'
             : 'Choose a file to begin. Show the Header QR first, then stream fountain packets - the receiver decodes when it has enough unique packets, in any order.'}
@@ -728,19 +728,19 @@ function InputPanel({ mode }: { mode: Mode }) {
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="relative bg-[#0f1117] rounded-lg overflow-hidden aspect-square max-w-xs w-full mx-auto">
+      <div className="relative bg-forge-bg rounded-lg overflow-hidden aspect-square max-w-xs w-full mx-auto">
         <video ref={videoRef} className="w-full h-full object-cover" playsInline muted />
         <canvas ref={canvasRef} className="hidden" />
         {!scanning && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-[#4b5563] text-sm">Camera off</span>
+            <span className="text-forge-faint text-sm">Camera off</span>
           </div>
         )}
         {/* CB mode: fill-frame guide + anchor indicator */}
         {mode === 'cb' && scanning && (
           <>
-            <div className="absolute inset-0 border-2 border-dashed border-[#c4af64]/40 rounded-lg pointer-events-none" />
-            <div className={`absolute top-2 left-2 text-xs font-mono px-2 py-1 rounded bg-black/70 ${anchorsFound === 4 ? 'text-[#4ade80]' : anchorsFound > 0 ? 'text-amber-400' : 'text-[#6b7280]'}`}>
+            <div className="absolute inset-0 border-2 border-dashed border-forge-accent/40 rounded-lg pointer-events-none" />
+            <div className={`absolute top-2 left-2 text-xs font-mono px-2 py-1 rounded bg-black/70 ${anchorsFound === 4 ? 'text-[#4ade80]' : anchorsFound > 0 ? 'text-amber-400' : 'text-forge-muted'}`}>
               anchors {anchorsFound < 0 ? '-' : `${anchorsFound}/4`}
               {cbDebugLen !== null && (
                 <span className={cbDebugLen > 0 && cbDebugLen <= 232 ? ' text-[#4ade80]' : ' text-red-400'}>
@@ -758,30 +758,30 @@ function InputPanel({ mode }: { mode: Mode }) {
       </div>
 
       {(headerInfo || packetCount > 0) && (
-        <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-4 flex flex-col gap-3">
+        <div className="bg-forge-surface border border-forge-border rounded-lg p-4 flex flex-col gap-3">
           {headerInfo && (
             <div className="flex items-baseline gap-2 flex-wrap">
-              <span className="text-xs text-[#6b7280] uppercase tracking-widest shrink-0">File</span>
-              <span className="text-sm text-[#e2e4ed] font-medium truncate flex-1">{headerInfo.name}</span>
-              <span className="text-xs text-[#6b7280] tabular-nums shrink-0">{formatBytes(headerInfo.byteSize)}</span>
+              <span className="text-xs text-forge-muted uppercase tracking-widest shrink-0">File</span>
+              <span className="text-sm text-forge-text font-medium truncate flex-1">{headerInfo.name}</span>
+              <span className="text-xs text-forge-muted tabular-nums shrink-0">{formatBytes(headerInfo.byteSize)}</span>
             </div>
           )}
 
           <div>
-            <div className="flex justify-between text-xs text-[#6b7280] mb-1">
+            <div className="flex justify-between text-xs text-forge-muted mb-1">
               <span>Decoded</span>
               <span className="tabular-nums">{decodedCount}&thinsp;/&thinsp;{K || '?'}</span>
             </div>
-            <div className="h-2 bg-[#0f1117] rounded-full overflow-hidden">
+            <div className="h-2 bg-forge-bg rounded-full overflow-hidden">
               <div
-                className="h-full bg-[#c4af64] rounded-full transition-all duration-300"
+                className="h-full bg-forge-accent rounded-full transition-all duration-300"
                 style={{ width: K > 0 ? `${(decodedCount / K) * 100}%` : '0%' }}
               />
             </div>
           </div>
 
           {!isDone && (
-            <p className="text-xs text-[#6b7280] tabular-nums">
+            <p className="text-xs text-forge-muted tabular-nums">
               {packetCount} unique packet{packetCount !== 1 ? 's' : ''} received
             </p>
           )}
@@ -791,7 +791,7 @@ function InputPanel({ mode }: { mode: Mode }) {
               <div className="w-2 h-2 rounded-full bg-[#4ade80] shrink-0" />
               <span className="text-sm text-[#4ade80] font-medium">Transfer complete</span>
               {elapsedSec !== null && kbps !== null && (
-                <span className="text-xs text-[#6b7280] tabular-nums">
+                <span className="text-xs text-forge-muted tabular-nums">
                   {elapsedSec.toFixed(1)}s · {kbps.toFixed(1)} KB/s
                 </span>
               )}
@@ -812,7 +812,7 @@ function InputPanel({ mode }: { mode: Mode }) {
       </div>
 
       {!headerInfo && packetCount === 0 && (
-        <p className="text-sm text-[#6b7280]">
+        <p className="text-sm text-forge-muted">
           {mode === 'cb'
             ? 'Fill the entire camera frame with the barcode. Anchor detection (shown top-left) enables perspective correction when all 4 are found.'
             : 'Point your camera at the QR codes from the Output device. Any packet order works - the fountain decoder accumulates packets until it can reconstruct the file.'}
@@ -831,14 +831,14 @@ export function QrDataXfer() {
   return (
     <div className="max-w-xl">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-xl font-semibold text-[#e2e4ed]">QR Data Transfer</h1>
-        <div className="flex rounded border border-[#2a2d3a] overflow-hidden text-sm">
+        <h1 className="text-xl font-semibold text-forge-text">QR Data Transfer</h1>
+        <div className="flex rounded border border-forge-border overflow-hidden text-sm">
           {(['output', 'input'] as const).map(t => (
             <button
               key={t}
               onClick={() => setTab(t)}
               className={`px-4 py-1.5 cursor-pointer transition-colors ${
-                tab === t ? 'bg-[#c4af64]/10 text-[#c4af64]' : 'text-[#6b7280] hover:text-[#e2e4ed] hover:bg-[#2a2d3a]'
+                tab === t ? 'bg-forge-accent/10 text-forge-accent' : 'text-forge-muted hover:text-forge-text hover:bg-forge-border'
               }`}
             >
               {t === 'output' ? 'Output' : 'Input'}
@@ -848,13 +848,13 @@ export function QrDataXfer() {
       </div>
 
       {/* Mode selector */}
-      <div className="flex rounded border border-[#2a2d3a] overflow-hidden text-xs mb-5 self-start w-fit">
+      <div className="flex rounded border border-forge-border overflow-hidden text-xs mb-5 self-start w-fit">
         {([['qr', 'QR Code'], ['cb', 'Color Barcode']] as const).map(([m, label]) => (
           <button
             key={m}
             onClick={() => setMode(m)}
             className={`px-3 py-1.5 cursor-pointer transition-colors ${
-              mode === m ? 'bg-[#c4af64]/10 text-[#c4af64]' : 'text-[#6b7280] hover:text-[#e2e4ed] hover:bg-[#2a2d3a]'
+              mode === m ? 'bg-forge-accent/10 text-forge-accent' : 'text-forge-muted hover:text-forge-text hover:bg-forge-border'
             }`}
           >
             {label}

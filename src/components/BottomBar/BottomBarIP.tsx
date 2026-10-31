@@ -4,8 +4,8 @@ import { API_URLS } from '../../config/apiUrls'
 import { Popup, StatRow, PopupTimestamp } from '../Popup'
 import type { PopupPos } from '../Popup'
 
-const bb    = 'text-[#e2e4ed] font-mono'
-const bbDim = 'text-[#3a3d4a] font-mono'
+const bb    = 'text-forge-text font-mono'
+const bbDim = 'text-forge-line font-mono'
 
 export function BottomBarIP() {
   const { data: ip, loading, fetchedAt } = useIPInfo()
@@ -27,7 +27,7 @@ export function BottomBarIP() {
         ref={btnRef}
         onClick={toggle}
         disabled={!ip}
-        className={!ip ? bbDim : open ? `${bb} text-[#c4af64]` : `${bb} hover:text-[#c4af64] transition-colors cursor-pointer`}
+        className={!ip ? bbDim : open ? `${bb} text-forge-accent` : `${bb} hover:text-forge-accent transition-colors cursor-pointer`}
       >
         {loading ? '···' : (ip?.ip ?? '-')}
       </button>

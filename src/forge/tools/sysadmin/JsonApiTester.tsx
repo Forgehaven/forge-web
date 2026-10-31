@@ -122,14 +122,14 @@ export function JsonApiTester() {
     return 'text-red-400'
   }
 
-  const inputClass = 'bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] font-mono'
-  const btnClass = 'px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed shrink-0'
+  const inputClass = 'bg-forge-bg border border-forge-border text-forge-text rounded px-3 py-2 text-sm focus:outline-none focus:border-forge-accent font-mono'
+  const btnClass = 'px-4 py-2 text-sm rounded bg-forge-accent/10 text-forge-accent border border-forge-accent/30 hover:bg-forge-accent/20 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed shrink-0'
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">JSON API Tester</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">JSON API Tester</h1>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-4">
 
         <div className="flex gap-2">
           <Select
@@ -156,7 +156,7 @@ export function JsonApiTester() {
         </div>
 
         <div>
-          <p className="text-xs text-[#6b7280] mb-2">Headers</p>
+          <p className="text-xs text-forge-muted mb-2">Headers</p>
           <div className="flex flex-col gap-1.5">
             {headers.map((row, i) => (
               <div key={i} className="flex gap-2 items-center">
@@ -174,11 +174,11 @@ export function JsonApiTester() {
                 />
                 <button
                   onClick={() => removeHeader(i)}
-                  className="text-[#6b7280] hover:text-[#e2e4ed] transition-colors text-lg leading-none shrink-0 cursor-pointer"
+                  className="text-forge-muted hover:text-forge-text transition-colors text-lg leading-none shrink-0 cursor-pointer"
                 >×</button>
               </div>
             ))}
-            <button onClick={addHeader} className="text-xs text-[#6b7280] hover:text-[#c4af64] transition-colors self-start cursor-pointer">
+            <button onClick={addHeader} className="text-xs text-forge-muted hover:text-forge-accent transition-colors self-start cursor-pointer">
               + Add header
             </button>
           </div>
@@ -186,7 +186,7 @@ export function JsonApiTester() {
 
         {hasBody && (
           <div>
-            <p className="text-xs text-[#6b7280] mb-2">Body <span className="text-[#3a3d4a]">(JSON)</span></p>
+            <p className="text-xs text-forge-muted mb-2">Body <span className="text-forge-line">(JSON)</span></p>
             <textarea
               className={`${inputClass} w-full resize-y min-h-[80px]`}
               value={body}
@@ -204,15 +204,15 @@ export function JsonApiTester() {
               <span className={`text-sm font-mono font-semibold ${statusColor(response.status)}`}>
                 {response.status} {response.statusText}
               </span>
-              <span className="text-xs text-[#6b7280]">{response.time}ms</span>
-              <span className="text-xs text-[#6b7280]">{(response.size / 1024).toFixed(1)} KB</span>
+              <span className="text-xs text-forge-muted">{response.time}ms</span>
+              <span className="text-xs text-forge-muted">{(response.size / 1024).toFixed(1)} KB</span>
               {!response.isJson && <span className="text-xs text-yellow-400">not JSON</span>}
-              <button onClick={copyResponse} className="text-xs text-[#6b7280] hover:text-[#c4af64] transition-colors ml-auto cursor-pointer">
+              <button onClick={copyResponse} className="text-xs text-forge-muted hover:text-forge-accent transition-colors ml-auto cursor-pointer">
                 {copied ? 'Copied!' : 'Copy'}
               </button>
             </div>
             <pre
-              className="bg-[#0f1117] rounded-lg p-4 text-xs overflow-auto max-h-[60vh] leading-relaxed"
+              className="bg-forge-bg rounded-lg p-4 text-xs overflow-auto max-h-[60vh] leading-relaxed"
               dangerouslySetInnerHTML={{ __html: response.highlighted }}
             />
           </div>

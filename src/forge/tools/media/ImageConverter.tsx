@@ -59,23 +59,23 @@ export function ImageConverter() {
 
   const fmt = FORMATS.find(f => f.mime === outMime)!
   const savings = file && outputSize ? Math.round((1 - outputSize / file.size) * 100) : null
-  const btnClass ="px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer"
+  const btnClass ="px-4 py-2 text-sm rounded bg-forge-accent/10 text-forge-accent border border-forge-accent/30 hover:bg-forge-accent/20 transition-colors cursor-pointer"
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Image Converter</h1>
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-5">
+      <h1 className="text-xl font-semibold text-forge-text mb-6">Image Converter</h1>
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-5">
 
         <FileDropZone accept="image/*" onFiles={files => acceptFile(files[0])}>
           {file ? (
             <div>
-              <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name}</p>
-              <p className="text-xs text-[#6b7280] mt-1">{(file.size / 1024).toFixed(0)} KB · {img ? `${img.naturalWidth}×${img.naturalHeight}` : '…'}</p>
+              <p className="text-sm text-forge-text font-mono truncate">{file.name}</p>
+              <p className="text-xs text-forge-muted mt-1">{(file.size / 1024).toFixed(0)} KB · {img ? `${img.naturalWidth}×${img.naturalHeight}` : '…'}</p>
             </div>
           ) : (
             <div>
-              <p className="text-sm text-[#6b7280]">Drop an image here or click to upload</p>
-              <p className="text-xs text-[#3a3d4a] mt-1">PNG, JPEG, WebP, GIF, AVIF · all processing is local</p>
+              <p className="text-sm text-forge-muted">Drop an image here or click to upload</p>
+              <p className="text-xs text-forge-line mt-1">PNG, JPEG, WebP, GIF, AVIF · all processing is local</p>
             </div>
           )}
         </FileDropZone>
@@ -84,7 +84,7 @@ export function ImageConverter() {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs text-[#6b7280] mb-1">Convert to</label>
+            <label className="block text-xs text-forge-muted mb-1">Convert to</label>
             <Select
               options={FORMATS.map(f => ({ value: f.mime, label: `${f.label}${f.lossless ? ' (lossless)' : ''}` }))}
               value={{ value: outMime, label: FORMATS.find(f => f.mime === outMime)?.label ?? outMime }}
@@ -95,24 +95,24 @@ export function ImageConverter() {
           {!fmt.lossless && (
             <div>
               <div className="flex justify-between mb-1">
-                <label className="text-xs text-[#6b7280]">Quality</label>
-                <span className="text-xs text-[#6b7280] font-mono">{Math.round(quality * 100)}%</span>
+                <label className="text-xs text-forge-muted">Quality</label>
+                <span className="text-xs text-forge-muted font-mono">{Math.round(quality * 100)}%</span>
               </div>
               <input type="range" min={0.1} max={1} step={0.05} value={quality}
                 onChange={e => setQuality(Number(e.target.value))}
-                className="w-full mt-2 accent-[#c4af64]" />
+                className="w-full mt-2 accent-forge-accent" />
             </div>
           )}
         </div>
 
-        {converting && <p className="text-xs text-[#6b7280]">Converting…</p>}
+        {converting && <p className="text-xs text-forge-muted">Converting…</p>}
 
         {outputUrl && !converting && file && (
-          <div className="flex flex-col gap-3 border-t border-[#2a2d3a] pt-4">
-            <div className="flex items-center gap-4 text-xs text-[#6b7280]">
-              <span>Original: <span className="text-[#e2e4ed]">{(file.size / 1024).toFixed(0)} KB</span></span>
+          <div className="flex flex-col gap-3 border-t border-forge-border pt-4">
+            <div className="flex items-center gap-4 text-xs text-forge-muted">
+              <span>Original: <span className="text-forge-text">{(file.size / 1024).toFixed(0)} KB</span></span>
               <span>→</span>
-              <span>Output: <span className="text-[#e2e4ed]">{(outputSize / 1024).toFixed(0)} KB</span></span>
+              <span>Output: <span className="text-forge-text">{(outputSize / 1024).toFixed(0)} KB</span></span>
               {savings !== null && (
                 <span className={savings > 0 ? 'text-green-400' : 'text-yellow-400'}>
                   {savings > 0 ? `${savings}% smaller` : `${Math.abs(savings)}% larger`}

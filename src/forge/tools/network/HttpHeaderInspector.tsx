@@ -118,12 +118,12 @@ export function HttpHeaderInspector() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">HTTP Header Inspector</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">HTTP Header Inspector</h1>
 
       <div className="mb-4">
-        <label className="block text-xs text-[#6b7280] mb-1">Raw HTTP request or response</label>
+        <label className="block text-xs text-forge-muted mb-1">Raw HTTP request or response</label>
         <textarea
-          className="bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full font-mono resize-none"
+          className="bg-forge-bg border border-forge-border text-forge-text rounded px-3 py-2 text-sm focus:outline-none focus:border-forge-accent w-full font-mono resize-none"
           rows={8}
           value={raw}
           onChange={e => setRaw(e.target.value)}
@@ -137,44 +137,44 @@ export function HttpHeaderInspector() {
 
       {parsed && (
         <div className="flex flex-col gap-4">
-          <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-4">
+          <div className="bg-forge-surface border border-forge-border rounded-lg p-4">
             {parsed.type === 'request' ? (
               <div className="flex items-baseline gap-3 font-mono text-sm">
-                <span className="text-[#c4af64] font-semibold">{parsed.method}</span>
-                <span className="text-[#e2e4ed]">{parsed.path}</span>
-                <span className="text-[#6b7280] text-xs">{parsed.httpVersion}</span>
+                <span className="text-forge-accent font-semibold">{parsed.method}</span>
+                <span className="text-forge-text">{parsed.path}</span>
+                <span className="text-forge-muted text-xs">{parsed.httpVersion}</span>
               </div>
             ) : (
               <div className="flex items-baseline gap-3 font-mono text-sm">
-                <span className="text-[#6b7280] text-xs">{parsed.httpVersion}</span>
+                <span className="text-forge-muted text-xs">{parsed.httpVersion}</span>
                 <span className={`font-semibold ${statusColor(parsed.statusCode!)}`}>{parsed.statusCode}</span>
-                <span className="text-[#e2e4ed]">{parsed.statusText}</span>
+                <span className="text-forge-text">{parsed.statusText}</span>
               </div>
             )}
           </div>
 
-          <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg overflow-hidden">
-            <div className="px-4 py-2 border-b border-[#2a2d3a] grid grid-cols-[1fr_2fr_2fr] gap-4">
-              <span className="text-xs text-[#6b7280] uppercase tracking-wider">Header</span>
-              <span className="text-xs text-[#6b7280] uppercase tracking-wider">Value</span>
-              <span className="text-xs text-[#6b7280] uppercase tracking-wider">Description</span>
+          <div className="bg-forge-surface border border-forge-border rounded-lg overflow-hidden">
+            <div className="px-4 py-2 border-b border-forge-border grid grid-cols-[1fr_2fr_2fr] gap-4">
+              <span className="text-xs text-forge-muted uppercase tracking-wider">Header</span>
+              <span className="text-xs text-forge-muted uppercase tracking-wider">Value</span>
+              <span className="text-xs text-forge-muted uppercase tracking-wider">Description</span>
             </div>
             {parsed.headers.map((h, i) => (
               <div
                 key={i}
-                className="px-4 py-2.5 border-b border-[#2a2d3a] last:border-0 grid grid-cols-[1fr_2fr_2fr] gap-4 hover:bg-[#2a2d3a]/30 transition-colors"
+                className="px-4 py-2.5 border-b border-forge-border last:border-0 grid grid-cols-[1fr_2fr_2fr] gap-4 hover:bg-forge-border/30 transition-colors"
               >
-                <span className="font-mono text-xs text-[#c4af64] break-all">{h.name}</span>
-                <span className="font-mono text-xs text-[#e2e4ed] break-all">{h.value}</span>
-                <span className="text-xs text-[#6b7280]">{h.description ?? '-'}</span>
+                <span className="font-mono text-xs text-forge-accent break-all">{h.name}</span>
+                <span className="font-mono text-xs text-forge-text break-all">{h.value}</span>
+                <span className="text-xs text-forge-muted">{h.description ?? '-'}</span>
               </div>
             ))}
           </div>
 
           {parsed.body && (
-            <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-4">
-              <p className="text-xs text-[#6b7280] mb-2">Body</p>
-              <pre className="font-mono text-xs text-[#e2e4ed] whitespace-pre-wrap break-all">{parsed.body}</pre>
+            <div className="bg-forge-surface border border-forge-border rounded-lg p-4">
+              <p className="text-xs text-forge-muted mb-2">Body</p>
+              <pre className="font-mono text-xs text-forge-text whitespace-pre-wrap break-all">{parsed.body}</pre>
             </div>
           )}
         </div>

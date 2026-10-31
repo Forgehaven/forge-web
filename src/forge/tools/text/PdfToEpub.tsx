@@ -198,31 +198,31 @@ export function PdfToEpub() {
 
   return (
     <div className="max-w-xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">PDF to EPUB</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">PDF to EPUB</h1>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-4">
 
         {/* drop zone */}
         <FileDropZone accept=".pdf" onFiles={files => acceptFile(files[0])}>
           {file ? (
             <div>
-              <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name}</p>
-              <p className="text-xs text-[#6b7280] mt-1">
+              <p className="text-sm text-forge-text font-mono truncate">{file.name}</p>
+              <p className="text-xs text-forge-muted mt-1">
                 {(file.size / 1024 / 1024).toFixed(2)} MB
                 {pageCount > 0 && ` · ${pageCount} pages`}
               </p>
             </div>
           ) : (
             <div>
-              <p className="text-sm text-[#6b7280]">Drop a PDF here or click to upload</p>
-              <p className="text-xs text-[#3a3d4a] mt-1">All processing happens locally in your browser</p>
+              <p className="text-sm text-forge-muted">Drop a PDF here or click to upload</p>
+              <p className="text-xs text-forge-line mt-1">All processing happens locally in your browser</p>
             </div>
           )}
         </FileDropZone>
 
         {/* metadata */}
         <div>
-          <label className="block text-xs text-[#6b7280] mb-1">Title</label>
+          <label className="block text-xs text-forge-muted mb-1">Title</label>
           <input
             className="forge-input"
             placeholder="Book title"
@@ -232,7 +232,7 @@ export function PdfToEpub() {
         </div>
 
         <div>
-          <label className="block text-xs text-[#6b7280] mb-1">Author <span className="text-[#3a3d4a]">(optional)</span></label>
+          <label className="block text-xs text-forge-muted mb-1">Author <span className="text-forge-line">(optional)</span></label>
           <input
             className="forge-input"
             placeholder="Author name"
@@ -244,13 +244,13 @@ export function PdfToEpub() {
         {/* progress */}
         {status === 'converting' && (
           <div>
-            <div className="flex justify-between text-xs text-[#6b7280] mb-1">
+            <div className="flex justify-between text-xs text-forge-muted mb-1">
               <span>Extracting text…</span>
               <span>{progressPct}%</span>
             </div>
-            <div className="w-full h-1.5 bg-[#2a2d3a] rounded-full overflow-hidden">
+            <div className="w-full h-1.5 bg-forge-border rounded-full overflow-hidden">
               <div
-                className="h-full bg-[#c4af64] transition-all duration-150"
+                className="h-full bg-forge-accent transition-all duration-150"
                 style={{ width: `${progressPct}%` }}
               />
             </div>
@@ -281,7 +281,7 @@ export function PdfToEpub() {
         </div>
 
         {status === 'done' && (
-          <p className="text-xs text-[#6b7280]">
+          <p className="text-xs text-forge-muted">
             Done - {pageCount} pages converted, grouped into chapters of 10.
           </p>
         )}

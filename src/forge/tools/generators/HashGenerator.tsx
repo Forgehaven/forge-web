@@ -145,12 +145,12 @@ export function HashGenerator() {
   return (
     <div className="max-w-2xl">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-semibold text-[#e2e4ed]">Hash Generator</h1>
-        <div className="flex bg-[#1a1d27] border border-[#2a2d3a] rounded overflow-hidden">
+        <h1 className="text-xl font-semibold text-forge-text">Hash Generator</h1>
+        <div className="flex bg-forge-surface border border-forge-border rounded overflow-hidden">
           {(['generate', 'lookup'] as Tab[]).map(t => (
             <button key={t} onClick={() => setTab(t)}
               className={`px-3 py-1.5 text-xs capitalize transition-colors cursor-pointer ${
-                tab === t ? 'bg-[#c4af64]/10 text-[#c4af64]' : 'text-[#6b7280] hover:text-[#e2e4ed]'
+                tab === t ? 'bg-forge-accent/10 text-forge-accent' : 'text-forge-muted hover:text-forge-text'
               }`}>
               {t}
             </button>
@@ -159,30 +159,30 @@ export function HashGenerator() {
       </div>
 
       {tab === 'generate' ? (
-        <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">
+        <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-4">
           <div>
-            <label className="block text-xs text-[#6b7280] mb-1">Input Text</label>
+            <label className="block text-xs text-forge-muted mb-1">Input Text</label>
             <input className="forge-input-mono" value={input} onChange={e => setInput(e.target.value)} placeholder="Enter text to hash..." />
           </div>
           {(['MD5', 'SHA-1', 'SHA-256', 'SHA-512'] as HashAlgo[]).map(algo => (
-            <div key={algo} className="bg-[#0f1117] border border-[#2a2d3a] rounded-lg px-4 py-3">
+            <div key={algo} className="bg-forge-bg border border-forge-border rounded-lg px-4 py-3">
               <div className="flex items-center justify-between mb-1">
-                <p className="text-xs text-[#6b7280]">{algo}</p>
+                <p className="text-xs text-forge-muted">{algo}</p>
                 {hashes[algo] && (
-                  <button onClick={() => copy(algo)} className="text-xs text-[#c4af64] hover:text-[#e2e4ed] transition-colors cursor-pointer">
+                  <button onClick={() => copy(algo)} className="text-xs text-forge-accent hover:text-forge-text transition-colors cursor-pointer">
                     {copied === algo ? 'Copied!' : 'Copy'}
                   </button>
                 )}
               </div>
-              <p className="font-mono text-xs text-[#c4af64] break-all min-h-[1rem]">{input ? hashes[algo] : ''}</p>
+              <p className="font-mono text-xs text-forge-accent break-all min-h-[1rem]">{input ? hashes[algo] : ''}</p>
             </div>
           ))}
         </div>
       ) : (
         <div className="flex flex-col gap-4">
-          <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">
+          <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-4">
             <div>
-              <label className="block text-xs text-[#6b7280] mb-1">Hash to look up</label>
+              <label className="block text-xs text-forge-muted mb-1">Hash to look up</label>
               <input
                 className="forge-input-mono"
                 value={lookupHash}
@@ -190,7 +190,7 @@ export function HashGenerator() {
                 placeholder="Paste an MD5, SHA-1, SHA-256 or SHA-512 hash..."
               />
               {lookupHash.trim() && (
-                <p className="text-xs text-[#6b7280] mt-1">
+                <p className="text-xs text-forge-muted mt-1">
                   {candidates.length > 0
                     ? `Detected: ${candidates.join(', ')}`
                     : 'Unknown hash format'}
@@ -199,8 +199,8 @@ export function HashGenerator() {
             </div>
 
             <div>
-              <label className="block text-xs text-[#6b7280] mb-1">
-                Custom wordlist <span className="text-[#3a3d4a]">(one word per line, appended to built-in list)</span>
+              <label className="block text-xs text-forge-muted mb-1">
+                Custom wordlist <span className="text-forge-line">(one word per line, appended to built-in list)</span>
               </label>
               <textarea
                 className="forge-input-mono resize-none"
@@ -214,7 +214,7 @@ export function HashGenerator() {
             <button
               onClick={crack}
               disabled={!lookupHash.trim() || candidates.length === 0 || cracking}
-              className="px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed"
+              className="px-4 py-2 text-sm rounded bg-forge-accent/10 text-forge-accent border border-forge-accent/30 hover:bg-forge-accent/20 transition-colors disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed"
             >
               {cracking ? 'Searching…' : 'Search Wordlist'}
             </button>
@@ -227,14 +227,14 @@ export function HashGenerator() {
                   <span className="text-xs text-green-400/60">({crackResult.algo})</span>
                 </div>
               ) : (
-                <div className="px-4 py-3 rounded-lg border bg-[#2a2d3a]/40 border-[#2a2d3a] text-[#6b7280] text-sm">
+                <div className="px-4 py-3 rounded-lg border bg-forge-border/40 border-forge-border text-forge-muted text-sm">
                   Not found in wordlist
                 </div>
               )
             )}
           </div>
 
-          <p className="text-xs text-[#3a3d4a] px-1">
+          <p className="text-xs text-forge-line px-1">
             Dictionary attack against common passwords. Hashes are not reversible - only succeeds if the original input is in the wordlist.
           </p>
         </div>

@@ -68,22 +68,22 @@ export function ForgeLayout({ title, homePath, sidebar: Sidebar, settings: Setti
       />
 
       <div className="relative flex flex-col flex-1 overflow-hidden min-w-0">
-        <header className="flex md:hidden items-center px-4 h-12 bg-[#1a1d27] border-b border-[#2a2d3a] shrink-0">
+        <header className="flex md:hidden items-center px-4 h-12 bg-forge-surface border-b border-forge-border shrink-0">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="text-[#9ca3af] hover:text-[#e2e4ed] transition-colors cursor-pointer"
+            className="text-forge-dim hover:text-forge-text transition-colors cursor-pointer"
             aria-label="Open menu"
           >
             <HamburgerIcon />
           </button>
-          <Link to={homePath} className="absolute left-1/2 -translate-x-1/2 text-[#e2e4ed] font-semibold text-base tracking-wide hover:opacity-75 transition-opacity">
-            Forge<span className="text-[#c4af64]">{title}</span>
+          <Link to={homePath} className="absolute left-1/2 -translate-x-1/2 text-forge-text font-semibold text-base tracking-wide hover:opacity-75 transition-opacity">
+            Forge<span className="text-forge-accent">{title}</span>
           </Link>
         </header>
 
         {headerExtra}
 
-        <main className="flex-1 overflow-y-auto bg-[#0f1117]">
+        <main className="flex-1 overflow-y-auto bg-forge-bg">
           {/* h-full lets pages opt into internal scrolling (h-full flex column +
               a fill DataTable); auto-height pages still overflow main as before. */}
           <div className="px-5 py-6 md:px-8 md:py-8 h-full">

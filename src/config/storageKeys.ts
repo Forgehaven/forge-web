@@ -4,6 +4,7 @@ export const STORAGE_KEYS = {
   collapsedSections:       'forgetools_collapsed_sections',
   gamesCollapsedSections:  'forgegames_collapsed_sections',
   tempUnit:                'forgetools_temp_unit',
+  theme:                   'forge_theme',
   ipCache:                 'forge_ip_v2',
   ffxiSpellTracker:        'forgegames_ffxi_spelltracker_v1',
   // Value keeps the old teleportcost slug so existing browsers keep their data.
@@ -24,4 +25,5 @@ export const STORAGE_KEYS = {
   ffxiExpCamps:            'forgegames_ffxi_expcamps_v1',
   uwPlanner:               'forgegames_uw_planner_v1',
   uwOnlyBuyable:           'forgegames_uw_onlybuyable_v1',
+  uwFavourites:            'forgegames_uw_favourites_v1',
 } as const

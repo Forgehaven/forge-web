@@ -110,17 +110,17 @@ export function ImgColourPalette() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Img Colour Palette</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">Img Colour Palette</h1>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-5">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-5">
 
         <FileDropZone accept="image/*" onFiles={files => acceptFile(files[0])}>
           {file ? (
-            <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name}</p>
+            <p className="text-sm text-forge-text font-mono truncate">{file.name}</p>
           ) : (
             <div>
-              <p className="text-sm text-[#6b7280]">Drop an image here or click to upload</p>
-              <p className="text-xs text-[#3a3d4a] mt-1">PNG, JPG, WEBP · all processing is local</p>
+              <p className="text-sm text-forge-muted">Drop an image here or click to upload</p>
+              <p className="text-xs text-forge-line mt-1">PNG, JPG, WEBP · all processing is local</p>
             </div>
           )}
         </FileDropZone>
@@ -130,15 +130,15 @@ export function ImgColourPalette() {
         {imgEl && (
           <>
             <div className="flex items-center gap-4">
-              <label className="text-xs text-[#6b7280] shrink-0">Colours</label>
+              <label className="text-xs text-forge-muted shrink-0">Colours</label>
               <input type="range" min={3} max={12} value={count}
                 onChange={e => setCount(Number(e.target.value))}
-                className="flex-1 accent-[#c4af64]" />
-              <span className="text-xs text-[#6b7280] font-mono w-4">{count}</span>
+                className="flex-1 accent-forge-accent" />
+              <span className="text-xs text-forge-muted font-mono w-4">{count}</span>
             </div>
 
             {imgUrl && (
-              <img src={imgUrl} alt="Uploaded" className="w-full max-h-48 object-contain rounded bg-[#0f1117]" />
+              <img src={imgUrl} alt="Uploaded" className="w-full max-h-48 object-contain rounded bg-forge-bg" />
             )}
 
             {palette.length > 0 && (
@@ -169,14 +169,14 @@ export function ImgColourPalette() {
                   const hex = toHex(rgb)
                   return (
                     <div key={i} className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded shrink-0 border border-[#2a2d3a]" style={{ background: hex }} />
+                      <div className="w-8 h-8 rounded shrink-0 border border-forge-border" style={{ background: hex }} />
                       <button
                         onClick={() => copyHex(hex)}
-                        className="text-sm font-mono text-[#e2e4ed] hover:text-[#c4af64] transition-colors cursor-pointer"
+                        className="text-sm font-mono text-forge-text hover:text-forge-accent transition-colors cursor-pointer"
                       >
                         {copied === hex ? 'Copied!' : hex}
                       </button>
-                      <span className="text-xs text-[#6b7280]">rgb({rgb[0]}, {rgb[1]}, {rgb[2]})</span>
+                      <span className="text-xs text-forge-muted">rgb({rgb[0]}, {rgb[1]}, {rgb[2]})</span>
                     </div>
                   )
                 })}

@@ -12,7 +12,7 @@ export function FetchedAtLink({ date, url, className = '' }: FetchedAtLinkProps)
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className={`text-[10px] text-[#6b7280] font-mono hover:text-[#c4af64] transition-colors ${className}`}
+      className={`text-[10px] text-forge-muted font-mono hover:text-forge-accent transition-colors ${className}`}
     >
       {formatFetchedAt(date)}
     </a>

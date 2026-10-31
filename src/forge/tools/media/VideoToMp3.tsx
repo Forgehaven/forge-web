@@ -63,19 +63,19 @@ export function VideoToMp3() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Video to MP3</h1>
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-5">
+      <h1 className="text-xl font-semibold text-forge-text mb-6">Video to MP3</h1>
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-5">
 
         <FileDropZone accept="video/*" onFiles={files => acceptFile(files[0])}>
           {file ? (
             <div>
-              <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name}</p>
-              <p className="text-xs text-[#6b7280] mt-1">{(file.size / 1024 / 1024).toFixed(1)} MB</p>
+              <p className="text-sm text-forge-text font-mono truncate">{file.name}</p>
+              <p className="text-xs text-forge-muted mt-1">{(file.size / 1024 / 1024).toFixed(1)} MB</p>
             </div>
           ) : (
             <div>
-              <p className="text-sm text-[#6b7280]">Drop a video file here or click to upload</p>
-              <p className="text-xs text-[#3a3d4a] mt-1">MP4, WebM, MOV, MKV · audio track extracted as MP3 · all processing is local</p>
+              <p className="text-sm text-forge-muted">Drop a video file here or click to upload</p>
+              <p className="text-xs text-forge-line mt-1">MP4, WebM, MOV, MKV · audio track extracted as MP3 · all processing is local</p>
             </div>
           )}
         </FileDropZone>
@@ -85,7 +85,7 @@ export function VideoToMp3() {
         {file && (
           <>
             <div>
-              <label className="block text-xs text-[#6b7280] mb-1">Output quality</label>
+              <label className="block text-xs text-forge-muted mb-1">Output quality</label>
               <Select
                 options={bitrateOptions}
                 value={bitrateOptions.find(o => o.value === String(bitrate)) ?? null}
@@ -98,16 +98,16 @@ export function VideoToMp3() {
               <button onClick={convert} disabled={isBusy} className="forge-btn-accent">
                 {converting ? 'Extracting…' : ffmpegLoading ? 'Loading FFmpeg…' : 'Extract MP3'}
               </button>
-              {isBusy && <button onClick={cancel} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">Cancel</button>}
+              {isBusy && <button onClick={cancel} className="text-xs text-forge-muted hover:text-forge-text transition-colors cursor-pointer">Cancel</button>}
             </div>
 
             {ffmpegLoading && <ProgressBar label="Loading FFmpeg (~24 MB, cached after first use)…" pct={ffmpegProgress} />}
             {converting && <ProgressBar label="Extracting audio…" pct={convProgress} />}
 
             {outputUrl && (
-              <div className="flex gap-3 items-center border-t border-[#2a2d3a] pt-4">
+              <div className="flex gap-3 items-center border-t border-forge-border pt-4">
                 <a href={outputUrl} download={outputName} className="forge-btn-accent">Download {outputName}</a>
-                <span className="text-xs text-[#6b7280]">{(outputSize / 1024 / 1024).toFixed(2)} MB · all processing is local</span>
+                <span className="text-xs text-forge-muted">{(outputSize / 1024 / 1024).toFixed(2)} MB · all processing is local</span>
               </div>
             )}
           </>

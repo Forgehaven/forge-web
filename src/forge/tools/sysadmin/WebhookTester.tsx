@@ -94,13 +94,13 @@ export function WebhookTester() {
     copy(tryPretty(response.body))
   }
 
-  const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] font-mono"
+  const inputClass = "bg-forge-bg border border-forge-border text-forge-text rounded px-3 py-2 text-sm focus:outline-none focus:border-forge-accent font-mono"
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Webhook Tester</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">Webhook Tester</h1>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-4">
 
         {/* URL + method */}
         <div className="flex gap-2">
@@ -128,7 +128,7 @@ export function WebhookTester() {
         <div>
           <button
             onClick={() => setShowHeaders(v => !v)}
-            className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer"
+            className="text-xs text-forge-muted hover:text-forge-text transition-colors cursor-pointer"
           >
             {showHeaders ? '▲' : '▶'} Headers
           </button>
@@ -145,7 +145,7 @@ export function WebhookTester() {
         {/* Body */}
         {hasBody && (
           <div>
-            <label className="block text-xs text-[#6b7280] mb-1">Body</label>
+            <label className="block text-xs text-forge-muted mb-1">Body</label>
             <textarea
               value={body}
               onChange={e => setBody(e.target.value)}
@@ -164,22 +164,22 @@ export function WebhookTester() {
 
         {/* Response */}
         {response && (
-          <div className="border-t border-[#2a2d3a] pt-4 flex flex-col gap-3">
+          <div className="border-t border-forge-border pt-4 flex flex-col gap-3">
             <div className="flex items-center gap-3">
               <span className={`text-sm font-mono font-semibold ${statusColor(response.status)}`}>
                 {response.status} {response.statusText}
               </span>
-              <span className="text-xs text-[#3a3d4a]">{response.ms}ms</span>
+              <span className="text-xs text-forge-line">{response.ms}ms</span>
             </div>
 
             {Object.keys(response.headers).length > 0 && (
               <div>
-                <p className="text-xs text-[#6b7280] mb-1">Response Headers</p>
-                <div className="bg-[#0f1117] rounded p-3 max-h-32 overflow-y-auto">
+                <p className="text-xs text-forge-muted mb-1">Response Headers</p>
+                <div className="bg-forge-bg rounded p-3 max-h-32 overflow-y-auto">
                   {Object.entries(response.headers).map(([k, v]) => (
                     <div key={k} className="text-xs font-mono">
-                      <span className="text-[#6b7280]">{k}: </span>
-                      <span className="text-[#9ca3af]">{v}</span>
+                      <span className="text-forge-muted">{k}: </span>
+                      <span className="text-forge-dim">{v}</span>
                     </div>
                   ))}
                 </div>
@@ -189,12 +189,12 @@ export function WebhookTester() {
             {response.body && (
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <p className="text-xs text-[#6b7280]">Response Body</p>
-                  <button onClick={copyBody} className="text-xs text-[#6b7280] hover:text-[#c4af64] transition-colors cursor-pointer">
+                  <p className="text-xs text-forge-muted">Response Body</p>
+                  <button onClick={copyBody} className="text-xs text-forge-muted hover:text-forge-accent transition-colors cursor-pointer">
                     {copiedBody ? 'Copied!' : 'Copy'}
                   </button>
                 </div>
-                <pre className="bg-[#0f1117] rounded p-3 text-xs font-mono text-[#c4af64] whitespace-pre-wrap break-all max-h-64 overflow-y-auto">
+                <pre className="bg-forge-bg rounded p-3 text-xs font-mono text-forge-accent whitespace-pre-wrap break-all max-h-64 overflow-y-auto">
                   {tryPretty(response.body)}
                 </pre>
               </div>

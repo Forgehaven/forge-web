@@ -25,23 +25,23 @@ function SlotRow({ label, value, options, attunement, onChange }: {
   const spell = options.find(s => key(s) === value)
   const incant = spell && attunement ? spell.incant.replace(/<[Tt]ype>/g, attunement) : spell?.incant
   return (
-    <li className="py-1.5 border-b border-[#2a2d3a] last:border-b-0">
+    <li className="py-1.5 border-b border-forge-border last:border-b-0">
       <div className="flex items-center gap-2">
-        <span className="w-16 text-[11px] text-[#6b7280]">{label}</span>
+        <span className="w-16 text-[11px] text-forge-muted">{label}</span>
         <select className="forge-input !py-1 text-xs flex-1" value={spell ? value : ''} onChange={e => onChange(e.target.value)}>
           <option value="">Empty slot</option>
           {options.map(s => <option key={key(s)} value={key(s)}>{s.name} ({s.sphere})</option>)}
         </select>
         {spell && (
-          <button className="text-xs text-[#6b7280] hover:text-[#e2e4ed] cursor-pointer w-10" onClick={() => setOpen(o => !o)}>
+          <button className="text-xs text-forge-muted hover:text-forge-text cursor-pointer w-10" onClick={() => setOpen(o => !o)}>
             {open ? 'less' : 'more'}
           </button>
         )}
       </div>
       {spell && (
-        <p className="ml-18 mt-1 text-[11px] italic text-[#c4af64]/80">"{incant}"</p>
+        <p className="ml-18 mt-1 text-[11px] italic text-forge-accent/80">"{incant}"</p>
       )}
-      {spell && open && <Prose text={spell.desc} className="ml-18 mt-1 text-xs text-[#9ca3af] leading-relaxed" />}
+      {spell && open && <Prose text={spell.desc} className="ml-18 mt-1 text-xs text-forge-dim leading-relaxed" />}
     </li>
   )
 }
@@ -51,9 +51,9 @@ function Section({ title, sub, children }: { title: string; sub: string; childre
   const [open, setOpen] = useState(false)
   return (
     <section className="forge-card !p-3">
-      <h3 className="flex items-center gap-1.5 text-xs font-semibold text-[#c4af64] cursor-pointer" {...toggleProps(open, () => setOpen(o => !o))}>
-        <span className={`text-[10px] text-[#6b7280] transition-transform ${open ? 'rotate-90' : ''}`}>▸</span>
-        {title} <span className="text-[#6b7280] font-normal">· {sub}</span>
+      <h3 className="flex items-center gap-1.5 text-xs font-semibold text-forge-accent cursor-pointer" {...toggleProps(open, () => setOpen(o => !o))}>
+        <span className={`text-[10px] text-forge-muted transition-transform ${open ? 'rotate-90' : ''}`}>▸</span>
+        {title} <span className="text-forge-muted font-normal">· {sub}</span>
       </h3>
       {open && <div className="mt-1">{children}</div>}
     </section>
@@ -71,12 +71,12 @@ export function Spellbook({ build, ev, setBuild }: Props) {
   const paragon = paragonGift(build, ev)
 
   if (!schools.length && !paragon) {
-    return <p className="text-sm text-[#6b7280]">Buy a sphere and pick its school on the Magic tab, then add spell slots.</p>
+    return <p className="text-sm text-forge-muted">Buy a sphere and pick its school on the Magic tab, then add spell slots.</p>
   }
 
   return (
     <div className="flex flex-col gap-3">
-      <p className="text-xs text-[#6b7280]">Spheres: <span className="text-[#e2e4ed]">{schools.join(', ') || 'none'}</span></p>
+      <p className="text-xs text-forge-muted">Spheres: <span className="text-forge-text">{schools.join(', ') || 'none'}</span></p>
       {Array.from({ length: 9 }, (_, i) => i + 1).map(circle => {
         const n = ev.final.circles[circle]
         if (!n) return null
@@ -112,7 +112,7 @@ export function Spellbook({ build, ev, setBuild }: Props) {
         </Section>
       )}
       {ev.final.counts.get(SPELL_SLOT) === undefined && !paragon && (
-        <p className="text-xs text-[#6b7280]">No spell slots yet.</p>
+        <p className="text-xs text-forge-muted">No spell slots yet.</p>
       )}
     </div>
   )

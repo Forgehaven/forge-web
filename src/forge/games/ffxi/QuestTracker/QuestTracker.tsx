@@ -68,7 +68,7 @@ function WikiLink({ page, title }: { page: string; title: string }) {
       href={wikiUrl(page)}
       target="_blank"
       rel="noopener noreferrer"
-      className="text-[#6b7280] hover:text-[#e2e4ed] transition-colors text-xs"
+      className="text-forge-muted hover:text-forge-text transition-colors text-xs"
       title={`${title} on HorizonXI wiki`}
     >
       ↗
@@ -146,27 +146,27 @@ export function QuestTracker() {
       {/* Title + next reset */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
-            Quest <span className="text-[#c4af64]">Tracker</span>
+          <h1 className="text-xl font-semibold text-forge-text tracking-wide">
+            Quest <span className="text-forge-accent">Tracker</span>
           </h1>
-          <p className="text-sm text-[#6b7280] mt-0.5">FFXI · Horizon · weekly repeatables</p>
+          <p className="text-sm text-forge-muted mt-0.5">FFXI · Horizon · weekly repeatables</p>
         </div>
         <div className="text-right mt-1 shrink-0">
-          <p className="text-[10px] text-[#6b7280] uppercase tracking-wider">Next reset</p>
-          <p className="text-xs text-[#c4af64] tabular-nums">{formatNextReset()}</p>
+          <p className="text-[10px] text-forge-muted uppercase tracking-wider">Next reset</p>
+          <p className="text-xs text-forge-accent tabular-nums">{formatNextReset()}</p>
         </div>
       </div>
 
       {/* Eco-Warrior */}
-      <div className="rounded-lg border border-[#2a2d3a] overflow-hidden">
-        <div className="flex items-center justify-between gap-4 px-4 py-2.5 border-b border-[#2a2d3a] bg-[#1a1d27]/40 flex-wrap">
+      <div className="rounded-lg border border-forge-border overflow-hidden">
+        <div className="flex items-center justify-between gap-4 px-4 py-2.5 border-b border-forge-border bg-forge-surface/40 flex-wrap">
           <div>
-            <h2 className="text-sm font-semibold text-[#e2e4ed]">Eco-Warrior</h2>
-            <p className="text-xs text-[#6b7280] mt-0.5">
+            <h2 className="text-sm font-semibold text-forge-text">Eco-Warrior</h2>
+            <p className="text-xs text-forge-muted mt-0.5">
               One per conquest week · all three before repeats · 10,000 gil each
             </p>
           </div>
-          <span className={`text-xs shrink-0 ${ecoDoneThisWeek ? 'text-[#4ade80]' : 'text-[#c4af64]'}`}>
+          <span className={`text-xs shrink-0 ${ecoDoneThisWeek ? 'text-[#4ade80]' : 'text-forge-accent'}`}>
             {ecoDoneThisWeek ? 'Done this week' : '1 available this week'}
           </span>
         </div>
@@ -180,7 +180,7 @@ export function QuestTracker() {
                 <tr
                   key={quest.key}
                   className={`border-b last:border-0 ${
-                    done ? 'bg-[#166534]/10 border-[#166534]/25' : 'border-[#1a1d27]'
+                    done ? 'bg-[#166534]/10 border-[#166534]/25' : 'border-forge-surface'
                   }`}
                 >
                   <td className={`pl-4 pr-2 py-2.5 w-10 border-l-2 ${done ? 'border-l-[#22c55e]/70' : 'border-l-transparent'}`}>
@@ -189,7 +189,7 @@ export function QuestTracker() {
                       checked={done}
                       onChange={() => toggleEco(quest.key)}
                       aria-label={`Eco-Warrior ${quest.nation.name}`}
-                      className="w-3.5 h-3.5 cursor-pointer accent-[#c4af64]"
+                      className="w-3.5 h-3.5 cursor-pointer accent-forge-accent"
                     />
                   </td>
                   <td className="py-2.5 pr-3">
@@ -202,8 +202,8 @@ export function QuestTracker() {
                       {thisWeek && <span className="text-[10px] text-[#4ade80]">this week</span>}
                     </span>
                   </td>
-                  <td className="py-2.5 pr-3 text-xs text-[#9ca3af] hidden sm:table-cell">{quest.zone}</td>
-                  <td className="py-2.5 pr-3 text-xs text-[#6b7280] hidden sm:table-cell">{quest.target}</td>
+                  <td className="py-2.5 pr-3 text-xs text-forge-dim hidden sm:table-cell">{quest.zone}</td>
+                  <td className="py-2.5 pr-3 text-xs text-forge-muted hidden sm:table-cell">{quest.target}</td>
                   <td className="py-2.5 pr-4 text-right w-8">
                     <WikiLink page={quest.wikiPage} title={`Eco-Warrior (${quest.nation.name})`} />
                   </td>
@@ -215,15 +215,15 @@ export function QuestTracker() {
       </div>
 
       {/* Highwind */}
-      <div className="rounded-lg border border-[#2a2d3a] overflow-hidden">
-        <div className="flex items-center justify-between gap-4 px-4 py-2.5 border-b border-[#2a2d3a] bg-[#1a1d27]/40 flex-wrap">
+      <div className="rounded-lg border border-forge-border overflow-hidden">
+        <div className="flex items-center justify-between gap-4 px-4 py-2.5 border-b border-forge-border bg-forge-surface/40 flex-wrap">
           <div>
-            <h2 className="text-sm font-semibold text-[#e2e4ed]">Highwind</h2>
-            <p className="text-xs text-[#6b7280] mt-0.5">
+            <h2 className="text-sm font-semibold text-forge-text">Highwind</h2>
+            <p className="text-xs text-forge-muted mt-0.5">
               Airship NM · 3,000 gil + 3,000 exp · once per conquest tally
             </p>
           </div>
-          <span className={`text-xs shrink-0 ${highwindDone ? 'text-[#4ade80]' : 'text-[#c4af64]'}`}>
+          <span className={`text-xs shrink-0 ${highwindDone ? 'text-[#4ade80]' : 'text-forge-accent'}`}>
             {highwindDone ? 'Done this week' : 'Available'}
           </span>
         </div>
@@ -235,10 +235,10 @@ export function QuestTracker() {
             checked={highwindDone}
             onChange={toggleHighwind}
             aria-label="Highwind killed this week"
-            className="w-3.5 h-3.5 cursor-pointer accent-[#c4af64]"
+            className="w-3.5 h-3.5 cursor-pointer accent-forge-accent"
           />
-          <span className="text-sm text-[#e2e4ed] flex-1">Killed this week</span>
-          <span className="text-xs text-[#6b7280] hidden sm:inline">respawns 4h per airship</span>
+          <span className="text-sm text-forge-text flex-1">Killed this week</span>
+          <span className="text-xs text-forge-muted hidden sm:inline">respawns 4h per airship</span>
           <WikiLink page="Highwind" title="Highwind" />
         </div>
       </div>

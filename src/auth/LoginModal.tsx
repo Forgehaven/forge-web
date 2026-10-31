@@ -47,8 +47,8 @@ export function LoginModal({ open, onClose }: { open: boolean; onClose: () => vo
                 />
               )}
               <div className="min-w-0 flex-1">
-                <p className="text-sm text-[#e2e4ed] truncate">{user.username}</p>
-                <p className="text-xs text-[#6b7280] truncate">{user.discord_id}</p>
+                <p className="text-sm text-forge-text truncate">{user.username}</p>
+                <p className="text-xs text-forge-muted truncate">{user.discord_id}</p>
               </div>
               <button
                 onClick={() => logout()}
@@ -59,27 +59,27 @@ export function LoginModal({ open, onClose }: { open: boolean; onClose: () => vo
             </div>
 
             {/* Tools */}
-            <div className="border-t border-[#2a2d3a] pt-3 space-y-1">
-              <p className="text-xs text-[#6b7280] uppercase tracking-widest">Tools</p>
-              <p className="text-xs text-[#9ca3af] leading-relaxed">
+            <div className="border-t border-forge-border pt-3 space-y-1">
+              <p className="text-xs text-forge-muted uppercase tracking-widest">Tools</p>
+              <p className="text-xs text-forge-dim leading-relaxed">
                 Nothing you do in Tools is stored on our servers. Everything runs locally in your browser.
                 If that ever changes, it'll be clearly flagged and almost certainly optional.
               </p>
             </div>
 
             {/* Games */}
-            <div className="border-t border-[#2a2d3a] pt-3 space-y-1">
-              <p className="text-xs text-[#6b7280] uppercase tracking-widest">Games</p>
+            <div className="border-t border-forge-border pt-3 space-y-1">
+              <p className="text-xs text-forge-muted uppercase tracking-widest">Games</p>
               <GamesSection user={user} />
             </div>
           </div>
         ) : (
           <div className="space-y-4">
             <div className="space-y-1.5">
-              <p className="text-sm text-[#e2e4ed]">Sign in to unlock:</p>
-              <ul className="text-xs text-[#9ca3af] space-y-1 list-disc list-inside">
+              <p className="text-sm text-forge-text">Sign in to unlock:</p>
+              <ul className="text-xs text-forge-dim space-y-1 list-disc list-inside">
                 <li>
-                  Save &amp; sync your <span className="text-[#e2e4ed]">/games</span> trackers across devices:
+                  Save &amp; sync your <span className="text-forge-text">/games</span> trackers across devices:
                   FFXI Spell Tracker, Faction Conquest, Clamming Tracker, and more (today they live only in this browser).
                 </li>
                 <li>Share entries with your guild, like the week's Faction Conquest map everyone can reference.</li>
@@ -91,7 +91,7 @@ export function LoginModal({ open, onClose }: { open: boolean; onClose: () => vo
             >
               Login with Discord
             </button>
-            <p className="text-xs text-[#6b7280] leading-relaxed border-t border-[#2a2d3a] pt-3">
+            <p className="text-xs text-forge-muted leading-relaxed border-t border-forge-border pt-3">
               Login is optional. Tools and trackers work locally in your browser.
             </p>
           </div>
@@ -147,12 +147,12 @@ function FfxiCharacters() {
 
   return (
     <div className="space-y-2 pb-1">
-      <p className="text-xs text-[#9ca3af] leading-relaxed">
+      <p className="text-xs text-forge-dim leading-relaxed">
         Register your HorizonXI characters (up to 3) to sync your FFXI tool data across devices.
         The tools keep working without an account, saved in this browser only.
       </p>
 
-      {loading && <p className="text-xs text-[#6b7280]">Loading characters…</p>}
+      {loading && <p className="text-xs text-forge-muted">Loading characters…</p>}
 
       <div className="space-y-1">
         {characters.map(c => (
@@ -165,12 +165,12 @@ function FfxiCharacters() {
                 onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
               />
             )}
-            <span className="text-sm text-[#e2e4ed] flex-1 truncate">{c.name}</span>
+            <span className="text-sm text-forge-text flex-1 truncate">{c.name}</span>
             <ConfirmButton
               label="Remove"
               confirmPrompt="Delete saved data?"
               onConfirm={() => remove(c.id)}
-              className="text-xs text-[#6b7280] hover:text-red-400"
+              className="text-xs text-forge-muted hover:text-red-400"
             />
           </div>
         ))}
@@ -184,12 +184,12 @@ function FfxiCharacters() {
             onChange={e => setName(e.target.value)}
             onKeyDown={e => { if (e.key === 'Enter') add() }}
             placeholder="Character name"
-            className="px-2 py-1 text-xs rounded border bg-[#0f1117] text-[#e2e4ed] border-[#2a2d3a] hover:border-[#3a4060] focus:border-[#4a5070] focus:outline-none flex-1 min-w-0"
+            className="px-2 py-1 text-xs rounded border bg-forge-bg text-forge-text border-forge-border hover:border-[#3a4060] focus:border-[#4a5070] focus:outline-none flex-1 min-w-0"
           />
           <button
             onClick={add}
             disabled={!name.trim() || adding}
-            className="text-xs px-3 py-1 rounded border border-[#2a2d3a] text-[#6b7280] hover:text-[#e2e4ed] hover:border-[#3a4060] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors shrink-0"
+            className="text-xs px-3 py-1 rounded border border-forge-border text-forge-muted hover:text-forge-text hover:border-[#3a4060] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors shrink-0"
           >
             {adding ? 'Adding…' : 'Add'}
           </button>
@@ -216,13 +216,13 @@ function GuildAccess({ user }: { user: AuthUser }) {
   const guilds = Object.entries(user.guilds)
   return (
     <div className="pb-1 space-y-2">
-      <p className="text-sm text-[#e2e4ed]">Guild access</p>
+      <p className="text-sm text-forge-text">Guild access</p>
       {guilds.length === 0 && (
-        <p className="text-xs text-[#9ca3af]">No guild status yet. Try logging in again.</p>
+        <p className="text-xs text-forge-dim">No guild status yet. Try logging in again.</p>
       )}
       {guilds.map(([slug, status]) => (
         <div key={slug} className="space-y-1">
-          <p className="text-xs text-[#6b7280]">{titleCase(slug)}</p>
+          <p className="text-xs text-forge-muted">{titleCase(slug)}</p>
           <div className="flex flex-wrap gap-2">
             <AccessChip ok={status.is_member} label="Member" />
           </div>

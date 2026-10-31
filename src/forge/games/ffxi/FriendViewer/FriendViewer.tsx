@@ -349,25 +349,25 @@ export function FriendViewer() {
 
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
-            Friend <span className="text-[#c4af64]">Viewer</span>
+          <h1 className="text-xl font-semibold text-forge-text tracking-wide">
+            Friend <span className="text-forge-accent">Viewer</span>
           </h1>
-          <p className="text-sm text-[#6b7280] mt-0.5">FFXI · Horizon</p>
+          <p className="text-sm text-forge-muted mt-0.5">FFXI · Horizon</p>
         </div>
         <div className="flex items-center gap-3 mt-1 shrink-0">
           <button
             onClick={exportNames}
-            className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer"
+            className="text-xs text-forge-muted hover:text-forge-text transition-colors cursor-pointer"
           >
             {copied ? 'Copied!' : 'Export'}
           </button>
           <button
             onClick={() => setImportOpen(v => !v)}
-            className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer"
+            className="text-xs text-forge-muted hover:text-forge-text transition-colors cursor-pointer"
           >
             Import
           </button>
-          <span className="text-[#2a2d3a]">|</span>
+          <span className="text-forge-border">|</span>
           <ConfirmButton label="Reset all" confirmPrompt="Reset all?" onConfirm={resetAll} />
         </div>
       </div>
@@ -420,22 +420,22 @@ export function FriendViewer() {
                     onTouchStart={e => handleChipTouchStart(e, idx)}
                     onTouchMove={handleChipTouchMove}
                     onTouchEnd={handleChipTouchEnd}
-                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs border bg-[#1a1d27] text-[#9ca3af] cursor-grab active:cursor-grabbing select-none transition-opacity"
+                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs border bg-forge-surface text-forge-dim cursor-grab active:cursor-grabbing select-none transition-opacity"
                     style={{
                       borderColor: isDropTarget ? '#c4af64' : '#2a2d3a',
                       opacity: isBeingDragged ? 0.35 : 1,
                     }}
                   >
                     <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${
-                      status === 'loading' ? 'bg-[#6b7280] animate-pulse' :
+                      status === 'loading' ? 'bg-forge-muted animate-pulse' :
                       status === 'error'   ? 'bg-[#ef4444]' :
                       hasFetched          ? 'bg-[#22c55e]' :
-                                            'bg-[#2a2d3a]'
+                                            'bg-forge-border'
                     }`} />
                     {name}
                     <button
                       onClick={() => removeName(name)}
-                      className="text-[#4b5563] hover:text-[#e2e4ed] transition-colors cursor-pointer leading-none ml-0.5"
+                      className="text-forge-faint hover:text-forge-text transition-colors cursor-pointer leading-none ml-0.5"
                     >
                       ×
                     </button>
@@ -462,35 +462,35 @@ export function FriendViewer() {
 
       {saved.names.length === 0 && (
         <div className="forge-card flex items-center justify-center py-10">
-          <p className="text-sm text-[#6b7280]">Add character names above then click Fetch All.</p>
+          <p className="text-sm text-forge-muted">Add character names above then click Fetch All.</p>
         </div>
       )}
 
       {hasData && (
         <>
           {needsRefresh && (
-            <div className="forge-card px-4 py-3 text-sm text-[#c4af64] border border-[#c4af64]/30 bg-[#c4af64]/5">
+            <div className="forge-card px-4 py-3 text-sm text-forge-accent border border-forge-accent/30 bg-forge-accent/5">
               Character data needs to be refreshed. Click <strong>Fetch All</strong> above to load job data.
             </div>
           )}
-          <div className="overflow-x-auto rounded-lg border border-[#2a2d3a]">
+          <div className="overflow-x-auto rounded-lg border border-forge-border">
             {Object.keys(diff).length > 0 && (
-              <div className="flex justify-end px-3 py-1.5 border-b border-[#2a2d3a] bg-[#1a1d27]">
-                <button onClick={() => setDiff({})} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">
+              <div className="flex justify-end px-3 py-1.5 border-b border-forge-border bg-forge-surface">
+                <button onClick={() => setDiff({})} className="text-xs text-forge-muted hover:text-forge-text transition-colors cursor-pointer">
                   Clear Diff
                 </button>
               </div>
             )}
             <table className="min-w-full text-sm border-collapse">
               <thead>
-                <tr className="bg-[#1a1d27] border-b border-[#2a2d3a]">
-                  <th className="sticky left-0 z-10 bg-[#1a1d27] px-3 py-2.5 text-left text-xs text-[#6b7280] uppercase tracking-widest font-semibold w-32 min-w-[8rem] border-r border-[#2a2d3a]">
+                <tr className="bg-forge-surface border-b border-forge-border">
+                  <th className="sticky left-0 z-10 bg-forge-surface px-3 py-2.5 text-left text-xs text-forge-muted uppercase tracking-widest font-semibold w-32 min-w-[8rem] border-r border-forge-border">
                     Character
                   </th>
-                  <th className="px-2 py-2.5 text-center text-xs text-[#6b7280] uppercase tracking-widest font-semibold w-12">
+                  <th className="px-2 py-2.5 text-center text-xs text-forge-muted uppercase tracking-widest font-semibold w-12">
                     Nation
                   </th>
-                  <th className="px-1 py-2.5 text-center text-xs text-[#6b7280] uppercase tracking-widest font-semibold w-9 border-r border-[#2a2d3a]">
+                  <th className="px-1 py-2.5 text-center text-xs text-forge-muted uppercase tracking-widest font-semibold w-9 border-r border-forge-border">
                     Race
                   </th>
                   {activeJobs.map(job => {
@@ -500,7 +500,7 @@ export function FriendViewer() {
                         key={job}
                         onClick={() => handleSortJob(job)}
                         className={`px-1 py-2.5 text-center text-xs uppercase tracking-widest font-semibold select-none whitespace-nowrap cursor-pointer transition-colors ${
-                          isActive ? 'text-[#c4af64]' : 'text-[#6b7280] hover:text-[#9ca3af]'
+                          isActive ? 'text-forge-accent' : 'text-forge-muted hover:text-forge-dim'
                         }`}
                       >
                         <span className="relative inline-block">
@@ -523,8 +523,8 @@ export function FriendViewer() {
                   const status = statuses[name]
                   const rowBg = i % 2 === 0 ? '#0f1117' : '#111420'
                   return (
-                    <tr key={name} className="border-b border-[#1e2130] last:border-0" style={{ background: rowBg }}>
-                      <td className="sticky left-0 z-10 px-3 py-2 border-r border-[#2a2d3a]" style={{ background: rowBg }}>
+                    <tr key={name} className="border-b border-forge-raise last:border-0" style={{ background: rowBg }}>
+                      <td className="sticky left-0 z-10 px-3 py-2 border-r border-forge-border" style={{ background: rowBg }}>
                         <div className="flex items-center gap-2 min-w-0">
                           <button
                             onClick={() => toggleStar(name)}
@@ -548,11 +548,11 @@ export function FriendViewer() {
                               {name}
                             </span>
                           )}
-                          {status === 'loading' && <span className="text-xs text-[#6b7280] shrink-0">…</span>}
+                          {status === 'loading' && <span className="text-xs text-forge-muted shrink-0">…</span>}
                           {status === 'error'   && <span className="text-xs text-[#ef4444] shrink-0" title="Character not found">!</span>}
                           {d?.anon && status !== 'loading' && (
                             <span
-                              className="text-[10px] text-[#6b7280] shrink-0 whitespace-nowrap"
+                              className="text-[10px] text-forge-muted shrink-0 whitespace-nowrap"
                               title={`This character is /anon - showing their last known jobs${d.fetchedAt ? `, fetched ${new Date(d.fetchedAt).toLocaleString()}` : ''}`}
                             >
                               anon · {d.fetchedAt
@@ -569,17 +569,17 @@ export function FriendViewer() {
                           return meta ? (
                             <span className="inline-flex items-center gap-1 align-middle">
                               <img src={meta.icon} alt={meta.name} title={meta.name} className="w-4 h-4 object-contain" />
-                              <span className="text-xs text-[#9ca3af] tabular-nums w-5 text-center">{rank ?? '?'}</span>
+                              <span className="text-xs text-forge-dim tabular-nums w-5 text-center">{rank ?? '?'}</span>
                             </span>
-                          ) : <span className="text-[#2a2d3a] select-none">-</span>
-                        })() : <span className="text-[#2a2d3a] select-none">-</span>}
+                          ) : <span className="text-forge-border select-none">-</span>
+                        })() : <span className="text-forge-border select-none">-</span>}
                       </td>
-                      <td className="px-1 py-2 text-center border-r border-[#2a2d3a]">
+                      <td className="px-1 py-2 text-center border-r border-forge-border">
                         {(() => {
                           const race = getRaceDisplay(d?.avatar)
                           return race
-                            ? <span className="text-xs text-[#9ca3af]">{race}</span>
-                            : <span className="text-[#2a2d3a] select-none">-</span>
+                            ? <span className="text-xs text-forge-dim">{race}</span>
+                            : <span className="text-forge-border select-none">-</span>
                         })()}
                       </td>
                       {activeJobs.map(job => {
@@ -603,7 +603,7 @@ export function FriendViewer() {
                                 )}
                               </span>
                             ) : (
-                              <span className="text-[#2a2d3a] select-none">-</span>
+                              <span className="text-forge-border select-none">-</span>
                             )}
                           </td>
                         )
@@ -615,7 +615,7 @@ export function FriendViewer() {
             </table>
           </div>
 
-          <div className="flex items-center gap-4 text-xs text-[#6b7280]">
+          <div className="flex items-center gap-4 text-xs text-forge-muted">
             <span className="flex items-center gap-1.5">
               <span className="inline-block w-4 h-4 rounded text-center font-semibold text-[10px] leading-4" style={{ color: '#c4af64', background: '#c4af6418' }}>75</span>
               Max level

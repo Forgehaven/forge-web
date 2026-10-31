@@ -129,7 +129,7 @@ function TickingClock() {
   const t = vanaTime(nowMs)
   const str = `${pad(t.hour)}:${pad(t.minute)}:${pad(t.second)}`
   return (
-    <div className="text-5xl font-semibold leading-none text-[#e2e4ed] flex justify-center" data-testid="vana-clock">
+    <div className="text-5xl font-semibold leading-none text-forge-text flex justify-center" data-testid="vana-clock">
       {str.split('').map((c, i) => (
         <span key={i} className={`text-center ${c === ':' ? 'w-[0.28em]' : 'w-[0.54em]'}`}>{c}</span>
       ))}
@@ -164,10 +164,10 @@ function ScheduleTable({ title, routes, nowMs, open, onToggle, isArmed, onToggle
   onToggleAlert: (route: string, e: React.MouseEvent) => void
 }) {
   return (
-    <div className="rounded-lg border border-[#2a2d3a] overflow-hidden">
+    <div className="rounded-lg border border-forge-border overflow-hidden">
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between px-4 py-2 bg-[#1a1d27] text-[10px] uppercase tracking-wider font-semibold text-[#9ca3af] hover:text-[#e2e4ed] transition-colors cursor-pointer"
+        className="w-full flex items-center justify-between px-4 py-2 bg-forge-surface text-[10px] uppercase tracking-wider font-semibold text-forge-dim hover:text-forge-text transition-colors cursor-pointer"
       >
         {title}
         <span className={`transition-transform duration-200 leading-none ${open ? 'rotate-0' : '-rotate-90'}`}>▾</span>
@@ -176,7 +176,7 @@ function ScheduleTable({ title, routes, nowMs, open, onToggle, isArmed, onToggle
       <div className="overflow-x-auto">
       <table className="w-full min-w-[460px] text-sm table-fixed">
         <thead>
-          <tr className="text-[10px] uppercase tracking-wider text-[#6b7280]">
+          <tr className="text-[10px] uppercase tracking-wider text-forge-muted">
             <th className="px-4 py-1.5 text-left font-semibold">Route</th>
             <th className="px-4 py-1.5 text-right font-semibold w-28">Departs</th>
             <th className="px-4 py-1.5 text-right font-semibold w-28">In</th>
@@ -190,24 +190,24 @@ function ScheduleTable({ title, routes, nowMs, open, onToggle, isArmed, onToggle
             const leaving = dep.earthMsUntil < 180_000
             const [from, to] = r.route.split(' → ')
             return (
-              <tr key={r.route} className="border-t border-[#2a2d3a]/60">
+              <tr key={r.route} className="border-t border-forge-border/60">
                 <td className="px-4 py-1.5">
                   {to ? (
                     <span className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
                       <Endpoint name={from} align="right" />
-                      <span className="text-[#6b7280]">→</span>
+                      <span className="text-forge-muted">→</span>
                       <Endpoint name={to} align="left" />
                     </span>
                   ) : (
-                    <span className="block text-center text-[#e2e4ed]">{r.route}</span>
+                    <span className="block text-center text-forge-text">{r.route}</span>
                   )}
                 </td>
                 <td className={`px-4 py-1.5 text-right tabular-nums ${
-                  leaving ? 'animate-pulse text-[#c4af64] font-semibold' : 'text-[#9ca3af]'
+                  leaving ? 'animate-pulse text-forge-accent font-semibold' : 'text-forge-dim'
                 }`}>
                   {dep.vanaClock}
                 </td>
-                <td className={`px-4 py-1.5 text-right tabular-nums ${soon ? 'text-[#4ade80]' : 'text-[#9ca3af]'}`}>
+                <td className={`px-4 py-1.5 text-right tabular-nums ${soon ? 'text-[#4ade80]' : 'text-forge-dim'}`}>
                   {formatEarthWait(dep.earthMsUntil)}
                 </td>
                 <td className="px-2 py-1.5 text-center">
@@ -269,14 +269,14 @@ export function VanaTimers() {
     <div className="flex flex-col gap-5 max-w-3xl mx-auto w-full">
       <div className="flex items-end justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
-            Vana <span className="text-[#c4af64]">Timers</span>
+          <h1 className="text-xl font-semibold text-forge-text tracking-wide">
+            Vana <span className="text-forge-accent">Timers</span>
           </h1>
-          <p className="text-sm text-[#6b7280] mt-0.5">FFXI · Horizon</p>
+          <p className="text-sm text-forge-muted mt-0.5">FFXI · Horizon</p>
         </div>
         <div className="text-right">
-          <div className="text-[10px] uppercase tracking-wider text-[#6b7280]">Next conquest tally</div>
-          <div className="text-sm text-[#c4af64] tabular-nums flex items-center justify-end gap-1.5">
+          <div className="text-[10px] uppercase tracking-wider text-forge-muted">Next conquest tally</div>
+          <div className="text-sm text-forge-accent tabular-nums flex items-center justify-end gap-1.5">
             {formatNextReset()}
             <AlertBell target="Conquest tally" armed={alarms.has('Conquest tally')} onToggle={alarms.toggle} size={14} />
           </div>
@@ -284,10 +284,10 @@ export function VanaTimers() {
       </div>
 
       <div className="grid gap-5 md:grid-cols-[2fr_3fr]">
-        <div className="rounded-lg border border-[#2a2d3a] bg-[#1a1d27] px-5 py-2 text-center">
+        <div className="rounded-lg border border-forge-border bg-forge-surface px-5 py-2 text-center">
           <div className="flex items-baseline justify-between">
-            <span className="text-[10px] uppercase tracking-wider text-[#6b7280]">Vana'diel time</span>
-            <span className="text-xs text-[#6b7280] tabular-nums">{date}</span>
+            <span className="text-[10px] uppercase tracking-wider text-forge-muted">Vana'diel time</span>
+            <span className="text-xs text-forge-muted tabular-nums">{date}</span>
           </div>
           <div className="text-lg font-semibold flex items-center justify-center gap-2" style={{ color: dayColor }}>
             <img src={ELEMENT_ICONS[WEEKDAY_ELEMENTS[v.weekday]]} alt="" className="w-4 h-4 object-contain" />
@@ -295,7 +295,7 @@ export function VanaTimers() {
             <img src={ELEMENT_ICONS[WEEKDAY_ELEMENTS[v.weekday]]} alt="" className="w-4 h-4 object-contain" />
           </div>
           <TickingClock />
-          <div className="text-xs text-[#6b7280] mt-1.5 flex items-center justify-center gap-1.5">
+          <div className="text-xs text-forge-muted mt-1.5 flex items-center justify-center gap-1.5">
             <span style={{ color: cycle.isNight ? '#60a5fa' : '#fde68a' }}>
               {cycle.isNight ? 'Night' : 'Day'}
             </span>
@@ -310,7 +310,7 @@ export function VanaTimers() {
               size={14}
             />
           </div>
-          <div className="text-xs text-[#6b7280] mt-0.5 flex items-center justify-center gap-1.5">
+          <div className="text-xs text-forge-muted mt-0.5 flex items-center justify-center gap-1.5">
             <span style={{ color: undead.active ? '#c084fc' : '#4b5563' }}>
               {undead.active ? 'Undead roam' : 'Undead at 20:00'}
             </span>
@@ -327,21 +327,21 @@ export function VanaTimers() {
           </div>
         </div>
 
-        <div className="rounded-lg border border-[#2a2d3a] bg-[#1a1d27] px-5 py-4 flex items-center gap-4">
+        <div className="rounded-lg border border-forge-border bg-forge-surface px-5 py-4 flex items-center gap-4">
           <MoonIcon percent={moon.percent} waxing={moon.waxing} />
           <div className="min-w-0">
-            <div className="text-[10px] uppercase tracking-wider text-[#6b7280] mb-1">Moon</div>
-            <div className="text-lg font-semibold text-[#c4af64]">
-              {moon.name} <span className="text-sm font-normal text-[#9ca3af] tabular-nums">{moon.percent}%</span>
+            <div className="text-[10px] uppercase tracking-wider text-forge-muted mb-1">Moon</div>
+            <div className="text-lg font-semibold text-forge-accent">
+              {moon.name} <span className="text-sm font-normal text-forge-dim tabular-nums">{moon.percent}%</span>
             </div>
-            <div className="text-xs text-[#9ca3af] mt-1.5 flex items-center gap-1.5">
-              <span className="text-[#e2e4ed]">Full Moon</span> {fmtDate(moonEvents.nextFullMs)}
-              <span className="text-[#6b7280]">· in {fmtLong(moonEvents.nextFullMs - ms)}</span>
+            <div className="text-xs text-forge-dim mt-1.5 flex items-center gap-1.5">
+              <span className="text-forge-text">Full Moon</span> {fmtDate(moonEvents.nextFullMs)}
+              <span className="text-forge-muted">· in {fmtLong(moonEvents.nextFullMs - ms)}</span>
               <AlertBell target="Full Moon" armed={alarms.has('Full Moon')} onToggle={alarms.toggle} size={11} />
             </div>
-            <div className="text-xs text-[#9ca3af] mt-0.5 flex items-center gap-1.5">
-              <span className="text-[#e2e4ed]">New Moon</span> {fmtDate(moonEvents.nextNewMs)}
-              <span className="text-[#6b7280]">· in {fmtLong(moonEvents.nextNewMs - ms)}</span>
+            <div className="text-xs text-forge-dim mt-0.5 flex items-center gap-1.5">
+              <span className="text-forge-text">New Moon</span> {fmtDate(moonEvents.nextNewMs)}
+              <span className="text-forge-muted">· in {fmtLong(moonEvents.nextNewMs - ms)}</span>
               <AlertBell target="New Moon" armed={alarms.has('New Moon')} onToggle={alarms.toggle} size={11} />
             </div>
           </div>
@@ -349,15 +349,15 @@ export function VanaTimers() {
       </div>
 
       <div className="grid gap-5 md:grid-cols-[1fr_auto]">
-        <div className="rounded-lg border border-[#2a2d3a] bg-[#1a1d27] px-4 py-2.5 text-sm flex flex-col gap-1 min-w-0 self-start">
+        <div className="rounded-lg border border-forge-border bg-forge-surface px-4 py-2.5 text-sm flex flex-col gap-1 min-w-0 self-start">
           {items.map(({ item, active, nextStartInMs }) => (
             <div key={item.item} className="flex items-center gap-1.5 min-w-0">
-              <span className={`font-semibold shrink-0 ${active ? 'text-[#4ade80]' : 'text-[#9ca3af]'}`}>
+              <span className={`font-semibold shrink-0 ${active ? 'text-[#4ade80]' : 'text-forge-dim'}`}>
                 {item.item}
               </span>
-              <span className="text-[10px] uppercase tracking-wider text-[#4b5563] shrink-0">{item.kind}</span>
+              <span className="text-[10px] uppercase tracking-wider text-forge-faint shrink-0">{item.kind}</span>
               <InfoTip text={item.note} side="left" className="shrink-0" />
-              <span className={`ml-auto shrink-0 tabular-nums ${active ? 'text-[#4ade80]' : 'text-[#6b7280]'}`}>
+              <span className={`ml-auto shrink-0 tabular-nums ${active ? 'text-[#4ade80]' : 'text-forge-muted'}`}>
                 {active ? 'active' : `in ${fmtLong(nextStartInMs)}`}
               </span>
               <AlertBell target={item.item} armed={alarms.has(item.item)} onToggle={alarms.toggle} size={11} />
@@ -365,13 +365,13 @@ export function VanaTimers() {
           ))}
         </div>
 
-        <div className="rounded-lg border border-[#2a2d3a] bg-[#1a1d27] px-4 py-3 flex flex-col justify-center gap-2.5 text-xs text-[#6b7280] self-start">
+        <div className="rounded-lg border border-forge-border bg-forge-surface px-4 py-3 flex flex-col justify-center gap-2.5 text-xs text-forge-muted self-start">
           <div className="flex items-center justify-center gap-4">
             <button
               onClick={() => playChime(alarms.chimeLevel)}
               title="Test the chime"
               aria-label="Test the chime"
-              className="cursor-pointer hover:text-[#c4af64] transition-colors"
+              className="cursor-pointer hover:text-forge-accent transition-colors"
             >
               <BellIcon size={16} />
             </button>
@@ -382,7 +382,7 @@ export function VanaTimers() {
               aria-label="Repeat alarm until dismissed"
               aria-pressed={alarms.repeatMode}
               className={`cursor-pointer transition-colors ${
-                alarms.repeatMode ? 'text-[#c4af64]' : 'text-[#4b5563] hover:text-[#9ca3af]'
+                alarms.repeatMode ? 'text-forge-accent' : 'text-forge-faint hover:text-forge-dim'
               }`}
             >
               <RepeatIcon size={16} />
@@ -400,7 +400,7 @@ export function VanaTimers() {
               className="forge-slider w-full cursor-pointer"
               style={{ background: `linear-gradient(to right, #c4af64 ${alarms.volume}%, #2a2d3a ${alarms.volume}%)` }}
             />
-            <span className="text-[10px] text-[#9ca3af] tabular-nums w-8 text-right shrink-0">{alarms.volume}%</span>
+            <span className="text-[10px] text-forge-dim tabular-nums w-8 text-right shrink-0">{alarms.volume}%</span>
           </div>
         </div>
       </div>
@@ -421,10 +421,10 @@ export function VanaTimers() {
         open={!collapsed.barge} onToggle={() => toggleTable('barge')}
         isArmed={alarms.has} onToggleAlert={alarms.toggle} />
 
-      <div className="rounded-lg border border-[#2a2d3a] overflow-hidden">
+      <div className="rounded-lg border border-forge-border overflow-hidden">
         <button
           onClick={() => toggleTable('guilds')}
-          className="w-full flex items-center justify-between px-4 py-2 bg-[#1a1d27] text-[10px] uppercase tracking-wider font-semibold text-[#9ca3af] hover:text-[#e2e4ed] transition-colors cursor-pointer"
+          className="w-full flex items-center justify-between px-4 py-2 bg-forge-surface text-[10px] uppercase tracking-wider font-semibold text-forge-dim hover:text-forge-text transition-colors cursor-pointer"
         >
           Crafting guilds &amp; shops
           <span className={`transition-transform duration-200 leading-none ${!collapsed.guilds ? 'rotate-0' : '-rotate-90'}`}>▾</span>
@@ -433,7 +433,7 @@ export function VanaTimers() {
         <div className="overflow-x-auto">
         <table className="w-full min-w-[560px] text-sm table-fixed">
           <thead>
-            <tr className="text-[10px] uppercase tracking-wider text-[#6b7280]">
+            <tr className="text-[10px] uppercase tracking-wider text-forge-muted">
               <th className="px-4 py-1.5 text-left font-semibold">Guild</th>
               <th className="px-4 py-1.5 text-left font-semibold w-40">Hours</th>
               <th className="px-4 py-1.5 text-right font-semibold w-52">Status</th>
@@ -444,22 +444,22 @@ export function VanaTimers() {
             {GUILDS.map(g => {
               const s = guildStatus(ms, g)
               return (
-                <tr key={g.name} className="border-t border-[#2a2d3a]/60">
+                <tr key={g.name} className="border-t border-forge-border/60">
                   <td className="px-4 py-1.5">
-                    <span className="text-[#e2e4ed]">{g.name}</span>
-                    <span className="text-xs text-[#6b7280] ml-2 hidden md:inline">{g.cities}</span>
+                    <span className="text-forge-text">{g.name}</span>
+                    <span className="text-xs text-forge-muted ml-2 hidden md:inline">{g.cities}</span>
                   </td>
-                  <td className="px-4 py-1.5 text-[#9ca3af] tabular-nums whitespace-nowrap">
+                  <td className="px-4 py-1.5 text-forge-dim tabular-nums whitespace-nowrap">
                     {g.openHour}:00–{g.closeHour}:00
-                    <span className="text-[#4b5563] ml-1.5 text-xs">✕ {VANA_WEEKDAYS[g.holiday].replace('day', '')}</span>
+                    <span className="text-forge-faint ml-1.5 text-xs">✕ {VANA_WEEKDAYS[g.holiday].replace('day', '')}</span>
                   </td>
                   <td className="px-4 py-1.5 text-right tabular-nums whitespace-nowrap">
                     {s.holiday ? (
-                      <span className="text-[#4b5563] italic">holiday today</span>
+                      <span className="text-forge-faint italic">holiday today</span>
                     ) : s.open ? (
                       <span className="text-[#4ade80]">open · closes in {formatEarthWait(s.changesInMs)}</span>
                     ) : (
-                      <span className="text-[#9ca3af]">opens in {formatEarthWait(s.changesInMs)}</span>
+                      <span className="text-forge-dim">opens in {formatEarthWait(s.changesInMs)}</span>
                     )}
                   </td>
                   <td className="px-2 py-1.5 text-center">
@@ -474,11 +474,11 @@ export function VanaTimers() {
         )}
       </div>
 
-      <div className="rounded-lg border border-[#2a2d3a] overflow-hidden">
-        <div className="flex items-center justify-between gap-3 px-4 py-0.5 bg-[#1a1d27]">
+      <div className="rounded-lg border border-forge-border overflow-hidden">
+        <div className="flex items-center justify-between gap-3 px-4 py-0.5 bg-forge-surface">
           <button
             onClick={() => toggleTable('rse')}
-            className="flex-1 flex items-center justify-between py-1.5 text-[10px] uppercase tracking-wider font-semibold text-[#9ca3af] hover:text-[#e2e4ed] transition-colors cursor-pointer"
+            className="flex-1 flex items-center justify-between py-1.5 text-[10px] uppercase tracking-wider font-semibold text-forge-dim hover:text-forge-text transition-colors cursor-pointer"
           >
             Race specific equipment
             <span className={`transition-transform duration-200 leading-none ${collapsed.rse ? '-rotate-90' : 'rotate-0'}`}>▾</span>
@@ -506,7 +506,7 @@ export function VanaTimers() {
         <div className="overflow-x-auto">
         <table className="w-full min-w-[520px] text-sm table-fixed">
           <thead>
-            <tr className="text-[10px] uppercase tracking-wider text-[#6b7280]">
+            <tr className="text-[10px] uppercase tracking-wider text-forge-muted">
               <th className="px-4 py-1.5 text-left font-semibold w-28">Race</th>
               <th className="px-4 py-1.5 text-left font-semibold w-24">Set</th>
               <th className="px-4 py-1.5 text-left font-semibold">Zone</th>
@@ -518,15 +518,15 @@ export function VanaTimers() {
             {rseRows.map(w => {
               const active = w.startsEarthMs <= ms
               return (
-                <tr key={w.startsEarthMs} className={`border-t border-[#2a2d3a]/60 ${active ? 'bg-[#c4af64]/5' : ''}`}>
-                  <td className="px-4 py-1.5 text-[#e2e4ed]">{w.race}</td>
-                  <td className="px-4 py-1.5 text-[#c4af64]/80">{w.set}</td>
-                  <td className="px-4 py-1.5 text-[#9ca3af]">{w.zone}</td>
-                  <td className="px-4 py-1.5 text-right text-[#9ca3af] tabular-nums whitespace-nowrap">{fmtDate(w.startsEarthMs)}</td>
+                <tr key={w.startsEarthMs} className={`border-t border-forge-border/60 ${active ? 'bg-forge-accent/5' : ''}`}>
+                  <td className="px-4 py-1.5 text-forge-text">{w.race}</td>
+                  <td className="px-4 py-1.5 text-forge-accent/80">{w.set}</td>
+                  <td className="px-4 py-1.5 text-forge-dim">{w.zone}</td>
+                  <td className="px-4 py-1.5 text-right text-forge-dim tabular-nums whitespace-nowrap">{fmtDate(w.startsEarthMs)}</td>
                   <td className="px-4 py-1.5 text-right tabular-nums">
                     {active
                       ? <span className="text-[#4ade80]">now</span>
-                      : <span className="text-[#9ca3af]">{fmtLong(w.startsEarthMs - ms)}</span>}
+                      : <span className="text-forge-dim">{fmtLong(w.startsEarthMs - ms)}</span>}
                   </td>
                 </tr>
               )
@@ -537,7 +537,7 @@ export function VanaTimers() {
         )}
       </div>
 
-      <div className="text-xs text-[#6b7280] flex flex-wrap gap-x-3 gap-y-1">
+      <div className="text-xs text-forge-muted flex flex-wrap gap-x-3 gap-y-1">
         <span>Sources:</span>
         {SOURCES.map(([label, href]) => (
           <a
@@ -545,7 +545,7 @@ export function VanaTimers() {
             href={href}
             target="_blank"
             rel="noreferrer"
-            className="hover:text-[#c4af64] underline decoration-[#2a2d3a] underline-offset-2"
+            className="hover:text-forge-accent underline decoration-forge-border underline-offset-2"
           >
             {label}
           </a>

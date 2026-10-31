@@ -79,22 +79,22 @@ function SkillRow({ row, owned, needFor, hasOccupation, onAdd, onRemove }: {
   const showCost = hasOccupation || !sk.costs
 
   return (
-    <li className={`border-b border-[#2a2d3a] last:border-b-0 ${owned ? 'border-l-2 border-l-[#c4af64]/60 -ml-3 pl-2.5' : needFor ? 'border-l-2 border-l-amber-400/70 bg-amber-400/5 -ml-3 pl-2.5' : ''}`}>
+    <li className={`border-b border-forge-border last:border-b-0 ${owned ? 'border-l-2 border-l-forge-accent/60 -ml-3 pl-2.5' : needFor ? 'border-l-2 border-l-amber-400/70 bg-amber-400/5 -ml-3 pl-2.5' : ''}`}>
       <div className="flex items-center gap-2 py-1 group">
         <div className="flex-1 min-w-0 text-left cursor-pointer" {...toggleProps(open, () => setOpen(o => !o))}>
-          <span className={`text-sm ${blocked && !maxed ? 'text-[#6b7280]' : 'text-[#e2e4ed] group-hover:text-white'}`}>
+          <span className={`text-sm ${blocked && !maxed ? 'text-forge-muted' : 'text-forge-text group-hover:text-forge-bright'}`}>
             {sk.name}
           </span>
           {needFor && <span className="ml-1.5 text-[10px] text-amber-300 whitespace-nowrap">needed for {needFor}</span>}
-          {sk.tier && <span className="ml-1.5 text-[10px] text-[#6b7280]">L{sk.tier}</span>}
+          {sk.tier && <span className="ml-1.5 text-[10px] text-forge-muted">L{sk.tier}</span>}
           {owned > 0 && (
-            <span className="ml-1.5 text-[10px] font-mono text-[#c4af64]">
+            <span className="ml-1.5 text-[10px] font-mono text-forge-accent">
               {maxed ? '✓' : ''}{sk.maxPurchases > 1 ? ` ${owned}/${sk.maxPurchases}` : maxed ? ' owned' : ''}
             </span>
           )}
           {reason && <span className="block text-[11px] text-amber-200/45 truncate" title={reason}>{reason}</span>}
         </div>
-        <span className="text-xs font-mono text-[#9ca3af] whitespace-nowrap text-right">
+        <span className="text-xs font-mono text-forge-dim whitespace-nowrap text-right">
           {sk.costNote ?? (showCost ? `${cost} CP` : '–')}
           {frag ? <span className="text-violet-300/80"> · {frag}f</span> : null}
         </span>
@@ -102,13 +102,13 @@ function SkillRow({ row, owned, needFor, hasOccupation, onAdd, onRemove }: {
           <button
             aria-label={`Remove one ${sk.name}`}
             title="Remove the latest purchase"
-            className="w-6 h-6 shrink-0 rounded text-sm leading-none border border-[#2a2d3a] text-[#9ca3af] hover:text-red-300 hover:border-red-400/40 cursor-pointer"
+            className="w-6 h-6 shrink-0 rounded text-sm leading-none border border-forge-border text-forge-dim hover:text-red-300 hover:border-red-400/40 cursor-pointer"
             onClick={onRemove}
           >−</button>
         )}
         <button
           aria-label={`Add ${sk.name}`}
-          className="w-6 h-6 shrink-0 rounded text-sm leading-none border border-[#c4af64]/40 text-[#c4af64] hover:bg-[#c4af64]/15 disabled:border-[#2a2d3a] disabled:text-[#3a3d4a] disabled:hover:bg-transparent disabled:cursor-not-allowed cursor-pointer"
+          className="w-6 h-6 shrink-0 rounded text-sm leading-none border border-forge-accent/40 text-forge-accent hover:bg-forge-accent/15 disabled:border-forge-border disabled:text-forge-line disabled:hover:bg-transparent disabled:cursor-not-allowed cursor-pointer"
           disabled={blocked}
           onClick={() => (options !== null ? setChoosing(c => !c) : onAdd())}
         >+</button>
@@ -153,14 +153,14 @@ function SkillRow({ row, owned, needFor, hasOccupation, onAdd, onRemove }: {
               </>
             ) : options.map(([v, label]) => <option key={v} value={v}>{label}</option>)}
           </select>
-          <button className="text-xs text-[#6b7280] hover:text-[#e2e4ed] cursor-pointer" onClick={() => setChoosing(false)}>Cancel</button>
+          <button className="text-xs text-forge-muted hover:text-forge-text cursor-pointer" onClick={() => setChoosing(false)}>Cancel</button>
         </div>
       )}
 
       {open && (
-        <div className="pb-3 text-xs text-[#9ca3af] leading-relaxed">
+        <div className="pb-3 text-xs text-forge-dim leading-relaxed">
           <Prose text={sk.desc} />
-          <p className="mt-1 text-[#6b7280]">
+          <p className="mt-1 text-forge-muted">
             Max {sk.maxPurchases}{prereqs.length ? ` · Requires ${prereqs.join('; ')}` : ''}
             {sk.prereqPerPurchase ? ' (per purchase)' : ''}
           </p>
@@ -211,22 +211,22 @@ export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove }: Prop
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="sticky top-0 z-10 bg-forge-bg py-1 flex flex-wrap items-center gap-3">
         <input
           className="forge-input flex-1 min-w-48"
           placeholder="Search skills…"
           value={query}
           onChange={e => setQuery(e.target.value)}
         />
-        <label className="flex items-center gap-1.5 text-xs text-[#9ca3af] cursor-pointer">
+        <label className="flex items-center gap-1.5 text-xs text-forge-dim cursor-pointer">
           <input type="checkbox" checked={hideBlocked} onChange={e => toggleBlocked(e.target.checked)} />
           Only buyable
         </label>
-        {!loose && <span className="text-xs text-[#6b7280]">Buying at <span className="text-[#c4af64]">{stepLabel(active)}</span></span>}
+        {!loose && <span className="text-xs text-forge-muted">Buying at <span className="text-forge-accent">{stepLabel(active)}</span></span>}
       </div>
 
       {!hasOccupation && (
-        <p className="rounded-md border border-[#c4af64]/30 bg-[#c4af64]/5 px-3 py-2 text-xs text-[#c4af64]">
+        <p className="rounded-md border border-forge-accent/30 bg-forge-accent/5 px-3 py-2 text-xs text-forge-accent">
           Pick an occupation on the left: most skill costs depend on it.
         </p>
       )}
@@ -243,13 +243,13 @@ export function SkillCatalog({ build, ev, active, loose, onAdd, onRemove }: Prop
           return [{ key: cat, place: place(cat), weight: skills.length + 2, node: (
             <section className="forge-card !p-0 overflow-hidden">
               <div
-                className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-[#e2e4ed] bg-[#2a2d3a]/30 hover:bg-[#2a2d3a]/60 cursor-pointer"
+                className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-forge-text bg-forge-border/30 hover:bg-forge-border/60 cursor-pointer"
                 {...toggleProps(!isClosed, () => setClosed(c => ({ ...c, [cat]: !isCardClosed(cat) })))}
               >
-                <span className={`text-[10px] text-[#6b7280] transition-transform ${isClosed ? '' : 'rotate-90'}`}>▸</span>
+                <span className={`text-[10px] text-forge-muted transition-transform ${isClosed ? '' : 'rotate-90'}`}>▸</span>
                 {cat}
-                <span className="ml-auto text-[10px] font-normal text-[#6b7280]">
-                  {ownedHere > 0 && <span className="text-[#c4af64]">{ownedHere} owned · </span>}
+                <span className="ml-auto text-[10px] font-normal text-forge-muted">
+                  {ownedHere > 0 && <span className="text-forge-accent">{ownedHere} owned · </span>}
                   {buyable} buyable
                 </span>
               </div>

@@ -211,10 +211,10 @@ export function InteractiveMap() {
     <div className="flex flex-col gap-4 w-full h-full min-h-0">
       <div className="flex items-end justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
-            Interactive <span className="text-[#c4af64]">Map</span>
+          <h1 className="text-xl font-semibold text-forge-text tracking-wide">
+            Interactive <span className="text-forge-accent">Map</span>
           </h1>
-          <p className="text-sm text-[#6b7280] mt-0.5">FFXI · Horizon</p>
+          <p className="text-sm text-forge-muted mt-0.5">FFXI · Horizon</p>
         </div>
         <div className="flex flex-col items-end gap-1.5">
           <div className="flex items-center gap-1.5 flex-wrap justify-end">
@@ -223,7 +223,7 @@ export function InteractiveMap() {
                 key={c.name}
                 onClick={() => setZone(c.id)}
                 style={{ color: c.color }}
-                className="px-2 py-1 rounded border border-[#2a2d3a] bg-[#1a1d27] text-xs font-semibold tracking-wide hover:border-current transition-colors cursor-pointer flex items-center gap-1.5"
+                className="px-2 py-1 rounded border border-forge-border bg-forge-surface text-xs font-semibold tracking-wide hover:border-current transition-colors cursor-pointer flex items-center gap-1.5"
               >
                 {c.icon && <img src={c.icon} alt="" className="w-3.5 h-3.5 object-contain" />}
                 {c.name}
@@ -235,7 +235,7 @@ export function InteractiveMap() {
               <button
                 key={q.name}
                 onClick={() => setZone(q.id)}
-                className="px-2 py-1 rounded border border-[#2a2d3a] bg-[#1a1d27] text-xs font-semibold tracking-wide text-[#c4af64] hover:border-[#c4af64] transition-colors cursor-pointer"
+                className="px-2 py-1 rounded border border-forge-border bg-forge-surface text-xs font-semibold tracking-wide text-forge-accent hover:border-forge-accent transition-colors cursor-pointer"
               >
                 {q.name}
               </button>
@@ -247,7 +247,7 @@ export function InteractiveMap() {
               className={`px-2 py-1 rounded border text-xs font-semibold tracking-wide transition-colors cursor-pointer ${
                 showNms
                   ? 'border-[#ef4444] text-[#ef4444] bg-[#ef4444]/10'
-                  : 'border-[#2a2d3a] bg-[#1a1d27] text-[#6b7280] hover:border-[#ef4444] hover:text-[#ef4444]'
+                  : 'border-forge-border bg-forge-surface text-forge-muted hover:border-[#ef4444] hover:text-[#ef4444]'
               }`}
             >
               NM
@@ -259,7 +259,7 @@ export function InteractiveMap() {
               className={`px-2 py-1 rounded border text-xs font-semibold tracking-wide transition-colors cursor-pointer ${
                 showCamps
                   ? 'border-[#4ade80] text-[#4ade80] bg-[#4ade80]/10'
-                  : 'border-[#2a2d3a] bg-[#1a1d27] text-[#6b7280] hover:border-[#4ade80] hover:text-[#4ade80]'
+                  : 'border-forge-border bg-forge-surface text-forge-muted hover:border-[#4ade80] hover:text-[#4ade80]'
               }`}
             >
               EXP
@@ -277,7 +277,7 @@ export function InteractiveMap() {
             classNames={{
               container: () => 'w-64',
               menu: () =>
-                'bg-[#1a1d27] border border-[#2a2d3a] rounded-lg mt-1 shadow-xl overflow-hidden w-64',
+                'bg-forge-surface border border-forge-border rounded-lg mt-1 shadow-xl overflow-hidden w-64',
             }}
             styles={{
               menu: base => ({ ...base, zIndex: 9999 }),
@@ -295,7 +295,7 @@ export function InteractiveMap() {
             classNames={{
               container: () => 'w-72',
               menu: () =>
-                'bg-[#1a1d27] border border-[#2a2d3a] rounded-lg mt-1 shadow-xl overflow-hidden w-72',
+                'bg-forge-surface border border-forge-border rounded-lg mt-1 shadow-xl overflow-hidden w-72',
             }}
             styles={{
               menu: base => ({ ...base, zIndex: 9999 }),
@@ -306,20 +306,20 @@ export function InteractiveMap() {
       </div>
 
       <div
-        className="relative flex-1 min-h-[420px] rounded-lg border border-[#2a2d3a] bg-[#0b0d13] overflow-hidden"
+        className="relative flex-1 min-h-[420px] rounded-lg border border-forge-border bg-forge-deep overflow-hidden"
         onPointerDown={() => { setFlashNm(null); setFlashCamp(null) }}
       >
         {map && showNms && legendRows.length > 0 && (
-          <div className="absolute top-2 left-2 z-10 w-52 rounded-lg border border-[#2a2d3a] bg-[#1a1d27]/95 shadow-lg shadow-black/40">
+          <div className="absolute top-2 left-2 z-10 w-52 rounded-lg border border-forge-border bg-forge-surface/95 shadow-lg shadow-black/40">
             <button
               onClick={toggleLegend}
-              className="w-full flex items-center justify-between px-3 py-1.5 text-[10px] uppercase tracking-wider font-semibold text-[#9ca3af] hover:text-[#e2e4ed] transition-colors cursor-pointer"
+              className="w-full flex items-center justify-between px-3 py-1.5 text-[10px] uppercase tracking-wider font-semibold text-forge-dim hover:text-forge-text transition-colors cursor-pointer"
             >
               NMs ({legendRows.length})
               <span className={`transition-transform duration-200 leading-none ${legendOpen ? 'rotate-0' : '-rotate-90'}`}>▾</span>
             </button>
             {legendOpen && (
-              <ul className="max-h-64 overflow-y-auto border-t border-[#2a2d3a] py-1">
+              <ul className="max-h-64 overflow-y-auto border-t border-forge-border py-1">
                 {legendRows.map(({ name, page, unmarked, floors, jumpTo }) => (
                   <li key={name}>
                     <a
@@ -335,13 +335,13 @@ export function InteractiveMap() {
                       }}
                       onMouseEnter={() => setHoveredNm(name)}
                       onMouseLeave={() => setHoveredNm(null)}
-                      className="flex items-center justify-between gap-2 px-3 py-0.5 text-xs text-[#e2e4ed] hover:text-[#ef4444] hover:bg-[#0b0d13]/60 transition-colors"
+                      className="flex items-center justify-between gap-2 px-3 py-0.5 text-xs text-forge-text hover:text-[#ef4444] hover:bg-forge-deep/60 transition-colors"
                     >
                       <span className="truncate">{name}</span>
                       {unmarked
-                        ? <span className="shrink-0 text-[10px] text-[#6b7280]">unmarked</span>
+                        ? <span className="shrink-0 text-[10px] text-forge-muted">unmarked</span>
                         : multiFloor && floors.length > 0 && (
-                          <span className="shrink-0 text-[10px] text-[#6b7280]">map {floors.join('·')}</span>
+                          <span className="shrink-0 text-[10px] text-forge-muted">map {floors.join('·')}</span>
                         )}
                     </a>
                   </li>
@@ -431,8 +431,8 @@ export function InteractiveMap() {
                       }}
                     >
                       {flash && <span className="absolute -inset-1.5 rounded-full bg-[#4ade80]/40 animate-ping" />}
-                      <span className="relative block w-3.5 h-3.5 rounded-full bg-[#4ade80] border-2 border-[#0b0d13] shadow-lg shadow-black/60" />
-                      <span className="absolute left-1/2 top-full mt-1 -translate-x-1/2 w-max max-w-64 whitespace-normal text-center text-[11px] px-1.5 py-0.5 rounded bg-[#1a1d27] border border-[#2a2d3a] text-[#e2e4ed] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                      <span className="relative block w-3.5 h-3.5 rounded-full bg-[#4ade80] border-2 border-forge-deep shadow-lg shadow-black/60" />
+                      <span className="absolute left-1/2 top-full mt-1 -translate-x-1/2 w-max max-w-64 whitespace-normal text-center text-[11px] px-1.5 py-0.5 rounded bg-forge-surface border border-forge-border text-forge-text opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
                         <span className="text-[#4ade80] font-semibold">Lv {levelLabel(camp)}</span> · {camp.description}
                       </span>
                     </div>
@@ -451,11 +451,11 @@ export function InteractiveMap() {
                       transform: `translate(-50%, -50%) scale(${1 / scale})`,
                     }}
                   >
-                    <span className="absolute -inset-2 rounded-full bg-[#c4af64]/40 animate-ping" />
-                    <span className="map-marker-breathe relative w-6 h-6 rounded-full bg-[#c4af64] border-2 border-[#0b0d13] shadow-lg shadow-black/60 flex items-center justify-center text-[#0b0d13] text-[13px] font-bold leading-none">
+                    <span className="absolute -inset-2 rounded-full bg-forge-accent/40 animate-ping" />
+                    <span className="map-marker-breathe relative w-6 h-6 rounded-full bg-forge-accent border-2 border-forge-deep shadow-lg shadow-black/60 flex items-center justify-center text-forge-deep text-[13px] font-bold leading-none">
                       {c.mark ?? '→'}
                     </span>
-                    <span className="absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap text-[11px] px-1.5 py-0.5 rounded bg-[#1a1d27] border border-[#2a2d3a] text-[#e2e4ed] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                    <span className="absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap text-[11px] px-1.5 py-0.5 rounded bg-forge-surface border border-forge-border text-forge-text opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                       {c.label}
                     </span>
                   </button>
@@ -464,19 +464,19 @@ export function InteractiveMap() {
             )}
           </ZoomPan>
         ) : (
-          <div className="w-full h-full min-h-[420px] flex items-center justify-center text-sm text-[#6b7280]">
+          <div className="w-full h-full min-h-[420px] flex items-center justify-center text-sm text-forge-muted">
             Pick a zone to view its map
           </div>
         )}
       </div>
 
-      <div className="flex items-center gap-3 text-xs text-[#6b7280] flex-wrap">
+      <div className="flex items-center gap-3 text-xs text-forge-muted flex-wrap">
         <label className="flex items-center gap-1.5 cursor-pointer">
           <input
             type="checkbox"
             checked={annotate}
             onChange={e => { setAnnotate(e.target.checked); setCopied(null); setTracePoints([]) }}
-            className="accent-[#c4af64]"
+            className="accent-forge-accent"
           />
           annotate mode
         </label>
@@ -488,7 +488,7 @@ export function InteractiveMap() {
                 name="annotate-mode"
                 checked={annotateMode === 'point'}
                 onChange={() => { setAnnotateMode('point'); setTracePoints([]) }}
-                className="accent-[#c4af64]"
+                className="accent-forge-accent"
               />
               point (connection entry)
             </label>
@@ -498,7 +498,7 @@ export function InteractiveMap() {
                 name="annotate-mode"
                 checked={annotateMode === 'area'}
                 onChange={() => setAnnotateMode('area')}
-                className="accent-[#c4af64]"
+                className="accent-forge-accent"
               />
               area (NM spawn outline)
             </label>
@@ -508,14 +508,14 @@ export function InteractiveMap() {
                 <button
                   onClick={finishTrace}
                   disabled={tracePoints.length < 3}
-                  className="px-1.5 py-0.5 rounded border border-[#2a2d3a] bg-[#1a1d27] text-[#c4af64] disabled:opacity-40 enabled:hover:border-[#c4af64] enabled:cursor-pointer transition-colors"
+                  className="px-1.5 py-0.5 rounded border border-forge-border bg-forge-surface text-forge-accent disabled:opacity-40 enabled:hover:border-forge-accent enabled:cursor-pointer transition-colors"
                 >
                   finish
                 </button>
                 <button
                   onClick={() => setTracePoints([])}
                   disabled={tracePoints.length === 0}
-                  className="px-1.5 py-0.5 rounded border border-[#2a2d3a] bg-[#1a1d27] disabled:opacity-40 enabled:hover:text-[#e2e4ed] enabled:cursor-pointer transition-colors"
+                  className="px-1.5 py-0.5 rounded border border-forge-border bg-forge-surface disabled:opacity-40 enabled:hover:text-forge-text enabled:cursor-pointer transition-colors"
                 >
                   clear
                 </button>
@@ -524,26 +524,26 @@ export function InteractiveMap() {
           </>
         )}
         {annotate && copied && (
-          <code className="text-[#c4af64] bg-[#1a1d27] border border-[#2a2d3a] rounded px-1.5 py-0.5 max-w-full overflow-x-auto">{copied}</code>
+          <code className="text-forge-accent bg-forge-surface border border-forge-border rounded px-1.5 py-0.5 max-w-full overflow-x-auto">{copied}</code>
         )}
       </div>
 
-      <p className="text-xs text-[#6b7280]">
+      <p className="text-xs text-forge-muted">
         Maps by{' '}
-        <a href="https://remapster.com" target="_blank" rel="noreferrer" className="text-[#c4af64] hover:underline">
+        <a href="https://remapster.com" target="_blank" rel="noreferrer" className="text-forge-accent hover:underline">
           spalose · Remapster
         </a>
         {' '}— hand-redrawn HD remakes of the classic maps, used with credit as the artist asks.
         See the{' '}
-        <a href="https://remapster.com/2022/05/27/map-pack-1/" target="_blank" rel="noreferrer" className="hover:text-[#c4af64] underline decoration-[#2a2d3a] underline-offset-2">
+        <a href="https://remapster.com/2022/05/27/map-pack-1/" target="_blank" rel="noreferrer" className="hover:text-forge-accent underline decoration-forge-border underline-offset-2">
           pack 1
         </a>
         {' '}and{' '}
-        <a href="https://remapster.com/2022/07/26/map-pack-2/" target="_blank" rel="noreferrer" className="hover:text-[#c4af64] underline decoration-[#2a2d3a] underline-offset-2">
+        <a href="https://remapster.com/2022/07/26/map-pack-2/" target="_blank" rel="noreferrer" className="hover:text-forge-accent underline decoration-forge-border underline-offset-2">
           pack 2
         </a>
         {' '}release posts. Zones missing from the packs are filled with maps from the{' '}
-        <a href="https://horizonffxi.wiki" target="_blank" rel="noreferrer" className="text-[#c4af64] hover:underline">
+        <a href="https://horizonffxi.wiki" target="_blank" rel="noreferrer" className="text-forge-accent hover:underline">
           HorizonXI wiki
         </a>
         {' '}(Vana&apos;diel Atlas · ffxi-atlas.com · © SQUARE ENIX).

@@ -12,13 +12,13 @@ export function InfoTip({ text, side = 'right', className }: {
       <button
         type="button"
         aria-label="More information"
-        className="flex h-4 w-4 cursor-help items-center justify-center rounded-full border border-[#3a3d4a] text-[10px] leading-none text-[#9ca3af] transition-colors hover:border-[#c4af64] hover:text-[#c4af64] focus:border-[#c4af64] focus:text-[#c4af64] focus:outline-none"
+        className="flex h-4 w-4 cursor-help items-center justify-center rounded-full border border-forge-line text-[10px] leading-none text-forge-dim transition-colors hover:border-forge-accent hover:text-forge-accent focus:border-forge-accent focus:text-forge-accent focus:outline-none"
       >
         ?
       </button>
       <span
         role="tooltip"
-        className={`pointer-events-none absolute top-5 z-50 w-56 rounded-md border border-[#2a2d3a] bg-[#1a1d27] p-2 text-left text-[11px] font-normal normal-case leading-snug tracking-normal text-[#c4c7d0] opacity-0 shadow-xl transition-opacity duration-100 group-hover:opacity-100 group-focus-within:opacity-100 ${side === 'right' ? 'right-0' : 'left-0'}`}
+        className={`pointer-events-none absolute top-5 z-50 w-56 rounded-md border border-forge-border bg-forge-surface p-2 text-left text-[11px] font-normal normal-case leading-snug tracking-normal text-forge-soft opacity-0 shadow-xl transition-opacity duration-100 group-hover:opacity-100 group-focus-within:opacity-100 ${side === 'right' ? 'right-0' : 'left-0'}`}
       >
         {text}
       </span>

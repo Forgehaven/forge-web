@@ -84,29 +84,29 @@ export function FileReader() {
 
   return (
     <div className="flex flex-col gap-5 max-w-3xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">File Reader</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">File Reader</h1>
 
-      <div className="px-4 py-2.5 rounded-lg bg-[#1a1d27] border border-[#2a2d3a] text-center">
-        <p className="text-sm font-bold text-[#c4af64]">
+      <div className="px-4 py-2.5 rounded-lg bg-forge-surface border border-forge-border text-center">
+        <p className="text-sm font-bold text-forge-accent">
           All processing happens entirely in your browser - no files or data are sent to any server.
         </p>
       </div>
 
-      <hr className="border-[#2a2d3a]" />
+      <hr className="border-forge-border" />
 
       <div className="flex flex-col items-center gap-3">
-        <p className="text-xs text-[#9ca3af] uppercase tracking-widest font-bold">Supported File Types</p>
+        <p className="text-xs text-forge-dim uppercase tracking-widest font-bold">Supported File Types</p>
         <div className="flex flex-wrap justify-center gap-2">
-          <span className="px-3 py-1 rounded-full text-xs font-medium border border-[#2a2d3a] text-[#e2e4ed] bg-[#1a1d27]">
+          <span className="px-3 py-1 rounded-full text-xs font-medium border border-forge-border text-forge-text bg-forge-surface">
             .msg - Outlook Email
           </span>
         </div>
       </div>
 
-      <hr className="border-[#2a2d3a]" />
+      <hr className="border-forge-border" />
 
       <FileDropZone accept=".msg" onFiles={files => readFile(files[0])}>
-        <p className="text-sm text-[#6b7280]">Drop a file here or click to open</p>
+        <p className="text-sm text-forge-muted">Drop a file here or click to open</p>
       </FileDropZone>
 
       {error && <p className="text-xs text-red-400">{error}</p>}
@@ -115,7 +115,7 @@ export function FileReader() {
         <div className="flex flex-col gap-4">
 
           {/* Header fields */}
-          <div className="rounded-lg border border-[#2a2d3a] overflow-hidden">
+          <div className="rounded-lg border border-forge-border overflow-hidden">
             {[
               { label: 'Subject', value: parsed.subject },
               { label: 'From',    value: [parsed.senderName, parsed.senderEmail].filter(Boolean).join(' - ') },
@@ -124,23 +124,23 @@ export function FileReader() {
               { label: 'BCC',     value: parsed.bcc?.join(', ') },
               { label: 'Date',    value: formatDate(parsed.sentDate) },
             ].filter(r => r.value).map(({ label, value }) => (
-              <div key={label} className="flex gap-3 px-4 py-2.5 border-b border-[#1e2130] last:border-0">
-                <span className="text-xs text-[#6b7280] uppercase tracking-wider font-medium w-14 shrink-0 pt-0.5">{label}</span>
-                <span className="text-sm text-[#e2e4ed] break-all">{value}</span>
+              <div key={label} className="flex gap-3 px-4 py-2.5 border-b border-forge-raise last:border-0">
+                <span className="text-xs text-forge-muted uppercase tracking-wider font-medium w-14 shrink-0 pt-0.5">{label}</span>
+                <span className="text-sm text-forge-text break-all">{value}</span>
               </div>
             ))}
           </div>
 
           {/* Body */}
           {(parsed.textContent || parsed.htmlContent) && (
-            <div className="rounded-lg border border-[#2a2d3a] overflow-hidden">
-              <div className="flex items-center gap-1 px-3 py-2 border-b border-[#2a2d3a] bg-[#1a1d27]">
-                <span className="text-xs text-[#6b7280] mr-2">Body</span>
+            <div className="rounded-lg border border-forge-border overflow-hidden">
+              <div className="flex items-center gap-1 px-3 py-2 border-b border-forge-border bg-forge-surface">
+                <span className="text-xs text-forge-muted mr-2">Body</span>
                 {parsed.textContent && (
                   <button
                     onClick={() => setBodyMode('text')}
                     className={`text-xs px-2.5 py-1 rounded transition-colors cursor-pointer ${
-                      bodyMode === 'text' ? 'bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30' : 'text-[#6b7280] hover:text-[#e2e4ed]'
+                      bodyMode === 'text' ? 'bg-forge-accent/10 text-forge-accent border border-forge-accent/30' : 'text-forge-muted hover:text-forge-text'
                     }`}
                   >
                     Plain text
@@ -150,7 +150,7 @@ export function FileReader() {
                   <button
                     onClick={() => setBodyMode('html')}
                     className={`text-xs px-2.5 py-1 rounded transition-colors cursor-pointer ${
-                      bodyMode === 'html' ? 'bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30' : 'text-[#6b7280] hover:text-[#e2e4ed]'
+                      bodyMode === 'html' ? 'bg-forge-accent/10 text-forge-accent border border-forge-accent/30' : 'text-forge-muted hover:text-forge-text'
                     }`}
                   >
                     HTML
@@ -170,7 +170,7 @@ export function FileReader() {
                     }}
                   />
                 ) : (
-                  <pre className="text-sm text-[#9ca3af] whitespace-pre-wrap font-mono leading-relaxed">
+                  <pre className="text-sm text-forge-dim whitespace-pre-wrap font-mono leading-relaxed">
                     {parsed.textContent}
                   </pre>
                 )}
@@ -180,19 +180,19 @@ export function FileReader() {
 
           {/* Attachments */}
           {parsed.attachments.length > 0 && (
-            <div className="rounded-lg border border-[#2a2d3a] overflow-hidden">
-              <div className="px-4 py-2 border-b border-[#2a2d3a] bg-[#1a1d27]">
-                <span className="text-xs text-[#6b7280] uppercase tracking-wider font-medium">
+            <div className="rounded-lg border border-forge-border overflow-hidden">
+              <div className="px-4 py-2 border-b border-forge-border bg-forge-surface">
+                <span className="text-xs text-forge-muted uppercase tracking-wider font-medium">
                   Attachments ({parsed.attachments.length})
                 </span>
               </div>
-              <div className="flex flex-col divide-y divide-[#1e2130]">
+              <div className="flex flex-col divide-y divide-forge-raise">
                 {parsed.attachments.map(({ name, content }) => (
                   <div key={name} className="flex items-center justify-between px-4 py-2.5">
-                    <span className="text-sm text-[#e2e4ed] truncate">{name}</span>
+                    <span className="text-sm text-forge-text truncate">{name}</span>
                     <button
                       onClick={() => downloadAttachment(name, content)}
-                      className="text-xs text-[#6b7280] hover:text-[#c4af64] transition-colors cursor-pointer shrink-0 ml-4"
+                      className="text-xs text-forge-muted hover:text-forge-accent transition-colors cursor-pointer shrink-0 ml-4"
                     >
                       Download
                     </button>

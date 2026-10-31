@@ -55,12 +55,12 @@ const fmtStamp = (t: number) =>
 
 function ReadyLine({ label, anchor, nowMs }: { label: string; anchor: number | null; nowMs: number }) {
   if (anchor === null) {
-    return <div className="text-sm text-[#6b7280]">{label}: no entry logged</div>
+    return <div className="text-sm text-forge-muted">{label}: no entry logged</div>
   }
   const readyAt = anchor + LOCKOUT_MS
   const ready = nowMs >= readyAt
   return (
-    <div className="text-sm text-[#9ca3af]">
+    <div className="text-sm text-forge-dim">
       {label}: {ready
         ? <span className="text-[#4ade80] font-semibold">READY</span>
         : <span className="tabular-nums">ready {fmtStamp(readyAt)} · in {formatLongWait(readyAt - nowMs)}</span>}
@@ -160,39 +160,39 @@ export function LockoutTracker() {
 
       <div className="flex items-end justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
-            Lockout <span className="text-[#c4af64]">Tracker</span>
+          <h1 className="text-xl font-semibold text-forge-text tracking-wide">
+            Lockout <span className="text-forge-accent">Tracker</span>
           </h1>
-          <p className="text-sm text-[#6b7280] mt-0.5">FFXI · Horizon</p>
+          <p className="text-sm text-forge-muted mt-0.5">FFXI · Horizon</p>
         </div>
         <div className="text-right">
-          <div className="text-[10px] uppercase tracking-wider text-[#6b7280]">Next conquest tally</div>
-          <div className="text-sm text-[#c4af64] tabular-nums">{formatNextReset()}</div>
+          <div className="text-[10px] uppercase tracking-wider text-forge-muted">Next conquest tally</div>
+          <div className="text-sm text-forge-accent tabular-nums">{formatNextReset()}</div>
         </div>
       </div>
 
-      <div className="rounded-lg border border-[#2a2d3a] bg-[#1a1d27] px-5 py-4 flex flex-col gap-2">
+      <div className="rounded-lg border border-forge-border bg-forge-surface px-5 py-4 flex flex-col gap-2">
         <div className="flex items-center justify-between">
-          <span className="text-[10px] uppercase tracking-wider font-semibold text-[#9ca3af]">Dynamis</span>
+          <span className="text-[10px] uppercase tracking-wider font-semibold text-forge-dim">Dynamis</span>
           <AlertBell target="Dynamis ready" armed={alarms.has('Dynamis ready')} onToggle={alarms.toggle} size={14} />
         </div>
         <ReadyLine label="Re-entry (72h from entry)" anchor={lastDynamis} nowMs={ms} />
-        <div className="text-sm text-[#9ca3af]">
+        <div className="text-sm text-forge-dim">
           This tally:{' '}
-          <span className={`tabular-nums font-semibold ${tallyEntries >= 2 ? 'text-[#fb923c]' : 'text-[#e2e4ed]'}`}>
+          <span className={`tabular-nums font-semibold ${tallyEntries >= 2 ? 'text-[#fb923c]' : 'text-forge-text'}`}>
             {tallyEntries}/2
           </span>
-          <span className="text-[#6b7280]"> · Horizon allows two entries per conquest tally</span>
+          <span className="text-forge-muted"> · Horizon allows two entries per conquest tally</span>
         </div>
         {saved.dynamis.length > 0 && (
-          <div className="flex flex-col gap-1 text-xs text-[#6b7280]">
+          <div className="flex flex-col gap-1 text-xs text-forge-muted">
             {saved.dynamis.map(ts => (
               <div key={ts} className="flex items-center gap-2">
                 <span className="tabular-nums">{fmtStamp(ts)}</span>
                 <button
                   onClick={() => removeDynamis(ts)}
                   aria-label={`Remove Dynamis entry ${ts}`}
-                  className="text-[#6b7280] hover:text-[#e2e4ed] cursor-pointer leading-none"
+                  className="text-forge-muted hover:text-forge-text cursor-pointer leading-none"
                 >
                   ×
                 </button>
@@ -202,25 +202,25 @@ export function LockoutTracker() {
         )}
         <button
           onClick={logDynamis}
-          className="self-start text-sm px-3 py-1 rounded border border-[#c4af64]/60 text-[#c4af64] hover:bg-[#c4af64]/10 transition-colors cursor-pointer"
+          className="self-start text-sm px-3 py-1 rounded border border-forge-accent/60 text-forge-accent hover:bg-forge-accent/10 transition-colors cursor-pointer"
         >
           Log entry now
         </button>
       </div>
 
-      <div className="rounded-lg border border-[#2a2d3a] bg-[#1a1d27] px-5 py-4 flex flex-col gap-2">
+      <div className="rounded-lg border border-forge-border bg-forge-surface px-5 py-4 flex flex-col gap-2">
         <div className="flex items-center justify-between">
-          <span className="text-[10px] uppercase tracking-wider font-semibold text-[#9ca3af]">Limbus</span>
+          <span className="text-[10px] uppercase tracking-wider font-semibold text-forge-dim">Limbus</span>
           <AlertBell target="Limbus ready" armed={alarms.has('Limbus ready')} onToggle={alarms.toggle} size={14} />
         </div>
         <ReadyLine label="Cosmo-Cleanse (72h from purchase)" anchor={saved.limbus} nowMs={ms} />
         {saved.limbus !== null && (
-          <div className="text-xs text-[#6b7280] tabular-nums">bought {fmtStamp(saved.limbus)}</div>
+          <div className="text-xs text-forge-muted tabular-nums">bought {fmtStamp(saved.limbus)}</div>
         )}
         <div className="flex items-center gap-3">
           <button
             onClick={() => persist({ ...saved, limbus: ms })}
-            className="text-sm px-3 py-1 rounded border border-[#c4af64]/60 text-[#c4af64] hover:bg-[#c4af64]/10 transition-colors cursor-pointer"
+            className="text-sm px-3 py-1 rounded border border-forge-accent/60 text-forge-accent hover:bg-forge-accent/10 transition-colors cursor-pointer"
           >
             Bought Cosmo-Cleanse now
           </button>
@@ -228,38 +228,38 @@ export function LockoutTracker() {
             <ConfirmButton
               label="Clear"
               onConfirm={() => persist({ ...saved, limbus: null })}
-              className="text-xs text-[#9ca3af] hover:text-[#e2e4ed] transition-colors cursor-pointer"
+              className="text-xs text-forge-dim hover:text-forge-text transition-colors cursor-pointer"
             />
           )}
         </div>
       </div>
 
-      <div className="rounded-lg border border-[#2a2d3a] bg-[#1a1d27] px-5 py-4 flex flex-col gap-2">
+      <div className="rounded-lg border border-forge-border bg-forge-surface px-5 py-4 flex flex-col gap-2">
         <div className="flex items-center justify-between">
-          <span className="text-[10px] uppercase tracking-wider font-semibold text-[#9ca3af]">Assault tags</span>
+          <span className="text-[10px] uppercase tracking-wider font-semibold text-forge-dim">Assault tags</span>
           <AlertBell target="Assault tag ready" armed={alarms.has('Assault tag ready')} onToggle={alarms.toggle} size={14} />
         </div>
-        <div className="text-sm text-[#9ca3af]">
+        <div className="text-sm text-forge-dim">
           Imperial Army I.D. tags:{' '}
-          <span className={`tabular-nums font-semibold ${tags.stock === 0 ? 'text-[#fb923c]' : 'text-[#e2e4ed]'}`}>
+          <span className={`tabular-nums font-semibold ${tags.stock === 0 ? 'text-[#fb923c]' : 'text-forge-text'}`}>
             {tags.stock}/{tagMax}
           </span>
           {tags.nextAt !== null && (
             <span className="tabular-nums"> · next {fmtStamp(tags.nextAt)} · in {formatLongWait(tags.nextAt - ms)}</span>
           )}
           {tags.fullAt !== null && tags.fullAt !== tags.nextAt && (
-            <span className="text-[#6b7280] tabular-nums"> · full {fmtStamp(tags.fullAt)}</span>
+            <span className="text-forge-muted tabular-nums"> · full {fmtStamp(tags.fullAt)}</span>
           )}
         </div>
         {saved.assault.draws.length > 0 && (
-          <div className="flex flex-col gap-1 text-xs text-[#6b7280]">
+          <div className="flex flex-col gap-1 text-xs text-forge-muted">
             {saved.assault.draws.map(ts => (
               <div key={ts} className="flex items-center gap-2">
                 <span className="tabular-nums">{fmtStamp(ts)}</span>
                 <button
                   onClick={() => removeTag(ts)}
                   aria-label={`Remove tag draw ${ts}`}
-                  className="text-[#6b7280] hover:text-[#e2e4ed] cursor-pointer leading-none"
+                  className="text-forge-muted hover:text-forge-text cursor-pointer leading-none"
                 >
                   ×
                 </button>
@@ -271,11 +271,11 @@ export function LockoutTracker() {
           <button
             onClick={logTag}
             disabled={tags.stock === 0}
-            className="text-sm px-3 py-1 rounded border border-[#c4af64]/60 text-[#c4af64] hover:bg-[#c4af64]/10 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+            className="text-sm px-3 py-1 rounded border border-forge-accent/60 text-forge-accent hover:bg-forge-accent/10 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Drew a tag now
           </button>
-          <label className="flex items-center gap-1.5 text-xs text-[#9ca3af] cursor-pointer">
+          <label className="flex items-center gap-1.5 text-xs text-forge-dim cursor-pointer">
             <input
               type="checkbox"
               checked={saved.assault.fourTags}
@@ -287,13 +287,13 @@ export function LockoutTracker() {
             <ConfirmButton
               label="Clear"
               onConfirm={() => persist({ ...saved, assault: { ...saved.assault, draws: [] } })}
-              className="text-xs text-[#9ca3af] hover:text-[#e2e4ed] transition-colors cursor-pointer"
+              className="text-xs text-forge-dim hover:text-forge-text transition-colors cursor-pointer"
             />
           )}
         </div>
       </div>
 
-      <p className="text-xs text-[#6b7280]">
+      <p className="text-xs text-forge-muted">
         Dynamis and Limbus timers are 72 Earth hours. Dynamis counts from your hourglass trade; Limbus counts
         from buying the Cosmo-Cleanse (Horizon 1.1 change). Assault tags regenerate one per{' '}
         {ASSAULT_TAG_MS / 3_600_000} Earth hours from the first draw out of a full stock (LandSandBoat

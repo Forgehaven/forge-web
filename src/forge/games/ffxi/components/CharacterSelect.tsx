@@ -30,7 +30,7 @@ export function CharacterSelect({
 
   return (
     <div className="flex items-center gap-3">
-      <span className="text-xs text-[#6b7280] shrink-0">Character</span>
+      <span className="text-xs text-forge-muted shrink-0">Character</span>
       <div className="w-44">
         <Select
           options={options}

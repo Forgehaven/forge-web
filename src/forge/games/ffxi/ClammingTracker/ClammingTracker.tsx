@@ -78,9 +78,9 @@ function getCategory(
 
 // --- Sub-components ---
 
-const TH  = 'pt-3 pb-1.5 text-left   text-[10px] text-[#6b7280] uppercase tracking-wider font-normal whitespace-nowrap'
-const THR = 'pt-3 pb-1.5 text-right  text-[10px] text-[#6b7280] uppercase tracking-wider font-normal whitespace-nowrap'
-const THC = 'pt-3 pb-1.5 text-center text-[10px] text-[#6b7280] uppercase tracking-wider font-normal whitespace-nowrap'
+const TH  = 'pt-3 pb-1.5 text-left   text-[10px] text-forge-muted uppercase tracking-wider font-normal whitespace-nowrap'
+const THR = 'pt-3 pb-1.5 text-right  text-[10px] text-forge-muted uppercase tracking-wider font-normal whitespace-nowrap'
+const THC = 'pt-3 pb-1.5 text-center text-[10px] text-forge-muted uppercase tracking-wider font-normal whitespace-nowrap'
 
 type RecVariant = 'ah_single' | 'ah_stack' | 'vendor'
 
@@ -137,11 +137,11 @@ function PriceInput({ value, onChange, highlight }: PriceInputProps) {
       }}
       placeholder="-"
       className={[
-        'w-20 px-1.5 py-0.5 text-right text-xs rounded border bg-[#0f1117]',
+        'w-20 px-1.5 py-0.5 text-right text-xs rounded border bg-forge-bg',
         'focus:outline-none',
         highlight
-          ? 'text-[#c4af64] border-[#c4af64]/50 focus:border-[#c4af64]'
-          : 'text-[#9ca3af] border-[#2a2d3a] hover:border-[#3a4060] focus:border-[#4a5070]',
+          ? 'text-forge-accent border-forge-accent/50 focus:border-forge-accent'
+          : 'text-forge-dim border-forge-border hover:border-[#3a4060] focus:border-[#4a5070]',
       ].join(' ')}
     />
   )
@@ -154,7 +154,7 @@ function ExceptionFlag({ isManual, onClick }: ExceptionFlagProps) {
       onClick={onClick}
       title={isManual ? 'Return to exception' : 'Mark as exception'}
       className={`text-sm leading-none cursor-pointer transition-colors px-1 rounded ${
-        isManual ? 'text-[#c4af64] hover:text-[#e2e4ed]' : 'text-[#2a2d3a] hover:text-[#6b7280]'
+        isManual ? 'text-forge-accent hover:text-forge-text' : 'text-forge-border hover:text-forge-muted'
       }`}
     >
       ⚑
@@ -186,15 +186,15 @@ function ItemRow({
     : bestToVariant(best)
 
   return (
-    <tr className="border-b border-[#1a1d27] last:border-0 hover:bg-[#1a1d27]/50 transition-colors">
-      <td className="py-1 pl-4 pr-3 text-sm text-[#e2e4ed] whitespace-nowrap">
+    <tr className="border-b border-forge-surface last:border-0 hover:bg-forge-surface/50 transition-colors">
+      <td className="py-1 pl-4 pr-3 text-sm text-forge-text whitespace-nowrap">
         {item.name}
-        {isManual && <span className="ml-1.5 text-[10px] text-[#c4af64]/60 uppercase tracking-wider">exc</span>}
+        {isManual && <span className="ml-1.5 text-[10px] text-forge-accent/60 uppercase tracking-wider">exc</span>}
       </td>
       <td className="py-1 pr-3 text-center">
         <RecBadge variant={recVariant} />
       </td>
-      <td className="py-1 pr-3 text-xs text-[#6b7280] text-right tabular-nums">
+      <td className="py-1 pr-3 text-xs text-forge-muted text-right tabular-nums">
         {item.vendorPrice.toLocaleString()}
       </td>
       <td className="py-1 pr-2 text-right">
@@ -202,7 +202,7 @@ function ItemRow({
       </td>
       <td className="py-1 pr-3 text-right">
         {noStack
-          ? <span className="text-xs text-[#374151] inline-block w-20 text-right" title="Item is not stackable on AH">-</span>
+          ? <span className="text-xs text-forge-edge inline-block w-20 text-right" title="Item is not stackable on AH">-</span>
           : <PriceInput value={ahStack} onChange={onAHStackChange} highlight={best.mode === 'stack'} />
         }
       </td>
@@ -211,8 +211,8 @@ function ItemRow({
       </td>
       <td className="py-1 pr-3 text-xs tabular-nums text-right">
         {best.where === 'ah'
-          ? <span className="text-[#c4af64]">{best.net.toLocaleString()}</span>
-          : <span className="text-[#6b7280]">{item.vendorPrice.toLocaleString()}</span>
+          ? <span className="text-forge-accent">{best.net.toLocaleString()}</span>
+          : <span className="text-forge-muted">{item.vendorPrice.toLocaleString()}</span>
         }
       </td>
       <td className="py-1 pr-2">
@@ -227,12 +227,12 @@ function ItemRow({
               : `Dev recommended: ${REC_LABEL[item.devRecommended]} - check to use fee math instead`
             }
           >
-            <span className={`text-xs font-bold leading-none select-none ${isRecDisabled ? 'text-[#374151]' : 'text-red-400'}`}>!</span>
+            <span className={`text-xs font-bold leading-none select-none ${isRecDisabled ? 'text-forge-edge' : 'text-red-400'}`}>!</span>
             <input
               type="checkbox"
               checked={isRecDisabled}
               onChange={onToggleRec}
-              className="w-3 h-3 cursor-pointer accent-[#6b7280]"
+              className="w-3 h-3 cursor-pointer accent-forge-muted"
             />
           </label>
         )}
@@ -258,15 +258,15 @@ function ExceptionRow({ item, draggingId, onDragStart, onDragEnd, onMoveToAH, on
       draggable
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
-      className={`border-b border-[#1a1d27] last:border-0 transition-colors cursor-grab active:cursor-grabbing ${
-        isDragging ? 'opacity-40' : 'hover:bg-[#1a1d27]/50'
+      className={`border-b border-forge-surface last:border-0 transition-colors cursor-grab active:cursor-grabbing ${
+        isDragging ? 'opacity-40' : 'hover:bg-forge-surface/50'
       }`}
     >
-      <td className="py-1 pl-4 pr-3 text-sm text-[#e2e4ed] whitespace-nowrap">
-        <span className="mr-2 text-[#2a2d3a] select-none text-xs">⠿</span>
+      <td className="py-1 pl-4 pr-3 text-sm text-forge-text whitespace-nowrap">
+        <span className="mr-2 text-forge-border select-none text-xs">⠿</span>
         {item.name}
       </td>
-      <td className="py-1 pr-3 text-xs text-[#6b7280] text-right tabular-nums">{item.vendorPrice.toLocaleString()}</td>
+      <td className="py-1 pr-3 text-xs text-forge-muted text-right tabular-nums">{item.vendorPrice.toLocaleString()}</td>
       <td className="py-1 pr-2">
         <button
           onClick={onMoveToAH}
@@ -287,7 +287,7 @@ function ExceptionRow({ item, draggingId, onDragStart, onDragEnd, onMoveToAH, on
         <button
           onClick={onRemove}
           title="Return to auto-sort"
-          className="text-xs text-[#2a2d3a] hover:text-[#6b7280] cursor-pointer transition-colors px-1"
+          className="text-xs text-forge-border hover:text-forge-muted cursor-pointer transition-colors px-1"
         >
           ✕
         </button>
@@ -313,15 +313,15 @@ function DroppableSection({ label, count, isDragTarget, onDragOver, onDrop, onDr
       onDrop={onDrop}
       onDragLeave={onDragLeave}
       className={`rounded-lg border transition-colors overflow-hidden ${
-        isDragTarget ? 'border-[#c4af64]/60 bg-[#c4af64]/5' : 'border-[#2a2d3a]'
+        isDragTarget ? 'border-forge-accent/60 bg-forge-accent/5' : 'border-forge-border'
       }`}
     >
       <div className={`flex items-center gap-2 px-4 py-2 border-b ${
-        isDragTarget ? 'border-[#c4af64]/30' : 'border-[#2a2d3a]'
+        isDragTarget ? 'border-forge-accent/30' : 'border-forge-border'
       }`}>
-        <span className="text-xs text-[#6b7280] uppercase tracking-widest font-medium">{label}</span>
-        <span className="text-xs text-[#374151]">{count}</span>
-        {isDragTarget && <span className="ml-auto text-xs text-[#c4af64]">Drop here</span>}
+        <span className="text-xs text-forge-muted uppercase tracking-widest font-medium">{label}</span>
+        <span className="text-xs text-forge-edge">{count}</span>
+        {isDragTarget && <span className="ml-auto text-xs text-forge-accent">Drop here</span>}
       </div>
       {children}
     </div>
@@ -397,7 +397,7 @@ const itemTableCols = (
 
 const itemTableHead = (
   <thead>
-    <tr className="border-b border-[#1e2130]">
+    <tr className="border-b border-forge-raise">
       <th className={`${TH} pl-4 pr-3`}>Item</th>
       <th className="pt-3 pb-1.5 pr-3" />
       <th className={`${THR} pr-3`}>Vendor</th>
@@ -618,32 +618,32 @@ export function ClammingTracker() {
     <div className="flex flex-col gap-5 max-w-4xl mx-auto w-full">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
-            Clamming <span className="text-[#c4af64]">Tracker</span>
+          <h1 className="text-xl font-semibold text-forge-text tracking-wide">
+            Clamming <span className="text-forge-accent">Tracker</span>
           </h1>
-          <p className="text-sm text-[#6b7280] mt-0.5">FFXI · Horizon - Purgonorgo Isle</p>
+          <p className="text-sm text-forge-muted mt-0.5">FFXI · Horizon - Purgonorgo Isle</p>
         </div>
         <div className="flex items-center gap-3 mt-1 shrink-0">
           <button
             onClick={exportHXICLAM}
-            className="text-xs px-2.5 py-1 rounded border border-[#c4af64]/40 text-[#c4af64] hover:bg-[#c4af64]/10 transition-colors cursor-pointer whitespace-nowrap"
+            className="text-xs px-2.5 py-1 rounded border border-forge-accent/40 text-forge-accent hover:bg-forge-accent/10 transition-colors cursor-pointer whitespace-nowrap"
           >
             {copiedHXI ? 'Copied!' : 'Export for HXICLAM'}
           </button>
-          <span className="text-[#2a2d3a]">|</span>
+          <span className="text-forge-border">|</span>
           <button
             onClick={exportState}
-            className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer"
+            className="text-xs text-forge-muted hover:text-forge-text transition-colors cursor-pointer"
           >
             {copied ? 'Copied!' : 'Export'}
           </button>
           <button
             onClick={() => setImportOpen(v => !v)}
-            className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer"
+            className="text-xs text-forge-muted hover:text-forge-text transition-colors cursor-pointer"
           >
             Import
           </button>
-          <span className="text-[#2a2d3a]">|</span>
+          <span className="text-forge-border">|</span>
           <ConfirmButton label="Reset all" confirmPrompt="Reset all?" onConfirm={resetAll} />
         </div>
       </div>
@@ -652,7 +652,7 @@ export function ClammingTracker() {
       {isAuthenticated && (
         <div className="flex items-center justify-end gap-3">
           {conflictNotice && (
-            <span className="text-xs text-[#c4af64]">
+            <span className="text-xs text-forge-accent">
               Newer save from another device loaded - your unsaved edits were replaced.
             </span>
           )}
@@ -661,8 +661,8 @@ export function ClammingTracker() {
             disabled={!dirty || saving}
             className={`text-xs px-4 py-1.5 rounded font-semibold transition-colors shrink-0 ${
               dirty
-                ? 'bg-[#c4af64] text-[#0f1117] hover:bg-[#d4bf74] animate-pulse cursor-pointer'
-                : 'border border-[#2a2d3a] text-[#374151] cursor-default'
+                ? 'bg-forge-accent text-forge-bg hover:bg-[#d4bf74] animate-pulse cursor-pointer'
+                : 'border border-forge-border text-forge-edge cursor-default'
             }`}
           >
             {saving ? 'Saving…' : dirty ? 'Save' : 'Saved'}
@@ -684,12 +684,12 @@ export function ClammingTracker() {
           <div className="flex items-center gap-2 px-4 py-2 border-b border-amber-500/20">
             <span className="text-xs text-amber-400 uppercase tracking-widest font-medium">Needs Sorting</span>
             <span className="text-xs text-amber-500/60">{exceptionItems.length}</span>
-            <span className="ml-auto text-[10px] text-[#374151]">Drag to a section or use the buttons</span>
+            <span className="ml-auto text-[10px] text-forge-edge">Drag to a section or use the buttons</span>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-[#1e2130]">
+                <tr className="border-b border-forge-raise">
                   <th className={`${TH} pl-4 pr-3`}>Item</th>
                   <th className={`${THR} pr-3`}>Vendor</th>
                   <th className="pt-3 pb-1.5 pr-2" colSpan={2} />
@@ -730,7 +730,7 @@ export function ClammingTracker() {
             {itemTableHead}
             <tbody>
               {ahItems.length === 0
-                ? <tr><td colSpan={9} className="py-4 pl-4 text-sm text-[#374151]">No items</td></tr>
+                ? <tr><td colSpan={9} className="py-4 pl-4 text-sm text-forge-edge">No items</td></tr>
                 : renderItemRows(ahItems)
               }
             </tbody>

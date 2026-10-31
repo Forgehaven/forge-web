@@ -79,7 +79,7 @@ export function TextDiff() {
   const [left, setLeft] = useState('')
   const [right, setRight] = useState('')
 
-  const textareaClass = "flex-1 min-h-0 bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full font-mono resize-none"
+  const textareaClass = "flex-1 min-h-0 bg-forge-bg border border-forge-border text-forge-text rounded px-3 py-2 text-sm focus:outline-none focus:border-forge-accent w-full font-mono resize-none"
 
   const result = useMemo(() => {
     if (!left.trim() && !right.trim()) return null
@@ -91,16 +91,16 @@ export function TextDiff() {
   return (
     <div className="h-full flex flex-col">
       <div className="flex items-center justify-between mb-4 shrink-0">
-        <h1 className="text-xl font-semibold text-[#e2e4ed]">Text Diff</h1>
-        <div className="flex bg-[#1a1d27] border border-[#2a2d3a] rounded overflow-hidden">
+        <h1 className="text-xl font-semibold text-forge-text">Text Diff</h1>
+        <div className="flex bg-forge-surface border border-forge-border rounded overflow-hidden">
           {MODES.map(m => (
             <button
               key={m.value}
               onClick={() => setMode(m.value)}
               className={`px-3 py-1.5 text-xs transition-colors cursor-pointer ${
                 mode === m.value
-                  ? 'bg-[#c4af64]/10 text-[#c4af64]'
-                  : 'text-[#6b7280] hover:text-[#e2e4ed]'
+                  ? 'bg-forge-accent/10 text-forge-accent'
+                  : 'text-forge-muted hover:text-forge-text'
               }`}
             >
               {m.label}
@@ -111,7 +111,7 @@ export function TextDiff() {
 
       <div className="flex flex-col md:flex-row gap-4 md:h-[60vh] shrink-0">
         <div className="min-w-0 min-h-0 flex flex-col gap-1 h-[35vh] md:flex-1 md:h-auto">
-          <label className="block text-xs text-[#6b7280] shrink-0">Left</label>
+          <label className="block text-xs text-forge-muted shrink-0">Left</label>
           <textarea className={textareaClass} value={left} onChange={e => setLeft(e.target.value)}
             placeholder={mode === 'json' ? '{"name": "Alice"}' : 'Line one\nLine two'} />
           {result?.mode === 'json' && result.leftError && (
@@ -119,7 +119,7 @@ export function TextDiff() {
           )}
         </div>
         <div className="min-w-0 min-h-0 flex flex-col gap-1 h-[35vh] md:flex-1 md:h-auto">
-          <label className="block text-xs text-[#6b7280] shrink-0">Right</label>
+          <label className="block text-xs text-forge-muted shrink-0">Right</label>
           <textarea className={textareaClass} value={right} onChange={e => setRight(e.target.value)}
             placeholder={mode === 'json' ? '{"name": "Bob"}' : 'Line one\nLine three'} />
           {result?.mode === 'json' && result.rightError && (
@@ -129,18 +129,18 @@ export function TextDiff() {
       </div>
 
       {result && (
-        <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-4 mt-4 shrink-0">
+        <div className="bg-forge-surface border border-forge-border rounded-lg p-4 mt-4 shrink-0">
           {result.mode === 'json' && result.entries.length > 0 && (() => {
             const changed = result.entries.filter(e => e.type !== 'same')
             const colors: Record<string, string> = {
               added: 'bg-green-500/10 border-green-500/20 text-green-400',
               removed: 'bg-red-500/10 border-red-500/20 text-red-400',
               changed: 'bg-yellow-500/10 border-yellow-500/20 text-yellow-400',
-              same: 'bg-transparent border-transparent text-[#6b7280]',
+              same: 'bg-transparent border-transparent text-forge-muted',
             }
             const prefix: Record<string, string> = { added: '+', removed: '-', changed: '~', same: ' ' }
             return <>
-              <p className="text-xs text-[#6b7280] mb-3">{changed.length} difference{changed.length !== 1 ? 's' : ''}</p>
+              <p className="text-xs text-forge-muted mb-3">{changed.length} difference{changed.length !== 1 ? 's' : ''}</p>
               <div className="flex flex-col gap-1">
                 {result.entries.map(entry => (
                   <div key={entry.key} className={`font-mono text-xs px-2 py-0.5 rounded border ${colors[entry.type]}`}>
@@ -166,14 +166,14 @@ export function TextDiff() {
           {result.mode === 'text' && (() => {
             const changed = result.lines.filter(l => l.type !== 'same').length
             return <>
-              <p className="text-xs text-[#6b7280] mb-3">{changed} changed line{changed !== 1 ? 's' : ''}</p>
+              <p className="text-xs text-forge-muted mb-3">{changed} changed line{changed !== 1 ? 's' : ''}</p>
               <div className="flex flex-col font-mono text-xs">
                 {result.lines.map((line, i) => {
                   const cls = line.type === 'added'
                     ? 'bg-green-500/10 text-green-400'
                     : line.type === 'removed'
                     ? 'bg-red-500/10 text-red-400'
-                    : 'text-[#6b7280]'
+                    : 'text-forge-muted'
                   const sym = line.type === 'added' ? '+' : line.type === 'removed' ? '-' : ' '
                   return (
                     <div key={i} className={`px-2 py-0.5 ${cls}`}>

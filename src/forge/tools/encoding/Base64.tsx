@@ -9,7 +9,7 @@ export function Base64() {
   const [input, setInput] = useState('')
   const [urlSafe, setUrlSafe] = useState(false)
 
-  const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full font-mono resize-none"
+  const inputClass = "bg-forge-bg border border-forge-border text-forge-text rounded px-3 py-2 text-sm focus:outline-none focus:border-forge-accent w-full font-mono resize-none"
 
   function toUrlSafe(s: string) {
     return s.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
@@ -43,7 +43,7 @@ export function Base64() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Base64 Encoder / Decoder</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">Base64 Encoder / Decoder</h1>
 
       <div className="flex gap-2 mb-6">
         {(['encode', 'decode'] as Mode[]).map(m => (
@@ -52,8 +52,8 @@ export function Base64() {
             onClick={() => { setMode(m); setInput('') }}
             className={`px-3 py-1.5 rounded text-sm transition-colors capitalize ${
               mode === m
-                ? 'bg-[#c4af64] text-white'
-                : 'bg-[#1a1d27] text-[#9ca3af] hover:text-[#e2e4ed] border border-[#2a2d3a]'
+                ? 'bg-forge-accent text-white'
+                : 'bg-forge-surface text-forge-dim hover:text-forge-text border border-forge-border'
             }`}
           >
             {m}
@@ -61,19 +61,19 @@ export function Base64() {
         ))}
       </div>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-4">
         <label className="flex items-center gap-2 cursor-pointer select-none">
           <input
             type="checkbox"
             checked={urlSafe}
             onChange={e => setUrlSafe(e.target.checked)}
-            className="accent-[#c4af64]"
+            className="accent-forge-accent"
           />
-          <span className="text-xs text-[#6b7280]">URL-safe variant</span>
+          <span className="text-xs text-forge-muted">URL-safe variant</span>
         </label>
 
         <div>
-          <label className="block text-xs text-[#6b7280] mb-1">
+          <label className="block text-xs text-forge-muted mb-1">
             {mode === 'encode' ? 'Plain text' : 'Base64 input'}
           </label>
           <textarea
@@ -88,19 +88,19 @@ export function Base64() {
         {computeError && <p className="text-xs text-red-400">{computeError}</p>}
 
         {output && (
-          <div className="pt-2 border-t border-[#2a2d3a]">
+          <div className="pt-2 border-t border-forge-border">
             <div className="flex items-center justify-between mb-1">
-              <p className="text-xs text-[#6b7280]">
+              <p className="text-xs text-forge-muted">
                 {mode === 'encode' ? 'Encoded' : 'Decoded'}
               </p>
               <button
                 onClick={() => copy(output)}
-                className="text-xs text-[#c4af64] hover:text-[#e2e4ed] transition-colors"
+                className="text-xs text-forge-accent hover:text-forge-text transition-colors"
               >
                 {copied ? 'Copied!' : 'Copy'}
               </button>
             </div>
-            <p className="font-mono text-sm text-[#c4af64] break-all">{output}</p>
+            <p className="font-mono text-sm text-forge-accent break-all">{output}</p>
           </div>
         )}
       </div>

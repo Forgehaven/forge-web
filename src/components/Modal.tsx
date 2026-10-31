@@ -24,14 +24,14 @@ export function Modal({ open, onClose, title, children, maxWidth = 'max-w-md' }:
       onClick={onClose}
     >
       <div
-        className={`bg-[#1a1d27] border border-[#2a2d3a] rounded-lg w-full ${maxWidth} mx-4 overflow-hidden`}
+        className={`bg-forge-surface border border-forge-border rounded-lg w-full ${maxWidth} mx-4 overflow-hidden`}
         onClick={e => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between px-5 py-3 border-b border-[#2a2d3a]">
-          <p className="text-sm font-semibold text-[#e2e4ed] tracking-wide">{title}</p>
+        <div className="flex items-center justify-between px-5 py-3 border-b border-forge-border">
+          <p className="text-sm font-semibold text-forge-text tracking-wide">{title}</p>
           <button
             onClick={onClose}
-            className="text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer text-lg leading-none"
+            className="text-forge-muted hover:text-forge-text transition-colors cursor-pointer text-lg leading-none"
             aria-label="Close"
           >
             ×

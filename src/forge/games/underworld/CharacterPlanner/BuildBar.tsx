@@ -22,7 +22,7 @@ function CloudIcon() {
 }
 
 const KIND: Record<SaveKind, { icon: React.ReactNode; title: string; color: string }> = {
-  local: { icon: <DeviceIcon />, title: 'Saved on this device', color: 'text-[#9ca3af]' },
+  local: { icon: <DeviceIcon />, title: 'Saved on this device', color: 'text-forge-dim' },
   server: { icon: <CloudIcon />, title: 'Saved to your Discord account', color: 'text-sky-300' },
 }
 
@@ -55,7 +55,7 @@ export function BuildBar({ store }: { store: BuildStore }) {
     : 'Saving…'
 
   return (
-    <div className="forge-card !p-4 flex flex-col gap-3">
+    <div className="forge-card !p-3 flex flex-col gap-2">
       <div className="flex items-center gap-2">
         <button
           className={`forge-btn-accent flex items-center gap-1.5 ${!current && dirty ? 'animate-pulse' : ''}`}
@@ -74,7 +74,7 @@ export function BuildBar({ store }: { store: BuildStore }) {
           title="Undo (Ctrl+Z)"
         >Undo</button>
         {current && (
-          <button className="text-xs text-[#6b7280] hover:text-[#e2e4ed] cursor-pointer ml-auto" onClick={store.detach}>
+          <button className="text-xs text-forge-muted hover:text-forge-text cursor-pointer ml-auto" onClick={store.detach}>
             Save as copy
           </button>
         )}
@@ -94,9 +94,9 @@ export function BuildBar({ store }: { store: BuildStore }) {
         </button>
       )}
       {!isAuthenticated && (
-        <p className="text-[11px] text-[#6b7280] leading-snug">
+        <p className="text-[11px] text-forge-muted leading-snug">
           Saves stay on this device.{' '}
-          <button className="text-[#c4af64] hover:underline cursor-pointer" onClick={login}>Log in</button>{' '}
+          <button className="text-forge-accent hover:underline cursor-pointer" onClick={login}>Log in</button>{' '}
           to keep builds in your Discord account and open them anywhere.
         </p>
       )}
@@ -105,7 +105,7 @@ export function BuildBar({ store }: { store: BuildStore }) {
         <ul className="flex flex-col max-h-48 overflow-y-auto -mx-1">
           {saves.map((s, i) => {
             const active = current?.kind === s.kind && current.id === s.id
-            const edge = drag && drag.over === i && drag.from !== i ? (drag.from < i ? 'border-b' : 'border-t') + ' border-[#c4af64]' : ''
+            const edge = drag && drag.over === i && drag.from !== i ? (drag.from < i ? 'border-b' : 'border-t') + ' border-forge-accent' : ''
             return (
               <li
                 key={`${s.kind}:${s.id}`}
@@ -114,12 +114,12 @@ export function BuildBar({ store }: { store: BuildStore }) {
                 onDragOver={e => { e.preventDefault(); if (drag && drag.over !== i) setDrag({ ...drag, over: i }) }}
                 onDrop={e => { e.preventDefault(); if (drag) move(drag.from, i) }}
                 onDragEnd={() => setDrag(null)}
-                className={`group flex items-center gap-2 rounded px-1 cursor-grab active:cursor-grabbing ${active ? 'bg-[#c4af64]/10' : 'hover:bg-[#2a2d3a]/50'} ${edge} ${drag?.from === i ? 'opacity-40' : ''} ${s.favourite && !saves[i + 1]?.favourite && saves[i + 1] ? 'mb-1' : ''}`}
+                className={`group flex items-center gap-2 rounded px-1 cursor-grab active:cursor-grabbing ${active ? 'bg-forge-accent/10' : 'hover:bg-forge-border/50'} ${edge} ${drag?.from === i ? 'opacity-40' : ''} ${s.favourite && !saves[i + 1]?.favourite && saves[i + 1] ? 'mb-1' : ''}`}
               >
                 <button
                   aria-label={`${s.favourite ? 'Unfavourite' : 'Favourite'} ${s.name}`}
                   aria-pressed={s.favourite}
-                  className={`cursor-pointer leading-none ${s.favourite ? 'text-[#c4af64]' : 'text-[#4b5563] opacity-0 group-hover:opacity-100 focus:opacity-100 hover:text-[#c4af64]'}`}
+                  className={`cursor-pointer leading-none ${s.favourite ? 'text-forge-accent' : 'text-forge-faint opacity-0 group-hover:opacity-100 focus:opacity-100 hover:text-forge-accent'}`}
                   onClick={() => star(s)}
                 >{s.favourite ? '★' : '☆'}</button>
                 <button
@@ -129,15 +129,15 @@ export function BuildBar({ store }: { store: BuildStore }) {
                   title={KIND[s.kind].title}
                 >
                   <span className={KIND[s.kind].color}>{KIND[s.kind].icon}</span>
-                  <span className={`text-sm truncate ${active ? 'text-[#c4af64]' : s.status === 'retired' ? 'text-[#6b7280]' : 'text-[#e2e4ed]'}`}>{s.name}</span>
+                  <span className={`text-sm truncate ${active ? 'text-forge-accent' : s.status === 'retired' ? 'text-forge-muted' : 'text-forge-text'}`}>{s.name}</span>
                   {s.status === 'complete' && <span className="text-[10px] text-emerald-300" title="Plan complete">✓ complete</span>}
-                  {s.status === 'retired' && <span className="text-[10px] text-[#6b7280]">retired</span>}
-                  <span className="ml-auto text-[10px] text-[#6b7280] whitespace-nowrap">{shortDate(s.updatedAt)}</span>
+                  {s.status === 'retired' && <span className="text-[10px] text-forge-muted">retired</span>}
+                  <span className="ml-auto text-[10px] text-forge-muted whitespace-nowrap">{shortDate(s.updatedAt)}</span>
                 </button>
                 <ConfirmButton
                   label="×"
                   confirmPrompt="Delete?"
-                  className="text-[#4b5563] hover:text-red-400 cursor-pointer opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  className="text-forge-faint hover:text-red-400 cursor-pointer opacity-0 group-hover:opacity-100 focus:opacity-100"
                   onConfirm={() => store.remove(s.kind, s.id)}
                 />
               </li>
@@ -146,7 +146,7 @@ export function BuildBar({ store }: { store: BuildStore }) {
         </ul>
       )}
 
-      {(store.build.status ?? 'planning') === 'planning' && <div className="flex justify-end border-t border-[#2a2d3a] pt-2">
+      {(store.build.status ?? 'planning') === 'planning' && <div className="flex justify-end border-t border-forge-border pt-2">
         <ConfirmButton
           label="Reset everything"
           confirmPrompt="Clear the whole character?"

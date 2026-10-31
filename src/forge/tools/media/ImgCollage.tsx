@@ -131,13 +131,13 @@ export function ImgCollage() {
     a.click()
   }
 
-  const btn = "px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer self-start"
-  const inputCls = "w-20 bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-2 py-1 text-xs font-mono focus:outline-none focus:border-[#c4af64]"
+  const btn = "px-4 py-2 text-sm rounded bg-forge-accent/10 text-forge-accent border border-forge-accent/30 hover:bg-forge-accent/20 transition-colors cursor-pointer self-start"
+  const inputCls = "w-20 bg-forge-bg border border-forge-border text-forge-text rounded px-2 py-1 text-xs font-mono focus:outline-none focus:border-forge-accent"
   const chipBtn = (active: boolean) =>
     `px-2 py-0.5 text-xs rounded border transition-colors cursor-pointer ${
       active
-        ? 'border-[#c4af64]/40 text-[#c4af64] bg-[#c4af64]/10'
-        : 'border-[#2a2d3a] text-[#9ca3af] hover:border-[#c4af64]/40 hover:text-[#c4af64]'
+        ? 'border-forge-accent/40 text-forge-accent bg-forge-accent/10'
+        : 'border-forge-border text-forge-dim hover:border-forge-accent/40 hover:text-forge-accent'
     }`
 
   function onThumbDragStart(idx: number, id: number) {
@@ -196,23 +196,23 @@ export function ImgCollage() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Image Collage</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">Image Collage</h1>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-5">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-5">
 
         {/* Upload */}
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <label className="text-xs text-[#6b7280]">Images ({imgs.length} / {MAX})</label>
+            <label className="text-xs text-forge-muted">Images ({imgs.length} / {MAX})</label>
             {imgs.length > 0 && (
-              <button onClick={clearAll} className="text-xs text-[#6b7280] hover:text-red-400 transition-colors cursor-pointer">
+              <button onClick={clearAll} className="text-xs text-forge-muted hover:text-red-400 transition-colors cursor-pointer">
                 Clear all
               </button>
             )}
           </div>
           <FileDropZone accept="image/*" multiple inputRef={fileRef} className="p-6" onFiles={addFiles}>
-            <p className="text-sm text-[#6b7280]">Drop images here or click to upload</p>
-            <p className="text-xs text-[#3a3d4a] mt-1">Up to {MAX} images · PNG, JPG, WEBP · all processing is local</p>
+            <p className="text-sm text-forge-muted">Drop images here or click to upload</p>
+            <p className="text-xs text-forge-line mt-1">Up to {MAX} images · PNG, JPG, WEBP · all processing is local</p>
           </FileDropZone>
         </div>
 
@@ -235,7 +235,7 @@ export function ImgCollage() {
                 <img
                   src={img.url}
                   draggable={false}
-                  className="w-14 h-14 object-cover rounded border border-[#2a2d3a] pointer-events-none"
+                  className="w-14 h-14 object-cover rounded border border-forge-border pointer-events-none"
                   alt=""
                 />
                 <span className="absolute bottom-0 left-0 right-0 text-center text-[9px] text-white bg-black/50 rounded-b leading-tight py-0.5 pointer-events-none">
@@ -243,14 +243,14 @@ export function ImgCollage() {
                 </span>
                 <button
                   onClick={e => { e.stopPropagation(); removeImg(img.id) }}
-                  className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#1a1d27] border border-[#2a2d3a] text-[#6b7280] hover:text-[#e2e4ed] text-xs leading-none flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-forge-surface border border-forge-border text-forge-muted hover:text-forge-text text-xs leading-none flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
                 >×</button>
               </div>
             ))}
             {imgs.length < MAX && (
               <button
                 onClick={() => fileRef.current?.click()}
-                className="w-14 h-14 rounded border-2 border-dashed border-[#2a2d3a] hover:border-[#3a3d4a] text-[#3a3d4a] hover:text-[#6b7280] text-xl flex items-center justify-center cursor-pointer transition-colors shrink-0"
+                className="w-14 h-14 rounded border-2 border-dashed border-forge-border hover:border-forge-line text-forge-line hover:text-forge-muted text-xl flex items-center justify-center cursor-pointer transition-colors shrink-0"
               >+</button>
             )}
           </div>
@@ -258,12 +258,12 @@ export function ImgCollage() {
 
         {/* Canvas size */}
         <div className="flex flex-col gap-2">
-          <label className="text-xs text-[#6b7280]">Canvas size</label>
+          <label className="text-xs text-forge-muted">Canvas size</label>
           <div className="flex items-center gap-2 flex-wrap">
             <input type="number" inputMode="numeric" min={1} value={canvasW} onChange={e => setCanvasW(e.target.value)} className={inputCls} />
-            <span className="text-xs text-[#6b7280]">×</span>
+            <span className="text-xs text-forge-muted">×</span>
             <input type="number" inputMode="numeric" min={1} value={canvasH} onChange={e => setCanvasH(e.target.value)} className={inputCls} />
-            <span className="text-xs text-[#3a3d4a]">px</span>
+            <span className="text-xs text-forge-line">px</span>
           </div>
           <div className="flex gap-1.5 flex-wrap">
             {CANVAS_PRESETS.map(p => (
@@ -279,19 +279,19 @@ export function ImgCollage() {
         {/* Background colour + spacing */}
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs text-[#6b7280]">Background colour</label>
+            <label className="text-xs text-forge-muted">Background colour</label>
             <div className="flex items-center gap-2">
               <input type="color" value={bg} onChange={e => setBg(e.target.value)}
-                className="w-9 h-9 rounded cursor-pointer border border-[#2a2d3a] bg-[#0f1117] p-0.5" />
-              <span className="text-xs text-[#6b7280] font-mono">{bg}</span>
+                className="w-9 h-9 rounded cursor-pointer border border-forge-border bg-forge-bg p-0.5" />
+              <span className="text-xs text-forge-muted font-mono">{bg}</span>
             </div>
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs text-[#6b7280]">Spacing: <span className="text-[#e2e4ed]">{gap}px</span></label>
+            <label className="text-xs text-forge-muted">Spacing: <span className="text-forge-text">{gap}px</span></label>
             <input
               type="range" min={0} max={40} value={gap}
               onChange={e => setGap(Number(e.target.value))}
-              className="w-full accent-[#c4af64] mt-1"
+              className="w-full accent-forge-accent mt-1"
             />
           </div>
         </div>
@@ -299,8 +299,8 @@ export function ImgCollage() {
         {/* Preview + download */}
         {imgs.length > 0 && (
           <div className="flex flex-col gap-3">
-            <label className="text-xs text-[#6b7280]">Preview</label>
-            <div className="bg-[#0f1117] rounded-lg p-3 flex justify-center overflow-hidden">
+            <label className="text-xs text-forge-muted">Preview</label>
+            <div className="bg-forge-bg rounded-lg p-3 flex justify-center overflow-hidden">
               <canvas ref={previewRef} className="max-w-full rounded" style={{ maxHeight: '60vh' }} />
             </div>
             <button onClick={download} className={btn}>Download PNG</button>

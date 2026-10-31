@@ -13,10 +13,10 @@ export function SidebarFooter({
   const label = isAuthenticated && user ? user.username : 'Login'
 
   return (
-    <div className="border-t border-[#2a2d3a]">
+    <div className="border-t border-forge-border">
       <button
         onClick={onOpenLogin}
-        className="flex items-center gap-1.5 w-full h-10 px-4 transition-colors cursor-pointer text-[#3a3d4a] hover:text-[#6b7280]"
+        className="flex items-center gap-1.5 w-full h-10 px-4 transition-colors cursor-pointer text-forge-line hover:text-forge-muted"
       >
         {isAuthenticated && user?.avatar ? (
           <img src={user.avatar} alt="" className="w-4 h-4 rounded-full object-cover shrink-0" />
@@ -26,10 +26,10 @@ export function SidebarFooter({
         <span className="text-xs tracking-widest uppercase truncate">{label}</span>
       </button>
       {onOpenSettings && (
-        <div className="flex border-t border-[#2a2d3a] h-10 items-center px-4">
+        <div className="flex border-t border-forge-border h-10 items-center px-4">
           <button
             onClick={onOpenSettings}
-            className="flex items-center gap-1.5 text-[#3a3d4a] hover:text-[#6b7280] transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 text-forge-line hover:text-forge-muted transition-colors cursor-pointer"
           >
             <CogIcon />
             <span className="text-xs tracking-widest uppercase">Settings</span>

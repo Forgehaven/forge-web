@@ -280,11 +280,11 @@ export function ImgEditor() {
     drawImg.src = workingSrc
   }
 
-  const btn = "px-3 py-1.5 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer"
-  const inputCls = "w-20 bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-2 py-1 text-xs font-mono focus:outline-none focus:border-[#c4af64]"
+  const btn = "px-3 py-1.5 text-sm rounded bg-forge-accent/10 text-forge-accent border border-forge-accent/30 hover:bg-forge-accent/20 transition-colors cursor-pointer"
+  const inputCls = "w-20 bg-forge-bg border border-forge-border text-forge-text rounded px-2 py-1 text-xs font-mono focus:outline-none focus:border-forge-accent"
   const presetBtn = (active: boolean) => active
-    ? "px-2 py-1 text-xs rounded border border-[#c4af64]/40 text-[#c4af64] bg-[#c4af64]/10 cursor-pointer"
-    : "px-2 py-1 text-xs rounded border border-[#2a2d3a] text-[#9ca3af] hover:border-[#c4af64]/40 hover:text-[#c4af64] transition-colors cursor-pointer"
+    ? "px-2 py-1 text-xs rounded border border-forge-accent/40 text-forge-accent bg-forge-accent/10 cursor-pointer"
+    : "px-2 py-1 text-xs rounded border border-forge-border text-forge-dim hover:border-forge-accent/40 hover:text-forge-accent transition-colors cursor-pointer"
 
   const isRatioActive = (p: RatioPreset) =>
     cropAspect?.source === 'ratio' && Math.abs(cropAspect.ratio - p.rw / p.rh) < 0.001
@@ -293,21 +293,21 @@ export function ImgEditor() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Image Editor</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">Image Editor</h1>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-5">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-5">
 
         {/* Upload */}
         <FileDropZone accept="image/*" onFiles={files => acceptFile(files[0])}>
           {file ? (
             <div>
-              <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name}</p>
-              <p className="text-xs text-[#6b7280] mt-1">{srcImg?.naturalWidth} × {srcImg?.naturalHeight}px</p>
+              <p className="text-sm text-forge-text font-mono truncate">{file.name}</p>
+              <p className="text-xs text-forge-muted mt-1">{srcImg?.naturalWidth} × {srcImg?.naturalHeight}px</p>
             </div>
           ) : (
             <div>
-              <p className="text-sm text-[#6b7280]">Drop an image here or click to upload</p>
-              <p className="text-xs text-[#3a3d4a] mt-1">PNG, JPG, WEBP · all processing is local</p>
+              <p className="text-sm text-forge-muted">Drop an image here or click to upload</p>
+              <p className="text-xs text-forge-line mt-1">PNG, JPG, WEBP · all processing is local</p>
             </div>
           )}
         </FileDropZone>
@@ -320,10 +320,10 @@ export function ImgEditor() {
             <div className="flex flex-wrap gap-2 items-center">
               <button onClick={() => rotate(-1)} className={btn}>↺ Rotate CCW</button>
               <button onClick={() => rotate(1)} className={btn}>↻ Rotate CW</button>
-              <div className="w-px h-5 bg-[#2a2d3a]" />
+              <div className="w-px h-5 bg-forge-border" />
               <div className="flex items-center gap-1.5">
-                <span className="text-xs text-[#6b7280]">Crop:</span>
-                <div className="flex rounded border border-[#2a2d3a] overflow-hidden text-sm">
+                <span className="text-xs text-forge-muted">Crop:</span>
+                <div className="flex rounded border border-forge-border overflow-hidden text-sm">
                   <button
                     onClick={() => {
                       setIsCircle(false)
@@ -335,11 +335,11 @@ export function ImgEditor() {
                       }
                       // No preset: leave existing completedCrop in place (circle → square keeps the 1:1 crop)
                     }}
-                    className={`px-3 py-1.5 transition-colors cursor-pointer ${!isCircle ? 'bg-[#c4af64]/20 text-[#c4af64]' : 'text-[#6b7280] hover:text-[#9ca3af] hover:bg-[#2a2d3a]'}`}
+                    className={`px-3 py-1.5 transition-colors cursor-pointer ${!isCircle ? 'bg-forge-accent/20 text-forge-accent' : 'text-forge-muted hover:text-forge-dim hover:bg-forge-border'}`}
                   >
                     ▭ Square
                   </button>
-                  <div className="w-px bg-[#2a2d3a]" />
+                  <div className="w-px bg-forge-border" />
                   <button
                     onClick={() => {
                       setIsCircle(true)
@@ -348,7 +348,7 @@ export function ImgEditor() {
                       if (auto) { setCrop(auto.crop); setCompletedCrop(auto.completed) }
                       else { setCrop(undefined); setCompletedCrop(undefined) }
                     }}
-                    className={`px-3 py-1.5 transition-colors cursor-pointer ${isCircle ? 'bg-[#c4af64]/20 text-[#c4af64]' : 'text-[#6b7280] hover:text-[#9ca3af] hover:bg-[#2a2d3a]'}`}
+                    className={`px-3 py-1.5 transition-colors cursor-pointer ${isCircle ? 'bg-forge-accent/20 text-forge-accent' : 'text-forge-muted hover:text-forge-dim hover:bg-forge-border'}`}
                   >
                     ○ Circle
                   </button>
@@ -364,45 +364,45 @@ export function ImgEditor() {
             {/* Export size */}
             <div className="flex flex-col gap-2.5">
               <div className="flex items-center gap-2 text-xs flex-wrap">
-                <span className="text-[#6b7280]">
-                  Source: <span className="text-[#e2e4ed] font-mono">{workingW} × {workingH}px</span>
+                <span className="text-forge-muted">
+                  Source: <span className="text-forge-text font-mono">{workingW} × {workingH}px</span>
                 </span>
                 {completedCrop && (
                   <>
-                    <span className="text-[#3a3d4a]">→</span>
-                    <span className="text-[#6b7280]">
-                      Crop: <span className="text-[#c4af64] font-mono">{cropW} × {cropH}px</span>
+                    <span className="text-forge-line">→</span>
+                    <span className="text-forge-muted">
+                      Crop: <span className="text-forge-accent font-mono">{cropW} × {cropH}px</span>
                     </span>
                   </>
                 )}
               </div>
 
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-xs text-[#6b7280]">Export:</span>
+                <span className="text-xs text-forge-muted">Export:</span>
                 <input type="number" inputMode="numeric" min={1} value={resizeW} onChange={e => onResizeW(e.target.value)} className={inputCls} />
-                <span className="text-[#6b7280] text-xs">×</span>
+                <span className="text-forge-muted text-xs">×</span>
                 <input type="number" inputMode="numeric" min={1} value={resizeH} onChange={e => onResizeH(e.target.value)} className={inputCls} />
                 <button
                   onClick={toggleLock}
                   title={lockAspect ? 'Aspect locked - click to free' : 'Aspect free - click to lock'}
-                  className={`flex items-center gap-1 px-2 py-1 text-xs rounded border transition-colors cursor-pointer ${lockAspect ? 'bg-[#c4af64]/10 text-[#c4af64] border-[#c4af64]/30' : 'text-[#6b7280] border-[#2a2d3a] hover:text-[#9ca3af]'}`}
+                  className={`flex items-center gap-1 px-2 py-1 text-xs rounded border transition-colors cursor-pointer ${lockAspect ? 'bg-forge-accent/10 text-forge-accent border-forge-accent/30' : 'text-forge-muted border-forge-border hover:text-forge-dim'}`}
                 >
                   <LockIcon locked={lockAspect} />
                   {lockAspect ? 'Locked' : 'Free'}
                 </button>
                 {completedCrop && (
-                  <button onClick={matchCrop} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer" title="Set export size to crop dimensions (no scaling)">
+                  <button onClick={matchCrop} className="text-xs text-forge-muted hover:text-forge-text transition-colors cursor-pointer" title="Set export size to crop dimensions (no scaling)">
                     Match crop
                   </button>
                 )}
-                <button onClick={resetResize} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">
+                <button onClick={resetResize} className="text-xs text-forge-muted hover:text-forge-text transition-colors cursor-pointer">
                   Reset
                 </button>
               </div>
 
               {/* Ratio presets */}
               <div className="flex items-center gap-1.5 flex-wrap">
-                <span className="text-xs text-[#3a3d4a] w-12 shrink-0">Ratio:</span>
+                <span className="text-xs text-forge-line w-12 shrink-0">Ratio:</span>
                 {RATIO_PRESETS.map(p => (
                   <button key={p.label} onClick={() => applyPreset(p)} className={presetBtn(isRatioActive(p))}>{p.label}</button>
                 ))}
@@ -410,27 +410,27 @@ export function ImgEditor() {
 
               {/* Size presets */}
               <div className="flex items-center gap-1.5 flex-wrap">
-                <span className="text-xs text-[#3a3d4a] w-12 shrink-0">Size:</span>
+                <span className="text-xs text-forge-line w-12 shrink-0">Size:</span>
                 {SIZE_PRESETS.map(p => (
                   <button key={p.label} onClick={() => applyPreset(p)} className={presetBtn(isSizeActive(p))}>{p.label}</button>
                 ))}
               </div>
 
               <div className="flex items-center gap-3 flex-wrap">
-                <span className="text-xs text-[#6b7280]">
-                  Output: <span className="font-mono text-[#e2e4ed]">{exportW} × {exportH}px</span>
+                <span className="text-xs text-forge-muted">
+                  Output: <span className="font-mono text-forge-text">{exportW} × {exportH}px</span>
                 </span>
-                <div className="flex rounded border border-[#2a2d3a] overflow-hidden text-xs">
+                <div className="flex rounded border border-forge-border overflow-hidden text-xs">
                   <button
                     onClick={() => setScaleOutput(false)}
-                    className={`px-2 py-0.5 transition-colors cursor-pointer ${!scaleOutput ? 'bg-[#c4af64]/20 text-[#c4af64]' : 'text-[#6b7280] hover:text-[#9ca3af] hover:bg-[#2a2d3a]'}`}
+                    className={`px-2 py-0.5 transition-colors cursor-pointer ${!scaleOutput ? 'bg-forge-accent/20 text-forge-accent' : 'text-forge-muted hover:text-forge-dim hover:bg-forge-border'}`}
                   >
                     Crop size
                   </button>
-                  <div className="w-px bg-[#2a2d3a]" />
+                  <div className="w-px bg-forge-border" />
                   <button
                     onClick={() => setScaleOutput(true)}
-                    className={`px-2 py-0.5 transition-colors cursor-pointer ${scaleOutput ? 'bg-[#c4af64]/20 text-[#c4af64]' : 'text-[#6b7280] hover:text-[#9ca3af] hover:bg-[#2a2d3a]'}`}
+                    className={`px-2 py-0.5 transition-colors cursor-pointer ${scaleOutput ? 'bg-forge-accent/20 text-forge-accent' : 'text-forge-muted hover:text-forge-dim hover:bg-forge-border'}`}
                   >
                     Scale to target
                   </button>
@@ -439,13 +439,13 @@ export function ImgEditor() {
             </div>
 
             {scaleOutput && (finalW > cropW || finalH > cropH) && (
-              <p className="text-xs text-[#6b7280]">
+              <p className="text-xs text-forge-muted">
                 Output ({finalW} × {finalH}px) is larger than the source crop area ({cropW} × {cropH}px) - the image will be upscaled.
               </p>
             )}
 
             {/* Crop editor */}
-            <div className="relative flex justify-center bg-[#0f1117] rounded-lg p-3 overflow-hidden">
+            <div className="relative flex justify-center bg-forge-bg rounded-lg p-3 overflow-hidden">
               <ReactCrop
                 crop={crop}
                 onChange={c => setCrop(c)}
@@ -465,8 +465,8 @@ export function ImgEditor() {
 
             {/* Live preview */}
             <div>
-              <p className="text-xs text-[#6b7280] mb-2">Preview</p>
-              <div className="bg-[#0f1117] rounded-lg p-3 flex justify-center" style={{ minHeight: '3rem' }}>
+              <p className="text-xs text-forge-muted mb-2">Preview</p>
+              <div className="bg-forge-bg rounded-lg p-3 flex justify-center" style={{ minHeight: '3rem' }}>
                 <canvas
                   ref={previewCanvasRef}
                   className="rounded max-w-full"
@@ -475,7 +475,7 @@ export function ImgEditor() {
               </div>
             </div>
 
-            <button onClick={download} className="px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer self-start">
+            <button onClick={download} className="px-4 py-2 text-sm rounded bg-forge-accent/10 text-forge-accent border border-forge-accent/30 hover:bg-forge-accent/20 transition-colors cursor-pointer self-start">
               Download PNG
             </button>
           </>

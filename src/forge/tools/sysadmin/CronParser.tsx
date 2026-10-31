@@ -166,7 +166,7 @@ function FieldRow({ meta, field, onChange }: {
       max={meta.max}
       value={value}
       onChange={e => onChange({ ...field, [key]: e.target.value })}
-      className="bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-2 py-1 text-sm focus:outline-none focus:border-[#c4af64] font-mono w-16"
+      className="bg-forge-bg border border-forge-border text-forge-text rounded px-2 py-1 text-sm focus:outline-none focus:border-forge-accent font-mono w-16"
     />
   )
 
@@ -174,7 +174,7 @@ function FieldRow({ meta, field, onChange }: {
     <select
       value={value}
       onChange={e => onChange({ ...field, [key]: e.target.value })}
-      className="bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-2 py-1 text-sm focus:outline-none focus:border-[#c4af64] cursor-pointer"
+      className="bg-forge-bg border border-forge-border text-forge-text rounded px-2 py-1 text-sm focus:outline-none focus:border-forge-accent cursor-pointer"
     >
       {meta.names!.map((name, i) => (
         <option key={name} value={String(i + meta.min)}>{name}</option>
@@ -192,13 +192,13 @@ function FieldRow({ meta, field, onChange }: {
   }
 
   return (
-    <div className="flex items-center gap-3 py-2.5 border-b border-[#2a2d3a] last:border-0 flex-wrap">
-      <span className="text-xs text-[#6b7280] w-16 shrink-0">{meta.label}</span>
+    <div className="flex items-center gap-3 py-2.5 border-b border-forge-border last:border-0 flex-wrap">
+      <span className="text-xs text-forge-muted w-16 shrink-0">{meta.label}</span>
 
       <select
         value={field.mode}
         onChange={e => onChange({ ...field, mode: e.target.value as BuildMode })}
-        className="bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-2 py-1 text-sm focus:outline-none focus:border-[#c4af64] cursor-pointer"
+        className="bg-forge-bg border border-forge-border text-forge-text rounded px-2 py-1 text-sm focus:outline-none focus:border-forge-accent cursor-pointer"
       >
         <option value="every">Every {meta.unit}</option>
         <option value="step">Every N {meta.unit}s</option>
@@ -208,9 +208,9 @@ function FieldRow({ meta, field, onChange }: {
 
       {field.mode === 'step' && (
         <div className="flex items-center gap-1.5">
-          <span className="text-xs text-[#6b7280]">every</span>
+          <span className="text-xs text-forge-muted">every</span>
           {numInput(field.step, 'step')}
-          <span className="text-xs text-[#6b7280]">{meta.unit}(s)</span>
+          <span className="text-xs text-forge-muted">{meta.unit}(s)</span>
         </div>
       )}
 
@@ -225,8 +225,8 @@ function FieldRow({ meta, field, onChange }: {
                 onClick={() => toggleChip(val)}
                 className={`text-xs px-2 py-0.5 rounded border transition-colors cursor-pointer ${
                   active
-                    ? 'bg-[#c4af64]/20 border-[#c4af64] text-[#c4af64]'
-                    : 'border-[#2a2d3a] text-[#6b7280] hover:border-[#6b7280] hover:text-[#e2e4ed]'
+                    ? 'bg-forge-accent/20 border-forge-accent text-forge-accent'
+                    : 'border-forge-border text-forge-muted hover:border-forge-muted hover:text-forge-text'
                 }`}
               >
                 {name}
@@ -241,14 +241,14 @@ function FieldRow({ meta, field, onChange }: {
           value={field.list}
           onChange={e => onChange({ ...field, list: e.target.value })}
           placeholder="e.g. 0,15,30"
-          className="bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-2 py-1 text-sm focus:outline-none focus:border-[#c4af64] font-mono w-32"
+          className="bg-forge-bg border border-forge-border text-forge-text rounded px-2 py-1 text-sm focus:outline-none focus:border-forge-accent font-mono w-32"
         />
       )}
 
       {field.mode === 'range' && (
         <div className="flex items-center gap-2">
           {meta.names ? namedSelect(field.from, 'from') : numInput(field.from, 'from')}
-          <span className="text-xs text-[#6b7280]">to</span>
+          <span className="text-xs text-forge-muted">to</span>
           {meta.names ? namedSelect(field.to, 'to') : numInput(field.to, 'to')}
         </div>
       )}
@@ -303,8 +303,8 @@ export function CronParser() {
   const tabClass = (active: boolean) =>
     `px-3 py-1.5 rounded text-sm transition-colors ${
       active
-        ? 'bg-[#c4af64] text-[#0f1117] font-medium'
-        : 'bg-[#1a1d27] text-[#9ca3af] hover:text-[#e2e4ed] border border-[#2a2d3a]'
+        ? 'bg-forge-accent text-forge-bg font-medium'
+        : 'bg-forge-surface text-forge-dim hover:text-forge-text border border-forge-border'
     }`
 
   const parseFields = result.parts
@@ -319,12 +319,12 @@ export function CronParser() {
 
   return (
     <div className="max-w-xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Cron Parser</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">Cron Parser</h1>
 
       <div className="mb-3">
-        <label className="block text-xs text-[#6b7280] mb-1">Expression</label>
+        <label className="block text-xs text-forge-muted mb-1">Expression</label>
         <input
-          className="bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] font-mono w-full"
+          className="bg-forge-bg border border-forge-border text-forge-text rounded px-3 py-2 text-sm focus:outline-none focus:border-forge-accent font-mono w-full"
           value={expr}
           onChange={e => applyExpr(e.target.value)}
           placeholder="* * * * *"
@@ -337,7 +337,7 @@ export function CronParser() {
           <button
             key={ex.expr}
             onClick={() => applyExpr(ex.expr)}
-            className="text-xs px-2.5 py-1 rounded border border-[#2a2d3a] text-[#6b7280] hover:text-[#e2e4ed] hover:border-[#c4af64] transition-colors cursor-pointer"
+            className="text-xs px-2.5 py-1 rounded border border-forge-border text-forge-muted hover:text-forge-text hover:border-forge-accent transition-colors cursor-pointer"
           >
             {ex.label}
           </button>
@@ -353,31 +353,31 @@ export function CronParser() {
         <p className="text-sm text-red-400">{result.error}</p>
       ) : tab === 'parse' ? (
         <div className="flex flex-col gap-4">
-          <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-4">
-            <p className="text-xs text-[#6b7280] mb-1">Runs</p>
-            <p className="text-[#e2e4ed]">{result.description}</p>
+          <div className="bg-forge-surface border border-forge-border rounded-lg p-4">
+            <p className="text-xs text-forge-muted mb-1">Runs</p>
+            <p className="text-forge-text">{result.description}</p>
           </div>
 
-          <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-4">
-            <p className="text-xs text-[#6b7280] mb-3">Fields</p>
+          <div className="bg-forge-surface border border-forge-border rounded-lg p-4">
+            <p className="text-xs text-forge-muted mb-3">Fields</p>
             <div className="grid grid-cols-5 gap-2">
               {parseFields.map(f => (
                 <div key={f.label} className="flex flex-col gap-1">
-                  <span className="text-xs text-[#6b7280]">{f.label}</span>
-                  <span className="font-mono text-sm text-[#c4af64]">{f.value}</span>
-                  <span className="text-xs text-[#3a3d4a]">{f.range}</span>
+                  <span className="text-xs text-forge-muted">{f.label}</span>
+                  <span className="font-mono text-sm text-forge-accent">{f.value}</span>
+                  <span className="text-xs text-forge-line">{f.range}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-4">
-            <p className="text-xs text-[#6b7280] mb-3">Next {result.nextRuns.length} runs</p>
+          <div className="bg-forge-surface border border-forge-border rounded-lg p-4">
+            <p className="text-xs text-forge-muted mb-3">Next {result.nextRuns.length} runs</p>
             {result.nextRuns.length === 0
-              ? <p className="text-sm text-[#6b7280]">No runs found in the next 2 years</p>
+              ? <p className="text-sm text-forge-muted">No runs found in the next 2 years</p>
               : <div className="flex flex-col gap-1.5">
                   {result.nextRuns.map((d, i) => (
-                    <div key={i} className="font-mono text-sm text-[#e2e4ed]">
+                    <div key={i} className="font-mono text-sm text-forge-text">
                       {d.toLocaleString(undefined, {
                         weekday: 'short', year: 'numeric', month: 'short',
                         day: 'numeric', hour: '2-digit', minute: '2-digit',
@@ -389,7 +389,7 @@ export function CronParser() {
           </div>
         </div>
       ) : (
-        <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-4">
+        <div className="bg-forge-surface border border-forge-border rounded-lg p-4">
           {fields.map((field, i) => (
             <FieldRow
               key={FIELD_META[i].label}

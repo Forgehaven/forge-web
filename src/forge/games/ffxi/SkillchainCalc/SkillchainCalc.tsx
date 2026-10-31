@@ -99,7 +99,7 @@ function SectionHeader({ label, open, onToggle, onReset, resetLabel = 'Reset', e
       <button onClick={onToggle} className="flex items-center gap-1.5 cursor-pointer">
         <p className="forge-label text-xs uppercase tracking-widest">{label}</p>
         <span
-          className="text-[#6b7280] text-xs inline-block transition-transform duration-150"
+          className="text-forge-muted text-xs inline-block transition-transform duration-150"
           style={{ transform: open ? 'rotate(0deg)' : 'rotate(-90deg)' }}
         >
           ▾
@@ -110,7 +110,7 @@ function SectionHeader({ label, open, onToggle, onReset, resetLabel = 'Reset', e
         {onReset && (
           <button
             onClick={onReset}
-            className="text-xs text-[#4b5563] hover:text-[#6b7280] transition-colors cursor-pointer"
+            className="text-xs text-forge-faint hover:text-forge-muted transition-colors cursor-pointer"
           >
             {resetLabel}
           </button>
@@ -146,11 +146,11 @@ function GroupRow({ group, party, compact, panelWidth, isFavourite, onToggleFavo
   }
   return (
     <div
-      className="border rounded-lg bg-[#0f1117] p-3 flex flex-col gap-2.5"
+      className="border rounded-lg bg-forge-bg p-3 flex flex-col gap-2.5"
       style={{ borderColor: isFavourite ? '#c4af64' : '#2a2d3a' }}
     >
       <div className="flex items-center justify-between">
-        <p className="text-xs text-[#4b5563] uppercase tracking-widest">
+        <p className="text-xs text-forge-faint uppercase tracking-widest">
           {group.links.length} concurrent chains
         </p>
         <button
@@ -328,10 +328,10 @@ export function SkillchainCalc() {
   return (
     <div className="p-6 flex flex-col gap-6 max-w-4xl mx-auto w-full">
       <div>
-        <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
-          Skillchain <span className="text-[#c4af64]">Calc</span>
+        <h1 className="text-xl font-semibold text-forge-text tracking-wide">
+          Skillchain <span className="text-forge-accent">Calc</span>
         </h1>
-        <p className="text-sm text-[#6b7280] mt-0.5">FFXI · Horizon</p>
+        <p className="text-sm text-forge-muted mt-0.5">FFXI · Horizon</p>
       </div>
 
       <div>
@@ -364,7 +364,7 @@ export function SkillchainCalc() {
           onBlur={handleLevelSyncBlur}
           className="forge-input-mono w-20 text-sm"
         />
-        <span className="text-xs text-[#6b7280]">WS availability and spell tiers are calculated from this level</span>
+        <span className="text-xs text-forge-muted">WS availability and spell tiers are calculated from this level</span>
       </div>
 
       <div>
@@ -387,13 +387,13 @@ export function SkillchainCalc() {
               </button>
               <button
                 onClick={handleExport}
-                className="text-xs text-[#4b5563] hover:text-[#6b7280] transition-colors cursor-pointer"
+                className="text-xs text-forge-faint hover:text-forge-muted transition-colors cursor-pointer"
               >
                 {copied ? 'Copied!' : 'Export'}
               </button>
               <button
                 onClick={() => setShowImport(v => !v)}
-                className="text-xs text-[#4b5563] hover:text-[#6b7280] transition-colors cursor-pointer"
+                className="text-xs text-forge-faint hover:text-forge-muted transition-colors cursor-pointer"
               >
                 Import
               </button>
@@ -496,7 +496,7 @@ export function SkillchainCalc() {
               )
             })}
             {otherGroups.length > 0 && (favGroup !== null || topGroups.length > 0) && (
-              <div className="h-px bg-[#2a2d3a]" />
+              <div className="h-px bg-forge-border" />
             )}
             {otherGroups.map(group => {
               const gKey = groupKey(group)
@@ -519,7 +519,7 @@ export function SkillchainCalc() {
 
       {filteredGroups.length === 0 && hasAnyMelee && (
         <div className="forge-card flex items-center justify-center py-6">
-          <p className="text-sm text-[#6b7280]">
+          <p className="text-sm text-forge-muted">
             {filterElements.length > 0
               ? 'No skillchains match the selected burst elements.'
               : 'No skillchains found - add more party members or try different weapons.'}

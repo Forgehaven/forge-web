@@ -87,20 +87,20 @@ export function WhiteToAlpha() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">White to Alpha</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">White to Alpha</h1>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-5">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-5">
 
         <FileDropZone accept="image/*" onFiles={files => acceptFile(files[0])}>
           {file ? (
             <div>
-              <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name}</p>
-              <p className="text-xs text-[#6b7280] mt-1">{(file.size / 1024).toFixed(0)} KB · {imgEl ? `${imgEl.naturalWidth}×${imgEl.naturalHeight}` : '…'}</p>
+              <p className="text-sm text-forge-text font-mono truncate">{file.name}</p>
+              <p className="text-xs text-forge-muted mt-1">{(file.size / 1024).toFixed(0)} KB · {imgEl ? `${imgEl.naturalWidth}×${imgEl.naturalHeight}` : '…'}</p>
             </div>
           ) : (
             <div>
-              <p className="text-sm text-[#6b7280]">Drop an image here or click to upload</p>
-              <p className="text-xs text-[#3a3d4a] mt-1">PNG, JPG, WEBP · white background removed, exported as PNG · all processing is local</p>
+              <p className="text-sm text-forge-muted">Drop an image here or click to upload</p>
+              <p className="text-xs text-forge-line mt-1">PNG, JPG, WEBP · white background removed, exported as PNG · all processing is local</p>
             </div>
           )}
         </FileDropZone>
@@ -112,29 +112,29 @@ export function WhiteToAlpha() {
             <div className="grid grid-cols-2 gap-6">
               <div>
                 <div className="flex justify-between mb-1">
-                  <label className="text-xs text-[#6b7280]">Threshold</label>
-                  <span className="text-xs text-[#6b7280] font-mono">{threshold}%</span>
+                  <label className="text-xs text-forge-muted">Threshold</label>
+                  <span className="text-xs text-forge-muted font-mono">{threshold}%</span>
                 </div>
                 <input type="range" min={0} max={80} value={threshold}
                   onChange={e => setThreshold(Number(e.target.value))}
-                  className="w-full accent-[#c4af64]" />
-                <p className="text-xs text-[#3a3d4a] mt-1">How aggressively to remove white</p>
+                  className="w-full accent-forge-accent" />
+                <p className="text-xs text-forge-line mt-1">How aggressively to remove white</p>
               </div>
               <div>
                 <div className="flex justify-between mb-1">
-                  <label className="text-xs text-[#6b7280]">Feather</label>
-                  <span className="text-xs text-[#6b7280] font-mono">{feather}%</span>
+                  <label className="text-xs text-forge-muted">Feather</label>
+                  <span className="text-xs text-forge-muted font-mono">{feather}%</span>
                 </div>
                 <input type="range" min={0} max={40} value={feather}
                   onChange={e => setFeather(Number(e.target.value))}
-                  className="w-full accent-[#c4af64]" />
-                <p className="text-xs text-[#3a3d4a] mt-1">Soften edges near the cut boundary</p>
+                  className="w-full accent-forge-accent" />
+                <p className="text-xs text-forge-line mt-1">Soften edges near the cut boundary</p>
               </div>
             </div>
 
             {(processing || outputUrl) && (
               <div>
-                <p className="text-xs text-[#6b7280] mb-2">Preview</p>
+                <p className="text-xs text-forge-muted mb-2">Preview</p>
                 <div
                   className="rounded overflow-hidden flex justify-center items-center"
                   style={{
@@ -143,7 +143,7 @@ export function WhiteToAlpha() {
                   }}
                 >
                   {processing
-                    ? <p className="text-xs text-[#6b7280] py-6">Processing…</p>
+                    ? <p className="text-xs text-forge-muted py-6">Processing…</p>
                     : outputUrl && <img src={outputUrl} alt="Preview" className="max-w-full max-h-80 object-contain" />
                   }
                 </div>
@@ -155,7 +155,7 @@ export function WhiteToAlpha() {
                 <a href={outputUrl} download={outputName} className="forge-btn-accent">
                   Download {outputName}
                 </a>
-                <span className="text-xs text-[#6b7280]">PNG with transparency · all processing is local</span>
+                <span className="text-xs text-forge-muted">PNG with transparency · all processing is local</span>
               </div>
             )}
           </>

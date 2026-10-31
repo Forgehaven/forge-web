@@ -64,14 +64,14 @@ export function AesEncryptDecrypt() {
   return (
     <div className="max-w-xl">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-semibold text-[#e2e4ed]">AES Encrypt / Decrypt</h1>
-        <div className="flex bg-[#1a1d27] border border-[#2a2d3a] rounded overflow-hidden">
+        <h1 className="text-xl font-semibold text-forge-text">AES Encrypt / Decrypt</h1>
+        <div className="flex bg-forge-surface border border-forge-border rounded overflow-hidden">
           {(['encrypt', 'decrypt'] as Mode[]).map(m => (
             <button
               key={m}
               onClick={() => { setMode(m); setOutput(''); setError('') }}
               className={`px-3 py-1.5 text-xs capitalize transition-colors cursor-pointer ${
-                mode === m ? 'bg-[#c4af64]/10 text-[#c4af64]' : 'text-[#6b7280] hover:text-[#e2e4ed]'
+                mode === m ? 'bg-forge-accent/10 text-forge-accent' : 'text-forge-muted hover:text-forge-text'
               }`}
             >
               {m}
@@ -82,12 +82,12 @@ export function AesEncryptDecrypt() {
 
       <div className="flex flex-col gap-4">
         <div>
-          <label className="block text-xs text-[#6b7280] mb-1">Password</label>
+          <label className="block text-xs text-forge-muted mb-1">Password</label>
           <input type="password" className="forge-input" value={password} onChange={e => setPassword(e.target.value)} placeholder="Secret password" />
         </div>
 
         <div>
-          <label className="block text-xs text-[#6b7280] mb-1">{mode === 'encrypt' ? 'Plaintext' : 'Ciphertext (base64)'}</label>
+          <label className="block text-xs text-forge-muted mb-1">{mode === 'encrypt' ? 'Plaintext' : 'Ciphertext (base64)'}</label>
           <textarea
             className="forge-input font-mono resize-none"
             rows={5}
@@ -100,7 +100,7 @@ export function AesEncryptDecrypt() {
         <button
           onClick={run}
           disabled={!password || !input.trim() || loading}
-          className="px-4 py-2 text-sm rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed"
+          className="px-4 py-2 text-sm rounded bg-forge-accent/10 text-forge-accent border border-forge-accent/30 hover:bg-forge-accent/20 transition-colors disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed"
         >
           {loading ? 'Working…' : mode === 'encrypt' ? 'Encrypt' : 'Decrypt'}
         </button>
@@ -108,18 +108,18 @@ export function AesEncryptDecrypt() {
         {error && <p className="text-sm text-red-400">{error}</p>}
 
         {output && (
-          <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-4">
+          <div className="bg-forge-surface border border-forge-border rounded-lg p-4">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs text-[#6b7280]">{mode === 'encrypt' ? 'Ciphertext (base64, AES-256-GCM)' : 'Decrypted plaintext'}</span>
-              <button onClick={() => copy(output)} className="text-xs text-[#c4af64] hover:text-[#e2e4ed] transition-colors cursor-pointer">
+              <span className="text-xs text-forge-muted">{mode === 'encrypt' ? 'Ciphertext (base64, AES-256-GCM)' : 'Decrypted plaintext'}</span>
+              <button onClick={() => copy(output)} className="text-xs text-forge-accent hover:text-forge-text transition-colors cursor-pointer">
                 {copied ? 'Copied!' : 'Copy'}
               </button>
             </div>
-            <pre className="font-mono text-xs text-[#e2e4ed] whitespace-pre-wrap break-all">{output}</pre>
+            <pre className="font-mono text-xs text-forge-text whitespace-pre-wrap break-all">{output}</pre>
           </div>
         )}
 
-        <p className="text-xs text-[#3a3d4a]">AES-256-GCM · PBKDF2 key derivation (100k iterations) · Random salt + IV per encryption</p>
+        <p className="text-xs text-forge-line">AES-256-GCM · PBKDF2 key derivation (100k iterations) · Random salt + IV per encryption</p>
       </div>
     </div>
   )

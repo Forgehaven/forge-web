@@ -61,9 +61,9 @@ export default function AuthCallback() {
 
   if (error) {
     return (
-      <div className="fixed inset-0 flex flex-col items-center justify-center bg-[#0f1117] text-center">
+      <div className="fixed inset-0 flex flex-col items-center justify-center bg-forge-bg text-center">
         <p className="text-red-400 mb-4 text-sm max-w-md px-4">{error}</p>
-        <a href="/" className="text-[#c4af64] hover:underline text-sm">
+        <a href="/" className="text-forge-accent hover:underline text-sm">
           Back to ForgeHaven
         </a>
       </div>
@@ -71,9 +71,9 @@ export default function AuthCallback() {
   }
 
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center bg-[#0f1117] text-center">
-      <div className="w-8 h-8 border-2 border-[#c4af64] border-t-transparent rounded-full animate-spin" />
-      <p className="text-[#9ca3af] text-sm mt-4">Authenticating...</p>
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-forge-bg text-center">
+      <div className="w-8 h-8 border-2 border-forge-accent border-t-transparent rounded-full animate-spin" />
+      <p className="text-forge-dim text-sm mt-4">Authenticating...</p>
     </div>
   )
 }

@@ -35,15 +35,15 @@ export function BaseConverter() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Base Converter</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">Base Converter</h1>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-4">
         {(Object.keys(baseMap) as Base[]).map(base => {
           const { label, prefix, placeholder } = baseMap[base]
           return (
             <div key={base}>
-              <label className="block text-xs text-[#6b7280] mb-1">
-                {label} {prefix && <span className="text-[#c4af64]">({prefix})</span>}
+              <label className="block text-xs text-forge-muted mb-1">
+                {label} {prefix && <span className="text-forge-accent">({prefix})</span>}
               </label>
               <input
                 className="forge-input-mono"

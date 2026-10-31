@@ -192,7 +192,7 @@ export function AudioTuner() {
   return (
     <div className="max-w-xl">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-semibold text-[#e2e4ed]">Audio Tuner</h1>
+        <h1 className="text-xl font-semibold text-forge-text">Audio Tuner</h1>
         <div className="w-36">
           <Select
             options={[...INSTRUMENTS].sort((a, b) => a.name.localeCompare(b.name)).map(i => ({ value: i.name, label: i.name }))}
@@ -202,7 +202,7 @@ export function AudioTuner() {
         </div>
       </div>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg pt-5 px-5 pb-2 flex flex-col items-center gap-4">
+      <div className="bg-forge-surface border border-forge-border rounded-lg pt-5 px-5 pb-2 flex flex-col items-center gap-4">
 
         {/* Note display */}
         <div className="flex flex-col items-center gap-1 h-24 justify-center overflow-hidden">
@@ -212,24 +212,24 @@ export function AudioTuner() {
                 <span className="text-7xl font-bold tabular-nums leading-none" style={{ color: noteColor }}>
                   {detected.note}
                 </span>
-                <span className="text-2xl text-[#6b7280] mb-1">{detected.octave}</span>
+                <span className="text-2xl text-forge-muted mb-1">{detected.octave}</span>
               </div>
-              <span className="text-sm text-[#6b7280] tabular-nums">{detected.freq.toFixed(1)} Hz</span>
+              <span className="text-sm text-forge-muted tabular-nums">{detected.freq.toFixed(1)} Hz</span>
             </>
           ) : active ? (
-            <span className="text-sm text-[#4b5563]">Play a note…</span>
+            <span className="text-sm text-forge-faint">Play a note…</span>
           ) : (
-            <span className="text-4xl font-bold text-[#2a2d3a]">-</span>
+            <span className="text-4xl font-bold text-forge-border">-</span>
           )}
         </div>
 
         {/* Meter */}
         <div className="w-full flex flex-col items-center gap-2">
-          <div className="relative w-64 h-2 rounded-full bg-[#0f1117] overflow-visible">
+          <div className="relative w-64 h-2 rounded-full bg-forge-bg overflow-visible">
             {/* Zone markers */}
             <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-6 rounded-full bg-[#4ade80]/20" />
             {/* Track */}
-            <div className="absolute inset-0 rounded-full bg-[#2a2d3a]" />
+            <div className="absolute inset-0 rounded-full bg-forge-border" />
             {/* Needle */}
             <div
               className="absolute top-1/2 left-1/2 -translate-y-1/2 w-3 h-3 rounded-full transition-transform duration-75"
@@ -240,7 +240,7 @@ export function AudioTuner() {
               }}
             />
           </div>
-          <div className="flex w-64 justify-between text-[9px] text-[#374151] tabular-nums select-none">
+          <div className="flex w-64 justify-between text-[9px] text-forge-edge tabular-nums select-none">
             <span>-50¢</span>
             <span>-25¢</span>
             <span style={{ color: inTune ? '#4ade80' : '#374151' }}>0</span>
@@ -259,7 +259,7 @@ export function AudioTuner() {
           className={`px-6 py-2 text-sm rounded border transition-colors cursor-pointer ${
             active
               ? 'border-red-500/40 text-red-400 hover:bg-red-500/10'
-              : 'border-[#c4af64]/40 text-[#c4af64] hover:bg-[#c4af64]/10'
+              : 'border-forge-accent/40 text-forge-accent hover:bg-forge-accent/10'
           }`}
         >
           {active ? 'Stop' : 'Start Tuner'}
@@ -271,23 +271,23 @@ export function AudioTuner() {
         const instrument = INSTRUMENTS.find(i => i.name === selectedInstrument)!
         return (
           <div className="mt-6 flex flex-col gap-3">
-            <hr className="border-[#2a2d3a]" />
-            <p className="text-xs text-[#6b7280] uppercase tracking-widest font-medium text-center">Tuning Reference</p>
+            <hr className="border-forge-border" />
+            <p className="text-xs text-forge-muted uppercase tracking-widest font-medium text-center">Tuning Reference</p>
 
-            <div className="rounded-lg border border-[#2a2d3a] overflow-hidden">
-              <div className="px-4 py-1.5 bg-[#1a1d27] border-b border-[#2a2d3a] text-center">
-                <span className="text-xs text-[#9ca3af] uppercase tracking-widest font-semibold">
-                  {instrument.name} <span className="text-[#6b7280] normal-case tracking-normal font-normal">
+            <div className="rounded-lg border border-forge-border overflow-hidden">
+              <div className="px-4 py-1.5 bg-forge-surface border-b border-forge-border text-center">
+                <span className="text-xs text-forge-dim uppercase tracking-widest font-semibold">
+                  {instrument.name} <span className="text-forge-muted normal-case tracking-normal font-normal">
                     {instrument.notes.every(s => s.label) ? '(key refs)' : `(${instrument.notes.length}-string)`}
                   </span>
                 </span>
               </div>
-              <div className="grid divide-x divide-[#1e2130]" style={{ gridTemplateColumns: `repeat(${instrument.notes.length}, 1fr)` }}>
+              <div className="grid divide-x divide-forge-raise" style={{ gridTemplateColumns: `repeat(${instrument.notes.length}, 1fr)` }}>
                 {instrument.notes.map(({ n, label, note, octave, hz }) => (
                   <div key={n} className="flex flex-col items-center py-2.5 gap-1">
-                    <span className="text-[10px] text-[#6b7280]">{label ?? `S${n}`}</span>
-                    <span className="text-xl font-bold text-[#e2e4ed]">{note}<span className="text-sm text-[#6b7280] ml-0.5">{octave}</span></span>
-                    <span className="text-[10px] text-[#6b7280] tabular-nums">{hz} Hz</span>
+                    <span className="text-[10px] text-forge-muted">{label ?? `S${n}`}</span>
+                    <span className="text-xl font-bold text-forge-text">{note}<span className="text-sm text-forge-muted ml-0.5">{octave}</span></span>
+                    <span className="text-[10px] text-forge-muted tabular-nums">{hz} Hz</span>
                   </div>
                 ))}
               </div>

@@ -118,24 +118,24 @@ export function VideoToGif() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Video to GIF</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">Video to GIF</h1>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-5">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-5">
 
         <video ref={videoRef} src={videoUrl ?? undefined} onLoadedMetadata={onMetadata} className="hidden" />
 
         <FileDropZone accept="video/*" onFiles={files => acceptFile(files[0])}>
           {file ? (
             <div>
-              <p className="text-sm text-[#e2e4ed] font-mono truncate">{file.name}</p>
-              <p className="text-xs text-[#6b7280] mt-1">
+              <p className="text-sm text-forge-text font-mono truncate">{file.name}</p>
+              <p className="text-xs text-forge-muted mt-1">
                 {(file.size / 1024 / 1024).toFixed(1)} MB{duration > 0 && ` · ${formatTime(duration, 1)}`}
               </p>
             </div>
           ) : (
             <div>
-              <p className="text-sm text-[#6b7280]">Drop a video file here or click to upload</p>
-              <p className="text-xs text-[#3a3d4a] mt-1">MP4, WebM, MOV · up to {MAX_GIF_DURATION}s · all processing is local</p>
+              <p className="text-sm text-forge-muted">Drop a video file here or click to upload</p>
+              <p className="text-xs text-forge-line mt-1">MP4, WebM, MOV · up to {MAX_GIF_DURATION}s · all processing is local</p>
             </div>
           )}
         </FileDropZone>
@@ -155,7 +155,7 @@ export function VideoToGif() {
             {/* Clip range */}
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs text-[#6b7280] mb-1">Start (s)</label>
+                <label className="block text-xs text-forge-muted mb-1">Start (s)</label>
                 <input
                   type="number" inputMode="decimal" min={0} max={end - 0.5} step={0.1}
                   value={start.toFixed(1)}
@@ -170,13 +170,13 @@ export function VideoToGif() {
                     setStart(newStart)
                     setEnd(newEnd)
                   }}
-                  className="mt-1 text-xs text-[#6b7280] hover:text-[#c4af64] transition-colors cursor-pointer"
+                  className="mt-1 text-xs text-forge-muted hover:text-forge-accent transition-colors cursor-pointer"
                 >
                   â† set to current time
                 </button>
               </div>
               <div>
-                <label className="block text-xs text-[#6b7280] mb-1">End (s)</label>
+                <label className="block text-xs text-forge-muted mb-1">End (s)</label>
                 <input
                   type="number" inputMode="decimal" min={start + 0.5} max={duration} step={0.1}
                   value={end.toFixed(1)}
@@ -185,14 +185,14 @@ export function VideoToGif() {
                 />
                 <button
                   onClick={() => { const t = playerRef.current?.currentTime ?? duration; setEnd(Math.min(duration, Math.max(t, start + 0.5))) }}
-                  className="mt-1 text-xs text-[#6b7280] hover:text-[#c4af64] transition-colors cursor-pointer"
+                  className="mt-1 text-xs text-forge-muted hover:text-forge-accent transition-colors cursor-pointer"
                 >
                   â† set to current time
                 </button>
               </div>
               <div>
-                <label className="block text-xs text-[#6b7280] mb-1">Duration</label>
-                <div className={`rounded px-3 py-2 text-sm border ${isCapped ? 'bg-[#0f1117] border-yellow-500/40 text-yellow-400' : 'bg-[#0f1117] border-[#2a2d3a] text-[#6b7280]'}`}>
+                <label className="block text-xs text-forge-muted mb-1">Duration</label>
+                <div className={`rounded px-3 py-2 text-sm border ${isCapped ? 'bg-forge-bg border-yellow-500/40 text-yellow-400' : 'bg-forge-bg border-forge-border text-forge-muted'}`}>
                   {isCapped ? `capped at ${MAX_GIF_DURATION}s` : formatTime(end - start, 1)}
                 </div>
               </div>
@@ -201,7 +201,7 @@ export function VideoToGif() {
             {/* Quality options */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs text-[#6b7280] mb-1">Frame rate</label>
+                <label className="block text-xs text-forge-muted mb-1">Frame rate</label>
                 <Select
                   options={fpsOptions}
                   value={fpsOptions.find(o => o.value === String(fps)) ?? null}
@@ -210,7 +210,7 @@ export function VideoToGif() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-[#6b7280] mb-1">Width</label>
+                <label className="block text-xs text-forge-muted mb-1">Width</label>
                 <Select
                   options={widthOptions}
                   value={widthOptions.find(o => o.value === String(width)) ?? null}
@@ -224,42 +224,42 @@ export function VideoToGif() {
               <button onClick={generateGif} disabled={isBusy} className="forge-btn-accent">
                 {generating ? 'Generating…' : ffmpegLoading ? 'Loading FFmpeg…' : 'Generate GIF'}
               </button>
-              {isBusy && <button onClick={cancel} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">Cancel</button>}
-              <span className="text-xs text-[#6b7280]">{gifDuration.toFixed(1)}s · {fps} fps · {width}px</span>
+              {isBusy && <button onClick={cancel} className="text-xs text-forge-muted hover:text-forge-text transition-colors cursor-pointer">Cancel</button>}
+              <span className="text-xs text-forge-muted">{gifDuration.toFixed(1)}s · {fps} fps · {width}px</span>
             </div>
 
             {ffmpegLoading && (
               <div>
-                <div className="flex justify-between text-xs text-[#6b7280] mb-1">
+                <div className="flex justify-between text-xs text-forge-muted mb-1">
                   <span>Loading FFmpeg (~24 MB, cached after first use)…</span>
                   <span>{Math.round(ffmpegProgress * 100)}%</span>
                 </div>
-                <div className="w-full h-1 bg-[#2a2d3a] rounded-full overflow-hidden">
-                  <div className="h-full bg-[#c4af64] transition-all duration-150" style={{ width: `${ffmpegProgress * 100}%` }} />
+                <div className="w-full h-1 bg-forge-border rounded-full overflow-hidden">
+                  <div className="h-full bg-forge-accent transition-all duration-150" style={{ width: `${ffmpegProgress * 100}%` }} />
                 </div>
               </div>
             )}
 
             {generating && (
               <div>
-                <div className="flex justify-between text-xs text-[#6b7280] mb-1">
+                <div className="flex justify-between text-xs text-forge-muted mb-1">
                   <span>Generating GIF…</span>
                   <span>{Math.round(genProgress * 100)}%</span>
                 </div>
-                <div className="w-full h-1 bg-[#2a2d3a] rounded-full overflow-hidden">
-                  <div className="h-full bg-[#c4af64] transition-all duration-150" style={{ width: `${genProgress * 100}%` }} />
+                <div className="w-full h-1 bg-forge-border rounded-full overflow-hidden">
+                  <div className="h-full bg-forge-accent transition-all duration-150" style={{ width: `${genProgress * 100}%` }} />
                 </div>
               </div>
             )}
 
             {outputUrl && (
-              <div className="flex flex-col gap-3 border-t border-[#2a2d3a] pt-4">
+              <div className="flex flex-col gap-3 border-t border-forge-border pt-4">
                 <img src={outputUrl} alt="Generated GIF" className="w-full rounded" style={{ maxHeight: 300, objectFit: 'contain', background: '#0f1117' }} />
                 <div className="flex gap-3 items-center">
                   <a href={outputUrl} download={outputName} className="forge-btn-accent">
                     Download {outputName}
                   </a>
-                  <span className="text-xs text-[#6b7280]">{(outputSize / 1024 / 1024).toFixed(2)} MB · all processing is local</span>
+                  <span className="text-xs text-forge-muted">{(outputSize / 1024 / 1024).toFixed(2)} MB · all processing is local</span>
                 </div>
               </div>
             )}

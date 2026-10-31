@@ -8,9 +8,9 @@ export function MobileSection({ title, summary, children }: { title: string; sum
   return (
     <>
       <div className="lg:hidden forge-card !p-3 flex items-center gap-2 text-left cursor-pointer" {...toggleProps(open, () => setOpen(o => !o))}>
-        <span className="text-sm font-semibold text-[#e2e4ed]">{title}</span>
-        <span className="min-w-0 truncate text-xs text-[#9ca3af]">{summary}</span>
-        <span className={`ml-auto text-xs text-[#6b7280] transition-transform ${open ? 'rotate-90' : ''}`}>▸</span>
+        <span className="text-sm font-semibold text-forge-text">{title}</span>
+        <span className="min-w-0 truncate text-xs text-forge-dim">{summary}</span>
+        <span className={`ml-auto text-xs text-forge-muted transition-transform ${open ? 'rotate-90' : ''}`}>▸</span>
       </div>
       <div className={`${open ? 'contents' : 'hidden'} lg:contents`}>{children}</div>
     </>

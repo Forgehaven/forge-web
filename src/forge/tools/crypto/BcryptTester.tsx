@@ -47,14 +47,14 @@ export function BcryptTester() {
   return (
     <div className="max-w-xl">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-semibold text-[#e2e4ed]">Bcrypt Tester</h1>
-        <div className="flex bg-[#1a1d27] border border-[#2a2d3a] rounded overflow-hidden">
+        <h1 className="text-xl font-semibold text-forge-text">Bcrypt Tester</h1>
+        <div className="flex bg-forge-surface border border-forge-border rounded overflow-hidden">
           {(['hash', 'verify'] as Mode[]).map(m => (
             <button
               key={m}
               onClick={() => setMode(m)}
               className={`px-3 py-1.5 text-xs capitalize transition-colors cursor-pointer ${
-                mode === m ? 'bg-[#c4af64]/10 text-[#c4af64]' : 'text-[#6b7280] hover:text-[#e2e4ed]'
+                mode === m ? 'bg-forge-accent/10 text-forge-accent' : 'text-forge-muted hover:text-forge-text'
               }`}
             >
               {m}
@@ -66,7 +66,7 @@ export function BcryptTester() {
       {mode === 'hash' ? (
         <div className="flex flex-col gap-4">
           <div>
-            <label className="block text-xs text-[#6b7280] mb-1">Password</label>
+            <label className="block text-xs text-forge-muted mb-1">Password</label>
             <input className="forge-input" type="password" value={hashInput}
               onChange={e => setHashInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && doHash()}
@@ -75,15 +75,15 @@ export function BcryptTester() {
 
           <div>
             <div className="flex items-center justify-between mb-1">
-              <label className="text-xs text-[#6b7280]">Cost factor (rounds): {rounds}</label>
-              <span className="text-xs text-[#3a3d4a]">2^{rounds} = {(2 ** rounds).toLocaleString()} iterations</span>
+              <label className="text-xs text-forge-muted">Cost factor (rounds): {rounds}</label>
+              <span className="text-xs text-forge-line">2^{rounds} = {(2 ** rounds).toLocaleString()} iterations</span>
             </div>
             <input
               type="range" min={4} max={14} value={rounds}
               onChange={e => setRounds(+e.target.value)}
-              className="w-full accent-[#c4af64]"
+              className="w-full accent-forge-accent"
             />
-            <div className="flex justify-between text-xs text-[#3a3d4a] mt-0.5">
+            <div className="flex justify-between text-xs text-forge-line mt-0.5">
               <span>4 (fast)</span><span>10 (default)</span><span>14 (slow)</span>
             </div>
           </div>
@@ -93,28 +93,28 @@ export function BcryptTester() {
           </button>
 
           {hashOutput && (
-            <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-4">
+            <div className="bg-forge-surface border border-forge-border rounded-lg p-4">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-[#6b7280]">Bcrypt hash</span>
-                <button onClick={() => copyHash(hashOutput)} className="text-xs text-[#c4af64] hover:text-[#e2e4ed] transition-colors cursor-pointer">
+                <span className="text-xs text-forge-muted">Bcrypt hash</span>
+                <button onClick={() => copyHash(hashOutput)} className="text-xs text-forge-accent hover:text-forge-text transition-colors cursor-pointer">
                   {hashCopied ? 'Copied!' : 'Copy'}
                 </button>
               </div>
-              <pre className="font-mono text-xs text-[#e2e4ed] break-all whitespace-pre-wrap">{hashOutput}</pre>
+              <pre className="font-mono text-xs text-forge-text break-all whitespace-pre-wrap">{hashOutput}</pre>
             </div>
           )}
         </div>
       ) : (
         <div className="flex flex-col gap-4">
           <div>
-            <label className="block text-xs text-[#6b7280] mb-1">Password</label>
+            <label className="block text-xs text-forge-muted mb-1">Password</label>
             <input className="forge-input" type="password" value={verifyPassword}
               onChange={e => { setVerifyPassword(e.target.value); setVerifyResult(null) }}
               placeholder="Password to verify" />
           </div>
 
           <div>
-            <label className="block text-xs text-[#6b7280] mb-1">Bcrypt hash</label>
+            <label className="block text-xs text-forge-muted mb-1">Bcrypt hash</label>
             <input className="forge-input font-mono" value={verifyHash}
               onChange={e => { setVerifyHash(e.target.value); setVerifyResult(null) }}
               placeholder="$2a$10$..." />

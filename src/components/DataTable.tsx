@@ -53,20 +53,20 @@ export function DataTable<T>({ columns, data, rowKey, rowClass, defaultSort, def
   if (data.length === 0) return null
 
   return (
-    <div className={`${fill ? 'max-h-full overflow-auto' : 'overflow-x-auto'} rounded-lg border border-[#2a2d3a]`}>
+    <div className={`${fill ? 'max-h-full overflow-auto' : 'overflow-x-auto'} rounded-lg border border-forge-border`}>
       <table className="w-full text-sm border-collapse">
         <thead>
-          <tr className="bg-[#1a1d27] border-b border-[#2a2d3a]">
+          <tr className="bg-forge-surface border-b border-forge-border">
             {columns.map(col => (
               <th
                 key={col.key}
                 title={col.title}
                 onClick={() => col.sortKey && toggleSort(col.key)}
-                className={`px-3 py-2.5 text-left text-xs text-[#6b7280] uppercase tracking-widest font-semibold select-none whitespace-nowrap ${col.sortKey ? 'cursor-pointer hover:text-[#e2e4ed]' : ''} ${fill ? 'sticky top-0 z-20 bg-[#1a1d27] shadow-[inset_0_-1px_0_#2a2d3a]' : ''} ${col.sticky ? `sticky left-0 bg-[#1a1d27] border-r border-[#2a2d3a] ${fill ? 'z-30' : 'z-10'}` : ''} ${col.className ?? ''}`}
+                className={`px-3 py-2.5 text-left text-xs text-forge-muted uppercase tracking-widest font-semibold select-none whitespace-nowrap ${col.sortKey ? 'cursor-pointer hover:text-forge-text' : ''} ${fill ? 'sticky top-0 z-20 bg-forge-surface shadow-[inset_0_-1px_0_#2a2d3a]' : ''} ${col.sticky ? `sticky left-0 bg-forge-surface border-r border-forge-border ${fill ? 'z-30' : 'z-10'}` : ''} ${col.className ?? ''}`}
               >
                 {col.label}
                 {sortCol === col.key && col.sortKey && (
-                  <span className="ml-1 text-[#c4af64]">{sortDir === 'asc' ? '▲' : '▼'}</span>
+                  <span className="ml-1 text-forge-accent">{sortDir === 'asc' ? '▲' : '▼'}</span>
                 )}
               </th>
             ))}
@@ -76,11 +76,11 @@ export function DataTable<T>({ columns, data, rowKey, rowClass, defaultSort, def
           {sorted.map((row, i) => {
             const bg = rowClass ? rowClass(row, i) : (i % 2 === 0 ? '#0f1117' : '#111420')
             return (
-              <tr key={rowKey(row)} className="border-b border-[#1e2130] last:border-0" style={{ background: bg }}>
+              <tr key={rowKey(row)} className="border-b border-forge-raise last:border-0" style={{ background: bg }}>
                 {columns.map(col => (
                   <td
                     key={col.key}
-                    className={`px-3 py-2 whitespace-nowrap ${col.sticky ? `sticky left-0 z-10 border-r border-[#2a2d3a]` : ''} ${col.className ?? ''}`}
+                    className={`px-3 py-2 whitespace-nowrap ${col.sticky ? `sticky left-0 z-10 border-r border-forge-border` : ''} ${col.className ?? ''}`}
                     style={col.sticky ? { background: bg } : undefined}
                   >
                     {col.render(row, i)}
@@ -91,7 +91,7 @@ export function DataTable<T>({ columns, data, rowKey, rowClass, defaultSort, def
           })}
         </tbody>
       </table>
-      {footer && <div className="px-3 py-2 text-xs text-[#6b7280] border-t border-[#2a2d3a]">{footer}</div>}
+      {footer && <div className="px-3 py-2 text-xs text-forge-muted border-t border-forge-border">{footer}</div>}
     </div>
   )
 }

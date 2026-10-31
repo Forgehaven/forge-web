@@ -36,7 +36,7 @@ export function LoremIpsum() {
   const [count, setCount] = useState(2)
   const [output, setOutput] = useState('')
 
-  const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] font-mono w-24"
+  const inputClass = "bg-forge-bg border border-forge-border text-forge-text rounded px-3 py-2 text-sm focus:outline-none focus:border-forge-accent font-mono w-24"
 
   function handleGenerate() {
     setOutput(generate(type, Math.max(1, count)))
@@ -44,7 +44,7 @@ export function LoremIpsum() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Lorem Ipsum Generator</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">Lorem Ipsum Generator</h1>
 
       <div className="flex gap-2 mb-6">
         {(['words', 'sentences', 'paragraphs'] as GenType[]).map(t => (
@@ -53,8 +53,8 @@ export function LoremIpsum() {
             onClick={() => setType(t)}
             className={`px-3 py-1.5 rounded text-sm transition-colors capitalize ${
               type === t
-                ? 'bg-[#c4af64] text-white'
-                : 'bg-[#1a1d27] text-[#9ca3af] hover:text-[#e2e4ed] border border-[#2a2d3a]'
+                ? 'bg-forge-accent text-white'
+                : 'bg-forge-surface text-forge-dim hover:text-forge-text border border-forge-border'
             }`}
           >
             {t}
@@ -62,10 +62,10 @@ export function LoremIpsum() {
         ))}
       </div>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-4">
         <div className="flex items-end gap-3">
           <div>
-            <label className="block text-xs text-[#6b7280] mb-1">Count</label>
+            <label className="block text-xs text-forge-muted mb-1">Count</label>
             <input
               className={inputClass}
               type="number"
@@ -78,24 +78,24 @@ export function LoremIpsum() {
           </div>
           <button
             onClick={handleGenerate}
-            className="px-4 py-2 rounded text-sm bg-[#c4af64] text-white hover:opacity-90 transition-opacity"
+            className="px-4 py-2 rounded text-sm bg-forge-accent text-white hover:opacity-90 transition-opacity"
           >
             Generate
           </button>
         </div>
 
         {output && (
-          <div className="pt-2 border-t border-[#2a2d3a]">
+          <div className="pt-2 border-t border-forge-border">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-xs text-[#6b7280]">Output</p>
+              <p className="text-xs text-forge-muted">Output</p>
               <button
                 onClick={() => copy(output)}
-                className="text-xs text-[#c4af64] hover:text-[#e2e4ed] transition-colors"
+                className="text-xs text-forge-accent hover:text-forge-text transition-colors"
               >
                 {copied ? 'Copied!' : 'Copy'}
               </button>
             </div>
-            <p className="text-sm text-[#e2e4ed] whitespace-pre-wrap leading-relaxed">{output}</p>
+            <p className="text-sm text-forge-text whitespace-pre-wrap leading-relaxed">{output}</p>
           </div>
         )}
       </div>

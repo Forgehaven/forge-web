@@ -492,9 +492,9 @@ function analyze(raw: string): Result | null {
 
 function Row({ label, value, mono }: { label: string; value: React.ReactNode; mono?: boolean }) {
   return (
-    <div className="flex items-center gap-4 py-2 border-b border-[#2a2d3a] last:border-0">
-      <span className="text-xs text-[#6b7280] w-28 shrink-0">{label}</span>
-      <span className={`text-sm text-[#e2e4ed] ${mono ? 'font-mono' : ''}`}>{value}</span>
+    <div className="flex items-center gap-4 py-2 border-b border-forge-border last:border-0">
+      <span className="text-xs text-forge-muted w-28 shrink-0">{label}</span>
+      <span className={`text-sm text-forge-text ${mono ? 'font-mono' : ''}`}>{value}</span>
     </div>
   )
 }
@@ -506,11 +506,11 @@ export function PhoneAreaCode() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Phone Area Code</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">Phone Area Code</h1>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-4">
         <div>
-          <label className="block text-xs text-[#6b7280] mb-1">Area code or phone number</label>
+          <label className="block text-xs text-forge-muted mb-1">Area code or phone number</label>
           <input
             className="forge-input-mono"
             type="text"
@@ -521,16 +521,16 @@ export function PhoneAreaCode() {
         </div>
 
         {input && !result && (
-          <p className="text-xs text-[#6b7280]">No match - try a 3-digit NANP area code or a full number with country code (e.g. +44...).</p>
+          <p className="text-xs text-forge-muted">No match - try a 3-digit NANP area code or a full number with country code (e.g. +44...).</p>
         )}
 
         {result && (
-          <div className="bg-[#0f1117] rounded-lg px-4 pt-2 pb-1">
-            <div className="flex items-center gap-3 py-3 border-b border-[#2a2d3a]">
+          <div className="bg-forge-bg rounded-lg px-4 pt-2 pb-1">
+            <div className="flex items-center gap-3 py-3 border-b border-forge-border">
               <span className="text-3xl leading-none">{result.flag}</span>
               <div>
-                <p className="text-sm font-medium text-[#e2e4ed]">{result.country}</p>
-                {result.region && <p className="text-xs text-[#9ca3af] mt-0.5">{result.region}</p>}
+                <p className="text-sm font-medium text-forge-text">{result.country}</p>
+                {result.region && <p className="text-xs text-forge-dim mt-0.5">{result.region}</p>}
               </div>
             </div>
 
@@ -558,7 +558,7 @@ export function PhoneAreaCode() {
           </div>
         )}
 
-        <p className="text-xs text-[#6b7280]">
+        <p className="text-xs text-forge-muted">
           Supports NANP area codes (US, Canada, Caribbean) and international numbers with country code.
         </p>
       </div>

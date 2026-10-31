@@ -13,7 +13,7 @@ export function JwtDecoder() {
   const { copy: copyHeader, copied: copiedHeader } = useCopy()
   const { copy: copyPayload, copied: copiedPayload } = useCopy()
 
-  const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] w-full font-mono resize-none"
+  const inputClass = "bg-forge-bg border border-forge-border text-forge-text rounded px-3 py-2 text-sm focus:outline-none focus:border-forge-accent w-full font-mono resize-none"
 
   function decode() {
     const parts = jwt.trim().split('.')
@@ -40,11 +40,11 @@ export function JwtDecoder() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">JWT Decoder</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">JWT Decoder</h1>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-4">
         <div>
-          <label className="block text-xs text-[#6b7280] mb-1">JWT Token</label>
+          <label className="block text-xs text-forge-muted mb-1">JWT Token</label>
           <textarea
             className={inputClass}
             rows={4}
@@ -69,34 +69,34 @@ export function JwtDecoder() {
                 }`}>
                   {expiry.expired ? 'EXPIRED' : 'VALID'}
                 </span>
-                <span className="text-xs text-[#6b7280]">exp: {expiry.expDate}</span>
+                <span className="text-xs text-forge-muted">exp: {expiry.expDate}</span>
               </div>
             )}
 
-            <div className="pt-2 border-t border-[#2a2d3a]">
+            <div className="pt-2 border-t border-forge-border">
               <div className="flex items-center justify-between mb-1">
-                <p className="text-xs text-[#6b7280]">Header</p>
+                <p className="text-xs text-forge-muted">Header</p>
                 <button
                   onClick={() => copyHeader(JSON.stringify(result.header, null, 2))}
-                  className="text-xs text-[#c4af64] hover:text-[#e2e4ed] transition-colors"
+                  className="text-xs text-forge-accent hover:text-forge-text transition-colors"
                 >
                   {copiedHeader ? 'Copied!' : 'Copy'}
                 </button>
               </div>
-              <pre className="font-mono text-xs text-[#c4af64] whitespace-pre-wrap">{JSON.stringify(result.header, null, 2)}</pre>
+              <pre className="font-mono text-xs text-forge-accent whitespace-pre-wrap">{JSON.stringify(result.header, null, 2)}</pre>
             </div>
 
-            <div className="pt-2 border-t border-[#2a2d3a]">
+            <div className="pt-2 border-t border-forge-border">
               <div className="flex items-center justify-between mb-1">
-                <p className="text-xs text-[#6b7280]">Payload</p>
+                <p className="text-xs text-forge-muted">Payload</p>
                 <button
                   onClick={() => copyPayload(JSON.stringify(result.payload, null, 2))}
-                  className="text-xs text-[#c4af64] hover:text-[#e2e4ed] transition-colors"
+                  className="text-xs text-forge-accent hover:text-forge-text transition-colors"
                 >
                   {copiedPayload ? 'Copied!' : 'Copy'}
                 </button>
               </div>
-              <pre className="font-mono text-xs text-[#c4af64] whitespace-pre-wrap">{JSON.stringify(result.payload, null, 2)}</pre>
+              <pre className="font-mono text-xs text-forge-accent whitespace-pre-wrap">{JSON.stringify(result.payload, null, 2)}</pre>
             </div>
           </>
         )}

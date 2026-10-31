@@ -38,7 +38,7 @@ export function ContrastChecker() {
   const [fg, setFg] = useState('#e2e4ed')
   const [bg, setBg] = useState('#0f1117')
 
-  const inputClass = "bg-[#0f1117] border border-[#2a2d3a] text-[#e2e4ed] rounded px-3 py-2 text-sm focus:outline-none focus:border-[#c4af64] font-mono w-40"
+  const inputClass = "bg-forge-bg border border-forge-border text-forge-text rounded px-3 py-2 text-sm focus:outline-none focus:border-forge-accent font-mono w-40"
 
   const fgRgb = hexToRgb(fg)
   const bgRgb = hexToRgb(bg)
@@ -53,18 +53,18 @@ export function ContrastChecker() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Contrast Checker</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">Contrast Checker</h1>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-4">
         <div className="flex gap-4">
           <div>
-            <label className="block text-xs text-[#6b7280] mb-1">Foreground</label>
+            <label className="block text-xs text-forge-muted mb-1">Foreground</label>
             <div className="flex items-center gap-2">
               <input
                 type="color"
                 value={fgRgb ? fg : '#000000'}
                 onChange={e => setFg(e.target.value)}
-                className="w-8 h-8 rounded cursor-pointer border border-[#2a2d3a] bg-transparent"
+                className="w-8 h-8 rounded cursor-pointer border border-forge-border bg-transparent"
               />
               <input
                 className={inputClass}
@@ -74,13 +74,13 @@ export function ContrastChecker() {
             </div>
           </div>
           <div>
-            <label className="block text-xs text-[#6b7280] mb-1">Background</label>
+            <label className="block text-xs text-forge-muted mb-1">Background</label>
             <div className="flex items-center gap-2">
               <input
                 type="color"
                 value={bgRgb ? bg : '#ffffff'}
                 onChange={e => setBg(e.target.value)}
-                className="w-8 h-8 rounded cursor-pointer border border-[#2a2d3a] bg-transparent"
+                className="w-8 h-8 rounded cursor-pointer border border-forge-border bg-transparent"
               />
               <input
                 className={inputClass}
@@ -93,7 +93,7 @@ export function ContrastChecker() {
 
         {fgRgb && bgRgb && (
           <div
-            className="w-full rounded-lg border border-[#2a2d3a] p-4 flex items-center justify-center"
+            className="w-full rounded-lg border border-forge-border p-4 flex items-center justify-center"
             style={{ backgroundColor: bg }}
           >
             <p className="text-lg font-semibold" style={{ color: fg }}>
@@ -103,9 +103,9 @@ export function ContrastChecker() {
         )}
 
         {ratio !== null && (
-          <div className="pt-2 border-t border-[#2a2d3a]">
-            <p className="text-xs text-[#6b7280] mb-2">Contrast Ratio</p>
-            <p className="font-mono text-2xl text-[#c4af64] mb-3">{ratio.toFixed(2)}:1</p>
+          <div className="pt-2 border-t border-forge-border">
+            <p className="text-xs text-forge-muted mb-2">Contrast Ratio</p>
+            <p className="font-mono text-2xl text-forge-accent mb-3">{ratio.toFixed(2)}:1</p>
             <div className="grid grid-cols-2 gap-2">
               <Badge pass={aa} label="AA Normal" />
               <Badge pass={aaLarge} label="AA Large" />

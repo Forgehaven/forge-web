@@ -27,7 +27,7 @@ export function FileDropZone({ onFiles, accept, multiple, className = 'p-8', inp
       }}
       onClick={() => fileRef.current?.click()}
       className={`border-2 border-dashed rounded-lg ${className} text-center cursor-pointer transition-colors ${
-        dropping ? 'border-[#c4af64] bg-[#c4af64]/5' : 'border-[#2a2d3a] hover:border-[#3a3d4a]'
+        dropping ? 'border-forge-accent bg-forge-accent/5' : 'border-forge-border hover:border-forge-line'
       }`}
     >
       <input

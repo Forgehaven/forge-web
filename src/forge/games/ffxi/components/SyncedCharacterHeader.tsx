@@ -46,7 +46,7 @@ export function SyncedCharacterHeader({
               : <span style={{ color: nation.color }}>{nation.symbol}</span>
             }
             <span style={{ color: nation.color }}>{nation.name}</span>
-            {rank && <span className="text-[#9ca3af]">· {rank}</span>}
+            {rank && <span className="text-forge-dim">· {rank}</span>}
           </p>
         )}
       </div>

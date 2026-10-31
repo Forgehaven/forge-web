@@ -541,12 +541,12 @@ export function ColourConverter() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Colour Converter</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">Colour Converter</h1>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-4">
 
         {/* colour swatch */}
-        <div className="w-full h-12 rounded-lg border border-[#2a2d3a] overflow-hidden" style={{ backgroundColor: '#ffffff' }}>
+        <div className="w-full h-12 rounded-lg border border-forge-border overflow-hidden" style={{ backgroundColor: '#ffffff' }}>
           <div className="w-full h-full" style={{ backgroundColor: swatchColor, opacity: alpha }} />
         </div>
 
@@ -598,14 +598,14 @@ export function ColourConverter() {
         {/* colour history */}
         {history.length > 0 && (
           <div>
-            <p className="text-xs text-[#6b7280] mb-1.5">History</p>
+            <p className="text-xs text-forge-muted mb-1.5">History</p>
             <div className="flex gap-1.5 flex-wrap">
               {history.map((c, i) => (
                 <button
                   key={i}
                   title={c}
                   onClick={() => { const rgb = hexToRgb(c); if (rgb) { updateFromRgb(...rgb); addToHistory(c) } }}
-                  className="w-6 h-6 rounded border border-[#2a2d3a] hover:scale-110 transition-transform cursor-pointer"
+                  className="w-6 h-6 rounded border border-forge-border hover:scale-110 transition-transform cursor-pointer"
                   style={{ backgroundColor: c }}
                 />
               ))}
@@ -620,10 +620,10 @@ export function ColourConverter() {
         {fields.map(({ label, value, onChange, display }) => (
           <div key={label}>
             <div className="flex items-center justify-between mb-1">
-              <label className="text-xs text-[#6b7280]">{label}</label>
+              <label className="text-xs text-forge-muted">{label}</label>
               <button
                 onClick={() => copy(display, label)}
-                className="text-xs text-[#c4af64] hover:text-[#e2e4ed] transition-colors cursor-pointer"
+                className="text-xs text-forge-accent hover:text-forge-text transition-colors cursor-pointer"
               >
                 {copied === label ? 'Copied!' : 'Copy'}
               </button>
@@ -639,15 +639,15 @@ export function ColourConverter() {
 
         {/* image picker */}
         <div>
-          <p className="text-xs text-[#6b7280] mb-2">Pick from image</p>
+          <p className="text-xs text-forge-muted mb-2">Pick from image</p>
           <div className="flex gap-2 mb-2">
             <button
               onClick={() => fileRef.current?.click()}
-              className="px-3 py-1.5 text-xs rounded bg-[#c4af64]/10 text-[#c4af64] border border-[#c4af64]/30 hover:bg-[#c4af64]/20 transition-colors cursor-pointer"
+              className="px-3 py-1.5 text-xs rounded bg-forge-accent/10 text-forge-accent border border-forge-accent/30 hover:bg-forge-accent/20 transition-colors cursor-pointer"
             >
               Upload image
             </button>
-            <span className="text-xs text-[#3a3d4a] self-center">or paste (Ctrl+V) anywhere</span>
+            <span className="text-xs text-forge-line self-center">or paste (Ctrl+V) anywhere</span>
           </div>
           <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onFileChange} />
           {hasImage && (
@@ -657,11 +657,11 @@ export function ColourConverter() {
                 onClick={onCanvasClick}
                 onMouseMove={onCanvasMouseMove}
                 onMouseLeave={onCanvasMouseLeave}
-                className="rounded border border-[#2a2d3a] cursor-crosshair max-w-full block"
+                className="rounded border border-forge-border cursor-crosshair max-w-full block"
               />
               <canvas
                 ref={magnifierRef}
-                className="absolute pointer-events-none rounded border border-[#6b7280] shadow-xl z-10"
+                className="absolute pointer-events-none rounded border border-forge-muted shadow-xl z-10"
                 style={hoverPos ? { left: hoverPos.left, top: hoverPos.top } : { display: 'none' }}
               />
             </div>

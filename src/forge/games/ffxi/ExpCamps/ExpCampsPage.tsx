@@ -17,9 +17,9 @@ function loadFavs(): Set<string> {
   return new Set()
 }
 
-const SELECT = 'bg-[#1a1d27] border border-[#2a2d3a] rounded px-2 py-1.5 text-sm text-[#e2e4ed] focus:border-[#c4af64] outline-none cursor-pointer'
-const INPUT = 'bg-[#1a1d27] border border-[#2a2d3a] rounded px-2 py-1.5 text-sm text-[#e2e4ed] focus:border-[#c4af64] outline-none'
-const LABEL = 'text-xs text-[#6b7280] uppercase tracking-widest'
+const SELECT = 'bg-forge-surface border border-forge-border rounded px-2 py-1.5 text-sm text-forge-text focus:border-forge-accent outline-none cursor-pointer'
+const INPUT = 'bg-forge-surface border border-forge-border rounded px-2 py-1.5 text-sm text-forge-text focus:border-forge-accent outline-none'
+const LABEL = 'text-xs text-forge-muted uppercase tracking-widest'
 
 const TYPE_LABELS: Record<ExpCampType, string> = {
   standard: 'Standard',
@@ -38,7 +38,7 @@ const COLUMNS: Column<ExpCamp>[] = [
   {
     key: 'level',
     label: 'Level',
-    render: c => <span className="text-[#c4af64] font-semibold">{levelLabel(c)}</span>,
+    render: c => <span className="text-forge-accent font-semibold">{levelLabel(c)}</span>,
     sortKey: c => c.levels?.[0] ?? 76,
   },
   {
@@ -67,7 +67,7 @@ const COLUMNS: Column<ExpCamp>[] = [
     key: 'mobs',
     label: 'Mob(s)',
     render: c => (
-      <div className="whitespace-normal min-w-48 max-w-sm text-[#9ca3af]">
+      <div className="whitespace-normal min-w-48 max-w-sm text-forge-dim">
         {c.mobs.map((m, i) => <div key={i}>{m}</div>)}
       </div>
     ),
@@ -75,13 +75,13 @@ const COLUMNS: Column<ExpCamp>[] = [
   {
     key: 'notes',
     label: 'Notes',
-    render: c => <div className="whitespace-normal min-w-64 text-xs text-[#6b7280]">{c.notes}</div>,
+    render: c => <div className="whitespace-normal min-w-64 text-xs text-forge-muted">{c.notes}</div>,
   },
   {
     key: 'type',
     label: 'Type',
     render: c => (
-      <span className="text-[10px] uppercase tracking-wider text-[#9ca3af] border border-[#2a2d3a] rounded px-1.5 py-0.5">
+      <span className="text-[10px] uppercase tracking-wider text-forge-dim border border-forge-border rounded px-1.5 py-0.5">
         {TYPE_LABELS[c.type]}
       </span>
     ),
@@ -138,7 +138,7 @@ export function ExpCampsPage() {
           aria-label={`${favs.has(c.id) ? 'Unfavourite' : 'Favourite'} ${c.zone} camp`}
           aria-pressed={favs.has(c.id)}
           className={`cursor-pointer text-base leading-none transition-colors ${
-            favs.has(c.id) ? 'text-[#c4af64]' : 'text-[#3a3d4a] hover:text-[#6b7280]'
+            favs.has(c.id) ? 'text-forge-accent' : 'text-forge-line hover:text-forge-muted'
           }`}
         >
           ★
@@ -164,12 +164,12 @@ export function ExpCampsPage() {
   return (
     <div className="flex flex-col gap-4 w-full">
       <div>
-        <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
-          EXP <span className="text-[#c4af64]">Camps</span>
+        <h1 className="text-xl font-semibold text-forge-text tracking-wide">
+          EXP <span className="text-forge-accent">Camps</span>
         </h1>
-        <p className="text-sm text-[#6b7280] mt-0.5">
+        <p className="text-sm text-forge-muted mt-0.5">
           FFXI · Horizon · sourced from the{' '}
-          <a href="https://horizonffxi.wiki/EXP_Camps" target="_blank" rel="noreferrer" className="text-[#c4af64] hover:underline">
+          <a href="https://horizonffxi.wiki/EXP_Camps" target="_blank" rel="noreferrer" className="text-forge-accent hover:underline">
             HorizonXI wiki
           </a>
           {' '}· zone links jump to the camp on the Interactive Map
@@ -221,7 +221,7 @@ export function ExpCampsPage() {
           footer={`${rows.length} of ${EXP_CAMPS.length} camps`}
         />
       ) : (
-        <p className="text-sm text-[#6b7280]">No camps match the filters.</p>
+        <p className="text-sm text-forge-muted">No camps match the filters.</p>
       )}
     </div>
   )

@@ -57,11 +57,11 @@ export function CidrCalculator() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">CIDR Calculator</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">CIDR Calculator</h1>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-4">
         <div>
-          <label className="block text-xs text-[#6b7280] mb-1">CIDR Notation</label>
+          <label className="block text-xs text-forge-muted mb-1">CIDR Notation</label>
           <input
             className="forge-input-mono"
             value={cidr}
@@ -75,15 +75,15 @@ export function CidrCalculator() {
         )}
 
         {result && (
-          <div className="flex flex-col gap-2 pt-2 border-t border-[#2a2d3a]">
+          <div className="flex flex-col gap-2 pt-2 border-t border-forge-border">
             {rows.map(({ label, value }) => (
               <div key={label} className="flex items-center justify-between">
-                <p className="text-xs text-[#6b7280]">{label}</p>
+                <p className="text-xs text-forge-muted">{label}</p>
                 <div className="flex items-center gap-2">
-                  <p className="font-mono text-sm text-[#c4af64]">{value}</p>
+                  <p className="font-mono text-sm text-forge-accent">{value}</p>
                   <button
                     onClick={() => copy(value, label)}
-                    className="text-xs text-[#6b7280] hover:text-[#c4af64] transition-colors"
+                    className="text-xs text-forge-muted hover:text-forge-accent transition-colors"
                   >
                     {copied === label ? 'Copied!' : 'Copy'}
                   </button>

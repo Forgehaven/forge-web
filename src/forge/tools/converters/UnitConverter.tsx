@@ -68,7 +68,7 @@ export function UnitConverter() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Unit Converter</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">Unit Converter</h1>
 
       <div className="flex gap-2 mb-6">
         {(Object.keys(conversions) as Category[]).map(cat => (
@@ -77,8 +77,8 @@ export function UnitConverter() {
             onClick={() => handleCategoryChange(cat)}
             className={`px-3 py-1.5 rounded text-sm transition-colors ${
               category === cat
-                ? 'bg-[#c4af64] text-white'
-                : 'bg-[#1a1d27] text-[#9ca3af] hover:text-[#e2e4ed] border border-[#2a2d3a]'
+                ? 'bg-forge-accent text-white'
+                : 'bg-forge-surface text-forge-dim hover:text-forge-text border border-forge-border'
             }`}
           >
             {conversions[cat].label}
@@ -86,10 +86,10 @@ export function UnitConverter() {
         ))}
       </div>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-4">
         <div className="flex gap-3">
           <div className="flex-1">
-            <label className="block text-xs text-[#6b7280] mb-1">From</label>
+            <label className="block text-xs text-forge-muted mb-1">From</label>
             <Select
               options={current.units.map(u => ({ value: u, label: u }))}
               value={{ value: from, label: from }}
@@ -98,7 +98,7 @@ export function UnitConverter() {
             />
           </div>
           <div className="flex-1">
-            <label className="block text-xs text-[#6b7280] mb-1">To</label>
+            <label className="block text-xs text-forge-muted mb-1">To</label>
             <Select
               options={current.units.map(u => ({ value: u, label: u }))}
               value={{ value: to, label: to }}
@@ -109,7 +109,7 @@ export function UnitConverter() {
         </div>
 
         <div>
-          <label className="block text-xs text-[#6b7280] mb-1">Value</label>
+          <label className="block text-xs text-forge-muted mb-1">Value</label>
           <input
             className="forge-input-mono"
             type="number"
@@ -121,11 +121,11 @@ export function UnitConverter() {
         </div>
 
         {result !== null && (
-          <div className="pt-2 border-t border-[#2a2d3a]">
-            <p className="text-xs text-[#6b7280] mb-1">Result</p>
-            <p className="text-2xl font-mono text-[#c4af64]">
+          <div className="pt-2 border-t border-forge-border">
+            <p className="text-xs text-forge-muted mb-1">Result</p>
+            <p className="text-2xl font-mono text-forge-accent">
               {parseFloat(result.toPrecision(8)).toString()}{' '}
-              <span className="text-sm text-[#9ca3af]">{to}</span>
+              <span className="text-sm text-forge-dim">{to}</span>
             </p>
           </div>
         )}

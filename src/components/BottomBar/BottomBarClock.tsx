@@ -16,8 +16,8 @@ export function BottomBarClock() {
 
   return (
     <>
-      <span className="text-[#6b7280] hidden sm:inline">{tz}</span>
-      <span className="text-[#e2e4ed] font-mono hidden sm:inline">{time}</span>
+      <span className="text-forge-muted hidden sm:inline">{tz}</span>
+      <span className="text-forge-text font-mono hidden sm:inline">{time}</span>
     </>
   )
 }

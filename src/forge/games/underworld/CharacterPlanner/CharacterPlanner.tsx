@@ -68,16 +68,16 @@ export default function CharacterPlanner() {
 
   return (
     <div className={`grid gap-4 pb-6 lg:pb-0 lg:h-full lg:grid-rows-[minmax(0,1fr)] ${pane ? 'lg:grid-cols-[22rem_24rem_minmax(0,1fr)]' : 'lg:grid-cols-[24rem_minmax(0,1fr)]'}`}>
-      <aside className="flex flex-col gap-4 lg:min-h-0 lg:overflow-y-auto lg:pr-2">
+      <aside className="flex flex-col gap-3 lg:min-h-0 lg:overflow-y-auto lg:pr-2">
         <header>
-          <h1 className="text-xl font-semibold text-[#e2e4ed]">Character Planner</h1>
+          <h1 className="text-xl font-semibold text-forge-text">Character Planner</h1>
           {!store.isAuthenticated && (
-            <p className="text-xs text-[#c4af64] mt-1 leading-snug">
+            <p className="text-xs text-forge-accent mt-1 leading-snug">
               You're not logged in, so this character is only saved in this browser.
               Log in (bottom of the sidebar) to save builds to your account and open them anywhere.
             </p>
           )}
-          <p className="text-[11px] text-[#6b7280] mt-1">Unofficial. The rulebook wins on any conflict.</p>
+          <p className="text-[11px] text-forge-muted mt-1">Unofficial. The rulebook wins on any conflict.</p>
         </header>
 
         <BuildBar store={store} />
@@ -116,19 +116,19 @@ export default function CharacterPlanner() {
         <fieldset disabled={locked} className="contents">
 
         <div className="flex flex-col gap-1">
-          <div className="flex rounded-md border border-[#2a2d3a] overflow-hidden" role="radiogroup" aria-label="Planning mode">
+          <div className="flex rounded-md border border-forge-border overflow-hidden" role="radiogroup" aria-label="Planning mode">
             {MODES.map(m => (
               <button
                 key={m.mode}
                 role="radio"
                 aria-checked={mode === m.mode}
-                className={`flex-1 py-1.5 text-xs cursor-pointer ${mode === m.mode ? 'bg-[#c4af64]/15 text-[#c4af64]' : 'text-[#9ca3af] hover:text-[#e2e4ed]'}`}
+                className={`flex-1 py-1.5 text-xs cursor-pointer ${mode === m.mode ? 'bg-forge-accent/15 text-forge-accent' : 'text-forge-dim hover:text-forge-text'}`}
                 onClick={() => setBuild(b => ({ ...b, mode: m.mode }))}
               >{m.label}</button>
             ))}
           </div>
-          <p className="text-[11px] text-[#9ca3af] text-center">{MODES.find(m => m.mode === mode)?.hint}</p>
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-[#6b7280]">
+          <p className="text-[11px] text-forge-dim text-center">{MODES.find(m => m.mode === mode)?.hint}</p>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-forge-muted">
             {sources.length > 0 && <>
               Copy picks from
               {sources.map(m => (activePurchases(build).length ? (
@@ -136,11 +136,11 @@ export default function CharacterPlanner() {
                   key={m.mode}
                   label={m.label}
                   confirmPrompt={`Replace these picks with ${m.label}?`}
-                  className="text-[#c4af64] hover:underline cursor-pointer"
+                  className="text-forge-accent hover:underline cursor-pointer"
                   onConfirm={() => setBuild(b => copyPicks(b, m.mode))}
                 />
               ) : (
-                <button key={m.mode} className="text-[#c4af64] hover:underline cursor-pointer" onClick={() => setBuild(b => copyPicks(b, m.mode))}>{m.label}</button>
+                <button key={m.mode} className="text-forge-accent hover:underline cursor-pointer" onClick={() => setBuild(b => copyPicks(b, m.mode))}>{m.label}</button>
               )))}
             </>}
             {activePurchases(build).length > 0 && (

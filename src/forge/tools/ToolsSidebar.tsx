@@ -14,8 +14,8 @@ import { TOOL_SECTIONS, ALL_TOOLS } from './toolsManifest'
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `block pl-4 pr-8 py-2 md:py-0 text-sm leading-5 transition-colors ${
     isActive
-      ? 'bg-[#c4af64]/10 text-[#c4af64] border-r-2 border-[#c4af64]'
-      : 'text-[#9ca3af] hover:text-[#e2e4ed] hover:bg-[#2a2d3a]'
+      ? 'bg-forge-accent/10 text-forge-accent border-r-2 border-forge-accent'
+      : 'text-forge-dim hover:text-forge-text hover:bg-forge-border'
   }`
 
 type ToolEntry = { path: string; label: string }
@@ -43,8 +43,8 @@ function ToolRow({
         onClick={e => { e.preventDefault(); e.stopPropagation(); onToggle() }}
         className={`absolute right-2 top-1/2 -translate-y-1/2 text-xs cursor-pointer transition-opacity ${
           isFav
-            ? 'opacity-100 text-[#c4af64]'
-            : 'opacity-40 text-[#c4af64] md:opacity-0 md:text-[#3a3d4a] md:group-hover:opacity-100 md:hover:text-[#6b7280]'
+            ? 'opacity-100 text-forge-accent'
+            : 'opacity-40 text-forge-accent md:opacity-0 md:text-forge-line md:group-hover:opacity-100 md:hover:text-forge-muted'
         }`}
         aria-label={isFav ? 'Remove from favourites' : 'Add to favourites'}
       >
@@ -88,13 +88,13 @@ export function ToolsSidebar({ isOpen, onClose, onOpenSettings, onOpenLogin }: T
               <ToolRow key={tool.path} tool={tool} isFav={isFavourite(tool.path)} onToggle={() => toggle(tool.path)} onClick={handleSelect} />
             ))
           ) : (
-            <p className="px-4 py-3 text-xs text-[#6b7280]">No tools found</p>
+            <p className="px-4 py-3 text-xs text-forge-muted">No tools found</p>
           )
         ) : (
           <>
             {favouriteTools.length > 0 && (
               <div>
-                <p className="pl-[11px] pr-4 pt-1 pb-0 text-xs font-medium text-[#c4af64] uppercase tracking-wider">
+                <p className="pl-[11px] pr-4 pt-1 pb-0 text-xs font-medium text-forge-accent uppercase tracking-wider">
                   Favourites
                 </p>
                 {favouriteTools.map(tool => (

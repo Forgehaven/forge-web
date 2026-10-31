@@ -45,7 +45,7 @@ export function RegexTester() {
     for (const match of allMatches) {
       if (match.start > cursor) nodes.push(<span key={cursor}>{testStr.slice(cursor, match.start)}</span>)
       nodes.push(
-        <mark key={match.start} className="bg-[#c4af64]/30 text-[#c4af64] rounded px-0.5">
+        <mark key={match.start} className="bg-forge-accent/30 text-forge-accent rounded px-0.5">
           {match.text}
         </mark>
       )
@@ -58,20 +58,20 @@ export function RegexTester() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-[#e2e4ed] mb-6">Regex Tester</h1>
+      <h1 className="text-xl font-semibold text-forge-text mb-6">Regex Tester</h1>
 
-      <div className="bg-[#1a1d27] border border-[#2a2d3a] rounded-lg p-6 flex flex-col gap-4">
+      <div className="bg-forge-surface border border-forge-border rounded-lg p-6 flex flex-col gap-4">
         <div>
-          <label className="block text-xs text-[#6b7280] mb-1">Pattern</label>
+          <label className="block text-xs text-forge-muted mb-1">Pattern</label>
           <div className="flex items-center gap-2">
-            <span className="text-[#6b7280] font-mono">/</span>
+            <span className="text-forge-muted font-mono">/</span>
             <input
               className="forge-input-mono"
               value={pattern}
               onChange={e => setPattern(e.target.value)}
               placeholder="[a-z]+"
             />
-            <span className="text-[#6b7280] font-mono">/</span>
+            <span className="text-forge-muted font-mono">/</span>
           </div>
         </div>
 
@@ -82,15 +82,15 @@ export function RegexTester() {
                 type="checkbox"
                 checked={flags.has(f)}
                 onChange={() => toggleFlag(f)}
-                className="accent-[#c4af64]"
+                className="accent-forge-accent"
               />
-              <span className="text-xs font-mono text-[#6b7280]">{f}</span>
+              <span className="text-xs font-mono text-forge-muted">{f}</span>
             </label>
           ))}
         </div>
 
         <div>
-          <label className="block text-xs text-[#6b7280] mb-1">Test String</label>
+          <label className="block text-xs text-forge-muted mb-1">Test String</label>
           <textarea
             className="forge-input-mono resize-none"
             rows={4}
@@ -103,11 +103,11 @@ export function RegexTester() {
         {error && <p className="text-xs text-red-400 font-mono">{error}</p>}
 
         {testStr && !error && (
-          <div className="pt-2 border-t border-[#2a2d3a]">
-            <p className="text-xs text-[#6b7280] mb-2">
+          <div className="pt-2 border-t border-forge-border">
+            <p className="text-xs text-forge-muted mb-2">
               {matches.length} match{matches.length !== 1 ? 'es' : ''}
             </p>
-            <div className="font-mono text-sm text-[#e2e4ed] whitespace-pre-wrap break-all bg-[#0f1117] rounded p-3 border border-[#2a2d3a]">
+            <div className="font-mono text-sm text-forge-text whitespace-pre-wrap break-all bg-forge-bg rounded p-3 border border-forge-border">
               {highlighted.length > 0 ? highlighted : testStr}
             </div>
           </div>

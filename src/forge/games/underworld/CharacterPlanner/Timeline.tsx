@@ -50,12 +50,12 @@ function Chip({ id, ev, onRemove }: { id: string; ev: Evaluation; onRemove: () =
       onDragStart={e => e.dataTransfer.setData('text/plain', id)}
       title={r.error ?? `${r.cost} CP${r.frag ? `, ${r.frag} frags` : ''}`}
       className={`flex items-center gap-1 rounded px-1.5 py-0.5 text-xs cursor-grab ${
-        r.error ? 'bg-red-500/10 text-red-300 border border-red-500/30' : 'bg-[#2a2d3a] text-[#c4c7d0]'
+        r.error ? 'bg-red-500/10 text-red-300 border border-red-500/30' : 'bg-forge-border text-forge-soft'
       }`}
     >
       {r.label}
-      <span className="text-[#6b7280] font-mono">{r.cost}</span>
-      <button aria-label={`Remove ${r.label}`} className="text-[#6b7280] hover:text-red-400 cursor-pointer" onClick={e => { e.stopPropagation(); onRemove() }}>×</button>
+      <span className="text-forge-muted font-mono">{r.cost}</span>
+      <button aria-label={`Remove ${r.label}`} className="text-forge-muted hover:text-red-400 cursor-pointer" onClick={e => { e.stopPropagation(); onRemove() }}>×</button>
     </li>
   )
 }
@@ -63,6 +63,8 @@ function Chip({ id, ev, onRemove }: { id: string; ev: Evaluation; onRemove: () =
 // The character's history and plan as a vertical timeline.
 export function Timeline({ build, ev, active, setActive, setBuild }: Props) {
   const [dragOver, setDragOver] = useState<number | null>(null)
+  // Skill lists start collapsed except on the active step; a click overrides either way.
+  const [shown, setShown] = useState<Record<number, boolean>>({})
   const [addMonth, setAddMonth] = useState('')
   const [past, setPast] = useState('')
   const byStep = new Map<number, string[]>()
@@ -102,33 +104,33 @@ export function Timeline({ build, ev, active, setActive, setBuild }: Props) {
   return (
     <section className="flex flex-col gap-3">
       <header className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-        <h2 className="text-lg font-semibold text-[#e2e4ed]">Timeline</h2>
-        <p className="text-xs text-[#9ca3af]">
+        <h2 className="text-lg font-semibold text-forge-text">Timeline</h2>
+        <p className="text-xs text-forge-dim">
           Created {monthLabel(build.startMonth)} · {build.blankets.length} blanket{build.blankets.length === 1 ? '' : 's'} over{' '}
           {span(Math.max(0, monthsBetween(build.startMonth, lastStep.month)))} · reaches Level {final}
         </p>
       </header>
 
       <div className="flex flex-col gap-1" title="CP spent up to today, CP spent on planned blankets, and CP not yet spent">
-        <div className="flex h-2.5 rounded-full overflow-hidden bg-[#2a2d3a]">
-          <div className="bg-[#c4af64]" style={{ width: `${pct(used)}%` }} />
+        <div className="flex h-2.5 rounded-full overflow-hidden bg-forge-border">
+          <div className="bg-forge-accent" style={{ width: `${pct(used)}%` }} />
           <div className="bg-sky-400/70" style={{ width: `${pct(planned)}%` }} />
         </div>
-        <div className="flex flex-wrap gap-x-3 text-xs font-mono text-[#c4c7d0]">
-          <span><span className="text-[#c4af64]">■</span> {used} used</span>
+        <div className="flex flex-wrap gap-x-3 text-xs font-mono text-forge-soft">
+          <span><span className="text-forge-accent">■</span> {used} used</span>
           <span><span className="text-sky-400/70">■</span> {planned} planned</span>
-          <span className={free < 0 ? 'text-red-400' : ''}><span className="text-[#3a3d4a]">■</span> {free} unspent</span>
-          <span className="ml-auto text-[#9ca3af]">{total} CP</span>
+          <span className={free < 0 ? 'text-red-400' : ''}><span className="text-forge-line">■</span> {free} unspent</span>
+          <span className="ml-auto text-forge-dim">{total} CP</span>
         </div>
       </div>
 
       <details className="group text-xs">
-        <summary className="cursor-pointer list-none text-[#6b7280] hover:text-[#9ca3af] select-none">
+        <summary className="cursor-pointer list-none text-forge-muted hover:text-forge-dim select-none">
           <span className="inline-block transition-transform group-open:rotate-90">▸</span> Building on an existing character?
         </summary>
-        <div className="mt-2 flex flex-col gap-2 rounded-md border border-[#2a2d3a] p-3 text-[#9ca3af] leading-snug max-w-md">
+        <div className="mt-2 flex flex-col gap-2 rounded-md border border-forge-border p-3 text-forge-dim leading-snug max-w-md">
           <p>
-            Set <span className="text-[#e2e4ed]">Creation</span> to the month you made the character, then enter how
+            Set <span className="text-forge-text">Creation</span> to the month you made the character, then enter how
             many blankets you've applied so far. They're added from that month, {MAX_BLANKETS_PER_MONTH} a month;
             adjust any month afterwards.
           </p>
@@ -137,7 +139,7 @@ export function Timeline({ build, ev, active, setActive, setBuild }: Props) {
               Blankets applied
               <input type="number" inputMode="numeric" min={1} className="forge-input !w-20 !py-1" value={past} onChange={e => setPast(e.target.value)} />
             </label>
-            <button className="text-[#c4af64] hover:underline cursor-pointer disabled:opacity-40 disabled:no-underline disabled:cursor-not-allowed ml-auto" onClick={addPast} disabled={!(Number(past) > 0)}>
+            <button className="text-forge-accent hover:underline cursor-pointer disabled:opacity-40 disabled:no-underline disabled:cursor-not-allowed ml-auto" onClick={addPast} disabled={!(Number(past) > 0)}>
               Add history
             </button>
           </div>
@@ -148,11 +150,11 @@ export function Timeline({ build, ev, active, setActive, setBuild }: Props) {
         <li className="grid grid-cols-[2rem_1.25rem_minmax(0,1fr)] gap-x-2">
           <span />
           <span className="relative flex justify-center">
-            <span className="absolute top-4 bottom-0 w-px border-l border-dashed border-[#3a3d4a]" />
-            <span className="relative mt-3.5 w-2.5 h-2.5 rounded-full border border-dashed border-[#c4af64]" />
+            <span className="absolute top-4 bottom-0 w-px border-l border-dashed border-forge-line" />
+            <span className="relative mt-3.5 w-2.5 h-2.5 rounded-full border border-dashed border-forge-accent" />
           </span>
-          <div className="my-1 flex flex-wrap items-center gap-2 rounded-md border border-dashed border-[#2a2d3a] px-3 py-2">
-            <span className="text-sm text-[#9ca3af]">Next blanket</span>
+          <div className="my-1 flex flex-wrap items-center gap-2 rounded-md border border-dashed border-forge-border px-3 py-2">
+            <span className="text-sm text-forge-dim">Next blanket</span>
             <MonthSelect compact label="Next blanket" value={month} onChange={setAddMonth} />
             <button className="forge-btn-accent !py-1 ml-auto" onClick={addBlanket}>+ Add blanket</button>
           </div>
@@ -168,18 +170,19 @@ export function Timeline({ build, ev, active, setActive, setBuild }: Props) {
           const isActive = step.at === active
           const over = step.spent > step.cp
           const ids = byStep.get(step.at) ?? []
+          const open = shown[step.at] ?? isActive
           return (
             <li key={step.at} className="contents">
               {step.at === todayAt && <TodayLine />}
               {newYear && (
-                <div className="pl-1 pt-2 pb-1 text-sm font-semibold text-[#c4af64]">{year}</div>
+                <div className="pl-1 pt-2 pb-1 text-sm font-semibold text-forge-accent">{year}</div>
               )}
               <div className="grid grid-cols-[2rem_1.25rem_minmax(0,1fr)] gap-x-2">
-                <span className="text-xs text-[#6b7280] text-right pt-3">{later?.month === step.month ? '' : monthLabel(step.month).split(' ')[0]}</span>
+                <span className="text-xs text-forge-muted text-right pt-3">{later?.month === step.month ? '' : monthLabel(step.month).split(' ')[0]}</span>
                 <span className="relative flex justify-center">
-                  <span className={`absolute inset-y-0 w-px ${planned ? 'border-l border-dashed border-[#3a3d4a]' : 'bg-[#3a3d4a]'} ${i === 0 ? 'h-4' : ''}`} />
+                  <span className={`absolute inset-y-0 w-px ${planned ? 'border-l border-dashed border-forge-line' : 'bg-forge-line'} ${i === 0 ? 'h-4' : ''}`} />
                   <span className={`relative rounded-full ${
-                    levelUp ? 'mt-3 w-3.5 h-3.5 bg-emerald-400 ring-4 ring-emerald-400/15' : `mt-3.5 w-2.5 h-2.5 ${isActive ? 'bg-[#c4af64]' : 'bg-[#4b5563]'}`
+                    levelUp ? 'mt-3 w-3.5 h-3.5 bg-emerald-400 ring-4 ring-emerald-400/15' : `mt-3.5 w-2.5 h-2.5 ${isActive ? 'bg-forge-accent' : 'bg-forge-faint'}`
                   }`} />
                 </span>
                 <div
@@ -193,11 +196,11 @@ export function Timeline({ build, ev, active, setActive, setBuild }: Props) {
                     if (id) move(id, step.at)
                   }}
                   className={`my-1 rounded-md border px-3 py-2 cursor-pointer transition-colors ${planned ? 'border-dashed' : ''} ${
-                    isActive ? 'border-[#c4af64] bg-[#c4af64]/5' : 'border-[#2a2d3a] hover:border-[#3a3d4a]'
-                  } ${dragOver === step.at ? 'ring-1 ring-[#c4af64]' : ''}`}
+                    isActive ? 'border-forge-accent bg-forge-accent/5' : 'border-forge-border hover:border-forge-line'
+                  } ${dragOver === step.at ? 'ring-1 ring-forge-accent' : ''}`}
                 >
                   <div className="flex items-center gap-2">
-                    <span className={`text-sm font-semibold ${isActive ? 'text-[#c4af64]' : 'text-[#e2e4ed]'}`}>{stepLabel(step.at)}</span>
+                    <span className={`text-sm font-semibold ${isActive ? 'text-forge-accent' : 'text-forge-text'}`}>{stepLabel(step.at)}</span>
                     <MonthSelect
                       compact
                       label={step.at === 0 ? 'Character created' : `Blanket ${step.at}`}
@@ -210,7 +213,7 @@ export function Timeline({ build, ev, active, setActive, setBuild }: Props) {
                           label="×"
                           ariaLabel={`Remove blanket ${step.at}`}
                           confirmPrompt="Remove?"
-                          className="text-[#4b5563] hover:text-red-400 cursor-pointer leading-none"
+                          className="text-forge-faint hover:text-red-400 cursor-pointer leading-none"
                           onConfirm={() => {
                             setBuild(b => removeBlanket(b, step.at))
                             if (active >= step.at) setActive(Math.max(0, active - 1))
@@ -225,10 +228,20 @@ export function Timeline({ build, ev, active, setActive, setBuild }: Props) {
                         {step.at === 0 ? `Level ${step.row.level}` : `Reached Level ${step.row.level}`}
                       </span>
                     )}
-                    <span className={`ml-auto text-sm font-mono ${over ? 'text-red-400' : 'text-[#c4c7d0]'}`}>{step.spent}/{step.cp} CP</span>
+                    <span className={`ml-auto text-sm font-mono ${over ? 'text-red-400' : 'text-forge-soft'}`}>{step.spent}/{step.cp} CP</span>
                   </div>
                   {step.error && <p className="text-xs text-red-400 mt-1">{step.error}</p>}
                   {ids.length > 0 && (
+                    <button
+                      aria-expanded={open}
+                      className="mt-1 flex items-center gap-1 text-xs text-forge-muted hover:text-forge-text cursor-pointer"
+                      onClick={e => { e.stopPropagation(); setShown(s => ({ ...s, [step.at]: !open })) }}
+                    >
+                      <span className={`transition-transform ${open ? 'rotate-90' : ''}`}>▸</span>
+                      {ids.length} skill{ids.length > 1 ? 's' : ''}
+                    </button>
+                  )}
+                  {open && ids.length > 0 && (
                     <ul className="mt-2 flex flex-wrap gap-1">
                       {ids.map(id => <Chip key={id} id={id} ev={ev} onRemove={() => drop(id)} />)}
                     </ul>
@@ -240,7 +253,7 @@ export function Timeline({ build, ev, active, setActive, setBuild }: Props) {
         })}
         {todayAt === undefined && <li><TodayLine /></li>}
       </ol>
-      <p className="text-[11px] text-[#6b7280]">
+      <p className="text-[11px] text-forge-muted">
         Max {MAX_BLANKETS_PER_MONTH} blankets a month. Click a step to buy skills there; drag skills between steps.
       </p>
     </section>

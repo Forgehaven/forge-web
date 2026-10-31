@@ -225,17 +225,17 @@ export function KeyItemTracker() {
 
       {/* First-sync migration: browser has data, the selected char has none. */}
       {showMigration && selectedChar && (
-        <div className="flex items-center gap-3 px-3 py-2 rounded border border-[#c4af64]/40 bg-[#c4af64]/10 text-sm text-[#e2e4ed]">
+        <div className="flex items-center gap-3 px-3 py-2 rounded border border-forge-accent/40 bg-forge-accent/10 text-sm text-forge-text">
           <span className="flex-1">This browser has unsynced Key Item data.</span>
           <button
             onClick={importLocalToCharacter}
-            className="text-xs px-3 py-1 rounded bg-[#c4af64] text-[#0f1117] font-semibold hover:bg-[#d4bf74] transition-colors cursor-pointer shrink-0"
+            className="text-xs px-3 py-1 rounded bg-forge-accent text-forge-bg font-semibold hover:bg-[#d4bf74] transition-colors cursor-pointer shrink-0"
           >
             Save it to {selectedChar.name}
           </button>
           <button
             onClick={declineMigration}
-            className="text-xs px-3 py-1 rounded border border-[#2a2d3a] text-[#9ca3af] hover:text-[#e2e4ed] hover:border-[#3a4060] transition-colors cursor-pointer shrink-0"
+            className="text-xs px-3 py-1 rounded border border-forge-border text-forge-dim hover:text-forge-text hover:border-[#3a4060] transition-colors cursor-pointer shrink-0"
           >
             No thanks
           </button>
@@ -245,27 +245,27 @@ export function KeyItemTracker() {
       {/* Title + export/import + reset */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold text-[#e2e4ed] tracking-wide">
-            Key Item <span className="text-[#c4af64]">Tracker</span>
+          <h1 className="text-xl font-semibold text-forge-text tracking-wide">
+            Key Item <span className="text-forge-accent">Tracker</span>
           </h1>
-          <p className="text-sm text-[#6b7280] mt-0.5">FFXI · Horizon</p>
+          <p className="text-sm text-forge-muted mt-0.5">FFXI · Horizon</p>
         </div>
         <div className="flex items-center gap-3 shrink-0 mt-1.5">
-          <button onClick={exportJSON} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">Export</button>
-          <button onClick={() => fileInputRef.current?.click()} className="text-xs text-[#6b7280] hover:text-[#e2e4ed] transition-colors cursor-pointer">Import</button>
+          <button onClick={exportJSON} className="text-xs text-forge-muted hover:text-forge-text transition-colors cursor-pointer">Export</button>
+          <button onClick={() => fileInputRef.current?.click()} className="text-xs text-forge-muted hover:text-forge-text transition-colors cursor-pointer">Import</button>
           <input ref={fileInputRef} type="file" accept=".json" onChange={handleImportFile} className="hidden" />
         </div>
         <div className="flex items-center gap-2 mt-1">
-          <span className="text-[10px] text-[#c4af64] uppercase tracking-wider">Reset</span>
+          <span className="text-[10px] text-forge-accent uppercase tracking-wider">Reset</span>
           <ResetButton label="Collected" target="collected" confirm={confirmReset} onRequest={setConfirmReset} onConfirm={handleReset} onCancel={() => setConfirmReset(null)} />
         </div>
       </div>
 
       {/* Tab panel */}
-      <div className="rounded-lg border border-[#2a2d3a] overflow-hidden">
+      <div className="rounded-lg border border-forge-border overflow-hidden">
 
         {/* Category tabs */}
-        <div className="flex border-b border-[#2a2d3a] overflow-x-auto">
+        <div className="flex border-b border-forge-border overflow-x-auto">
           {KEY_ITEM_CATEGORIES.map(cat => {
             const items = CATEGORY_ITEMS[cat]
             const done = items.filter(i => saved.collected[i.name]).length
@@ -276,12 +276,12 @@ export function KeyItemTracker() {
                 onClick={() => { setActiveCategory(cat); setSearch('') }}
                 className={`flex flex-col items-center px-4 py-2.5 text-sm font-bold shrink-0 transition-colors border-b-2 cursor-pointer ${
                   isActive
-                    ? 'text-[#c4af64] border-[#c4af64] bg-[#c4af64]/5'
-                    : 'text-[#9ca3af] border-transparent hover:text-[#e2e4ed] hover:bg-[#1a1d27]/50'
+                    ? 'text-forge-accent border-forge-accent bg-forge-accent/5'
+                    : 'text-forge-dim border-transparent hover:text-forge-text hover:bg-forge-surface/50'
                 }`}
               >
                 <span>{cat}</span>
-                <span className={`text-xs font-semibold tabular-nums ${isActive ? 'text-[#c4af64]/70' : 'text-[#4b5563]'}`}>
+                <span className={`text-xs font-semibold tabular-nums ${isActive ? 'text-forge-accent/70' : 'text-forge-faint'}`}>
                   {done}/{items.length}
                 </span>
               </button>
@@ -290,40 +290,40 @@ export function KeyItemTracker() {
         </div>
 
         {/* Controls bar */}
-        <div className="flex items-center gap-4 px-4 py-2 border-b border-[#1e2130] bg-[#1a1d27]/40 flex-wrap">
+        <div className="flex items-center gap-4 px-4 py-2 border-b border-forge-raise bg-forge-surface/40 flex-wrap">
           <input
             type="text"
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Search all key items…"
-            className="px-2 py-0.5 text-xs rounded border bg-[#0f1117] text-[#9ca3af] border-[#2a2d3a] hover:border-[#3a4060] focus:border-[#4a5070] focus:outline-none w-48"
+            className="px-2 py-0.5 text-xs rounded border bg-forge-bg text-forge-dim border-forge-border hover:border-[#3a4060] focus:border-[#4a5070] focus:outline-none w-48"
           />
           <label className="flex items-center gap-1.5 cursor-pointer">
             <input
               type="checkbox"
               checked={hideMode}
               onChange={e => setHideMode(e.target.checked)}
-              className="w-3 h-3 cursor-pointer accent-[#c4af64]"
+              className="w-3 h-3 cursor-pointer accent-forge-accent"
             />
-            <span className="text-[10px] text-[#6b7280]">Hide collected</span>
+            <span className="text-[10px] text-forge-muted">Hide collected</span>
           </label>
-          <span className="ml-auto text-xs text-[#6b7280] tabular-nums">
+          <span className="ml-auto text-xs text-forge-muted tabular-nums">
             {collectedCount} / {categoryItems.length}
           </span>
         </div>
 
         <div ref={tableRef} className="overflow-y-auto" style={{ maxHeight: tableMaxH ?? undefined, minHeight: 200 }}>
           {visibleItems.length === 0 ? (
-            <p className="py-6 px-4 text-sm text-[#374151]">
+            <p className="py-6 px-4 text-sm text-forge-edge">
               {searching ? 'No key items match your search.' : 'All collected!'}
             </p>
           ) : (
             <table className="w-full">
-              <thead className="sticky top-0 bg-[#0f1117] z-10">
-                <tr className="border-b border-[#1e2130]">
+              <thead className="sticky top-0 bg-forge-bg z-10">
+                <tr className="border-b border-forge-raise">
                   <th className="w-10 pl-4 pr-2 py-1.5" />
-                  <th className="py-1.5 pr-3 text-left text-[10px] text-[#9ca3af] uppercase tracking-wider font-semibold">Key Item</th>
-                  <th className="py-1.5 pr-3 text-left text-[10px] text-[#9ca3af] uppercase tracking-wider font-semibold hidden sm:table-cell">
+                  <th className="py-1.5 pr-3 text-left text-[10px] text-forge-dim uppercase tracking-wider font-semibold">Key Item</th>
+                  <th className="py-1.5 pr-3 text-left text-[10px] text-forge-dim uppercase tracking-wider font-semibold hidden sm:table-cell">
                     {searching ? 'Category' : 'Source'}
                   </th>
                   <th className="py-1.5 pr-4 w-8" />
@@ -336,7 +336,7 @@ export function KeyItemTracker() {
                     <tr
                       key={item.name}
                       className={`border-b last:border-0 ${
-                        collected ? 'bg-[#166534]/10 border-[#166534]/25' : 'border-[#1a1d27]'
+                        collected ? 'bg-[#166534]/10 border-[#166534]/25' : 'border-forge-surface'
                       }`}
                     >
                       <td className={`pl-4 pr-2 py-1.5 border-l-2 ${collected ? 'border-l-[#22c55e]/70' : 'border-l-transparent'}`}>
@@ -345,13 +345,13 @@ export function KeyItemTracker() {
                           checked={collected}
                           onChange={() => toggleCollected(item.name)}
                           aria-label={item.name}
-                          className="w-3.5 h-3.5 cursor-pointer accent-[#c4af64]"
+                          className="w-3.5 h-3.5 cursor-pointer accent-forge-accent"
                         />
                       </td>
-                      <td className={`py-1.5 pr-3 text-sm ${collected ? 'text-[#c4af64]' : 'text-[#e2e4ed]'}`}>
+                      <td className={`py-1.5 pr-3 text-sm ${collected ? 'text-forge-accent' : 'text-forge-text'}`}>
                         {item.name}
                       </td>
-                      <td className="py-1.5 pr-3 text-xs text-[#6b7280] hidden sm:table-cell">
+                      <td className="py-1.5 pr-3 text-xs text-forge-muted hidden sm:table-cell">
                         {searching ? item.category : item.source ?? ''}
                       </td>
                       <td className="py-1.5 pr-4 text-center">
@@ -359,7 +359,7 @@ export function KeyItemTracker() {
                           href={wikiUrl(item.name)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-[#6b7280] hover:text-[#e2e4ed] transition-colors text-xs"
+                          className="text-forge-muted hover:text-forge-text transition-colors text-xs"
                           title={`${item.name} on HorizonXI wiki`}
                         >
                           ↗

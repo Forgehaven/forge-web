@@ -16,7 +16,7 @@ export function Collapsible({
     <div>
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between py-1 text-sm font-medium text-[#e2e4ed] hover:text-white transition-colors cursor-pointer"
+        className="w-full flex items-center justify-between py-1 text-sm font-medium text-forge-text hover:text-forge-bright transition-colors cursor-pointer"
       >
         {title}
         <span className={`transition-transform duration-200 leading-none ${open ? 'rotate-0' : '-rotate-90'}`}>▾</span>
